@@ -60,6 +60,8 @@ body {
     height: auto;
     object-fit: contain;
     border: none;
+    clip-path: inset(0 0 14% 0); /* Coupe le slogan gris intégré à l'image */
+    margin-bottom: -10%; /* Supprime l'espace vide créé par la coupe */
 }
 
 .nav-links {
@@ -102,13 +104,20 @@ body {
 .btn-logout {
     width: 100%;
     padding: 12px;
-    background: rgba(255, 255, 255, 0.3); /* Fond translucide blanc */
+    background: transparent; /* Fond transparent par défaut */
     color: black; /* Texte noir */
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     cursor: pointer;
     font-weight: 600;
     font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.btn-logout:hover {
+    background: #e536b7; /* Fond rose au survol */
+    color: black;
+    border-color: #e536b7;
 }
 
 /* Bouton burger (mobile) */
@@ -535,27 +544,33 @@ body {
     border-top: 1px solid #f1f5f9;
 }
 
-/* ===================== AUTH PAGE ===================== */
 .auth-page {
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    background: white; /* Fond blanc complet */
     padding: 20px;
 }
 
 .auth-card {
-    background: white;
-    padding: 40px;
-    border-radius: 24px;
+    background: transparent; /* Plus de cadre blanc séparé */
+    padding: 0px;
+    border-radius: 0px;
     width: 100%;
     max-width: 400px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    box-shadow: none; /* Plus d'ombre */
     text-align: center;
 }
 
-.logo-auth { width: 100%; max-width: 180px; height: auto; margin-bottom: 20px; object-fit: contain; }
+.logo-auth { 
+    width: 100%; 
+    max-width: 180px; 
+    height: auto; 
+    object-fit: contain; 
+    clip-path: inset(0 0 14% 0); /* Coupe le slogan gris intégré à l'image */
+    margin-bottom: -5px; /* Rapproche le slogan HTML noir juste en dessous */
+}
 .auth-card h2 { margin-bottom: 8px; font-size: 24px; color: var(--dark); }
 .auth-card p { color: var(--text-muted); margin-bottom: 28px; }
 

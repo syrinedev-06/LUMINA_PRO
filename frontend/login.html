@@ -16,15 +16,15 @@
 
         <div id="login-section">
             <h2>Connexion</h2>
-            <p style="color: black; font-weight: 600; font-size: 16px;">Organisez vos idées avec clarté</p>
+            <p style="color: #000000 !important; font-weight: 700; font-size: 17px; margin-bottom: 24px;">Organisez vos idées avec clarté</p>
             <form id="login-form">
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" id="login-email" placeholder="votre@email.com" required>
+                    <input type="email" id="login-email" name="email" autocomplete="username" placeholder="votre@email.com" required>
                 </div>
                 <div class="form-group">
                     <label>Mot de passe</label>
-                    <input type="password" id="login-password" placeholder="••••••••" required>
+                    <input type="password" id="login-password" name="password" autocomplete="current-password" placeholder="••••••••" required>
                 </div>
                 <button type="submit" class="btn-primary-modal">Se connecter</button>
             </form>
@@ -37,15 +37,15 @@
             <form id="register-form">
                 <div class="form-group">
                     <label>Nom complet</label>
-                    <input type="text" id="reg-name" placeholder="Prénom Nom" required>
+                    <input type="text" id="reg-name" name="name" autocomplete="name" placeholder="Prénom Nom" required>
                 </div>
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" id="reg-email" placeholder="votre@email.com" required>
+                    <input type="email" id="reg-email" name="email" autocomplete="email" placeholder="votre@email.com" required>
                 </div>
                 <div class="form-group">
                     <label>Mot de passe</label>
-                    <input type="password" id="reg-password" placeholder="••••••••" required>
+                    <input type="password" id="reg-password" name="password" autocomplete="new-password" placeholder="••••••••" required>
                 </div>
                 <button type="submit" class="btn-primary-modal">Créer mon compte</button>
             </form>
