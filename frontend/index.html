@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <!-- Encodage et viewport pour la réactivité (mobile) -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina Workspace - Dashboard</title>
+    <!-- Police de caractères Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Fichier de style -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Bibliothèque Chart.js pour les graphiques -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="dashboard-page">
+
+    <!-- BARRE LATÉRALE (Sidebar) -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <!-- Logo uniquement, en grand -->
+            <img src="logo.png" alt="Logo" class="logo-large">
+        </div>
+        <ul class="nav-links">
+            <!-- Liens de navigation du menu -->
+            <li id="nav-dashboard" class="active"><a href="#" onclick="showKanban()">📊 Dashboard</a></li>
+            <li id="nav-stats"><a href="#" onclick="showStats()">📈 Statistiques</a></li>
+            <!-- Ce menu sera masqué par défaut et affiché uniquement pour l'admin -->
+            <li id="nav-team" style="display: none;"><a href="#" onclick="showTeam()">👥 Équipe</a></li>
+            <li id="nav-history"><a href="#" onclick="showHistory()">📜 Historique</a></li>
+            <li id="nav-profile"><a href="#" onclick="showProfile()">👤 Mon Profil</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <!-- Bouton de déconnexion -->
+            <button id="logout-btn" class="btn-logout">Déconnexion</button>
+        </div>
+    </nav>
+
+    <!-- CONTENU PRINCIPAL -->
+    <main class="main-content">
+        <!-- Barre supérieure (Header) -->
+        <header class="top-bar">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <!-- Bouton burger visible sur mobile pour ouvrir la sidebar -->
+                <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+                <div class="page-info">
+                    <!-- Titre de la page dynamique -->
+                    <h2 id="page-title">Tableau de bord</h2>
+                </div>
+            </div>
+            <div class="top-actions">
+                <!-- Icône Notification -->
+                <div class="notif-bell" onclick="toggleNotifDrawer()">
+                    🔔 <span class="notif-badge" id="notif-count">0</span>
+                </div>
+                <!-- Informations utilisateur (nom + avatar cliquable) -->
+                <div class="user-info">
+                    <span id="user-name">Admin</span>
+                    <div class="avatar" onclick="showProfile()" style="cursor: pointer;">👤</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ZONE DYNAMIQUE (Ici s'injecte le contenu des différentes pages) -->
+        <div id="content-area">
+            <!-- Le contenu changera ici selon la page cliquée (Kanban par défaut) -->
+            <div class="kanban-container" id="kanban-view">
+                <div id="kanban-board" class="kanban-board">
+                    <p>Chargement des tâches...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bouton flottant pour ajouter une tâche -->
+        <button class="fab" id="open-modal-btn">+</button>
+    </main>
+
+    <!-- OVERLAY DU DRAWER (Permet de fermer le drawer en cliquant à l'extérieur) -->
+    <div id="drawer-overlay" class="drawer-overlay" onclick="toggleNotifDrawer()"></div>
+
+    <!-- DRAWER NOTIFICATIONS -->
+    <div id="notif-drawer" class="drawer">
+        <div class="drawer-header">
+            <h3>Notifications</h3>
+            <!-- Bouton fermer -->
+            <button onclick="toggleNotifDrawer()">✖</button>
+        </div>
+        <div class="drawer-content" id="notif-list">
+            <!-- Liste des notifications -->
+            <p class="empty-msg">Aucune notification pour le moment.</p>
+        </div>
+    </div>
+
+    <!-- MODALE TÂCHE (Formulaire d'ajout/édition) -->
+    <div id="task-modal" class="modal">
+        <div class="modal-content">
+            <h2 id="modal-title">Nouvelle Mission</h2>
+            <form id="task-form">
+                <input type="hidden" id="task-id">
+
+                <div class="form-group">
+                    <label>Titre de la tâche</label>
+                    <input type="text" id="task-title" placeholder="Ex: Finir le rapport..." required>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="task-desc"></textarea>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Priorité</label>
+                        <select id="task-priority">
+                            <option value="low">Basse</option>
+                            <option value="medium" selected>Moyenne</option>
+                            <option value="high">Haute</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Assigné à</label>
+                        <select id="task-assign"></select>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <!-- Boutons d'action -->
+                    <button type="submit" class="btn-primary-modal">Enregistrer</button>
+                    <button type="button" class="btn-delete" id="delete-task-btn"
+                        style="display:none;">Supprimer</button>
+                    <button type="button" id="close-modal" class="btn-secondary">Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODALE PROFIL (Modification) -->
+    <div id="profile-modal" class="modal">
+        <div class="modal-content">
+            <h2>Modifier mon profil</h2>
+            <form id="profile-form">
+                <div class="form-group">
+                    <label>Nom complet</label>
+                    <input type="text" id="edit-profile-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Adresse Email</label>
+                    <input type="email" id="edit-profile-email" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn-primary-modal">Enregistrer les modifications</button>
+                    <button type="button" onclick="document.getElementById('profile-modal').style.display='none'"
+                        class="btn-secondary">Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script principal -->
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>

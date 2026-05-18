@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina Workspace - Connexion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="auth-page">
+
+    <div class="auth-card">
+        <img src="logo.png" alt="Logo Lumina" class="logo-auth">
+
+        <div id="login-section">
+            <h2>Connexion</h2>
+            <p style="color: black; font-weight: 600; font-size: 16px;">Organisez vos idées avec clarté</p>
+            <form id="login-form">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="login-email" placeholder="votre@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Mot de passe</label>
+                    <input type="password" id="login-password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-primary-modal">Se connecter</button>
+            </form>
+            <p class="auth-switch">Pas encore de compte ? <a href="#" onclick="toggleAuth()">S'inscrire</a></p>
+        </div>
+
+        <div id="register-section" style="display: none;">
+            <h2>Inscription</h2>
+            <p>Rejoignez l'équipe Lumina</p>
+            <form id="register-form">
+                <div class="form-group">
+                    <label>Nom complet</label>
+                    <input type="text" id="reg-name" placeholder="Prénom Nom" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="reg-email" placeholder="votre@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Mot de passe</label>
+                    <input type="password" id="reg-password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-primary-modal">Créer mon compte</button>
+            </form>
+            <p class="auth-switch">Déjà inscrit ? <a href="#" onclick="toggleAuth()">Se connecter</a></p>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        function toggleAuth() {
+            const login = document.getElementById('login-section');
+            const register = document.getElementById('register-section');
+            if (login.style.display === 'none') {
+                login.style.display = 'block';
+                register.style.display = 'none';
+            } else {
+                login.style.display = 'none';
+                register.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+
+</html>
