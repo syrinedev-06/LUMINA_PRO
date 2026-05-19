@@ -370,30 +370,29 @@ async function handleProfileSubmit(e) {
 let currentHistoryLogs = [];
 let historyCurrentPage = 1;
 const historyPerPage = 10;
+let historyView = 'active'; // 'active' ou 'trash'
 
-async function showHistory(page = 1) {
+async function showHistory(page = 1, view = 'active') {
     setActiveLink('nav-history');
     const titleEl = document.getElementById('page-title');
-    if (titleEl) titleEl.innerText = "Historique d'activité";
+    if (titleEl) titleEl.innerText = "Historique & Corbeille";
 
+    historyView = view;
+    historyCurrentPage = page;
     const area = document.getElementById('content-area');
     
-    // Afficher chargement seulement au premier appel
-    if (page === 1 && currentHistoryLogs.length === 0) {
-        area.innerHTML = `<div style="padding:40px; text-align:center; color:var(--text-muted);">⏳ Chargement de l'historique...</div>`;
-        try {
-            const response = await fetch('http://localhost:3000/api/logs');
-            if (!response.ok) throw new Error(`Erreur HTTP ${response.status}`);
-            currentHistoryLogs = await response.json();
-        } catch (e) {
-            console.error("Erreur historique :", e);
-            area.innerHTML = "<p style='text-align:center; padding:50px; color:red;'>Impossible de charger l'historique. Vérifiez que le serveur est actif.</p>";
-            return;
-        }
+    area.innerHTML = `<div style="padding:40px; text-align:center; color:var(--text-muted);">⏳ Chargement de l'historique...</div>`;
+    
+    try {
+        const endpoint = historyView === 'trash' ? 'http://localhost:3000/api/logs/trash' : 'http://localhost:3000/api/logs';
+        const response = await fetch(endpoint);
+        if (!response.ok) throw new Error(`Erreur HTTP ${response.status}`);
+        currentHistoryLogs = await response.json();
+        renderHistoryTable();
+    } catch (e) {
+        console.error("Erreur historique :", e);
+        area.innerHTML = "<p style='text-align:center; padding:50px; color:red;'>Impossible de charger les données. Vérifiez que le serveur est actif.</p>";
     }
-
-    historyCurrentPage = page;
-    renderHistoryTable();
 }
 
 function renderHistoryTable() {
@@ -407,10 +406,23 @@ function renderHistoryTable() {
     const isAdmin = user && user.role === 'admin';
 
     let tableHTML = `
-        <div class="data-card">
+        <!-- Onglets Historique / Corbeille -->
+        <div style="display:flex; gap:15px; margin-bottom:20px; border-bottom:1px solid #e2e8f0; padding-bottom:10px; margin-left:30px; margin-right:30px; margin-top:20px;">
+            <button onclick="showHistory(1, 'active')" style="background:none; border:none; padding:8px 16px; font-weight:600; font-size:14px; cursor:pointer; color: ${historyView === 'active' ? 'var(--primary)' : '#64748b'}; border-bottom: 2px solid ${historyView === 'active' ? 'var(--primary)' : 'transparent'};">📜 Historique actif</button>
+            <button onclick="showHistory(1, 'trash')" style="background:none; border:none; padding:8px 16px; font-weight:600; font-size:14px; cursor:pointer; color: ${historyView === 'trash' ? 'var(--primary)' : '#64748b'}; border-bottom: 2px solid ${historyView === 'trash' ? 'var(--primary)' : 'transparent'};">🗑️ Corbeille</button>
+        </div>
+
+        <div class="data-card" style="margin-top:10px;">
             ${isAdmin ? `
-            <div style="margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;">
-                <button onclick="deleteSelectedLogs()" class="btn-delete" style="width:auto; padding:8px 16px;">Supprimer la sélection</button>
+            <div style="margin-bottom:15px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <div style="display:flex; gap:10px;">
+                    ${historyView === 'active' ? `
+                        <button onclick="deleteSelectedLogs()" class="btn-delete" style="width:auto; padding:8px 16px;">Mettre à la corbeille</button>
+                    ` : `
+                        <button onclick="restoreSelectedLogs()" class="btn-primary-modal" style="width:auto; padding:8px 16px; background-color:#10b981; color:white; border:none; border-radius:12px; font-weight:600; cursor:pointer; font-size:14px;">Restaurer la sélection</button>
+                        <button onclick="purgeSelectedLogs()" class="btn-delete" style="width:auto; padding:8px 16px; background-color:#ef4444; color:white;">Supprimer définitivement</button>
+                    `}
+                </div>
                 <label style="cursor:pointer; font-size:13px; font-weight:600;"><input type="checkbox" id="select-all-logs" onchange="toggleAllLogs(this)"> Tout sélectionner (page courante)</label>
             </div>
             ` : ''}
@@ -448,7 +460,7 @@ function renderHistoryTable() {
         tableHTML += `
             <tr>
                 <td colspan="${isAdmin ? '4' : '3'}" style="text-align:center; color:var(--text-muted); padding:40px;">
-                    Aucun historique pour le moment.
+                    ${historyView === 'trash' ? 'La corbeille est vide.' : 'Aucun historique pour le moment.'}
                 </td>
             </tr>
         `;
@@ -461,15 +473,20 @@ function renderHistoryTable() {
             <!-- Pagination Controls -->
             ${totalPages > 1 ? `
             <div style="display:flex; justify-content:center; align-items:center; gap:15px; margin-top:20px;">
-                <button ${historyCurrentPage === 1 ? 'disabled' : ''} onclick="showHistory(${historyCurrentPage - 1})" class="btn-secondary" style="width:auto; padding:8px 16px;">Précédent</button>
+                <button ${historyCurrentPage === 1 ? 'disabled' : ''} onclick="changeHistoryPage(${historyCurrentPage - 1})" class="btn-secondary" style="width:auto; padding:8px 16px;">Précédent</button>
                 <span style="font-size:14px; font-weight:600;">Page ${historyCurrentPage} / ${totalPages}</span>
-                <button ${historyCurrentPage === totalPages ? 'disabled' : ''} onclick="showHistory(${historyCurrentPage + 1})" class="btn-secondary" style="width:auto; padding:8px 16px;">Suivant</button>
+                <button ${historyCurrentPage === totalPages ? 'disabled' : ''} onclick="changeHistoryPage(${historyCurrentPage + 1})" class="btn-secondary" style="width:auto; padding:8px 16px;">Suivant</button>
             </div>
             ` : ''}
         </div>
     `;
 
     area.innerHTML = tableHTML;
+}
+
+function changeHistoryPage(page) {
+    historyCurrentPage = page;
+    renderHistoryTable();
 }
 
 function toggleAllLogs(checkbox) {
@@ -482,11 +499,11 @@ async function deleteSelectedLogs() {
     const ids = Array.from(checkboxes).map(cb => cb.value);
 
     if (ids.length === 0) {
-        alert("Veuillez sélectionner au moins un événement à supprimer.");
+        alert("Veuillez sélectionner au moins un événement à mettre à la corbeille.");
         return;
     }
 
-    if (!confirm(`Voulez-vous vraiment supprimer ${ids.length} élément(s) de l'historique ?`)) return;
+    if (!confirm(`Voulez-vous vraiment envoyer ${ids.length} élément(s) à la corbeille ?`)) return;
 
     try {
         const response = await fetch('http://localhost:3000/api/logs/delete', {
@@ -496,10 +513,8 @@ async function deleteSelectedLogs() {
         });
         if (!response.ok) throw new Error("Erreur lors de la suppression");
         
-        // Rafraîchir les logs côté frontend
         currentHistoryLogs = currentHistoryLogs.filter(log => !ids.includes(log.id.toString()));
         
-        // Ajuster la page si la dernière devient vide
         const totalPages = Math.ceil(currentHistoryLogs.length / historyPerPage);
         if (historyCurrentPage > totalPages && totalPages > 0) {
             historyCurrentPage = totalPages;
@@ -507,7 +522,71 @@ async function deleteSelectedLogs() {
         renderHistoryTable();
     } catch (e) {
         console.error("Erreur suppression logs:", e);
-        alert("Erreur lors de la suppression de l'historique.");
+        alert("Erreur lors de la mise à la corbeille.");
+    }
+}
+
+async function restoreSelectedLogs() {
+    const checkboxes = document.querySelectorAll('.log-checkbox:checked');
+    const ids = Array.from(checkboxes).map(cb => cb.value);
+
+    if (ids.length === 0) {
+        alert("Veuillez sélectionner au moins un événement à restaurer.");
+        return;
+    }
+
+    if (!confirm(`Voulez-vous vraiment restaurer ${ids.length} élément(s) de l'historique ?`)) return;
+
+    try {
+        const response = await fetch('http://localhost:3000/api/logs/restore', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ids })
+        });
+        if (!response.ok) throw new Error("Erreur lors de la restauration");
+        
+        currentHistoryLogs = currentHistoryLogs.filter(log => !ids.includes(log.id.toString()));
+        
+        const totalPages = Math.ceil(currentHistoryLogs.length / historyPerPage);
+        if (historyCurrentPage > totalPages && totalPages > 0) {
+            historyCurrentPage = totalPages;
+        }
+        renderHistoryTable();
+    } catch (e) {
+        console.error("Erreur restauration logs:", e);
+        alert("Erreur lors de la restauration.");
+    }
+}
+
+async function purgeSelectedLogs() {
+    const checkboxes = document.querySelectorAll('.log-checkbox:checked');
+    const ids = Array.from(checkboxes).map(cb => cb.value);
+
+    if (ids.length === 0) {
+        alert("Veuillez sélectionner au moins un événement à supprimer définitivement.");
+        return;
+    }
+
+    if (!confirm(`ATTENTION : Voulez-vous vraiment supprimer définitivement ${ids.length} élément(s) ? Cette action est irréversible.`)) return;
+
+    try {
+        const response = await fetch('http://localhost:3000/api/logs/purge', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ids })
+        });
+        if (!response.ok) throw new Error("Erreur lors de la purge");
+        
+        currentHistoryLogs = currentHistoryLogs.filter(log => !ids.includes(log.id.toString()));
+        
+        const totalPages = Math.ceil(currentHistoryLogs.length / historyPerPage);
+        if (historyCurrentPage > totalPages && totalPages > 0) {
+            historyCurrentPage = totalPages;
+        }
+        renderHistoryTable();
+    } catch (e) {
+        console.error("Erreur purge logs:", e);
+        alert("Erreur lors de la suppression définitive.");
     }
 }
 

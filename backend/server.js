@@ -50,7 +50,8 @@ db.connect((err) => {
             id INT AUTO_INCREMENT PRIMARY KEY,
             action VARCHAR(255) NOT NULL,
             details TEXT,
-            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            is_deleted TINYINT(1) DEFAULT 0
         )`
     ];
 
@@ -58,6 +59,16 @@ db.connect((err) => {
         db.query(sql, (err) => {
             if (err) console.error("Erreur création table:", err.message);
         });
+    });
+
+    // Auto-migration: ajouter la colonne is_deleted si elle n'existe pas déjà
+    db.query("SHOW COLUMNS FROM logs LIKE 'is_deleted'", (err, results) => {
+        if (!err && results.length === 0) {
+            db.query("ALTER TABLE logs ADD COLUMN is_deleted TINYINT(1) DEFAULT 0", (err) => {
+                if (err) console.error("Erreur alteration table logs:", err.message);
+                else console.log("Colonne 'is_deleted' ajoutée à la table 'logs' !");
+            });
+        }
     });
 });
 
