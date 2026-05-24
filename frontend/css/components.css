@@ -1,0 +1,193 @@
+/* ===================== DRAWER NOTIFICATIONS ===================== */
+.drawer-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,0.35);
+    z-index: 1999;
+    box-shadow: inset -15px 0 30px rgba(0,0,0,0.08);
+    backdrop-filter: blur(2px);
+    cursor: pointer;
+}
+
+.drawer-overlay.active { display: block; }
+
+.drawer {
+    position: fixed;
+    right: -420px;
+    top: 0;
+    width: 380px;
+    height: 100%;
+    background: white;
+    box-shadow: -12px 0 40px rgba(0,0,0,0.15);
+    z-index: 2000;
+    transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+.drawer.open { right: 0; }
+
+.drawer-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.drawer-header h3 { font-size: 16px; font-weight: 700; }
+
+.drawer-header button {
+    background: #f1f5f9;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.drawer-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 0;
+}
+
+.notif-item { display: flex; gap: 15px; padding: 16px 20px; border-bottom: 1px solid #f1f5f9; cursor: pointer; transition: 0.2s; }
+.notif-item:hover { background: #f8fafc; }
+.notif-item.unread { background: #f0fdf4; border-left: 4px solid #10b981; padding-left: 16px; }
+.notif-icon { font-size: 20px; }
+.notif-text { font-size: 13px; color: var(--dark); line-height: 1.4; }
+.notif-text strong { color: var(--primary); font-weight: 600; }
+.notif-time { display: block; font-size: 11px; color: var(--text-muted); margin-top: 5px; }
+
+.empty-msg { color: var(--text-muted); font-size: 14px; text-align: center; padding-top: 40px; }
+
+/* ===================== THEME SWITCH (Neumorphic) ===================== */
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 96px;
+    height: 34px;
+}
+.theme-switch input { opacity: 0; width: 0; height: 0; }
+.theme-switch .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #f1f5f9;
+    transition: .4s;
+    border-radius: 34px;
+    display: flex;
+    align-items: center;
+    box-shadow: inset 3px 3px 6px rgba(0,0,0,0.1), inset -3px -3px 6px rgba(255,255,255,0.9);
+}
+.theme-switch .knob {
+    position: absolute;
+    height: 28px;
+    width: 28px;
+    left: 3px;
+    bottom: 3px;
+    background-color: #f8fafc;
+    transition: .4s;
+    border-radius: 50%;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.1), -2px -2px 4px rgba(255,255,255,0.9);
+}
+.theme-switch input:checked + .slider {
+    background-color: #1e293b;
+    box-shadow: inset 3px 3px 6px rgba(0,0,0,0.5), inset -3px -3px 6px rgba(255,255,255,0.05);
+}
+.theme-switch input:checked + .slider .knob {
+    transform: translateX(62px);
+    background-color: #0f172a;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.5), -2px -2px 4px rgba(255,255,255,0.05);
+}
+.theme-switch .switch-text {
+    position: absolute;
+    font-size: 10px;
+    font-weight: 700;
+    transition: .4s;
+    color: #64748b;
+    z-index: 1;
+    pointer-events: none;
+}
+.theme-switch .light-text { left: 34px; opacity: 1; }
+.theme-switch .dark-text { right: 34px; opacity: 0; color: #94a3b8; }
+.theme-switch input:checked + .slider .light-text { opacity: 0; }
+.theme-switch input:checked + .slider .dark-text { opacity: 1; }
+
+.theme-switch .icon { position: absolute; font-size: 14px; transition: .4s; }
+.theme-switch .icon.sun { opacity: 1; }
+.theme-switch .icon.moon { opacity: 0; }
+.theme-switch input:checked + .slider .icon.sun { opacity: 0; }
+.theme-switch input:checked + .slider .icon.moon { opacity: 1; }
+
+/* ===================== CUSTOM AVATAR ===================== */
+.custom-avatar {
+    background: linear-gradient(135deg, #0ea5e9, #6366f1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+    transition: transform 0.2s;
+}
+.custom-avatar:hover { transform: scale(1.05); }
+
+.stats-card {
+    max-width: 450px;
+    margin: 30px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 30px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+}
+
+/* ===================== FAB BUTTON ===================== */
+.fab {
+    position: fixed;
+    bottom: 36px;
+    right: 36px;
+    width: 60px;
+    height: 60px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(161,0,87,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    z-index: 500;
+}
+
+.fab:hover { transform: scale(1.1); box-shadow: 0 12px 30px rgba(161,0,87,0.5); }
+
+/* ===================== ADD COLUMN BUTTON ===================== */
+.btn-add-column {
+    min-width: 220px;
+    width: 220px;
+    border: 2px dashed #cbd5e1;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.25s;
+    flex-shrink: 0;
+    font-size: 14px;
+}
+
+.btn-add-column:hover { background: #cbd5e1; color: var(--dark); }

@@ -1,0 +1,76 @@
+/* ===================== AUTHENTICATION PAGE ===================== */
+.auth-page {
+    height: 100dvh;
+    display: flex;
+    flex-direction: column; 
+    justify-content: flex-start;
+    align-items: center;
+    background: white;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.auth-card {
+    margin: 0 auto;
+    background: transparent;
+    padding: 0px;
+    border-radius: 0px;
+    width: 100%;
+    max-width: 650px;
+    box-shadow: none;
+    text-align: center;
+}
+
+.logo-auth { 
+    width: 100%; 
+    max-width: 280px;
+    height: auto; 
+    object-fit: contain; 
+    mix-blend-mode: normal;
+    margin-bottom: 0px;
+}
+
+.auth-card h2 { margin-bottom: 4px; font-size: 22px; color: var(--dark); }
+.auth-card p { color: var(--text-muted); margin-bottom: 10px; font-size: 13px; }
+
+.form-group { text-align: left; margin-bottom: 8px; }
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.auth-switch { margin-top: 15px; font-size: 14px; color: var(--text-muted); }
+
+/* ===================== PROFILE PAGE ===================== */
+.profile-container {
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    overflow-y: auto;
+}
+
+.profile-card {
+    background: white;
+    padding: 32px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    text-align: center;
+}
+
+.profile-table { width: 100%; margin-top: 20px; border-collapse: collapse; text-align: left; }
+.profile-table th, .profile-table td { padding: 12px 10px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+.profile-table th { color: var(--text-muted); font-weight: 600; width: 40%; }

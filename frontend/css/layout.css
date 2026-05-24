@@ -1,0 +1,224 @@
+/* ===================== RESET ===================== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-size: 16px;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ===================== LAYOUT ===================== */
+.dashboard-page {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* ===================== SIDEBAR ===================== */
+.sidebar {
+    width: 320px;
+    min-width: 320px;
+    background-color: white;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-right: 3px solid var(--primary);
+    z-index: 100;
+}
+
+.sidebar-header {
+    padding: 5px 24px 0px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+.logo-large {
+    width: 100%;
+    max-width: 320px;
+    margin-bottom: 0px;
+    mix-blend-mode: normal;
+    height: auto;
+    object-fit: contain;
+    border: none;
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0 12px;
+    flex-grow: 1;
+}
+
+.nav-links li { margin-bottom: 4px; }
+
+.nav-links a {
+    color: black;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 11px 18px;
+    border-radius: 12px;
+    font-weight: 500;
+    transition: 0.2s;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.nav-links a:hover {
+    background-color: #e536b7;
+    color: black;
+}
+
+.nav-links li.active a {
+    background-color: #e536b7;
+    color: black;
+    font-weight: 700;
+}
+
+.sidebar-footer {
+    padding: 20px 20px 40px 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.btn-logout {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    color: black;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.btn-logout:hover {
+    background: #e536b7;
+    color: black;
+    border-color: #e536b7;
+}
+
+/* Bouton burger (mobile) */
+.sidebar-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--dark);
+    padding: 4px 8px;
+}
+
+/* ===================== MAIN CONTENT ===================== */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+}
+
+/* ===================== TOP BAR ===================== */
+.top-bar {
+    height: 70px;
+    min-height: 70px;
+    background: var(--white);
+    padding: 0 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    gap: 16px;
+}
+
+.page-info h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    flex-shrink: 0;
+}
+
+.theme-toggle-mobile {
+    display: none;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}
+
+.notif-bell {
+    position: relative;
+    cursor: pointer;
+    font-size: 20px;
+    background: #f1f5f9;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    transition: background 0.2s;
+}
+
+.notif-bell:hover { background: #e2e8f0; }
+
+.notif-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--danger);
+    color: white;
+    font-size: 10px;
+    padding: 3px 6px;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.avatar {
+    width: 38px;
+    height: 38px;
+    background: white;
+    color: var(--primary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+/* ===================== CONTENT AREA ===================== */
+#content-area {
+    flex-grow: 1;
+    overflow: auto;
+    background-color: #f1f5f9;
+    display: flex;
+    flex-direction: column;
+}

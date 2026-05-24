@@ -1,0 +1,155 @@
+/* ===================== MODAL ===================== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+    background: rgba(15,23,42,0.65);
+    backdrop-filter: blur(6px);
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+    overflow-y: auto;
+}
+
+.modal-content {
+    background: white;
+    padding: 28px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 380px;
+    max-height: 85dvh;
+    overflow-y: auto;
+}
+
+.modal-content h2 {
+    margin-bottom: 18px;
+    font-size: 18px;
+    color: var(--dark);
+    text-align: center;
+}
+
+.modal-content .form-group { margin-bottom: 14px; }
+
+.modal-content label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+
+.modal-content input,
+.modal-content textarea,
+.modal-content select {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 14px;
+    background: white;
+    font-family: inherit;
+}
+
+.modal-content textarea { height: 80px; resize: vertical; }
+
+.modal-footer {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* ===================== BUTTONS ===================== */
+.btn-primary-modal {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.btn-primary-modal:hover { background: var(--primary-hover); }
+
+.btn-secondary {
+    width: 100%;
+    padding: 12px;
+    background: #f1f5f9;
+    color: #64748b;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+.btn-secondary:hover { background: #e2e8f0; color: var(--dark); }
+
+/* Spécial bouton Générer une notification */
+.btn-generer:hover {
+    background: var(--primary) !important;
+    color: white !important;
+}
+.btn-generer:active {
+    transform: scale(0.98);
+}
+
+.btn-delete {
+    width: 100%;
+    padding: 12px;
+    background: #fee2e2;
+    color: #991b1b;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.btn-delete:hover {
+    background: #b91c1c; /* Rouge foncé au survol */
+    color: white;
+}
+
+.icon-btn {
+    cursor: pointer;
+    font-size: 15px;
+    opacity: 0.5;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.icon-btn:hover { opacity: 1; transform: scale(1.2); }
+
+.task-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+/* Wrapper pour scroll horizontal des tableaux sur mobile */
+.table-scroll-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+}
+
+.data-table { width: 100%; border-collapse: collapse; min-width: 650px; }
+
+.data-table th {
+    text-align: left;
+    padding: 13px 15px;
+    color: var(--text-muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #f1f5f9;
+    white-space: nowrap;
+}
+
+.data-table td { padding: 13px 15px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+.data-table tr:hover { background-color: #f8fafc; }

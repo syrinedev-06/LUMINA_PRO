@@ -1,0 +1,47 @@
+/* ===================== VARIABLES ===================== */
+:root {
+    --primary: #A10057;
+    --primary-hover: #800045;
+    --dark: #000000;
+    --sidebar-bg: #1e293b;
+    --bg-main: #f8fafc;
+    --white: #ffffff;
+    --text-main: #000000;
+    --text-muted: #334155;
+    --border: #e2e8f0;
+    --danger: #fc16ce;
+}
+
+/* ===================== DARK MODE ===================== */
+body.dark-mode {
+    --bg-main: #0f172a;
+    --bg-card: #1e293b;
+    --white: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border: #334155;
+    --dark: #ffffff;
+    --primary: #ff4d94;
+}
+body.dark-mode #content-area { background-color: var(--bg-main) !important; }
+body.dark-mode .sidebar { background-color: var(--white) !important; color: var(--text-main) !important; border-right: 3px solid var(--primary); }
+body.dark-mode .sidebar .logo-large { mix-blend-mode: normal; filter: none; background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 65%); border-radius: 50%; padding: 10px; }
+body.dark-mode .logo-auth { mix-blend-mode: normal; filter: none; background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 65%); border-radius: 50%; padding: 10px; }
+body.dark-mode .nav-links a { color: var(--text-main) !important; }
+body.dark-mode .btn-logout { color: var(--text-main) !important; }
+body.dark-mode .kanban-column { background-color: #0f172a !important; border: 1px solid var(--border); }
+body.dark-mode .task-card { background-color: var(--white) !important; border: 1px solid var(--border); }
+body.dark-mode .data-card, body.dark-mode .stats-card, body.dark-mode .profile-card { background-color: var(--white) !important; }
+body.dark-mode .modal-content { background-color: var(--white) !important; }
+body.dark-mode .drawer { background-color: var(--white) !important; }
+body.dark-mode.auth-page { background-color: var(--bg-main) !important; }
+body.dark-mode input, body.dark-mode select, body.dark-mode textarea { background-color: #0f172a !important; color: var(--text-main) !important; border: 1px solid var(--border) !important; }
+body.dark-mode .btn-secondary { background-color: #334155 !important; color: white !important; }
+body.dark-mode .notif-bell { background-color: #334155 !important; color: white; }
+body.dark-mode .notif-item { border-bottom: 1px solid var(--border) !important; }
+body.dark-mode .notif-item:hover { background-color: #334155 !important; }
+body.dark-mode .data-table th, body.dark-mode .data-table td { border-bottom: 1px solid var(--border) !important; }
+body.dark-mode .data-table tr:hover { background-color: #334155 !important; }
+body.dark-mode .profile-table th, body.dark-mode .profile-table td { border-bottom: 1px solid var(--border) !important; }
+body.dark-mode .drawer-header { border-bottom: 1px solid var(--border) !important; }
+body.dark-mode .drawer-header button { background-color: #334155 !important; color: white; }

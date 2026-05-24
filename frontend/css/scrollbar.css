@@ -1,0 +1,27 @@
+/* ===================== SCROLLBAR ===================== */
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--danger) transparent;
+}
+
+/* WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+/* Le fond (track) de la barre de scroll : transparent pour enlever l'effet blanc */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* La barre elle-même (thumb) : fushia comme les boutons (--danger) */
+::-webkit-scrollbar-thumb {
+    background: var(--danger);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary); /* Devient rose plus foncé au survol */
+}
