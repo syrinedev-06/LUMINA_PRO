@@ -1,10 +1,25 @@
 const express = require('express');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 
-const SECRET_KEY = "LUMINA_SECRET_2024";
+/**
+ * RÔLE DU COMPOSANT (users.js) :
+ * Ce fichier gère les opérations CRUD (Create, Read, Update, Delete) sur la ressource "users".
+ * C'est une API RESTful où chaque méthode HTTP correspond à une action précise sur la ressource.
+ * Toutes les routes ici sont protégées par le middleware de vérification JWT configuré dans server.js.
+ */
 
-// 1. RÉCUPÉRER TOUS LES MEMBRES
+/**
+ * @brief Route GET pour récupérer tous les membres de l'équipe (/api/users/).
+ * 
+ * CONCEPT EXAMEN :
+ * - **Sélection de champs (Projection SQL)** : Nous sélectionnons explicitement `id, name, email, role`.
+ *   Il ne faut **jamais** renvoyer le champ `password` (même s'il est haché) pour des raisons de sécurité évidentes.
+ * - **Statut HTTP 200 (OK)** : Renvoyé par défaut par Express lors d'un `res.json()`.
+ * 
+ * @param {Object} req - Requête Express.
+ * @param {Object} res - Réponse Express retournant la liste JSON des utilisateurs.
+ * @returns {void}
+ */
 router.get('/', (req, res) => {
     const sql = "SELECT id, name, email, role FROM users";
     req.db.query(sql, (err, results) => {
@@ -13,42 +28,18 @@ router.get('/', (req, res) => {
     });
 });
 
-// 2. INSCRIPTION (Register)
-router.post('/register', (req, res) => {
-    const { name, email, password } = req.body;
-    const sql = "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, 'user')";
-    req.db.query(sql, [name, email, password], (err, result) => {
-        if (err) return res.status(500).json({ error: "Email déjà utilisé ou erreur serveur." });
-        res.status(201).json({ message: "Utilisateur créé !" });
-    });
-});
-
-// 3. CONNEXION (Login)
-router.post('/login', (req, res) => {
-    const { email, password } = req.body;
-    const sql = "SELECT * FROM users WHERE email = ? AND password = ?";
-    
-    req.db.query(sql, [email, password], (err, results) => {
-        if (err || results.length === 0) {
-            return res.status(401).json({ error: "Email ou mot de passe incorrect." });
-        }
-        
-        const user = results[0];
-        const token = jwt.sign({ id: user.id, role: user.role }, SECRET_KEY, { expiresIn: '24h' });
-        
-        res.json({
-            token,
-            user: {
-                id: user.id,
-                name: user.name,
-                email: user.email, // L'email est maintenant BIEN renvoyé
-                role: user.role
-            }
-        });
-    });
-});
-
-// 4. METTRE À JOUR UN UTILISATEUR (Profil)
+/**
+ * @brief Route PUT pour mettre à jour les informations du profil d'un utilisateur (/api/users/:id).
+ * 
+ * CONCEPT EXAMEN :
+ * - **Paramètre d'URL (req.params)** : L'identifiant de l'utilisateur à modifier est passé dans le chemin (`:id`).
+ * - **Mise à jour partielle** : Permet à un utilisateur de modifier son nom et son email.
+ * - **Requête SQL préparée** : Utilise des points d'interrogation pour insérer en toute sécurité les valeurs.
+ * 
+ * @param {Object} req - Requête contenant req.params.id, req.body.name, req.body.email.
+ * @param {Object} res - Réponse confirmant le succès ou retournant une erreur 500.
+ * @returns {void}
+ */
 router.put('/:id', (req, res) => {
     const { name, email } = req.body;
     const sql = "UPDATE users SET name = ?, email = ? WHERE id = ?";
@@ -58,7 +49,20 @@ router.put('/:id', (req, res) => {
     });
 });
 
-// 5. SUPPRIMER UN UTILISATEUR
+/**
+ * @brief Route DELETE pour supprimer un utilisateur (/api/users/:id).
+ * 
+ * CONCEPT EXAMEN :
+ * - **Suppression physique** : Supprime définitivement la ligne de l'utilisateur en base de données.
+ * - **Contrainte de clé étrangère** : Si des tâches sont assignées à cet utilisateur,
+ *   l'attribut `id_assigned` de la table tasks deviendra orphelin ou lèvera une contrainte.
+ *   En production, on privilégie souvent une suppression logique (soft delete via un champ `is_deleted`) 
+ *   ou on remplace la clé par NULL.
+ * 
+ * @param {Object} req - Contient req.params.id (l'identifiant utilisateur à détruire).
+ * @param {Object} res - Réponse HTTP de validation.
+ * @returns {void}
+ */
 router.delete('/:id', (req, res) => {
     const sql = "DELETE FROM users WHERE id = ?";
     req.db.query(sql, [req.params.id], (err, result) => {
@@ -68,3 +72,4 @@ router.delete('/:id', (req, res) => {
 });
 
 module.exports = router;
+

@@ -1,72 +1,105 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt'); // L'outil pour cacher les mots de passe
-const jwt = require('jsonwebtoken'); // L'outil pour créer les badges de connexion
+const bcrypt = require('bcrypt'); // Bibliothèque pour le hachage sécurisé (algorithme Blowfish)
+const jwt = require('jsonwebtoken'); // Module pour la génération de tokens de session signés cryptographiquement
 
-// 1. ROUTE POUR L'INSCRIPTION (Register)
+// Clé secrète unifiée pour la génération et validation des tokens JWT
+const SECRET_KEY = "LUMINA_SECRET_2024";
+
+/**
+ * @brief Route POST pour l'inscription d'un nouvel utilisateur (/api/auth/register).
+ * 
+ * CONCEPT EXAMEN (Inscription & Sécurité) :
+ * 1. **Réception des données** : Le client envoie `name`, `email` et `password` dans le corps (req.body).
+ * 2. **Hachage (bcrypt.hash)** : Avant d'insérer le mot de passe en base, il est salé et haché.
+ *    Le sel (salt) est une suite aléatoire de caractères ajoutée au mot de passe pour rendre 
+ *    les attaques par dictionnaire inefficaces.
+ * 3. **Requête préparée** : `db.query(sql, [params])` utilise des placeholders `?`. 
+ *    Le pilote MySQL échappe automatiquement les entrées utilisateur pour empêcher les **injections SQL**.
+ * 
+ * @param {Object} req - Requête Express contenant req.body.name, req.body.email, req.body.password.
+ * @param {Object} res - Réponse Express envoyant un statut 201 (Created) ou 500 (Internal Server Error).
+ * @returns {void}
+ */
 router.post('/register', async (req, res) => {
-    // On récupère les données envoyées par l'utilisateur
     const { name, email, password } = req.body;
 
     try {
-        // On mélange (hache) le mot de passe avant de l'enregistrer
-        // Le chiffre 10 est la "force" du mélange
+        // Hachage du mot de passe avec un coût algorithmique de 10 (compromis idéal vitesse/sécurité)
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // On prépare la commande SQL pour insérer l'utilisateur
+        // Requête d'insertion SQL avec placeholders pour éviter l'injection SQL
         const sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
         
-        // On exécute la commande dans la base de données
-        // Les [?] sont remplacés par nos variables pour éviter les piratages (Injections SQL)
         req.db.query(sql, [name, email, hashedPassword], (err, result) => {
             if (err) {
-                return res.status(500).json({ error: "Erreur lors de l'inscription. L'email existe peut-être déjà." });
+                // Si une erreur survient (ex: contrainte d'unicité violée sur l'email)
+                return res.status(500).json({ 
+                    error: "Erreur lors de l'inscription. L'email existe peut-être déjà." 
+                });
             }
             res.status(201).json({ message: "Utilisateur créé avec succès !" });
         });
     } catch (error) {
-        res.status(500).json({ error: "Erreur serveur lors du hachage." });
+        res.status(500).json({ error: "Erreur serveur lors du hachage du mot de passe." });
     }
 });
 
-// 2. ROUTE POUR LA CONNEXION (Login)
+/**
+ * @brief Route POST pour la connexion utilisateur (/api/auth/login).
+ * 
+ * CONCEPT EXAMEN (Authentification & JWT) :
+ * 1. **Vérification d'existence** : On recherche d'abord si l'email saisi existe en base de données.
+ * 2. **Comparaison par hachage (bcrypt.compare)** : Puisque le mot de passe est haché en BDD,
+ *    on ne peut pas comparer avec `=` en SQL. `bcrypt.compare` prend le mot de passe en clair saisi
+ *    et le compare de manière sécurisée (contre les attaques temporelles) avec le hash enregistré.
+ * 3. **Génération de jeton JWT (jwt.sign)** : Si les identifiants sont corrects, on génère un jeton.
+ *    - **Payload (Charge utile)** : Contient les données publiques de l'utilisateur (id, role).
+ *    - **Signature** : Chiffrée avec la clé secrète pour garantir que le jeton n'a pas été altéré.
+ *    - **Expiration** : Le jeton est configuré pour expirer après 24 heures pour limiter les risques en cas de vol.
+ * 
+ * @param {Object} req - Requête Express contenant req.body.email, req.body.password.
+ * @param {Object} res - Réponse Express retournant le jeton JWT et les infos utilisateur de base.
+ * @returns {void}
+ */
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
-    // A. On cherche l'utilisateur dans la base de données via son email
+    // A. Recherche de l'utilisateur par son email unique
     const sql = "SELECT * FROM users WHERE email = ?";
     req.db.query(sql, [email], async (err, results) => {
-        if (err) return res.status(500).json({ error: "Erreur serveur" });
+        if (err) return res.status(500).json({ error: "Erreur serveur de base de données." });
         
-        // Si on ne trouve pas l'email
+        // Si aucun utilisateur ne possède cet email
         if (results.length === 0) {
             return res.status(401).json({ error: "Email ou mot de passe incorrect." });
         }
 
         const user = results[0];
 
-        // B. On compare le mot de passe tapé avec le mot de passe haché dans la base
+        // B. Vérification du mot de passe saisi par rapport au hash stocké
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
             return res.status(401).json({ error: "Email ou mot de passe incorrect." });
         }
 
-        // C. Si c'est bon, on crée le "Badge" (Token JWT)
-        // Ce badge contient l'ID et le rôle de l'utilisateur
+        // C. Création du Token de session JWT sécurisé
         const token = jwt.sign(
             { id: user.id, role: user.role }, 
-            'SECRET_LUMINA_2024', // C'est la clé secrète pour signer le badge
-            { expiresIn: '24h' } // Le badge expire après 24 heures
+            SECRET_KEY, 
+            { expiresIn: '24h' }
         );
 
-        // D. On renvoie le badge et les infos de l'utilisateur au site
+        // D. Retour des données au client
+        // Le client stockera ce token dans le localStorage pour authentifier ses requêtes futures.
         res.json({
             message: "Connexion réussie !",
             token: token,
-            user: { id: user.id, name: user.name, role: user.role }
+            user: { id: user.id, name: user.name, email: user.email, role: user.role }
         });
     });
 });
 
 module.exports = router;
+
