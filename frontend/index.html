@@ -8,8 +8,8 @@
     <title>Lumina Workspace - Dashboard</title>
     <!-- Police de caractères Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Fichier de style -->
-    <link rel="stylesheet" href="style.css">
+    <!-- Lier le CSS -->
+    <link rel="stylesheet" href="style.css?v=47">
     <!-- Bibliothèque Chart.js pour les graphiques -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -18,8 +18,7 @@
 
     <!-- BARRE LATÉRALE (Sidebar) -->
     <nav class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <!-- Logo uniquement, en grand -->
+        <div class="sidebar-header" style="display: flex; justify-content: center; padding: 0px 5px 0px 5px; margin-top: -40px; margin-bottom: -35px;">
             <img src="logo.png" alt="Logo" class="logo-large">
         </div>
         <ul class="nav-links">
@@ -32,6 +31,7 @@
             <li id="nav-profile"><a href="#" onclick="showProfile()">👤 Mon Profil</a></li>
         </ul>
         <div class="sidebar-footer">
+
             <!-- Bouton de déconnexion -->
             <button id="logout-btn" class="btn-logout">Déconnexion</button>
         </div>
@@ -41,23 +41,48 @@
     <main class="main-content">
         <!-- Barre supérieure (Header) -->
         <header class="top-bar">
-            <div style="display:flex; align-items:center; gap:12px;">
-                <!-- Bouton burger visible sur mobile pour ouvrir la sidebar -->
+            <div style="display: flex; align-items: center; flex: 1; min-width: 0;">
+                <!-- Bouton pour ouvrir le menu sur mobile -->
                 <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
-                <div class="page-info">
+                <div class="page-info" style="min-width: 0;">
                     <!-- Titre de la page dynamique -->
                     <h2 id="page-title">Tableau de bord</h2>
                 </div>
             </div>
             <div class="top-actions">
+                <!-- Bouton Mode Sombre (Neumorphic - Desktop) -->
+                <label class="theme-switch" title="Changer de thème">
+                    <input type="checkbox" id="theme-toggle-checkbox" onchange="toggleTheme()">
+                    <span class="slider">
+                        <span class="switch-text light-text">LIGHT</span>
+                        <span class="switch-text dark-text">DARK</span>
+                        <span class="knob">
+                            <span class="icon sun">☀️</span>
+                            <span class="icon moon">🌙</span>
+                        </span>
+                    </span>
+                </label>
+                <div class="theme-toggle-mobile" onclick="toggleTheme()" title="Changer de thème">
+                    <svg viewBox="0 0 24 24" width="28" height="28">
+                        <rect width="24" height="24" rx="6" fill="#1e293b"/>
+                        <path d="M11 20a8 8 0 0 1-5.9-13.3 6.6 6.6 0 0 0 9.2 9.2A8 8 0 0 1 11 20z" fill="white"/>
+                        <circle cx="16.5" cy="7.5" r="2.5" fill="#facc15"/>
+                    </svg>
+                </div>
                 <!-- Icône Notification -->
                 <div class="notif-bell" onclick="toggleNotifDrawer()">
-                    🔔 <span class="notif-badge" id="notif-count">0</span>
+                    🔔 <span class="notif-badge" id="notif-count">3</span>
                 </div>
                 <!-- Informations utilisateur (nom + avatar cliquable) -->
-                <div class="user-info">
-                    <span id="user-name">Admin</span>
-                    <div class="avatar" onclick="showProfile()" style="cursor: pointer;">👤</div>
+                <div class="user-info" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <div class="avatar custom-avatar" onclick="showProfile()" style="cursor: pointer; width: 36px; height: 36px; border-radius: 50%;" title="Profil">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="10" cy="8" r="5"></circle>
+                            <path d="M3 21v-2a7 7 0 0 1 10-6.5"></path>
+                            <path d="M15 19l6-6 2 2-6 6-3 1z"></path>
+                        </svg>
+                    </div>
+                    <span id="user-name" style="font-size: 11px; margin-top: 4px; color: var(--text-muted); font-weight: 600;">Admin</span>
                 </div>
             </div>
         </header>
@@ -87,8 +112,30 @@
             <button onclick="toggleNotifDrawer()">✖</button>
         </div>
         <div class="drawer-content" id="notif-list">
-            <!-- Liste des notifications -->
-            <p class="empty-msg">Aucune notification pour le moment.</p>
+            <div class="notif-item unread" onclick="readNotification(this)">
+                <div class="notif-icon">🔔</div>
+                <div class="notif-text">
+                    <strong>Inès Admin</strong> a ajouté une nouvelle tâche "Finaliser le design".
+                    <span class="notif-time">Il y a 10 min</span>
+                </div>
+            </div>
+            <div class="notif-item unread" onclick="readNotification(this)">
+                <div class="notif-icon">💬</div>
+                <div class="notif-text">
+                    <strong>Jean Dupont</strong> a commenté sur "Développement API".
+                    <span class="notif-time">Il y a 1 heure</span>
+                </div>
+            </div>
+            <div class="notif-item" onclick="readNotification(this)">
+                <div class="notif-icon">✅</div>
+                <div class="notif-text">
+                    La tâche "Préparer la réunion" a été marquée comme terminée.
+                    <span class="notif-time">Hier à 14:30</span>
+                </div>
+            </div>
+        </div>
+        <div style="padding: 15px; border-top: 1px solid var(--border); text-align: center;">
+            <button class="btn-secondary btn-generer" style="width: 100%; padding: 10px;" onclick="addMockNotif()">+ Générer une notification</button>
         </div>
     </div>
 
@@ -113,9 +160,9 @@
                     <div class="form-group" style="flex: 1;">
                         <label>Priorité</label>
                         <select id="task-priority">
-                            <option value="low">Basse</option>
-                            <option value="medium" selected>Moyenne</option>
-                            <option value="high">Haute</option>
+                            <option value="low">Normal</option>
+                            <option value="medium" selected>Moyen</option>
+                            <option value="high">Urgent</option>
                         </select>
                     </div>
                     <div class="form-group" style="flex: 1;">
@@ -132,6 +179,13 @@
                     <button type="button" id="close-modal" class="btn-secondary">Annuler</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- MODALE INFOS PROFIL -->
+    <div id="profile-info-modal" class="modal">
+        <div class="modal-content profile-card" style="text-align: center; padding: 25px;">
+            <div id="profile-info-content"></div>
         </div>
     </div>
 
@@ -158,7 +212,7 @@
     </div>
 
     <!-- Script principal -->
-    <script src="js/dashboard.js?v=2"></script>
+    <script src="js/dashboard.js?v=23"></script>
 </body>
 
 </html>

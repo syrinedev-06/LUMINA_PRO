@@ -1,112 +1,211 @@
-// ==========================================================
-// 1. INITIALISATION DU TABLEAU DE BORD
-// Lancé au chargement de la page, vérifie l'authentification
-// et configure l'interface selon le rôle de l'utilisateur.
-// ==========================================================
-document.addEventListener('DOMContentLoaded', () => {
-    // Si pas de token JWT en session → redirection vers la page de connexion
-    const token = localStorage.getItem('token');
-    if (!token) { window.location.href = 'login.html'; return; }
+/**
+ * =========================================================================
+ * LUMINA PRO - TABLEAU DE BORD (KANBAN)
+ * =========================================================================
+ * Ce fichier gère tout ce qui se passe sur la page du tableau de bord :
+ * afficher les colonnes, déplacer les tâches avec la souris (Drag & Drop),
+ * ouvrir les fenêtres pour créer des tâches, etc.
+ * 
+ * --- POUR L'EXAMEN (VERSION FACILE À COMPRENDRE) ---
+ */
 
-    // Récupération des infos utilisateur stockées au login
+// =========================================================================
+// 0. SÉCURITÉ : NETTOYEUR XSS
+// =========================================================================
+/**
+ * @brief Nettoie le texte pour éviter l'exécution de code malveillant (Faille XSS).
+ * C'est notre bouclier protecteur quand on affiche du texte venant des utilisateurs.
+ */
+function escapeHTML(str) {
+    if (!str) return '';
+    return str.toString()
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+// =========================================================================
+// 0. BIS. LE PASSE-PARTOUT POUR LES REQUÊTES (JWT)
+// =========================================================================
+
+/**
+ * @brief Cette fonction fait des demandes au serveur en lui montrant notre "badge de connexion" (le Token JWT).
+ * 
+ * @param {string} url - L'adresse du serveur à qui on demande des infos.
+ * @param {Object} options - Les détails de la demande (ajouter du texte, supprimer...).
+ * 
+ * Explication simple pour l'examen :
+ * 1. C'est quoi le Token JWT ? 
+ *    C'est comme un bracelet ou un ticket d'entrée pour un concert. Une fois connecté, le serveur 
+ *    nous donne ce ticket. À chaque fois qu'on lui demande une info (comme "donne-moi les tâches"), 
+ *    on lui montre ce ticket dans l'en-tête (Header) de notre demande.
+ * 2. Pourquoi faire cette fonction ?
+ *    Pour éviter de réécrire le code du ticket sur chaque demande. Cette fonction le fait 
+ *    automatiquement à notre place.
+ * 3. Erreur 401 (Non autorisé) :
+ *    Si le serveur dit "erreur 401", ça veut dire que notre ticket n'est plus bon (périmé). 
+ *    Dans ce cas, on vide la mémoire et on renvoie l'utilisateur à la page de connexion.
+ */
+async function authFetch(url, options = {}) {
+    const token = localStorage.getItem('token');
+    
+    if (!options.headers) {
+        options.headers = {};
+    }
+    
+    // Si on a le ticket, on l'ajoute à la demande
+    if (token) {
+        options.headers['Authorization'] = `Bearer ${token}`;
+    }
+    
+    // Si on envoie du texte, on précise que c'est du JSON (format informatique simple)
+    if (options.body && typeof options.body === 'string' && !options.headers['Content-Type']) {
+        options.headers['Content-Type'] = 'application/json';
+    }
+
+    const response = await fetch(url, options);
+    
+    // Si le ticket est faux ou expiré
+    if (response.status === 401) {
+        localStorage.clear(); 
+        window.location.href = 'login.html'; 
+        throw new Error("Session finie. Retour à la page de connexion.");
+    }
+    
+    return response;
+}
+
+// =========================================================================
+// 1. DÉMARRAGE DE LA PAGE
+// =========================================================================
+
+/**
+ * Cette partie se lance toute seule dès que la page HTML est prête sur l'écran.
+ * 
+ * Explication simple pour l'examen :
+ * 1. DOMContentLoaded : C'est un événement qui dit "Le texte de la page est prêt, on peut commencer à le modifier".
+ * 2. Sécurité : Si l'utilisateur n'a pas de ticket (token), on le renvoie direct au login.
+ * 3. Rôles (Admin vs Utilisateur normal) : Si l'utilisateur est admin, on lui montre l'onglet "Équipe", 
+ *    sinon on le cache.
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('token');
+    if (!token) { 
+        window.location.href = 'login.html'; 
+        return; 
+    }
+
+    // On récupère le nom de l'utilisateur connecté pour l'afficher en haut
     const user = JSON.parse(localStorage.getItem('user'));
     document.getElementById('user-name').innerText = user.name;
 
-    // L'avatar est cliquable pour ouvrir la page de profil
-    document.querySelector('.avatar').style.cursor = "pointer";
-    document.querySelector('.avatar').onclick = showProfile;
+    // Quand on clique sur l'avatar (photo), ça ouvre le profil
+    const avatarEl = document.querySelector('.user-info .avatar');
+    if (avatarEl) {
+        avatarEl.style.cursor = "pointer";
+        avatarEl.onclick = showProfile;
+    }
 
-    // --- RESTRICTION RÔLE : Seul l'admin voit l'onglet "Équipe" ---
+    // Cacher ou afficher le menu "Équipe" selon le rôle
     const teamNav = document.getElementById('nav-team');
     if (teamNav) {
         if (user.role === 'admin') {
-            teamNav.style.display = 'block'; // Visible pour admin
+            teamNav.style.display = 'block'; 
         } else {
-            teamNav.style.display = 'none';  // Caché pour les autres rôles
+            teamNav.style.display = 'none';  
         }
     }
 
-    // Chargement des données initiales
-    fetchTasks();        // Colonnes + tâches du Kanban
-    loadUsers();         // Liste des utilisateurs (pour assignation)
-    setupEventListeners(); // Événements des boutons/formulaires
+    // On charge les données du tableau
+    fetchTasks();          
+    loadUsers();           
+    setupEventListeners(); 
 });
 
-// ==========================================================
-// 2. KANBAN DYNAMIQUE
-// Gestion des colonnes et des cartes de tâches avec drag & drop
-// ==========================================================
+// =========================================================================
+// 2. LE TABLEAU KANBAN (COLONNES ET CARTES)
+// =========================================================================
 
 /**
- * Charge les colonnes et les tâches depuis l'API,
- * puis génère le tableau Kanban.
+ * @brief Va chercher les colonnes et les tâches sur le serveur, puis demande de les afficher.
+ * 
+ * Explication simple pour l'examen :
+ * - async / await (Asynchronisme) : Quand on demande des infos sur internet, ça prend un peu de temps. 
+ *   Pour éviter que toute la page se bloque (gèle) pendant l'attente, on utilise `async` et `await`. 
+ *   C'est comme envoyer une lettre et continuer à faire sa vie en attendant le facteur.
+ * - try / catch (Gestion des erreurs) : Si le serveur est en panne, le code va dans le "catch" 
+ *   pour afficher un message d'erreur rouge poli au lieu de tout faire bugger.
  */
 async function fetchTasks() {
     try {
-        // Récupération des colonnes du tableau
-        const resCol = await fetch('http://localhost:3000/api/columns');
+        // Demande des colonnes
+        const resCol = await authFetch('http://localhost:3000/api/columns');
         const columns = await resCol.json();
 
-        // Récupération des tâches (nécessite le token d'authentification)
-        const resTasks = await fetch('http://localhost:3000/api/tasks', {
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-        });
+        // Demande des tâches
+        const resTasks = await authFetch('http://localhost:3000/api/tasks');
         const tasks = await resTasks.json();
 
-        renderBoard(columns, tasks); // Génération du tableau
+        // On dessine le tableau sur l'écran
+        renderBoard(columns, tasks);
     } catch (e) {
-        console.error("Erreur chargement Kanban :", e);
+        console.error("Erreur :", e);
         const board = document.getElementById('kanban-board');
-        if (board) board.innerHTML = "<p style='color:red; padding:20px;'>Erreur de connexion au serveur.</p>";
+        if (board) {
+            board.innerHTML = "<p style='color:red; padding:20px;'>Impossible de se connecter au serveur. Est-il allumé ?</p>";
+        }
     }
 }
 
 /**
- * Génère et injecte l'HTML complet du tableau Kanban.
- * Chaque colonne est un groupe de tâches glissables.
- * Le Kanban est organisé en grandes catégories scrollables
- * (chaque colonne = une section indépendante).
- * @param {Array} columns - Liste des colonnes
- * @param {Array} tasks   - Liste de toutes les tâches
+ * @brief Dessine le tableau Kanban (colonnes et cartes de tâches) sur la page.
+ * 
+ * @param {Array} columns - Les colonnes de la base de données.
+ * @param {Array} tasks - Les tâches de la base de données.
+ * 
+ * Explication simple pour l'examen :
+ * - Template Literals (les backticks ``) : Permettent d'écrire du code HTML directement dans le JavaScript.
+ * - filter() : Permet de trier les tâches pour ne mettre que les bonnes tâches dans la bonne colonne.
+ * - map() : Transforme chaque tâche (donnée) en une jolie boîte visuelle sur l'écran.
+ * - join('') : Colle toutes les boîtes ensemble sans virgule entre elles.
+ * - Faille XSS (Sécurité) : On nettoie les textes avec `.replace()` pour éviter qu'un utilisateur malveillant 
+ *   n'écrive du code informatique bizarre (comme un virus) dans le titre d'une tâche.
  */
 function renderBoard(columns, tasks) {
     const board = document.getElementById('kanban-board');
     if (!board) return;
     board.innerHTML = "";
 
-    // Message si aucune colonne n'existe encore
     if (columns.length === 0) {
-        board.innerHTML = "<p style='padding:20px;'>Aucune colonne. Créez-en une avec le bouton ci-dessous !</p>";
+        board.innerHTML = "<p style='padding:20px;'>Aucune colonne. Cliquez sur le bouton pour en créer une !</p>";
     }
 
-    // Chaque colonne = une grande catégorie de tâches (section scrollable verticalement)
     columns.forEach(col => {
-        // Filtrer les tâches appartenant à cette colonne
+        // On ne garde que les tâches de cette colonne
         const colTasks = tasks.filter(t => t.id_col === col.id);
 
         const colEl = document.createElement('div');
-        colEl.className = 'kanban-column'; // Classe CSS qui définit la largeur et le scroll interne
+        colEl.className = 'kanban-column';
         colEl.innerHTML = `
             <h4>
                 ${col.title.toUpperCase()}
                 <div style="display:flex; align-items:center; gap:8px;">
-                    <!-- Compteur de tâches dans la colonne -->
                     <span class="notif-badge" style="position:static; padding:2px 8px;">${colTasks.length}</span>
-                    <!-- Bouton renommer la colonne -->
                     <span class="icon-btn" title="Renommer" onclick="renameColumn(${col.id}, '${col.title.replace(/'/g, "\\'")}')">✏️</span>
-                    <!-- Bouton supprimer la colonne -->
                     <span class="icon-btn" title="Supprimer" onclick="deleteColumn(${col.id})">×</span>
                 </div>
             </h4>
-            <!-- Zone de dépôt des tâches (drag & drop) - scrollable indépendamment -->
+            <!-- Zone où on peut déposer les cartes (drop) -->
             <div class="task-list" ondragover="allowDrop(event)" ondrop="drop(event, ${col.id})">
                 ${colTasks.map(task => `
+                    <!-- Carte déplaçable (draggable="true") -->
                     <div class="task-card" draggable="true" ondragstart="drag(event, ${task.id})">
-                        <!-- Badge de priorité coloré -->
-                        <span class="badge bg-${task.priority}">${task.priority}</span>
-                        <h5>${task.title}</h5>
-                        <p>${task.description || ''}</p>
-                        <div class="assigned-to">👤 ${task.assigned_name || 'Non assigné'}</div>
+                        <span class="badge bg-${escapeHTML(task.priority)}">${task.priority === 'high' ? 'URGENT' : task.priority === 'medium' ? 'MOYEN' : 'NORMAL'}</span>
+                        <h5>${escapeHTML(task.title)}</h5>
+                        <p>${escapeHTML(task.description || '')}</p>
+                        <div class="assigned-to">👤 ${escapeHTML(task.assigned_name || 'Non assigné')}</div>
                         <div class="task-actions">
                             <span class="icon-btn" title="Modifier" onclick="editTask(${JSON.stringify(task).replace(/"/g, '&quot;')})">✏️</span>
                             <span class="icon-btn" title="Supprimer" onclick="directDeleteTask(${task.id})">🗑️</span>
@@ -118,7 +217,7 @@ function renderBoard(columns, tasks) {
         board.appendChild(colEl);
     });
 
-    // Bouton d'ajout d'une nouvelle colonne (à la fin du board)
+    // Bouton ajouter colonne à la fin
     const addBtn = document.createElement('div');
     addBtn.className = 'btn-add-column';
     addBtn.onclick = addNewColumn;
@@ -127,57 +226,77 @@ function renderBoard(columns, tasks) {
 }
 
 /**
- * Crée une nouvelle colonne via une invite utilisateur.
+ * @brief Demande un nom et crée une nouvelle colonne.
  */
 async function addNewColumn() {
-    const title = prompt("Nom de la nouvelle colonne :");
+    const title = prompt("Quel nom pour la nouvelle colonne ?");
     if (title && title.trim()) {
-        await fetch('http://localhost:3000/api/columns', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title: title.trim() })
-        });
-        fetchTasks(); // Rafraîchir l'affichage
+        try {
+            const res = await authFetch('http://localhost:3000/api/columns', {
+                method: 'POST',
+                body: JSON.stringify({ title: title.trim() })
+            });
+            if (!res.ok) {
+                const data = await res.json();
+                alert("Erreur: " + (data.error || "Impossible d'ajouter la colonne."));
+            } else {
+                fetchTasks(); // On recharge le tableau
+            }
+        } catch (e) {
+            console.error(e);
+            alert("Erreur de connexion. Le serveur est-il allumé ?");
+        }
     }
 }
 
 /**
- * Supprime une colonne et toutes ses tâches après confirmation.
+ * @brief Supprime une colonne et ses tâches après avoir demandé confirmation.
  */
 async function deleteColumn(id) {
-    if (confirm("Supprimer cette colonne et toutes ses tâches ?")) {
-        await fetch(`http://localhost:3000/api/columns/${id}`, { method: 'DELETE' });
+    if (confirm("Voulez-vous supprimer cette colonne et ses tâches ?")) {
+        await authFetch(`http://localhost:3000/api/columns/${id}`, { 
+            method: 'DELETE' 
+        });
         fetchTasks();
     }
 }
 
 /**
- * Renomme une colonne existante.
+ * @brief Change le nom d'une colonne.
  */
 async function renameColumn(id, currentTitle) {
     const newTitle = prompt("Nouveau nom de la colonne :", currentTitle);
     if (newTitle && newTitle !== currentTitle) {
-        await fetch(`http://localhost:3000/api/columns/${id}`, {
+        await authFetch(`http://localhost:3000/api/columns/${id}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ title: newTitle })
         });
         fetchTasks();
     }
 }
 
-// ==========================================================
-// 3. STATISTIQUES
-// Graphique en camembert de la répartition des tâches par priorité
-// ==========================================================
+// =========================================================================
+// 3. LES STATISTIQUES (LE GRAPHIQUE)
+// =========================================================================
+
+/**
+ * @brief Récupère les données et dessine un graphique en camembert.
+ * 
+ * Explication simple pour l'examen :
+ * - Canvas : C'est une zone de dessin sur la page web.
+ * - Chart.js : Une boîte à outils (bibliothèque) toute prête qui prend nos chiffres et dessine 
+ *   un beau graphique coloré sans qu'on ait besoin de tout coder à la main.
+ * - reduce() : Une fonction qui permet de faire des calculs sur une liste (ici, on compte le total 
+ *   de tâches pour voir s'il y a quelque chose à afficher).
+ */
 async function showStats() {
+    document.getElementById('open-modal-btn').style.display = 'none';
     setActiveLink('nav-stats');
     document.getElementById('page-title').innerText = "Statistiques de Productivité";
     const area = document.getElementById('content-area');
 
-    // Structure HTML de la page statistiques
     area.innerHTML = `
-        <div style="max-width: 450px; margin: 60px auto; background: white; padding: 40px; border-radius: 30px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.05);">
+        <div class="stats-card">
             <h3 style="margin-bottom:25px; color:var(--dark);">Répartition des Missions</h3>
             <div style="position: relative; height:300px;">
                 <canvas id="priorityChart"></canvas>
@@ -186,25 +305,26 @@ async function showStats() {
         </div>`;
 
     try {
-        const response = await fetch("http://localhost:3000/api/stats/tasks-priority");
+        const response = await authFetch("http://localhost:3000/api/stats/tasks-priority");
         const data = await response.json();
 
-        // Si aucune tâche, on affiche un message vide
+        // On calcule la somme des tâches
         const total = data.reduce((acc, curr) => acc + curr.count, 0);
         if (total === 0) {
             document.getElementById('no-data-msg').style.display = 'block';
             return;
         }
 
-        // Création du graphique Chart.js
         const ctx = document.getElementById("priorityChart").getContext("2d");
+        
+        // On crée le graphique Chart.js
         new Chart(ctx, {
             type: "pie",
             data: {
-                labels: data.map(d => d.priority === 'high' ? 'Haute' : d.priority === 'medium' ? 'Moyenne' : 'Basse'),
+                labels: data.map(d => d.priority === 'high' ? 'Urgent' : d.priority === 'medium' ? 'Moyen' : 'Normal'),
                 datasets: [{
                     data: data.map(d => d.count),
-                    backgroundColor: ["#ef4444", "#f59e0b", "#10b981"],
+                    backgroundColor: ["#ef4444", "#f59e0b", "#10b981"], 
                     borderWidth: 0
                 }]
             },
@@ -212,26 +332,38 @@ async function showStats() {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { position: 'bottom', labels: { padding: 20, font: { family: 'Inter', size: 14 } } }
+                    legend: { 
+                        position: 'bottom', 
+                        labels: { padding: 20, font: { family: 'Inter', size: 14 } } 
+                    }
                 }
             }
         });
     } catch (error) {
-        console.error("Erreur Stats :", error);
-        area.innerHTML = "<p style='text-align:center; padding:50px;'>Impossible de charger les statistiques.</p>";
+        console.error("Erreur stats :", error);
+        area.innerHTML = "<p style='text-align:center; padding:50px;'>Erreur lors du chargement des statistiques.</p>";
     }
 }
 
-// ==========================================================
-// 4. ÉQUIPE — Accessible uniquement aux admins
-// Affiche la liste de tous les membres avec actions de gestion
-// ==========================================================
+// =========================================================================
+// 4. L'ÉQUIPE (SEULEMENT POUR L'ADMIN)
+// =========================================================================
+
+/**
+ * @brief Affiche la liste des membres.
+ * 
+ * Explication simple pour l'examen :
+ * - Sécurité client vs serveur : Cacher l'onglet sur le navigateur est pratique pour l'utilisateur normal, 
+ *   mais ce n'est pas une vraie sécurité. C'est le serveur (le backend) qui fait la vraie sécurité. 
+ *   Si un utilisateur normal tente de forcer l'accès à cette adresse, le serveur bloque et renvoie 
+ *   un message d'interdiction (Erreur 403) car il vérifie le rôle lié au ticket JWT.
+ */
 async function showTeam() {
-    // Vérification côté client que l'utilisateur est bien admin
+    document.getElementById('open-modal-btn').style.display = 'none';
     const user = JSON.parse(localStorage.getItem('user'));
     if (!user || user.role !== 'admin') {
         document.getElementById('content-area').innerHTML =
-            "<p style='text-align:center; padding:60px; color:var(--text-muted);'>⛔ Accès réservé à l'administrateur.</p>";
+            "<p style='text-align:center; padding:60px; color:var(--text-muted);'>⛔ Accès interdit. Vous devez être administrateur.</p>";
         return;
     }
 
@@ -240,7 +372,7 @@ async function showTeam() {
     const area = document.getElementById('content-area');
 
     try {
-        const response = await fetch('http://localhost:3000/api/users');
+        const response = await authFetch('http://localhost:3000/api/users');
         const users = await response.json();
 
         area.innerHTML = `
@@ -261,12 +393,16 @@ async function showTeam() {
                                 <tr>
                                     <td>
                                         <div style="display:flex; align-items:center; gap:10px; font-weight:600;">
-                                            <div class="avatar" style="width:30px; height:30px; font-size:12px;">${u.name ? u.name.charAt(0).toUpperCase() : 'U'}</div>
-                                            ${u.name}
+                                            <div class="avatar" style="width:30px; height:30px; font-size:12px;">
+                                                ${u.name ? escapeHTML(u.name).charAt(0).toUpperCase() : 'U'}
+                                            </div>
+                                            ${escapeHTML(u.name)}
                                         </div>
                                     </td>
-                                    <td>${u.email}</td>
-                                    <td><span class="badge" style="background:#f1f5f9; color:var(--dark); margin:0;">${u.role}</span></td>
+                                    <td>${escapeHTML(u.email)}</td>
+                                    <td>
+                                        <span class="badge badge-role" style="margin:0;">${escapeHTML(u.role)}</span>
+                                    </td>
                                     <td><span style="color:#10b981;">●</span> Actif</td>
                                     <td>
                                         <span class="icon-btn" style="color:var(--danger); opacity:1;" title="Retirer" onclick="deleteUser(${u.id})">🗑️</span>
@@ -278,55 +414,73 @@ async function showTeam() {
                 </div>
             </div>`;
     } catch (e) {
-        area.innerHTML = "<p style='padding:20px; color:red;'>Erreur lors du chargement de l'équipe.</p>";
+        area.innerHTML = "<p style='padding:20px; color:red;'>Erreur lors du chargement des membres.</p>";
     }
 }
 
 /**
- * Supprime un utilisateur après confirmation.
+ * @brief Supprime un utilisateur.
  */
 async function deleteUser(id) {
-    if (confirm("Retirer ce membre de l'équipe ?")) {
-        await fetch(`http://localhost:3000/api/users/${id}`, { method: "DELETE" });
-        showTeam();
+    if (confirm("Voulez-vous vraiment retirer ce membre ?")) {
+        await authFetch(`http://localhost:3000/api/users/${id}`, { 
+            method: "DELETE" 
+        });
+        showTeam(); 
     }
 }
 
-// ==========================================================
-// 5. PROFIL UTILISATEUR
-// Affiche les informations du compte connecté, avec possibilité de modification
-// ==========================================================
+// =========================================================================
+// 5. LE PROFIL PERSONNEL
+// =========================================================================
+
+/**
+ * @brief Affiche nos informations de profil.
+ */
 function showProfile() {
-    setActiveLink('nav-profile');
-    document.getElementById('page-title').innerText = "Mon Profil Personnel";
+    // Fermeture automatique du menu sur mobile après un clic sur le profil
+    if (window.innerWidth <= 900) {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar && sidebar.classList.contains('open')) {
+            toggleSidebar(); // referme le menu
+        }
+    }
+
     const user = JSON.parse(localStorage.getItem('user'));
+    
+    document.getElementById('profile-info-content').innerHTML = `
+        <div class="avatar custom-avatar" style="width:60px; height:60px; margin:0 auto 10px auto; border-radius: 50%;">
+            <svg viewBox="0 0 24 24" width="30" height="30" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="10" cy="8" r="5"></circle>
+                <path d="M3 21v-2a7 7 0 0 1 10-6.5"></path>
+                <path d="M15 19l6-6 2 2-6 6-3 1z"></path>
+            </svg>
+        </div>
+        <h2 style="margin-bottom: 5px; font-size: 20px;">${escapeHTML(user.name)}</h2>
+        <p style="color: var(--text-muted); font-size: 13px;">Membre de Lumina Workspace</p>
 
-    document.getElementById('content-area').innerHTML = `
-        <div class="profile-container">
-            <div class="profile-card">
-                <!-- Avatar initiales de l'utilisateur -->
-                <div class="avatar" style="width:90px; height:90px; font-size:40px; margin:0 auto 20px auto; border-radius: 20px;">👤</div>
-                <h2 style="margin-bottom: 5px;">${user.name}</h2>
-                <p style="color: var(--text-muted); font-size: 14px;">Membre de Lumina Workspace</p>
+        <table class="profile-table" style="margin-top: 10px;">
+            <tr><th>Nom</th><td>${escapeHTML(user.name)}</td></tr>
+            <tr><th>Email</th><td>${escapeHTML(user.email)}</td></tr>
+            <tr><th>Rôle</th><td><span class="badge badge-role" style="margin:0;">${escapeHTML(user.role)}</span></td></tr>
+            <tr><th>ID Compte</th><td>#${user.id}</td></tr>
+            <tr><th>Statut</th><td><span style="color:#10b981;">●</span> En ligne</td></tr>
+        </table>
 
-                <!-- Tableau d'informations du profil -->
-                <table class="profile-table">
-                    <tr><th>Nom Complet</th><td>${user.name}</td></tr>
-                    <tr><th>Adresse Email</th><td>${user.email}</td></tr>
-                    <tr><th>Rôle</th><td><span class="badge" style="background:#f1f5f9; color:var(--dark); margin:0;">${user.role}</span></td></tr>
-                    <tr><th>ID Compte</th><td>#${user.id}</td></tr>
-                    <tr><th>Statut</th><td><span style="color:#10b981;">●</span> En ligne</td></tr>
-                </table>
-
-                <button class="btn-primary-modal" style="margin-top:20px; width: auto; padding: 10px 25px;" onclick="openProfileModal()">
-                    Modifier mes informations
-                </button>
-            </div>
+        <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: center;">
+            <button class="btn-primary-modal" style="width: auto; padding: 8px 20px;" onclick="document.getElementById('profile-info-modal').style.display='none'; openProfileModal();">
+                Modifier
+            </button>
+            <button class="btn-secondary" style="width: auto; padding: 8px 20px;" onclick="document.getElementById('profile-info-modal').style.display='none'">
+                Fermer
+            </button>
         </div>`;
+        
+    document.getElementById('profile-info-modal').style.display = 'flex';
 }
 
 /**
- * Ouvre la modale d'édition du profil avec les données actuelles.
+ * @brief Ouvre la fenêtre (modale) pour modifier le profil.
  */
 function openProfileModal() {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -336,42 +490,51 @@ function openProfileModal() {
 }
 
 /**
- * Envoie les modifications de profil au serveur et met à jour le localStorage.
+ * @brief Envoie les nouvelles infos du profil au serveur.
+ * 
+ * Explication simple pour l'examen :
+ * - e.preventDefault() : Par défaut, quand on valide un formulaire, le navigateur recharge toute 
+ *   la page. On utilise cette fonction pour lui dire "Attends, ne recharge pas ! Je vais envoyer 
+ *   les informations en arrière-plan sans perturber l'utilisateur".
  */
 async function handleProfileSubmit(e) {
-    e.preventDefault();
+    e.preventDefault(); 
     const user = JSON.parse(localStorage.getItem('user'));
     const name = document.getElementById('edit-profile-name').value;
     const email = document.getElementById('edit-profile-email').value;
 
-    const response = await fetch(`http://localhost:3000/api/users/${user.id}`, {
+    const response = await authFetch(`http://localhost:3000/api/users/${user.id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email })
     });
 
     if (response.ok) {
-        // Mise à jour locale des données utilisateur
+        // On met à jour nos infos stockées localement
         user.name = name;
         user.email = email;
         localStorage.setItem('user', JSON.stringify(user));
+        
         document.getElementById('profile-modal').style.display = 'none';
-        showProfile(); // Rafraîchir la page profil
-        document.getElementById('user-name').innerText = name; // Mettre à jour la topbar
+        showProfile();
+        document.getElementById('user-name').innerText = name; 
     } else {
-        alert("Erreur lors de la mise à jour du profil.");
+        alert("Erreur lors de la mise à jour.");
     }
 }
 
-// ==========================================================
-// 6. HISTORIQUE D'ACTIVITÉ
-// Affiche les logs d'actions avec correction du bug de chargement
-// ==========================================================
-let currentHistoryLogs = [];
-let historyCurrentPage = 1;
-const historyPerPage = 10;
-let historyView = 'active'; // 'active' ou 'trash'
+// =========================================================================
+// 6. L'HISTORIQUE ET LA CORBEILLE (PAGINÉ)
+// =========================================================================
 
+// Variables pour savoir ce qu'on affiche dans l'historique
+let currentHistoryLogs = []; // La liste de tous les événements
+let historyCurrentPage = 1;  // La page courante
+const historyPerPage = 10;   // Limite à 10 lignes par page
+let historyView = 'active';  // Bascule entre historique normal et corbeille
+
+/**
+ * @brief Va chercher l'historique sur le serveur.
+ */
 async function showHistory(page = 1, view = 'active') {
     setActiveLink('nav-history');
     const titleEl = document.getElementById('page-title');
@@ -381,32 +544,45 @@ async function showHistory(page = 1, view = 'active') {
     historyCurrentPage = page;
     const area = document.getElementById('content-area');
     
-    area.innerHTML = `<div style="padding:40px; text-align:center; color:var(--text-muted);">⏳ Chargement de l'historique...</div>`;
+    area.innerHTML = `<div style="padding:40px; text-align:center; color:var(--text-muted);">⏳ Chargement en cours...</div>`;
     
     try {
         const endpoint = historyView === 'trash' ? 'http://localhost:3000/api/logs/trash' : 'http://localhost:3000/api/logs';
-        const response = await fetch(endpoint);
-        if (!response.ok) throw new Error(`Erreur HTTP ${response.status}`);
+        const response = await authFetch(endpoint);
+        
+        if (!response.ok) throw new Error(`Erreur`);
+        
         currentHistoryLogs = await response.json();
-        renderHistoryTable();
+        renderHistoryTable(); 
     } catch (e) {
-        console.error("Erreur historique :", e);
-        area.innerHTML = "<p style='text-align:center; padding:50px; color:red;'>Impossible de charger les données. Vérifiez que le serveur est actif.</p>";
+        console.error(e);
+        area.innerHTML = "<p style='text-align:center; padding:50px; color:red;'>Impossible de charger l'historique.</p>";
     }
 }
 
+/**
+ * @brief Affiche la liste d'historique sous forme de tableau.
+ * 
+ * Explication simple pour l'examen (Algorithme de pagination) :
+ * - Comment afficher seulement 10 éléments à la fois ?
+ *   1. On calcule le début : `start = (numéro_de_page - 1) * 10`.
+ *   2. On calcule la fin : `end = start + 10`.
+ *   3. On coupe la liste avec `slice(start, end)` pour n'afficher que cette portion.
+ *   4. On calcule le total de pages nécessaires avec `Math.ceil(total / 10)` (arrondi vers le haut).
+ */
 function renderHistoryTable() {
     const area = document.getElementById('content-area');
+    
     const start = (historyCurrentPage - 1) * historyPerPage;
     const end = start + historyPerPage;
     const paginatedLogs = currentHistoryLogs.slice(start, end);
     const totalPages = Math.ceil(currentHistoryLogs.length / historyPerPage);
 
     const user = JSON.parse(localStorage.getItem('user'));
-    const isAdmin = user && user.role === 'admin';
+    // On force isAdmin à true ici pour que tout le monde ait accès à la corbeille et aux cases à cocher
+    const isAdmin = true;
 
     let tableHTML = `
-        <!-- Onglets Historique / Corbeille -->
         <div style="display:flex; gap:15px; margin-bottom:20px; border-bottom:1px solid #e2e8f0; padding-bottom:10px; margin-left:30px; margin-right:30px; margin-top:20px;">
             <button onclick="showHistory(1, 'active')" style="background:none; border:none; padding:8px 16px; font-weight:600; font-size:14px; cursor:pointer; color: ${historyView === 'active' ? 'var(--primary)' : '#64748b'}; border-bottom: 2px solid ${historyView === 'active' ? 'var(--primary)' : 'transparent'};">📜 Historique actif</button>
             <button onclick="showHistory(1, 'trash')" style="background:none; border:none; padding:8px 16px; font-weight:600; font-size:14px; cursor:pointer; color: ${historyView === 'trash' ? 'var(--primary)' : '#64748b'}; border-bottom: 2px solid ${historyView === 'trash' ? 'var(--primary)' : 'transparent'};">🗑️ Corbeille</button>
@@ -417,13 +593,15 @@ function renderHistoryTable() {
             <div style="margin-bottom:15px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
                 <div style="display:flex; gap:10px;">
                     ${historyView === 'active' ? `
-                        <button onclick="deleteSelectedLogs()" class="btn-delete" style="width:auto; padding:8px 16px;">Mettre à la corbeille</button>
+                        <button onclick="deleteSelectedLogs()" class="btn-delete" style="width:auto; padding:8px 16px;">Supprimer la sélection</button>
                     ` : `
                         <button onclick="restoreSelectedLogs()" class="btn-primary-modal" style="width:auto; padding:8px 16px; background-color:#10b981; color:white; border:none; border-radius:12px; font-weight:600; cursor:pointer; font-size:14px;">Restaurer la sélection</button>
                         <button onclick="purgeSelectedLogs()" class="btn-delete" style="width:auto; padding:8px 16px; background-color:#ef4444; color:white;">Supprimer définitivement</button>
                     `}
                 </div>
-                <label style="cursor:pointer; font-size:13px; font-weight:600;"><input type="checkbox" id="select-all-logs" onchange="toggleAllLogs(this)"> Tout sélectionner (page courante)</label>
+                <label style="cursor:pointer; font-size:13px; font-weight:600;">
+                    <input type="checkbox" id="select-all-logs" onchange="toggleAllLogs(this)"> Tout sélectionner (page active)
+                </label>
             </div>
             ` : ''}
             <div class="table-scroll-wrapper">
@@ -460,7 +638,7 @@ function renderHistoryTable() {
         tableHTML += `
             <tr>
                 <td colspan="${isAdmin ? '4' : '3'}" style="text-align:center; color:var(--text-muted); padding:40px;">
-                    ${historyView === 'trash' ? 'La corbeille est vide.' : 'Aucun historique pour le moment.'}
+                    ${historyView === 'trash' ? 'La corbeille est vide.' : 'Aucun événement dans l\'historique.'}
                 </td>
             </tr>
         `;
@@ -470,7 +648,7 @@ function renderHistoryTable() {
                     </tbody>
                 </table>
             </div>
-            <!-- Pagination Controls -->
+            
             ${totalPages > 1 ? `
             <div style="display:flex; justify-content:center; align-items:center; gap:15px; margin-top:20px;">
                 <button ${historyCurrentPage === 1 ? 'disabled' : ''} onclick="changeHistoryPage(${historyCurrentPage - 1})" class="btn-secondary" style="width:auto; padding:8px 16px;">Précédent</button>
@@ -489,29 +667,30 @@ function changeHistoryPage(page) {
     renderHistoryTable();
 }
 
+/** Coche ou décoche toutes les lignes d'un coup. */
 function toggleAllLogs(checkbox) {
     const checkboxes = document.querySelectorAll('.log-checkbox');
     checkboxes.forEach(cb => cb.checked = checkbox.checked);
 }
 
+/** Envoie les logs sélectionnés à la corbeille. */
 async function deleteSelectedLogs() {
     const checkboxes = document.querySelectorAll('.log-checkbox:checked');
     const ids = Array.from(checkboxes).map(cb => cb.value);
 
     if (ids.length === 0) {
-        alert("Veuillez sélectionner au moins un événement à mettre à la corbeille.");
+        alert("Sélectionnez au moins une ligne !");
         return;
     }
 
-    if (!confirm(`Voulez-vous vraiment envoyer ${ids.length} élément(s) à la corbeille ?`)) return;
+    if (!confirm(`Envoyer les ${ids.length} lignes à la corbeille ?`)) return;
 
     try {
-        const response = await fetch('http://localhost:3000/api/logs/delete', {
+        const response = await authFetch('http://localhost:3000/api/logs/delete', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ids })
         });
-        if (!response.ok) throw new Error("Erreur lors de la suppression");
+        if (!response.ok) throw new Error("Erreur");
         
         currentHistoryLogs = currentHistoryLogs.filter(log => !ids.includes(log.id.toString()));
         
@@ -521,29 +700,28 @@ async function deleteSelectedLogs() {
         }
         renderHistoryTable();
     } catch (e) {
-        console.error("Erreur suppression logs:", e);
-        alert("Erreur lors de la mise à la corbeille.");
+        alert("Erreur lors de la suppression.");
     }
 }
 
+/** Sort les logs de la corbeille. */
 async function restoreSelectedLogs() {
     const checkboxes = document.querySelectorAll('.log-checkbox:checked');
     const ids = Array.from(checkboxes).map(cb => cb.value);
 
     if (ids.length === 0) {
-        alert("Veuillez sélectionner au moins un événement à restaurer.");
+        alert("Sélectionnez au moins une ligne !");
         return;
     }
 
-    if (!confirm(`Voulez-vous vraiment restaurer ${ids.length} élément(s) de l'historique ?`)) return;
+    if (!confirm(`Restaurer les ${ids.length} lignes ?`)) return;
 
     try {
-        const response = await fetch('http://localhost:3000/api/logs/restore', {
+        const response = await authFetch('http://localhost:3000/api/logs/restore', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ids })
         });
-        if (!response.ok) throw new Error("Erreur lors de la restauration");
+        if (!response.ok) throw new Error("Erreur");
         
         currentHistoryLogs = currentHistoryLogs.filter(log => !ids.includes(log.id.toString()));
         
@@ -553,29 +731,28 @@ async function restoreSelectedLogs() {
         }
         renderHistoryTable();
     } catch (e) {
-        console.error("Erreur restauration logs:", e);
         alert("Erreur lors de la restauration.");
     }
 }
 
+/** Supprime les logs de la base de données pour toujours. */
 async function purgeSelectedLogs() {
     const checkboxes = document.querySelectorAll('.log-checkbox:checked');
     const ids = Array.from(checkboxes).map(cb => cb.value);
 
     if (ids.length === 0) {
-        alert("Veuillez sélectionner au moins un événement à supprimer définitivement.");
+        alert("Sélectionnez au moins une ligne !");
         return;
     }
 
-    if (!confirm(`ATTENTION : Voulez-vous vraiment supprimer définitivement ${ids.length} élément(s) ? Cette action est irréversible.`)) return;
+    if (!confirm(`⚠️ Attention : Supprimer définitivement ${ids.length} ligne(s) ? C'est irréversible !`)) return;
 
     try {
-        const response = await fetch('http://localhost:3000/api/logs/purge', {
+        const response = await authFetch('http://localhost:3000/api/logs/purge', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ids })
         });
-        if (!response.ok) throw new Error("Erreur lors de la purge");
+        if (!response.ok) throw new Error("Erreur");
         
         currentHistoryLogs = currentHistoryLogs.filter(log => !ids.includes(log.id.toString()));
         
@@ -585,68 +762,92 @@ async function purgeSelectedLogs() {
         }
         renderHistoryTable();
     } catch (e) {
-        console.error("Erreur purge logs:", e);
         alert("Erreur lors de la suppression définitive.");
     }
 }
 
-// ==========================================================
-// 7. ÉVÉNEMENTS & UTILITAIRES
-// ==========================================================
+// =========================================================================
+// 7. GESTION DES CLICS ET BOUTONS
+// =========================================================================
 
 /**
- * Initialise tous les écouteurs d'événements de l'interface.
+ * @brief Prépare les actions des boutons (cliquer sur +, fermer la modale, se déconnecter).
  */
 function setupEventListeners() {
     const modal = document.getElementById('task-modal');
+    if (!modal) return;
 
-    // Bouton flottant + → ouvre la modale d'ajout de tâche
-    document.getElementById('open-modal-btn').onclick = () => {
-        resetTaskForm();
-        modal.style.display = 'flex';
-    };
+    // Ouvrir la modale en cliquant sur le bouton "+"
+    const openBtn = document.getElementById('open-modal-btn');
+    if (openBtn) {
+        openBtn.onclick = () => {
+            resetTaskForm(); 
+            modal.style.display = 'flex'; 
+        };
+    }
 
-    // Bouton Annuler → ferme la modale
-    document.getElementById('close-modal').onclick = () => modal.style.display = 'none';
+    // Fermer en cliquant sur "Annuler"
+    const closeBtn = document.getElementById('close-modal');
+    if (closeBtn) {
+        closeBtn.onclick = () => {
+            modal.style.display = 'none';
+        };
+    }
 
-    // Fermer la modale en cliquant sur le fond sombre
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) modal.style.display = 'none';
+    // Fermer TOUTES les modales si on clique dans le vide (à côté de la fenêtre)
+    document.querySelectorAll('.modal').forEach(m => {
+        m.addEventListener('click', (e) => {
+            if (e.target === m) {
+                m.style.display = 'none';
+            }
+        });
     });
 
-    // Soumission du formulaire de tâche
-    document.getElementById('task-form').onsubmit = handleTaskSubmit;
-    // Soumission du formulaire de profil
-    document.getElementById('profile-form').onsubmit = handleProfileSubmit;
-    // Suppression de tâche depuis la modale
-    document.getElementById('delete-task-btn').onclick = deleteTask;
-    // Déconnexion → vide le localStorage et redirige
-    document.getElementById('logout-btn').onclick = () => {
-        localStorage.clear();
-        window.location.href = 'login.html';
-    };
+    const taskForm = document.getElementById('task-form');
+    if (taskForm) taskForm.onsubmit = handleTaskSubmit;
+
+    const profileForm = document.getElementById('profile-form');
+    if (profileForm) profileForm.onsubmit = handleProfileSubmit;
+
+    const deleteBtn = document.getElementById('delete-task-btn');
+    if (deleteBtn) deleteBtn.onclick = deleteTask;
+
+    // Déconnexion
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.onclick = () => {
+            localStorage.clear(); 
+            window.location.href = 'login.html'; 
+        };
+    }
 }
 
 /**
- * Ouvre la modale en mode édition avec les données d'une tâche existante.
+ * @brief Remplir la fenêtre d'édition d'une tâche avec les données existantes.
  */
 function editTask(task) {
     const modal = document.getElementById('task-modal');
+    if (!modal) return;
+
     document.getElementById('task-id').value = task.id;
     document.getElementById('task-title').value = task.title;
-    document.getElementById('task-desc').value = task.description;
+    document.getElementById('task-desc').value = task.description || "";
     document.getElementById('task-priority').value = task.priority;
     document.getElementById('task-assign').value = task.id_assigned || "";
-    document.getElementById('delete-task-btn').style.display = "block"; // Montrer le bouton supprimer
+
+    // On montre le bouton supprimer parce que la tâche existe déjà
+    document.getElementById('delete-task-btn').style.display = "block";
+    
     modal.style.display = 'flex';
 }
 
 /**
- * Crée ou modifie une tâche selon l'état du formulaire (id présent = modification).
+ * @brief Envoie une tâche à créer (POST) ou à modifier (PUT) au serveur.
  */
 async function handleTaskSubmit(e) {
     e.preventDefault();
     const id = document.getElementById('task-id').value;
+    
     const taskData = {
         title: document.getElementById('task-title').value,
         description: document.getElementById('task-desc').value,
@@ -654,81 +855,127 @@ async function handleTaskSubmit(e) {
         id_assigned: document.getElementById('task-assign').value || null
     };
 
-    // PUT si modification, POST si création
+    // Si on a un ID → modification (PUT), sinon → création (POST)
     const method = id ? 'PUT' : 'POST';
     const url = id ? `http://localhost:3000/api/tasks/${id}` : 'http://localhost:3000/api/tasks';
 
     try {
-        const response = await fetch(url, {
+        const response = await authFetch(url, {
             method,
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(taskData)
         });
         const data = await response.json();
 
         if (response.ok) {
-            document.getElementById('task-modal').style.display = 'none';
-            fetchTasks(); // Rafraîchir le tableau
+            document.getElementById('task-modal').style.display = 'none'; 
+            fetchTasks(); 
         } else {
-            alert("Erreur serveur : " + (data.error || "Impossible d'enregistrer la tâche."));
+            alert("Erreur : " + (data.error || "Impossible de sauvegarder."));
         }
     } catch (error) {
-        alert("Erreur de connexion. Vérifiez que le serveur est lancé.");
+        alert("Erreur de connexion avec le serveur.");
     }
 }
 
-/**
- * Supprime directement une tâche depuis la corbeille sur la carte.
- */
+/** Supprime une tâche. */
 async function directDeleteTask(id) {
-    if (confirm("Supprimer cette tâche définitivement ?")) {
-        await fetch(`http://localhost:3000/api/tasks/${id}`, { method: 'DELETE' });
+    if (confirm("Voulez-vous vraiment supprimer cette tâche ?")) {
+        await authFetch(`http://localhost:3000/api/tasks/${id}`, { 
+            method: 'DELETE' 
+        });
         fetchTasks();
     }
 }
 
-/**
- * Supprime la tâche actuellement ouverte dans la modale.
- */
+/** Supprime la tâche ouverte dans la fenêtre. */
 async function deleteTask() {
     const id = document.getElementById('task-id').value;
-    await directDeleteTask(id);
-    document.getElementById('task-modal').style.display = 'none';
+    if (id) {
+        await directDeleteTask(id);
+        document.getElementById('task-modal').style.display = 'none';
+    }
 }
 
-// ==========================================================
-// 8. DRAWER DE NOTIFICATIONS
-// Panneau latéral droit qui s'ouvre/ferme avec overlay sombre
-// ==========================================================
+// =========================================================================
+// 8. LE TIROIR DES ALERTES (NOTIFICATIONS)
+// =========================================================================
 
 /**
- * Ouvre ou ferme le panneau de notifications.
- * L'overlay est affiché en arrière-plan pour permettre
- * de fermer le drawer en cliquant dans l'espace vide.
+ * @brief Ouvre ou ferme le volet des alertes à droite en ajoutant/enlevant une classe CSS.
  */
 function toggleNotifDrawer() {
     const drawer = document.getElementById('notif-drawer');
     const overlay = document.getElementById('drawer-overlay');
+    
+    if (!drawer) return;
     const isOpen = drawer.classList.toggle('open');
 
-    // Afficher l'overlay quand le drawer est ouvert, le cacher sinon
     if (overlay) {
         overlay.classList.toggle('active', isOpen);
     }
 }
 
-// ==========================================================
-// 9. NAVIGATION PRINCIPALE
-// ==========================================================
+/**
+ * @brief Marque une notification comme lue et décrémente le compteur.
+ */
+function readNotification(element) {
+    if (element.classList.contains('unread')) {
+        element.classList.remove('unread');
+        
+        // Mettre à jour le badge
+        const badge = document.querySelector('.notif-badge');
+        if (badge) {
+            let count = parseInt(badge.innerText);
+            if (!isNaN(count) && count > 0) {
+                count--;
+                badge.innerText = count;
+                if (count === 0) {
+                    badge.style.display = 'none';
+                }
+            }
+        }
+    }
+}
 
 /**
- * Retourne au tableau Kanban principal.
+ * @brief Ajoute une notification de test (pour l'examen).
+ */
+function addMockNotif() {
+    const list = document.getElementById('notif-list');
+    const badge = document.querySelector('.notif-badge');
+    const newNotif = document.createElement('div');
+    newNotif.className = 'notif-item unread';
+    newNotif.onclick = function() { readNotification(this); };
+    newNotif.innerHTML = `
+        <div class="notif-icon">🔥</div>
+        <div class="notif-text">
+            <strong>Système</strong> a généré une alerte de test pour l'examen.
+            <span class="notif-time">À l'instant</span>
+        </div>
+    `;
+    list.prepend(newNotif);
+    
+    // Mettre à jour le badge
+    if (badge) {
+        let count = parseInt(badge.innerText) || 0;
+        count++;
+        badge.innerText = count;
+        badge.style.display = 'inline-block';
+    }
+}
+
+// =========================================================================
+// 9. OUTILS DIVERS
+// =========================================================================
+
+/**
+ * @brief Revient à la vue Kanban principale.
  */
 function showKanban() {
+    document.getElementById('open-modal-btn').style.display = 'block';
     setActiveLink('nav-dashboard');
-    document.getElementById('page-title').innerText = "Tableau de bord";
+    document.getElementById('page-title').innerText = "Tableau de bord Kanban";
 
-    // Recréer la structure du Kanban (effacée par les autres pages)
     document.getElementById('content-area').innerHTML = `
         <div class="kanban-container" id="kanban-view">
             <div id="kanban-board" class="kanban-board">
@@ -740,103 +987,139 @@ function showKanban() {
 }
 
 /**
- * Charge les utilisateurs dans le select d'assignation des tâches.
+ * @brief Remplit la liste des collaborateurs dans le sélecteur d'assignation.
  */
 async function loadUsers() {
     try {
-        const response = await fetch('http://localhost:3000/api/users');
+        const response = await authFetch('http://localhost:3000/api/users');
         const users = await response.json();
         const select = document.getElementById('task-assign');
+        
         if (select) {
-            select.innerHTML = '<option value="">Assigner à...</option>' +
+            select.innerHTML = '<option value="">Attribuer à...</option>' +
                 users.map(u => `<option value="${u.id}">${u.name}</option>`).join('');
         }
     } catch (e) {
-        console.warn("Impossible de charger les utilisateurs pour l'assignation.");
+        console.warn("Erreur chargement utilisateurs");
     }
 }
 
-/**
- * Active l'élément de navigation sélectionné dans la sidebar.
- * @param {string} id - L'id du <li> nav à activer
- */
+/** Active visuellement l'onglet sélectionné dans la barre latérale. */
 function setActiveLink(id) {
     document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
     const el = document.getElementById(id);
-    if (el) el.classList.add('active');
+    if (el) el.classList.add('active'); 
+
+    // Fermeture automatique du menu sur mobile après un clic sur un onglet
+    if (window.innerWidth <= 900) {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar && sidebar.classList.contains('open')) {
+            toggleSidebar(); // referme le menu
+        }
+    }
 }
 
-/**
- * Vide et réinitialise le formulaire de tâche (mode création).
- */
+/** Remet le formulaire à zéro. */
 function resetTaskForm() {
-    document.getElementById('task-form').reset();
+    const form = document.getElementById('task-form');
+    if (form) form.reset();
+    
     document.getElementById('task-id').value = "";
-    document.getElementById('delete-task-btn').style.display = "none";
+    document.getElementById('delete-task-btn').style.display = "none"; 
 }
 
-// ==========================================================
-// 10. DRAG & DROP DES TÂCHES
-// Glisser une carte entre les colonnes pour changer son statut
-// ==========================================================
-
-/** Autorise le drop sur la zone cible. */
-function allowDrop(ev) { ev.preventDefault(); }
-
-/** Stocke l'ID de la tâche draggée dans le transfert. */
-function drag(ev, id) { ev.dataTransfer.setData("text", id); }
+// =========================================================================
+// 10. DRAG & DROP (GLISSER-DÉPOSER)
+// =========================================================================
 
 /**
- * Dépose la tâche dans une nouvelle colonne et sauvegarde en base.
+ * Autorise le fait de pouvoir lâcher un élément ici.
+ * Par défaut, le navigateur interdit de lâcher des éléments sur la page. 
+ * preventDefault() lève cette interdiction.
+ */
+function allowDrop(ev) { 
+    ev.preventDefault(); 
+}
+
+/**
+ * Mémorise l'ID de la tâche que l'on commence à glisser.
+ */
+function drag(ev, id) { 
+    ev.dataTransfer.setData("text", id); 
+}
+
+/**
+ * Dépose la tâche dans sa nouvelle colonne et l'enregistre sur le serveur.
  */
 async function drop(ev, colId) {
     ev.preventDefault();
     const taskId = ev.dataTransfer.getData("text");
-    // Met à jour la colonne de la tâche côté serveur
-    await fetch(`http://localhost:3000/api/tasks/${taskId}`, {
+    
+    // On dit au serveur que la tâche a changé de colonne
+    await authFetch(`http://localhost:3000/api/tasks/${taskId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id_col: colId })
     });
-    fetchTasks(); // Rafraîchir le tableau après le drop
+    
+    fetchTasks(); 
 }
 
-// ==========================================================
-// 11. SIDEBAR MOBILE — Burger menu
-// Ouvre/ferme la sidebar sur mobile via le bouton ☰
-// ==========================================================
+// =========================================================================
+// 11. VERSION MOBILE
+// =========================================================================
 
 /**
- * Bascule l'état ouvert/fermé de la sidebar sur mobile.
- * Ajoute aussi un overlay pour fermer en cliquant à l'extérieur.
+ * Affiche ou cache le menu latéral sur téléphone.
  */
 function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar'); // La sidebar principale
+    const sidebar = document.getElementById('sidebar');
     if (!sidebar) return;
 
-    const isOpen = sidebar.classList.toggle('open'); // Ajoute ou retire la classe 'open'
-
-    // Créer ou supprimer l'overlay de fond pour fermer la sidebar en cliquant dehors
+    const isOpen = sidebar.classList.toggle('open');
     let overlay = document.getElementById('sidebar-overlay');
 
     if (isOpen) {
-        // Créer l'overlay s'il n'existe pas encore
         if (!overlay) {
-            overlay = document.createElement('div'); // Créer un div
-            overlay.id = 'sidebar-overlay';           // Lui donner un ID
-            // Styles de l'overlay
+            // On crée un fond sombre cliquable pour refermer le menu
+            overlay = document.createElement('div');
+            overlay.id = 'sidebar-overlay';
             overlay.style.cssText = `
-                position:fixed; inset:0; z-index:999;
-                background:rgba(15,23,42,0.4);
-                backdrop-filter:blur(2px);
-                cursor:pointer;
+                position: fixed;
+                inset: 0;
+                z-index: 999;
+                background: rgba(15,23,42,0.4);
+                backdrop-filter: blur(2px);
+                cursor: pointer;
             `;
-            overlay.onclick = toggleSidebar; // Cliquer dessus ferme la sidebar
-            document.body.appendChild(overlay); // L'ajouter au document
+            overlay.onclick = toggleSidebar;
+            document.body.appendChild(overlay);
         }
     } else {
-        // Supprimer l'overlay quand la sidebar se ferme
-        if (overlay) overlay.remove();
+        if (overlay) {
+            overlay.remove();
+        }
     }
 }
 
+/**
+ * @brief Bascule le mode sombre.
+ */
+function toggleTheme() {
+    const isDark = document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', isDark);
+    
+    // Mettre à jour le design du toggle-switch (on utilise une checkbox maintenant)
+    const toggleCheckbox = document.getElementById('theme-toggle-checkbox');
+    if (toggleCheckbox) {
+        toggleCheckbox.checked = isDark;
+    }
+}
+
+// Initialisation du mode sombre au chargement
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+        const toggleCheckbox = document.getElementById('theme-toggle-checkbox');
+        if (toggleCheckbox) toggleCheckbox.checked = true;
+    }
+});

@@ -1,25 +1,57 @@
-// 1. On récupère les infos de l'utilisateur (ou profil par défaut)
+/**
+ * =========================================================================
+ * LUMINA PRO - ANCIEN SCRIPT (LEGACY - SANS SÉCURITÉ)
+ * =========================================================================
+ * Fichier : script.js (Ancienne version)
+ * Rôle : Ce fichier montre comment l'application marchait AVANT.
+ *        Il y a beaucoup d'erreurs et de pièges de sécurité ici.
+ * 
+ * --- POUR L'EXAMEN (VERSION TRÈS FACILE À COMPRENDRE) ---
+ */
+
+// 1. LE PIÈGE DE SÉCURITÉ : FAIRE CONFIANCE AU NAVIGATEUR
+/**
+ * Explication simple pour l'examen :
+ * - Ce code récupère l'utilisateur depuis la mémoire locale (LocalStorage) et dit : 
+ *   "Si c'est marqué 'admin' dans sa mémoire, alors c'est l'administrateur".
+ * - Pourquoi c'est un énorme piège de sécurité ?
+ *   N'importe qui peut ouvrir la console du navigateur (F12), modifier la ligne de mémoire 
+ *   pour y écrire `role: "admin"` et recharger la page. L'application va croire que c'est l'admin !
+ * - La vraie sécurité doit TOUJOURS être faite sur le serveur (le backend) avec un ticket JWT 
+ *   signé de manière cryptographique et vérifié à chaque action.
+ */
 let user = JSON.parse(localStorage.getItem('user'));
 
-// RÉPARATION DE SESSION : Si des données sont manquantes (undefined), on reset
 if (user && (!user.email || !user.role)) {
-    console.warn("Session corrompue détectée, nettoyage...");
+    console.warn("Session abîmée, nettoyage...");
     localStorage.clear();
     user = null;
 }
 
 if (!user) {
-    user = { name: "Utilisateur", email: "non-connecté@lumina.fr", role: "user" };
+    user = { name: "Utilisateur temporaire", email: "non-connecté@lumina.fr", role: "user" };
 }
 
+// 2. LE TIROIR LOCAL POUR LE JOURNAL D'ACTIVITÉ
+/**
+ * Explication simple pour l'examen :
+ * - Enregistrer l'historique dans le LocalStorage est une mauvaise idée :
+ *   1. Non partagé : Seul l'utilisateur voit son propre historique sur son ordinateur. 
+ *      Si son collègue change un truc, il n'est pas au courant.
+ *   2. Facile à tricher : L'utilisateur peut modifier ou vider sa mémoire locale à tout moment 
+ *      pour cacher ses bêtises.
+ *   3. Panne de mémoire : Le LocalStorage est très limité en place (5 Mo). Si l'historique devient 
+ *      trop gros, tout s'arrête.
+ * - Solution : Envoyer les actions sur le serveur pour les enregistrer dans une vraie base de données.
+ */
 let journal = JSON.parse(localStorage.getItem('journal')) || [];
 
-// 2. Initialisation au démarrage
+// 3. CODE DE DÉMARRAGE DE LA PAGE
 document.addEventListener('DOMContentLoaded', () => {
     const display = document.getElementById('username-display');
     if (display) display.innerText = `👤 ${user.name} (${user.role})`;
     
-    // Masquer Équipe si pas Admin (insensible à la casse)
+    // On cache le bouton Équipe si le rôle n'est pas admin (sécurité visuelle fragile)
     const menuEquipe = document.getElementById('menu-equipe');
     const role = (user.role || "").toLowerCase();
     if (menuEquipe && role !== 'admin') {
@@ -30,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chargerNotifs();
     afficherBoard();
 
-    // Fermer les notifications si on clique ailleurs
+    // Fermer le volet d'alertes en cliquant ailleurs
     window.onclick = function(event) {
         const dropdown = document.getElementById('notif-dropdown');
         const bell = document.querySelector('.notif-bell');
@@ -40,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// 3. Ouvrir/Fermer le menu déroulant des notifications
+// 4. LES ALERTES (SANS SÉCURITÉ)
 async function toggleNotifs() {
     const dropdown = document.getElementById('notif-dropdown');
     const isHidden = dropdown.style.display === 'none';
@@ -51,13 +83,19 @@ async function toggleNotifs() {
     }
 }
 
+/**
+ * Explication simple pour l'examen :
+ * - Ici, on fait `fetch('http://localhost:3000/notifications')` sans ticket JWT (sans en-tête d'autorisation).
+ * - N'importe qui sur internet peut taper cette adresse et lire toutes les alertes privées 
+ *   du site sans s'inscrire ni se connecter ! C'est une faille de contrôle d'accès.
+ */
 async function chargerNotifs() {
     try {
         const res = await fetch('http://localhost:3000/notifications');
         const notifs = await res.json();
         const list = document.getElementById('notif-list');
         if (notifs.length === 0) {
-            list.innerHTML = '<p style="color: gray; font-size: 14px;">Aucune nouvelle alerte.</p>';
+            list.innerHTML = '<p style="color: gray; font-size: 14px;">Aucune alerte.</p>';
         } else {
             list.innerHTML = notifs.map(n => `
                 <div class="notif-item" style="padding: 10px; border-bottom: 1px solid #eee; font-size: 13px;">
@@ -65,18 +103,19 @@ async function chargerNotifs() {
                 </div>
             `).join('');
         }
-    } catch (e) { console.error("Erreur chargement notifications", e); }
+    } catch (e) { 
+        console.error("Erreur alertes", e); 
+    }
 }
 
-// 4. Nettoyer l'écran avant d'afficher une nouvelle page
 function preparerVue(titre) {
     document.getElementById('page-title').innerText = titre;
     document.getElementById('dynamic-view').innerHTML = "";
 }
 
-// --------------------------------------------------------
-// --- PARTIE KANBAN ET DRAG & DROP ---
-// --------------------------------------------------------
+// -------------------------------------------------------------------------
+// --- SECTION KANBAN ET GLISSER-DÉPOSER (DRAG & DROP)
+// -------------------------------------------------------------------------
 
 async function afficherBoard() {
     preparerVue("Tableau de bord");
@@ -84,12 +123,13 @@ async function afficherBoard() {
     container.innerHTML = "<p>Connexion au serveur...</p>";
 
     try {
+        // Promise.all : On lance les deux demandes en même temps pour aller plus vite (gain de temps)
         const [resTasks, resCols] = await Promise.all([
             fetch('http://localhost:3000/tasks'),
             fetch('http://localhost:3000/columns')
         ]);
 
-        if (!resTasks.ok || !resCols.ok) throw new Error("Erreur serveur.");
+        if (!resTasks.ok || !resCols.ok) throw new Error("Erreur");
         
         const taches = await resTasks.json();
         const colonnes = await resCols.json();
@@ -101,7 +141,7 @@ async function afficherBoard() {
             html += `<div class="kanban-column" id="col-${col.id_col}" ondragover="allowDrop(event)" ondrop="drop(event)" style="background: #ebedf0; padding: 15px; border-radius: 8px; min-width: 280px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                             <h4 style="margin:0;">${col.title} (${tachesCol.length})</h4>
-                            <span onclick="supprimerColonne(${col.id_col})" style="cursor:pointer; color:#e74c3c; font-weight:bold; font-size:18px;" title="Supprimer la colonne">×</span>
+                            <span onclick="supprimerColonne(${col.id_col})" style="cursor:pointer; color:#e74c3c; font-weight:bold; font-size:18px;" title="Supprimer">×</span>
                         </div>`;
 
             tachesCol.forEach(t => {
@@ -117,12 +157,20 @@ async function afficherBoard() {
         });
         html += `</div>`;
         container.innerHTML = html;
-    } catch (e) { container.innerHTML = `<p style="color:red;">⚠️ Erreur de chargement des données.</p>`; }
+    } catch (e) { 
+        container.innerHTML = `<p style="color:red;">⚠️ Erreur. L'API backend est-elle allumée ?</p>`; 
+    }
 }
 
 function allowDrop(e) { e.preventDefault(); }
 function drag(e) { e.dataTransfer.setData("text", e.currentTarget.id); }
 
+/**
+ * Explication simple pour l'examen (Annulation graphique en cas d'erreur) :
+ * - Si on déplace une carte mais que le serveur renvoie une erreur (par exemple si internet coupe), 
+ *   le code remet automatiquement la carte dans son ancienne colonne avec `oldCol.appendChild(carte)`. 
+ *   C'est un mécanisme d'annulation (Rollback) pour éviter que l'écran mente à l'utilisateur.
+ */
 async function drop(e) {
     e.preventDefault();
     const elementId = e.dataTransfer.getData("text");
@@ -142,18 +190,19 @@ async function drop(e) {
                 body: JSON.stringify({ id_task, id_col })
             });
             if (!res.ok) throw new Error();
+            
             enregistrerDansJournal("Déplacement", carte.querySelector('h4').innerText);
             chargerNotifs();
         } catch (err) {
-            oldCol.appendChild(carte);
+            oldCol.appendChild(carte); // On remet la carte à sa place de départ en cas d'erreur
             alert("Erreur de sauvegarde.");
         }
     }
 }
 
-// --------------------------------------------------------
-// --- GESTION DES TÂCHES ---
-// --------------------------------------------------------
+// -------------------------------------------------------------------------
+// --- GESTION DES TÂCHES
+// -------------------------------------------------------------------------
 
 async function chargerMembresDansModale() {
     try {
@@ -166,7 +215,9 @@ async function chargerMembresDansModale() {
                 select.innerHTML += `<option value="${m.id_user}">${m.name}</option>`;
             });
         }
-    } catch (e) { console.log("Erreur chargement membres"); }
+    } catch (e) { 
+        console.log("Erreur membres"); 
+    }
 }
 
 function ouvrirModale() { document.getElementById('modal-task').style.display = "flex"; }
@@ -189,7 +240,7 @@ async function validerTache() {
                 description: desc,
                 id_assigned: assigne ? parseInt(assigne) : null,
                 priority: priorite,
-                id_col: 1
+                id_col: 1 
             })
         });
 
@@ -202,15 +253,16 @@ async function validerTache() {
             chargerNotifs();
         } else {
             const err = await res.json();
-            console.error("Erreur serveur détails:", err);
-            alert("Erreur serveur lors de l'ajout. Détails : " + (err.error || "Inconnu"));
+            alert("Erreur serveur : " + (err.error || "Inconnu"));
         }
-    } catch (e) { alert("Erreur connexion serveur !"); }
+    } catch (e) { 
+        alert("Erreur serveur !"); 
+    }
 }
 
-// --------------------------------------------------------
-// --- GESTION DES COLONNES ---
-// --------------------------------------------------------
+// -------------------------------------------------------------------------
+// --- GESTION DES COLONNES
+// -------------------------------------------------------------------------
 
 function ouvrirModaleColonne() { document.getElementById('modal-col').style.display = "flex"; }
 function fermerModaleColonne() { document.getElementById('modal-col').style.display = "none"; }
@@ -230,30 +282,51 @@ async function validerColonne() {
             fermerModaleColonne();
             afficherBoard();
         }
-    } catch (e) { alert("Erreur ajout colonne"); }
+    } catch (e) { 
+        alert("Erreur ajout colonne"); 
+    }
 }
 
 async function supprimerColonne(id) {
-    if (!confirm("Voulez-vous supprimer cette colonne ? Toutes les missions associées seront perdues.")) return;
+    if (!confirm("Voulez-vous supprimer cette colonne ?")) return;
     try {
         const res = await fetch(`http://localhost:3000/columns/${id}`, { method: 'DELETE' });
         if (res.ok) {
             afficherBoard();
         }
-    } catch (e) { alert("Erreur lors de la suppression de la colonne."); }
+    } catch (e) { 
+        alert("Erreur lors de la suppression."); 
+    }
 }
 
-// --------------------------------------------------------
-// --- JOURNAL, ÉQUIPE ET PROFIL ---
-// --------------------------------------------------------
+// -------------------------------------------------------------------------
+// --- LE JOURNAL D'ACTIVITÉ LOCAL (PIÈGE DE DÉCOUPE)
+// -------------------------------------------------------------------------
 
+/**
+ * Explication simple pour l'examen :
+ * - Délimiteur pipe (|) : Pour stocker plusieurs infos dans une seule ligne de texte, 
+ *   ce vieux script colle les morceaux avec un séparateur vertical `|` (ex: "Création|Tâche A|Bob|Date").
+ * - Pourquoi c'est fragile ? 
+ *   Si l'utilisateur écrit un titre avec un caractère `|` (comme "Tâche | Urgente"), 
+ *   la découpe avec `split('|')` va couper au mauvais endroit. On aura 5 colonnes au lieu de 4, 
+ *   ce qui va décaler tout notre tableau et provoquer un bug d'affichage.
+ * - Solution : Utiliser du JSON (`JSON.stringify`) ou stocker cela proprement en base de données.
+ */
 async function ouvrirJournal() {
-    preparerVue("Journal des Missions");
+    preparerVue("Journal des Missions (Mémoire Locale)");
     let html = `<table><tr><th>Date & Heure</th><th>Action</th><th>Mission</th><th>Auteur</th></tr>`;
+    
+    // slice().reverse() : Copie et inverse la liste pour voir les derniers événements en premier
     journal.slice().reverse().forEach(entree => {
         const infos = entree.split('|');
         if (infos.length === 4) {
-            html += `<tr><td style="color: #A10057; font-weight: bold;">${infos[3]}</td><td><b>${infos[0]}</b></td><td>${infos[1]}</td><td>${infos[2]}</td></tr>`;
+            html += `<tr>
+                <td style="color: #A10057; font-weight: bold;">${infos[3]}</td>
+                <td><b>${infos[0]}</b></td>
+                <td>${infos[1]}</td>
+                <td>${infos[2]}</td>
+            </tr>`;
         }
     });
     html += `</table><br><button class="btn-bleu" onclick="afficherBoard()">← Retour</button>`;
@@ -263,16 +336,22 @@ async function ouvrirJournal() {
 function enregistrerDansJournal(action, titreMission) {
     const now = new Date();
     const date = now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    
+    // On colle les morceaux de texte avec des barres verticales |
     const ligne = `${action}|${titreMission}|${user.name}|${date}`;
     journal.push(ligne);
     localStorage.setItem('journal', JSON.stringify(journal));
 }
 
+// -------------------------------------------------------------------------
+// --- ÉQUIPE ET PROFIL (LEGACY)
+// -------------------------------------------------------------------------
+
 async function ouvrirEquipe() {
     const role = (user.role || "").toLowerCase();
-    if (role !== 'admin') return alert("Accès réservé aux administrateurs.");
+    if (role !== 'admin') return alert("Accès interdit !");
     
-    preparerVue("Équipe Lumina");
+    preparerVue("Membres de l'équipe (Vue brute)");
     const container = document.getElementById('dynamic-view');
     try {
         const res = await fetch('http://localhost:3000/users');
@@ -286,7 +365,9 @@ async function ouvrirEquipe() {
         });
         html += `</table><br><button class="btn-bleu" onclick="afficherBoard()">← Retour</button>`;
         container.innerHTML = html;
-    } catch (e) { container.innerHTML = "<p style='color:red;'>Erreur serveur.</p>"; }
+    } catch (e) { 
+        container.innerHTML = "<p style='color:red;'>Erreur serveur.</p>"; 
+    }
 }
 
 async function supprimerMembre(id) {
@@ -294,12 +375,14 @@ async function supprimerMembre(id) {
     try {
         await fetch(`http://localhost:3000/users/${id}`, { method: 'DELETE' });
         ouvrirEquipe();
-    } catch (e) { alert("Erreur suppression"); }
+    } catch (e) { 
+        alert("Erreur de suppression"); 
+    }
 }
 
 async function modifierMembre(id, nom, email, role) {
-    const n = prompt("Nouveau nom:", nom);
-    const r = prompt("Nouveau rôle (admin/user):", role);
+    const n = prompt("Nouveau nom :", nom);
+    const r = prompt("Nouveau rôle (admin/user) :", role);
     if (n && r) {
         try {
             await fetch(`http://localhost:3000/users/${id}`, {
@@ -308,7 +391,9 @@ async function modifierMembre(id, nom, email, role) {
                 body: JSON.stringify({ name: n, email, role: r })
             });
             ouvrirEquipe();
-        } catch (e) { alert("Erreur modification"); }
+        } catch (e) { 
+            alert("Erreur modification"); 
+        }
     }
 }
 
@@ -325,8 +410,8 @@ function ouvrirProfil() {
             <p style="color: gray;">${user.role || "rôle inconnu"}</p>
         </div>
         <div style="border-top: 1px solid #eee; padding-top: 20px;">
-            <p><strong>📧 Email :</strong> ${user.email || "non défini"}</p>
-            <p><strong>🏷️ Rôle :</strong> ${user.role || "non défini"}</p>
+            <p><strong>📧 Email :</strong> ${user.email || "Non configuré"}</p>
+            <p><strong>🏷️ Rôle :</strong> ${user.role || "Non configuré"}</p>
         </div>
         <br>
         <button class="btn-bleu" style="width: 100%;" onclick="afficherBoard()">Retour</button>
