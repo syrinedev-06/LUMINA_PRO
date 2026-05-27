@@ -1,5 +1,11 @@
 const mysql = require('mysql2');
 
+/**
+ * CONNEXION À LA BASE DE DONNÉES
+ * NOTE EXAMEN : Nous utilisons ici la version classique (non-promise) du module mysql2.
+ * Les callbacks (fonctions de retour) sont passées en paramètre pour traiter le résultat
+ * de manière asynchrone traditionnelle.
+ */
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -7,13 +13,23 @@ const db = mysql.createConnection({
     database: 'lumina_pro'
 });
 
+// Établissement de la connexion physique
 db.connect((err) => {
     if (err) {
         console.error("Erreur de connexion.");
-        process.exit(1);
+        process.exit(1); // Arrête le script de manière forcée avec un code d'erreur (1)
     }
     console.log("Connecté ! Mise à jour des tables...");
 
+    /**
+     * DÉFINITION DU SCHÉMA DE BASE DE DONNÉES (DDL - Data Definition Language)
+     * NOTE EXAMEN :
+     * - **PRIMARY KEY & AUTO_INCREMENT** : Identifie de manière unique chaque enregistrement et s'incrémente tout seul.
+     * - **UNIQUE** : Empêche l'inscription de deux comptes avec la même adresse email (intégrité d'unicité).
+     * - **ENUM** : Limite les valeurs autorisées pour un attribut à un ensemble précis (ex: 'admin' ou 'user').
+     * - **FOREIGN KEY & ON DELETE CASCADE** : Clé étrangère reliant la tâche à une colonne. L'option CASCADE garantit
+     *   que si la colonne parente est supprimée, les tâches enfants associées le sont aussi.
+     */
     const tables = [
         `CREATE TABLE IF NOT EXISTS users (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -47,13 +63,18 @@ db.connect((err) => {
         )`
     ];
 
+    // Exécution de la création de chaque table
     tables.forEach(sql => {
         db.query(sql, (err) => {
             if (err) console.error("Erreur sur :", sql, err);
         });
     });
 
-    // On ajoute les 3 colonnes par défaut si la table est vide
+    /**
+     * INITIALISATION DU KANBAN
+     * Si la table columns est vide, on ajoute les trois colonnes standard.
+     * position 1 = À faire, 2 = En cours, 3 = Terminé.
+     */
     db.query("SELECT COUNT(*) as count FROM columns", (err, result) => {
         if (result && result[0].count === 0) {
             db.query("INSERT INTO columns (title, position) VALUES ('À faire', 1), ('En cours', 2), ('Terminé', 3)");
@@ -63,3 +84,4 @@ db.connect((err) => {
 
     console.log("Mise à jour terminée !");
 });
+
