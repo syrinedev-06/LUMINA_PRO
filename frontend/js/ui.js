@@ -29,14 +29,6 @@ function setupEventListeners() {
         };
     }
 
-    // Fermer TOUTES les modales si on clique dans le vide
-    document.querySelectorAll('.modal').forEach(m => {
-        m.addEventListener('click', (e) => {
-            if (e.target === m) {
-                m.style.display = 'none';
-            }
-        });
-    });
 
     const taskForm = document.getElementById('task-form');
     if (taskForm) taskForm.onsubmit = handleTaskSubmit;
@@ -98,14 +90,6 @@ function setActiveLink(id) {
     document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
     const el = document.getElementById(id);
     if (el) el.classList.add('active'); 
-
-    // Fermeture automatique du menu sur mobile après un clic sur un onglet
-    if (window.innerWidth <= 900) {
-        const sidebar = document.getElementById('sidebar');
-        if (sidebar && sidebar.classList.contains('open')) {
-            toggleSidebar(); // referme le menu
-        }
-    }
 }
 
 /** Remet le formulaire à zéro. */
@@ -122,30 +106,5 @@ function resetTaskForm() {
  */
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
-    if (!sidebar) return;
-
-    const isOpen = sidebar.classList.toggle('open');
-    let overlay = document.getElementById('sidebar-overlay');
-
-    if (isOpen) {
-        if (!overlay) {
-            // On crée un fond sombre cliquable pour refermer le menu
-            overlay = document.createElement('div');
-            overlay.id = 'sidebar-overlay';
-            overlay.style.cssText = `
-                position: fixed;
-                inset: 0;
-                z-index: 999;
-                background: rgba(15,23,42,0.4);
-                backdrop-filter: blur(2px);
-                cursor: pointer;
-            `;
-            overlay.onclick = toggleSidebar;
-            document.body.appendChild(overlay);
-        }
-    } else {
-        if (overlay) {
-            overlay.remove();
-        }
-    }
+    if (sidebar) sidebar.classList.toggle('open');
 }
