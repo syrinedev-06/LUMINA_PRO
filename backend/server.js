@@ -74,6 +74,13 @@ db.connect((err) => {
         });
     });
 
+    // Initialisation du Kanban : Création des 3 colonnes par défaut si la table est vide
+    db.query("SELECT COUNT(*) as count FROM columns", (err, result) => {
+        if (!err && result && result[0].count === 0) {
+            db.query("INSERT INTO columns (title, position) VALUES ('À faire', 1), ('En cours', 2), ('Terminé', 3)");
+            console.log("Colonnes par défaut créées !");
+        }
+    });
 });
 
 /**
