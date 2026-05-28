@@ -1,0 +1,292 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Lumina Pro API",
+    "description": "Documentation interactive de l'API REST de Lumina Pro. Permet de gérer les utilisateurs, les tâches Kanban et les colonnes. Sécurisé par token JWT.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Serveur local de développement"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "Connexion d'un utilisateur",
+        "tags": ["Authentification"],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Succès - Retourne un token JWT" },
+          "401": { "description": "Identifiants incorrects" }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "summary": "Inscription d'un utilisateur",
+        "tags": ["Authentification"],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Utilisateur créé" },
+          "400": { "description": "Données invalides ou email déjà pris" }
+        }
+      }
+    },
+    "/tasks": {
+      "get": {
+        "summary": "Récupérer toutes les tâches",
+        "tags": ["Tâches Kanban"],
+        "responses": {
+          "200": { "description": "Liste des tâches" }
+        }
+      },
+      "post": {
+        "summary": "Créer une nouvelle tâche",
+        "tags": ["Tâches Kanban"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "description": { "type": "string" },
+                  "priority": { "type": "string", "enum": ["low", "medium", "high"] },
+                  "id_col": { "type": "integer" },
+                  "id_assigned": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Tâche créée" }
+        }
+      }
+    },
+    "/tasks/{id}": {
+      "put": {
+        "summary": "Modifier une tâche (ex: changer de colonne)",
+        "tags": ["Tâches Kanban"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "description": { "type": "string" },
+                  "priority": { "type": "string" },
+                  "id_col": { "type": "integer" },
+                  "id_assigned": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Tâche mise à jour" }
+        }
+      },
+      "delete": {
+        "summary": "Supprimer une tâche",
+        "tags": ["Tâches Kanban"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Tâche supprimée" }
+        }
+      }
+    },
+    "/columns": {
+      "get": {
+        "summary": "Récupérer toutes les colonnes Kanban",
+        "tags": ["Colonnes Kanban"],
+        "responses": {
+          "200": { "description": "Liste des colonnes" }
+        }
+      },
+      "post": {
+        "summary": "Créer une nouvelle colonne",
+        "tags": ["Colonnes Kanban"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Colonne créée" }
+        }
+      }
+    },
+    "/columns/{id}": {
+      "put": {
+        "summary": "Renommer une colonne",
+        "tags": ["Colonnes Kanban"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Colonne renommée" }
+        }
+      },
+      "delete": {
+        "summary": "Supprimer une colonne et toutes ses tâches (CASCADE)",
+        "tags": ["Colonnes Kanban"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Colonne supprimée" }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Récupérer la liste de tous les utilisateurs (Réservé Admin)",
+        "tags": ["Membres et Profils"],
+        "responses": {
+          "200": { "description": "Liste des utilisateurs" }
+        }
+      }
+    },
+    "/users/{id}": {
+      "put": {
+        "summary": "Modifier son profil utilisateur",
+        "tags": ["Membres et Profils"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Profil mis à jour" }
+        }
+      },
+      "delete": {
+        "summary": "Retirer un membre de l'équipe (Réservé Admin)",
+        "tags": ["Membres et Profils"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Membre supprimé" }
+        }
+      }
+    }
+  }
+}

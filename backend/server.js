@@ -4,6 +4,9 @@ const cors = require('cors');
 const path = require('path');
 const verifyToken = require('./middleware/auth'); // Importation de notre middleware de sécurité JWT
 
+// Importation pour la documentation Swagger
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 // Initialisation de l'application Express
 // NOTE EXAMEN : Express est un framework minimaliste pour Node.js permettant de créer des serveurs Web et des API REST.
 const app = express();
@@ -107,6 +110,9 @@ app.use((req, res, next) => {
 // NOTE EXAMEN : Les routes exposent des points d'accès (endpoints) HTTP.
 // Nous appliquons le middleware 'verifyToken' pour sécuriser l'accès aux données privées.
 // ==========================================================
+
+// Route de Documentation de l'API (Swagger UI)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Route publique : Authentification (Inscription / Connexion)
 // Le routage a été corrigé pour pointer vers './routes/auth' pour utiliser le hachage bcrypt.
