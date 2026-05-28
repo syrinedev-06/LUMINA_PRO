@@ -169,55 +169,6 @@ function renderBoard(columns, tasks) {
     board.appendChild(addBtn);
 }
 
-/**
- * @brief Demande un nom et crée une nouvelle colonne.
- */
-async function addNewColumn() {
-    const title = prompt("Quel nom pour la nouvelle colonne ?");
-    if (title && title.trim()) {
-        try {
-            const res = await authFetch('http://localhost:3000/api/columns', {
-                method: 'POST',
-                body: JSON.stringify({ title: title.trim() })
-            });
-            if (!res.ok) {
-                const data = await res.json();
-                alert("Erreur: " + (data.error || "Impossible d'ajouter la colonne."));
-            } else {
-                fetchTasks(); // On recharge le tableau
-            }
-        } catch (e) {
-            console.error(e);
-            alert("Erreur de connexion. Le serveur est-il allumé ?");
-        }
-    }
-}
-
-/**
- * @brief Supprime une colonne et ses tâches après avoir demandé confirmation.
- */
-async function deleteColumn(id) {
-    if (confirm("Voulez-vous supprimer cette colonne et ses tâches ?")) {
-        await authFetch(`http://localhost:3000/api/columns/${id}`, { 
-            method: 'DELETE' 
-        });
-        fetchTasks();
-    }
-}
-
-/**
- * @brief Change le nom d'une colonne.
- */
-async function renameColumn(id, currentTitle) {
-    const newTitle = prompt("Nouveau nom de la colonne :", currentTitle);
-    if (newTitle && newTitle !== currentTitle) {
-        await authFetch(`http://localhost:3000/api/columns/${id}`, {
-            method: 'PUT',
-            body: JSON.stringify({ title: newTitle })
-        });
-        fetchTasks();
-    }
-}
 
 // =========================================================================
 // 7. GESTION DES CLICS ET BOUTONS
@@ -275,81 +226,7 @@ function setupEventListeners() {
     }
 }
 
-/**
- * @brief Remplir la fenêtre d'édition d'une tâche avec les données existantes.
- */
-function editTask(task) {
-    const modal = document.getElementById('task-modal');
-    if (!modal) return;
 
-    document.getElementById('task-id').value = task.id;
-    document.getElementById('task-title').value = task.title;
-    document.getElementById('task-desc').value = task.description || "";
-    document.getElementById('task-priority').value = task.priority;
-    document.getElementById('task-assign').value = task.id_assigned || "";
-
-    // On montre le bouton supprimer parce que la tâche existe déjà
-    document.getElementById('delete-task-btn').style.display = "block";
-    
-    modal.style.display = 'flex';
-}
-
-/**
- * @brief Envoie une tâche à créer (POST) ou à modifier (PUT) au serveur.
- */
-async function handleTaskSubmit(e) {
-    e.preventDefault();
-    const id = document.getElementById('task-id').value;
-    
-    const taskData = {
-        title: document.getElementById('task-title').value,
-        description: document.getElementById('task-desc').value,
-        priority: document.getElementById('task-priority').value,
-        id_assigned: document.getElementById('task-assign').value || null
-    };
-
-    // Si on a un ID → modification (PUT), sinon → création (POST)
-    const method = id ? 'PUT' : 'POST';
-    const url = id ? `http://localhost:3000/api/tasks/${id}` : 'http://localhost:3000/api/tasks';
-
-    try {
-        const response = await authFetch(url, {
-            method,
-            body: JSON.stringify(taskData)
-        });
-        const data = await response.json();
-
-        if (response.ok) {
-            document.getElementById('task-modal').style.display = 'none'; 
-            fetchTasks(); 
-        } else {
-            alert("Erreur : " + (data.error || "Impossible de sauvegarder."));
-        }
-    } catch (error) {
-        alert("Erreur de connexion avec le serveur.");
-    }
-}
-
-/** Supprime une tâche. */
-async function directDeleteTask(id) {
-    if (confirm("Voulez-vous vraiment supprimer cette tâche ?")) {
-        await authFetch(`http://localhost:3000/api/tasks/${id}`, { 
-            method: 'DELETE' 
-        });
-        fetchTasks();
-    }
-}
-
-/** Supprime la tâche ouverte dans la fenêtre. */
-async function deleteTask() {
-    const id = document.getElementById('task-id').value;
-    if (id) {
-        await directDeleteTask(id);
-        document.getElementById('task-modal').style.display = 'none';
-    }
-}
-
-// =========================================================================
 
 // =========================================================================
 // 9. OUTILS DIVERS
@@ -416,26 +293,7 @@ function resetTaskForm() {
 }
 
 // =========================================================================
-// 10. DÉPLACEMENT DES TÂCHES (FLÈCHES)
-// =========================================================================
 
-/**
- * @brief Déplace une tâche vers une colonne adjacente.
- * Remplace l'ancien Drag & Drop pour simplifier le code et l'expérience utilisateur.
- */
-async function moveTask(taskId, newColId) {
-    try {
-        await authFetch(`http://localhost:3000/api/tasks/${taskId}`, {
-            method: 'PUT',
-            body: JSON.stringify({ id_col: newColId })
-        });
-        fetchTasks(); // On rafraîchit l'affichage pour voir le mouvement
-    } catch (e) {
-        alert("Erreur lors du déplacement de la tâche.");
-    }
-}
-
-// =========================================================================
 // 11. VERSION MOBILE
 // =========================================================================
 
