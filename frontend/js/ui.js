@@ -90,6 +90,12 @@ function setActiveLink(id) {
     document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
     const el = document.getElementById(id);
     if (el) el.classList.add('active'); 
+
+    // Refermer automatiquement le menu sur mobile après le clic
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar && sidebar.classList.contains('open')) {
+        sidebar.classList.remove('open');
+    }
 }
 
 /** Remet le formulaire à zéro. */
