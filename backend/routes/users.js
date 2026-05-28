@@ -28,26 +28,7 @@ router.get('/', (req, res) => {
     });
 });
 
-/**
- * @brief Route PUT pour mettre à jour les informations du profil d'un utilisateur (/api/users/:id).
- * 
- * CONCEPT EXAMEN :
- * - **Paramètre d'URL (req.params)** : L'identifiant de l'utilisateur à modifier est passé dans le chemin (`:id`).
- * - **Mise à jour partielle** : Permet à un utilisateur de modifier son nom et son email.
- * - **Requête SQL préparée** : Utilise des points d'interrogation pour insérer en toute sécurité les valeurs.
- * 
- * @param {Object} req - Requête contenant req.params.id, req.body.name, req.body.email.
- * @param {Object} res - Réponse confirmant le succès ou retournant une erreur 500.
- * @returns {void}
- */
-router.put('/:id', (req, res) => {
-    const { name, email } = req.body;
-    const sql = "UPDATE users SET name = ?, email = ? WHERE id = ?";
-    req.db.query(sql, [name, email, req.params.id], (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: "Profil mis à jour !" });
-    });
-});
+
 
 /**
  * @brief Route DELETE pour supprimer un utilisateur (/api/users/:id).

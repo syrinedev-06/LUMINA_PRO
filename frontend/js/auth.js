@@ -14,40 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
     const registerForm = document.getElementById('register-form');
     
-    /**
-     * AUTO-REMPLISSAGE (SE SOUVENIR DU COMPTE)
-     * 
-     * Explication simple pour l'examen :
-     * 1. setTimeout : Permet d'attendre un court instant (ici 0,3 seconde) avant de remplir
-     *    les cases e-mail et mot de passe enregistrées. Cela donne le temps au navigateur 
-     *    de finir de s'afficher.
-     * 2. dispatchEvent : C'est comme si on cliquait et écrivait nous-mêmes avec notre clavier. 
-     *    Cela réveille le navigateur pour qu'il prenne bien en compte l'adresse e-mail 
-     *    et le mot de passe automatique.
-     */
-    if (loginForm) {
-        setTimeout(() => {
-            // On récupère l'e-mail et le mot de passe gardés en mémoire dans le navigateur
-            const savedEmail = localStorage.getItem('saved_email');
-            const savedPassword = localStorage.getItem('saved_password');
-            
-            if (savedEmail && savedPassword) {
-                const emailInput = document.getElementById('login-email');
-                const passwordInput = document.getElementById('login-password');
-                
-                if (emailInput && passwordInput) {
-                    emailInput.value = savedEmail;
-                    passwordInput.value = savedPassword;
-                    
-                    // On simule une écriture pour valider les cases
-                    emailInput.dispatchEvent(new Event('input', { bubbles: true }));
-                    emailInput.dispatchEvent(new Event('change', { bubbles: true }));
-                    passwordInput.dispatchEvent(new Event('input', { bubbles: true }));
-                    passwordInput.dispatchEvent(new Event('change', { bubbles: true }));
-                }
-            }
-        }, 300); 
-    }
+
 
     /**
      * S'INSCRIRE (CRÉER UN COMPTE)
@@ -80,9 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
                 
                 if (response.ok) {
-                    // On garde les identifiants en mémoire pour la page de connexion
-                    localStorage.setItem('saved_email', email);
-                    localStorage.setItem('saved_password', password);
                     
                     alert("Compte créé ! Vous pouvez vous connecter.");
                     window.location.reload(); // Recharge la page pour afficher la connexion
@@ -128,10 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (response.ok) {
-                    // On enregistre l'email et le mot de passe
-                    localStorage.setItem('saved_email', email);
-                    localStorage.setItem('saved_password', password);
-
                     // On enregistre le ticket JWT et les informations de l'utilisateur
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('user', JSON.stringify(data.user)); 

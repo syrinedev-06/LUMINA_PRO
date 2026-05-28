@@ -33,9 +33,6 @@ function setupEventListeners() {
     const taskForm = document.getElementById('task-form');
     if (taskForm) taskForm.onsubmit = handleTaskSubmit;
 
-    const profileForm = document.getElementById('profile-form');
-    if (profileForm) profileForm.onsubmit = handleProfileSubmit;
-
     const deleteBtn = document.getElementById('delete-task-btn');
     if (deleteBtn) deleteBtn.onclick = deleteTask;
 

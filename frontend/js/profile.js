@@ -34,10 +34,6 @@ function showProfile() {
             <tr><th>Statut</th><td><span style="color:#10b981;">●</span> En ligne</td></tr>
         </table>
 
-        <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: center;">
-            <button class="btn-primary-modal" style="width: auto; padding: 8px 20px;" onclick="document.getElementById('profile-info-modal').style.display='none'; openProfileModal();">
-                Modifier
-            </button>
             <button class="btn-secondary" style="width: auto; padding: 8px 20px;" onclick="document.getElementById('profile-info-modal').style.display='none'">
                 Fermer
             </button>
@@ -46,47 +42,6 @@ function showProfile() {
     document.getElementById('profile-info-modal').style.display = 'flex';
 }
 
-/**
- * @brief Ouvre la fenêtre (modale) pour modifier le profil.
- */
-function openProfileModal() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    document.getElementById('edit-profile-name').value = user.name;
-    document.getElementById('edit-profile-email').value = user.email;
-    document.getElementById('profile-modal').style.display = 'flex';
-}
 
-/**
- * @brief Envoie les nouvelles infos du profil au serveur.
- * 
- * Explication simple pour l'examen :
- * - e.preventDefault() : Par défaut, quand on valide un formulaire, le navigateur recharge toute 
- *   la page. On utilise cette fonction pour lui dire "Attends, ne recharge pas ! Je vais envoyer 
- *   les informations en arrière-plan sans perturber l'utilisateur".
- */
-async function handleProfileSubmit(e) {
-    e.preventDefault(); 
-    const user = JSON.parse(localStorage.getItem('user'));
-    const name = document.getElementById('edit-profile-name').value;
-    const email = document.getElementById('edit-profile-email').value;
-
-    const response = await authFetch(`http://localhost:3000/api/users/${user.id}`, {
-        method: 'PUT',
-        body: JSON.stringify({ name, email })
-    });
-
-    if (response.ok) {
-        // On met à jour nos infos stockées localement
-        user.name = name;
-        user.email = email;
-        localStorage.setItem('user', JSON.stringify(user));
-        
-        document.getElementById('profile-modal').style.display = 'none';
-        showProfile();
-        document.getElementById('user-name').innerText = name; 
-    } else {
-        alert("Erreur lors de la mise à jour.");
-    }
-}
 
 // =========================================================================
