@@ -20,12 +20,8 @@ const bcrypt = require('bcrypt');
  */
 async function runSeeder() {
     // Établissement de la connexion en mode Promise
-    const connection = await mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: '',
-        database: 'lumina_pro'
-    });
+    const dbConfig = require('./config/db');
+    const connection = await mysql.createConnection(dbConfig);
 
     console.log("🌱 Début du peuplement de la base de données...");
 

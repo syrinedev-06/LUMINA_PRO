@@ -1,3 +1,202 @@
+// 1. DÉMARRAGE DE LA PAGE
+// =========================================================================
+
+/**
+ * Cette partie se lance toute seule dès que la page HTML est prête sur l'écran.
+ * 
+ * Explication simple pour l'examen :
+ * 1. DOMContentLoaded : C'est un événement qui dit "Le texte de la page est prêt, on peut commencer à le modifier".
+ * 2. Sécurité : Si l'utilisateur n'a pas de ticket (token), on le renvoie direct au login.
+ * 3. Rôles (Admin vs Utilisateur normal) : Si l'utilisateur est admin, on lui montre l'onglet "Équipe", 
+ *    sinon on le cache.
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('token');
+    if (!token) { 
+        window.location.href = 'login.html'; 
+        return; 
+    }
+
+    // On récupère le nom de l'utilisateur connecté pour l'afficher en haut
+    const user = JSON.parse(localStorage.getItem('user'));
+    document.getElementById('user-name').innerText = user.name;
+
+    // Quand on clique sur l'avatar (photo), ça ouvre le profil
+    const avatarEl = document.querySelector('.user-info .avatar');
+    if (avatarEl) {
+        avatarEl.style.cursor = "pointer";
+        avatarEl.onclick = showProfile;
+    }
+
+    // Cacher ou afficher le menu "Équipe" selon le rôle
+    const teamNav = document.getElementById('nav-team');
+    if (teamNav) {
+        if (user.role === 'admin') {
+            teamNav.style.display = 'block'; 
+        } else {
+            teamNav.style.display = 'none';  
+        }
+    }
+
+    // On charge les données du tableau
+    fetchTasks();          
+    loadUsers();           
+    setupEventListeners(); 
+});
+
+// =========================================================================
+// 2. LE TABLEAU KANBAN (COLONNES ET CARTES)
+// =========================================================================
+
+/**
+ * @brief Va chercher les colonnes et les tâches sur le serveur, puis demande de les afficher.
+ * 
+ * Explication simple pour l'examen :
+ * - async / await (Asynchronisme) : Quand on demande des infos sur internet, ça prend un peu de temps. 
+ *   Pour éviter que toute la page se bloque (gèle) pendant l'attente, on utilise `async` et `await`. 
+ *   C'est comme envoyer une lettre et continuer à faire sa vie en attendant le facteur.
+ * - try / catch (Gestion des erreurs) : Si le serveur est en panne, le code va dans le "catch" 
+ *   pour afficher un message d'erreur rouge poli au lieu de tout faire bugger.
+ */
+async function fetchTasks() {
+    try {
+        // Demande des colonnes
+        const resCol = await authFetch('http://localhost:3000/api/columns');
+        const columns = await resCol.json();
+
+        // Demande des tâches
+        const resTasks = await authFetch('http://localhost:3000/api/tasks');
+        const tasks = await resTasks.json();
+
+        // On dessine le tableau sur l'écran
+        renderBoard(columns, tasks);
+    } catch (e) {
+        console.error("Erreur :", e);
+        const board = document.getElementById('kanban-board');
+        if (board) {
+            board.innerHTML = "<p style='color:red; padding:20px;'>Impossible de se connecter au serveur. Est-il allumé ?</p>";
+        }
+    }
+}
+
+/**
+ * @brief Dessine le tableau Kanban (colonnes et cartes de tâches) sur la page.
+ * 
+ * @param {Array} columns - Les colonnes de la base de données.
+ * @param {Array} tasks - Les tâches de la base de données.
+ * 
+ * Explication simple pour l'examen :
+ * - Template Literals (les backticks ``) : Permettent d'écrire du code HTML directement dans le JavaScript.
+ * - filter() : Permet de trier les tâches pour ne mettre que les bonnes tâches dans la bonne colonne.
+ * - map() : Transforme chaque tâche (donnée) en une jolie boîte visuelle sur l'écran.
+ * - join('') : Colle toutes les boîtes ensemble sans virgule entre elles.
+ * - Faille XSS (Sécurité) : On nettoie les textes avec `.replace()` pour éviter qu'un utilisateur malveillant 
+ *   n'écrive du code informatique bizarre (comme un virus) dans le titre d'une tâche.
+ */
+function renderBoard(columns, tasks) {
+    const board = document.getElementById('kanban-board');
+    if (!board) return;
+    board.innerHTML = "";
+
+    if (columns.length === 0) {
+        board.innerHTML = "<p style='padding:20px;'>Aucune colonne. Cliquez sur le bouton pour en créer une !</p>";
+    }
+
+    columns.forEach(col => {
+        // On ne garde que les tâches de cette colonne
+        const colTasks = tasks.filter(t => t.id_col === col.id);
+
+        const colEl = document.createElement('div');
+        colEl.className = 'kanban-column';
+        colEl.innerHTML = `
+            <h4>
+                ${col.title.toUpperCase()}
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="notif-badge" style="position:static; padding:2px 8px;">${colTasks.length}</span>
+                    <span class="icon-btn" title="Renommer" onclick="renameColumn(${col.id}, '${col.title.replace(/'/g, "\\'")}')">✏️</span>
+                    <span class="icon-btn" title="Supprimer" onclick="deleteColumn(${col.id})">×</span>
+                </div>
+            </h4>
+            <!-- Zone où on peut déposer les cartes (drop) -->
+            <div class="task-list" ondragover="allowDrop(event)" ondrop="drop(event, ${col.id})">
+                ${colTasks.map(task => `
+                    <!-- Carte déplaçable (draggable="true") -->
+                    <div class="task-card" draggable="true" ondragstart="drag(event, ${task.id})">
+                        <span class="badge bg-${escapeHTML(task.priority)}">${task.priority === 'high' ? 'URGENT' : task.priority === 'medium' ? 'MOYEN' : 'NORMAL'}</span>
+                        <h5>${escapeHTML(task.title)}</h5>
+                        <p>${escapeHTML(task.description || '')}</p>
+                        <div class="assigned-to">👤 ${escapeHTML(task.assigned_name || 'Non assigné')}</div>
+                        <div class="task-actions">
+                            <span class="icon-btn" title="Modifier" onclick="editTask(${JSON.stringify(task).replace(/"/g, '&quot;')})">✏️</span>
+                            <span class="icon-btn" title="Supprimer" onclick="directDeleteTask(${task.id})">🗑️</span>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        board.appendChild(colEl);
+    });
+
+    // Bouton ajouter colonne à la fin
+    const addBtn = document.createElement('div');
+    addBtn.className = 'btn-add-column';
+    addBtn.onclick = addNewColumn;
+    addBtn.innerHTML = '+ Ajouter une colonne';
+    board.appendChild(addBtn);
+}
+
+/**
+ * @brief Demande un nom et crée une nouvelle colonne.
+ */
+async function addNewColumn() {
+    const title = prompt("Quel nom pour la nouvelle colonne ?");
+    if (title && title.trim()) {
+        try {
+            const res = await authFetch('http://localhost:3000/api/columns', {
+                method: 'POST',
+                body: JSON.stringify({ title: title.trim() })
+            });
+            if (!res.ok) {
+                const data = await res.json();
+                alert("Erreur: " + (data.error || "Impossible d'ajouter la colonne."));
+            } else {
+                fetchTasks(); // On recharge le tableau
+            }
+        } catch (e) {
+            console.error(e);
+            alert("Erreur de connexion. Le serveur est-il allumé ?");
+        }
+    }
+}
+
+/**
+ * @brief Supprime une colonne et ses tâches après avoir demandé confirmation.
+ */
+async function deleteColumn(id) {
+    if (confirm("Voulez-vous supprimer cette colonne et ses tâches ?")) {
+        await authFetch(`http://localhost:3000/api/columns/${id}`, { 
+            method: 'DELETE' 
+        });
+        fetchTasks();
+    }
+}
+
+/**
+ * @brief Change le nom d'une colonne.
+ */
+async function renameColumn(id, currentTitle) {
+    const newTitle = prompt("Nouveau nom de la colonne :", currentTitle);
+    if (newTitle && newTitle !== currentTitle) {
+        await authFetch(`http://localhost:3000/api/columns/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify({ title: newTitle })
+        });
+        fetchTasks();
+    }
+}
+
+// =========================================================================
+
 /**
  * =========================================================================
  * LUMINA PRO - TABLEAU DE BORD (KANBAN)

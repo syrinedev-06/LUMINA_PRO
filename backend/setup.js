@@ -6,12 +6,8 @@ const mysql = require('mysql2');
  * Les callbacks (fonctions de retour) sont passées en paramètre pour traiter le résultat
  * de manière asynchrone traditionnelle.
  */
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'lumina_pro'
-});
+const dbConfig = require('./config/db');
+const db = mysql.createConnection(dbConfig);
 
 // Établissement de la connexion physique
 db.connect((err) => {

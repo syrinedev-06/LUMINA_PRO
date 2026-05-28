@@ -22,12 +22,8 @@ app.use(express.json());
  * NOTE EXAMEN : mysql.createConnection crée un pont de communication avec le serveur MySQL local (souvent XAMPP).
  * Les paramètres définissent l'emplacement, les identifiants d'accès et la base cible.
  */
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'lumina_pro'
-});
+const dbConfig = require('./config/db');
+const db = mysql.createConnection(dbConfig);
 
 // Établissement de la connexion physique avec MySQL
 db.connect((err) => {
@@ -120,8 +116,7 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/users', verifyToken, require('./routes/users'));
 app.use('/api/tasks', verifyToken, require('./routes/tasks'));
 app.use('/api/columns', verifyToken, require('./routes/columns'));
-app.use('/api/logs', verifyToken, require('./routes/logs'));
-app.use('/api/stats', verifyToken, require('./routes/stats'));
+// Les routes logs et stats ont été retirées pour la soutenance (simplification)
 
 // Démarrage du serveur web d'écoute
 const PORT = 3000;

@@ -10,8 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- Lier le CSS -->
     <link rel="stylesheet" href="style.css?v=47">
-    <!-- Bibliothèque Chart.js pour les graphiques -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body class="dashboard-page">
@@ -24,10 +23,8 @@
         <ul class="nav-links">
             <!-- Liens de navigation du menu -->
             <li id="nav-dashboard" class="active"><a href="#" onclick="showKanban()">📊 Dashboard</a></li>
-            <li id="nav-stats"><a href="#" onclick="showStats()">📈 Statistiques</a></li>
             <!-- Ce menu sera masqué par défaut et affiché uniquement pour l'admin -->
             <li id="nav-team" style="display: none;"><a href="#" onclick="showTeam()">👥 Équipe</a></li>
-            <li id="nav-history"><a href="#" onclick="showHistory()">📜 Historique</a></li>
             <li id="nav-profile"><a href="#" onclick="showProfile()">👤 Mon Profil</a></li>
         </ul>
         <div class="sidebar-footer">
@@ -211,8 +208,11 @@
         </div>
     </div>
 
-    <!-- Script principal -->
-    <script src="js/dashboard.js?v=23"></script>
+    <!-- Scripts modulaires (Simplification) -->
+    <script src="js/api.js"></script>
+    <script src="js/kanban.js"></script>
+    <script src="js/team.js"></script>
+    <script src="js/profile.js"></script>
 </body>
 
 </html>
