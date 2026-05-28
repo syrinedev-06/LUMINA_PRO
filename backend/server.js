@@ -64,14 +64,6 @@ db.connect((err) => {
             id_col INT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (id_col) REFERENCES columns(id) ON DELETE CASCADE
-        )`,
-        `CREATE TABLE IF NOT EXISTS logs (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            action VARCHAR(255) NOT NULL,
-            details TEXT,
-            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            is_deleted TINYINT(1) DEFAULT 0
-        )`
     ];
 
     // Exécution séquentielle des requêtes de création
@@ -81,18 +73,6 @@ db.connect((err) => {
         });
     });
 
-    /**
-     * Auto-migration : Ajoute la colonne 'is_deleted' à la table logs si elle manque.
-     * Permet la compatibilité avec la fonctionnalité récente de la Corbeille de logs.
-     */
-    db.query("SHOW COLUMNS FROM logs LIKE 'is_deleted'", (err, results) => {
-        if (!err && results.length === 0) {
-            db.query("ALTER TABLE logs ADD COLUMN is_deleted TINYINT(1) DEFAULT 0", (err) => {
-                if (err) console.error("Erreur alteration table logs:", err.message);
-                else console.log("Colonne 'is_deleted' ajoutée à la table 'logs' !");
-            });
-        }
-    });
 });
 
 /**

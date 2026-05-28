@@ -50,13 +50,6 @@ db.connect((err) => {
             id_col INT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (id_col) REFERENCES columns(id) ON DELETE CASCADE
-        )`,
-        `CREATE TABLE IF NOT EXISTS logs (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            action VARCHAR(50) NOT NULL,
-            details TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )`
     ];
 
     // Exécution de la création de chaque table
