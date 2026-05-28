@@ -130,7 +130,7 @@ function renderBoard(columns, tasks) {
             <h4>
                 ${col.title.toUpperCase()}
                 <div style="display:flex; align-items:center; gap:8px;">
-                    <span class="badge" style="position:static; padding:2px 8px; background-color: var(--danger); color: #000000; font-weight: 900;">${colTasks.length}</span>
+                    <span class="badge" style="position:static; padding:2px 8px; background-color: var(--danger); color: #000000; font-weight: 900; font-size: 13px;">${colTasks.length}</span>
                     <span class="icon-btn" title="Renommer" onclick="renameColumn(${col.id}, '${col.title.replace(/'/g, "\\'")}')">✏️</span>
                     <span class="icon-btn" title="Supprimer" onclick="deleteColumn(${col.id})">×</span>
                 </div>
