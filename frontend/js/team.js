@@ -12,12 +12,6 @@
  */
 async function showTeam() {
     document.getElementById('open-modal-btn').style.display = 'none';
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (!user || user.role !== 'admin') {
-        document.getElementById('content-area').innerHTML =
-            "<p style='text-align:center; padding:60px; color:var(--text-muted);'>⛔ Accès interdit. Vous devez être administrateur.</p>";
-        return;
-    }
 
     setActiveLink('nav-team');
     document.getElementById('page-title').innerText = "Membres de l'équipe";
