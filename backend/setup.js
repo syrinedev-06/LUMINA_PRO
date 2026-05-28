@@ -50,6 +50,7 @@ db.connect((err) => {
             id_col INT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (id_col) REFERENCES columns(id) ON DELETE CASCADE
+        )`
     ];
 
     // Exécution de la création de chaque table
