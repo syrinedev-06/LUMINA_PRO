@@ -116,7 +116,11 @@ function renderBoard(columns, tasks) {
         board.innerHTML = "<p style='padding:20px;'>Aucune colonne. Cliquez sur le bouton pour en créer une !</p>";
     }
 
-    columns.forEach(col => {
+    columns.forEach((col, index) => {
+        // Identification des colonnes adjacentes pour les boutons de déplacement
+        const prevCol = index > 0 ? columns[index - 1] : null;
+        const nextCol = index < columns.length - 1 ? columns[index + 1] : null;
+
         // On ne garde que les tâches de cette colonne
         const colTasks = tasks.filter(t => t.id_col === col.id);
 
@@ -131,18 +135,24 @@ function renderBoard(columns, tasks) {
                     <span class="icon-btn" title="Supprimer" onclick="deleteColumn(${col.id})">×</span>
                 </div>
             </h4>
-            <!-- Zone où on peut déposer les cartes (drop) -->
-            <div class="task-list" ondragover="allowDrop(event)" ondrop="drop(event, ${col.id})">
+            <div class="task-list">
                 ${colTasks.map(task => `
-                    <!-- Carte déplaçable (draggable="true") -->
-                    <div class="task-card" draggable="true" ondragstart="drag(event, ${task.id})">
+                    <div class="task-card">
                         <span class="badge bg-${escapeHTML(task.priority)}">${task.priority === 'high' ? 'URGENT' : task.priority === 'medium' ? 'MOYEN' : 'NORMAL'}</span>
                         <h5>${escapeHTML(task.title)}</h5>
                         <p>${escapeHTML(task.description || '')}</p>
                         <div class="assigned-to">👤 ${escapeHTML(task.assigned_name || 'Non assigné')}</div>
-                        <div class="task-actions">
-                            <span class="icon-btn" title="Modifier" onclick="editTask(${JSON.stringify(task).replace(/"/g, '&quot;')})">✏️</span>
-                            <span class="icon-btn" title="Supprimer" onclick="directDeleteTask(${task.id})">🗑️</span>
+                        
+                        <!-- Actions et Boutons de déplacement -->
+                        <div style="display:flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);">
+                            <div class="task-move-btns" style="display:flex; gap:5px;">
+                                ${prevCol ? `<span class="icon-btn" title="Déplacer à gauche" onclick="moveTask(${task.id}, ${prevCol.id})">⬅️</span>` : `<span style="width:24px; display:inline-block;"></span>`}
+                                ${nextCol ? `<span class="icon-btn" title="Déplacer à droite" onclick="moveTask(${task.id}, ${nextCol.id})">➡️</span>` : `<span style="width:24px; display:inline-block;"></span>`}
+                            </div>
+                            <div class="task-actions" style="margin-top: 0; padding-top: 0; border: none;">
+                                <span class="icon-btn" title="Modifier" onclick="editTask(${JSON.stringify(task).replace(/"/g, '&quot;')})">✏️</span>
+                                <span class="icon-btn" title="Supprimer" onclick="directDeleteTask(${task.id})">🗑️</span>
+                            </div>
                         </div>
                     </div>
                 `).join('')}
@@ -406,39 +416,23 @@ function resetTaskForm() {
 }
 
 // =========================================================================
-// 10. DRAG & DROP (GLISSER-DÉPOSER)
+// 10. DÉPLACEMENT DES TÂCHES (FLÈCHES)
 // =========================================================================
 
 /**
- * Autorise le fait de pouvoir lâcher un élément ici.
- * Par défaut, le navigateur interdit de lâcher des éléments sur la page. 
- * preventDefault() lève cette interdiction.
+ * @brief Déplace une tâche vers une colonne adjacente.
+ * Remplace l'ancien Drag & Drop pour simplifier le code et l'expérience utilisateur.
  */
-function allowDrop(ev) { 
-    ev.preventDefault(); 
-}
-
-/**
- * Mémorise l'ID de la tâche que l'on commence à glisser.
- */
-function drag(ev, id) { 
-    ev.dataTransfer.setData("text", id); 
-}
-
-/**
- * Dépose la tâche dans sa nouvelle colonne et l'enregistre sur le serveur.
- */
-async function drop(ev, colId) {
-    ev.preventDefault();
-    const taskId = ev.dataTransfer.getData("text");
-    
-    // On dit au serveur que la tâche a changé de colonne
-    await authFetch(`http://localhost:3000/api/tasks/${taskId}`, {
-        method: 'PUT',
-        body: JSON.stringify({ id_col: colId })
-    });
-    
-    fetchTasks(); 
+async function moveTask(taskId, newColId) {
+    try {
+        await authFetch(`http://localhost:3000/api/tasks/${taskId}`, {
+            method: 'PUT',
+            body: JSON.stringify({ id_col: newColId })
+        });
+        fetchTasks(); // On rafraîchit l'affichage pour voir le mouvement
+    } catch (e) {
+        alert("Erreur lors du déplacement de la tâche.");
+    }
 }
 
 // =========================================================================
