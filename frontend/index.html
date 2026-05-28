@@ -66,10 +66,7 @@
                         <circle cx="16.5" cy="7.5" r="2.5" fill="#facc15"/>
                     </svg>
                 </div>
-                <!-- Icône Notification -->
-                <div class="notif-bell" onclick="toggleNotifDrawer()">
-                    🔔 <span class="notif-badge" id="notif-count">3</span>
-                </div>
+
                 <!-- Informations utilisateur (nom + avatar cliquable) -->
                 <div class="user-info" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                     <div class="avatar custom-avatar" onclick="showProfile()" style="cursor: pointer; width: 36px; height: 36px; border-radius: 50%;" title="Profil">
@@ -98,43 +95,7 @@
         <button class="fab" id="open-modal-btn">+</button>
     </main>
 
-    <!-- OVERLAY DU DRAWER (Permet de fermer le drawer en cliquant à l'extérieur) -->
-    <div id="drawer-overlay" class="drawer-overlay" onclick="toggleNotifDrawer()"></div>
 
-    <!-- DRAWER NOTIFICATIONS -->
-    <div id="notif-drawer" class="drawer">
-        <div class="drawer-header">
-            <h3>Notifications</h3>
-            <!-- Bouton fermer -->
-            <button onclick="toggleNotifDrawer()">✖</button>
-        </div>
-        <div class="drawer-content" id="notif-list">
-            <div class="notif-item unread" onclick="readNotification(this)">
-                <div class="notif-icon">🔔</div>
-                <div class="notif-text">
-                    <strong>Inès Admin</strong> a ajouté une nouvelle tâche "Finaliser le design".
-                    <span class="notif-time">Il y a 10 min</span>
-                </div>
-            </div>
-            <div class="notif-item unread" onclick="readNotification(this)">
-                <div class="notif-icon">💬</div>
-                <div class="notif-text">
-                    <strong>Jean Dupont</strong> a commenté sur "Développement API".
-                    <span class="notif-time">Il y a 1 heure</span>
-                </div>
-            </div>
-            <div class="notif-item" onclick="readNotification(this)">
-                <div class="notif-icon">✅</div>
-                <div class="notif-text">
-                    La tâche "Préparer la réunion" a été marquée comme terminée.
-                    <span class="notif-time">Hier à 14:30</span>
-                </div>
-            </div>
-        </div>
-        <div style="padding: 15px; border-top: 1px solid var(--border); text-align: center;">
-            <button class="btn-secondary btn-generer" style="width: 100%; padding: 10px;" onclick="addMockNotif()">+ Générer une notification</button>
-        </div>
-    </div>
 
     <!-- MODALE TÂCHE (Formulaire d'ajout/édition) -->
     <div id="task-modal" class="modal">
