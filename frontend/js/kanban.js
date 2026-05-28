@@ -1,4 +1,4 @@
-==============
+// ==============
 
 /**
  * =========================================================================
@@ -478,25 +478,4 @@ function toggleSidebar() {
     }
 }
 
-/**
- * @brief Bascule le mode sombre.
- */
-function toggleTheme() {
-    const isDark = document.body.classList.toggle('dark-mode');
-    localStorage.setItem('darkMode', isDark);
-    
-    // Mettre à jour le design du toggle-switch (on utilise une checkbox maintenant)
-    const toggleCheckbox = document.getElementById('theme-toggle-checkbox');
-    if (toggleCheckbox) {
-        toggleCheckbox.checked = isDark;
-    }
-}
 
-// Initialisation du mode sombre au chargement
-document.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('darkMode') === 'true') {
-        document.body.classList.add('dark-mode');
-        const toggleCheckbox = document.getElementById('theme-toggle-checkbox');
-        if (toggleCheckbox) toggleCheckbox.checked = true;
-    }
-});
