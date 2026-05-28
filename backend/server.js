@@ -2,7 +2,7 @@ const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 const path = require('path');
-const verifyToken = require('./middleware/auth'); // Importation de notre middleware de sécurité JWT
+const verifyToken = require('./middleware/security'); // Importation de notre middleware de sécurité JWT
 
 // Importation pour la documentation Swagger
 const swaggerUi = require('swagger-ui-express');
