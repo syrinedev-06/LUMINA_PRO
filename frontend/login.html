@@ -10,27 +10,7 @@
 </head>
 
 <body class="auth-page">
-    <script>
-        if (localStorage.getItem('darkMode') === 'true') {
-            document.body.classList.add('dark-mode');
-        }
-    </script>
-
     <div class="auth-card" style="position: relative;">
-        <!-- Bouton Mode Sombre positionné en absolu pour ne rien pousser -->
-        <div style="position: absolute; top: 30px; right: 20px; z-index: 10;">
-            <label class="theme-switch" title="Changer de thème">
-                <input type="checkbox" id="theme-toggle-checkbox" onchange="toggleTheme()">
-                <span class="slider">
-                    <span class="switch-text light-text">LIGHT</span>
-                    <span class="switch-text dark-text">DARK</span>
-                    <span class="knob">
-                        <span class="icon sun">☀️</span>
-                        <span class="icon moon">🌙</span>
-                    </span>
-                </span>
-            </label>
-        </div>
 
         <div style="text-align: center; margin-bottom: -60px; z-index: 1; position: relative;">
             <img src="logo.png" alt="Logo Lumina" class="logo-auth">
@@ -100,19 +80,7 @@
             }
         }
 
-        // Basculer le thème
-        function toggleTheme() {
-            const isDark = document.body.classList.toggle('dark-mode');
-            localStorage.setItem('darkMode', isDark);
-        }
-
-        // Initialiser l'état de la checkbox au chargement
-        window.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem('darkMode') === 'true') {
-                document.getElementById('theme-toggle-checkbox').checked = true;
-            }
-        });
-    </script>
+</script>
 </body>
 
 </html>

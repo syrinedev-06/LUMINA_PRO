@@ -11,12 +11,12 @@ Développée dans le cadre du titre professionnel **DWWM** — La Plateforme_ �
 
 - Tableau Kanban avec **colonnes personnalisables** (créer, renommer, supprimer)
 - **CRUD complet** des tâches (créer, modifier, déplacer, supprimer)
+- **Drag & Drop** pour déplacer les tâches entre les colonnes
 - Assignation des tâches aux membres de l'équipe
 - Authentification sécurisée par **JWT** (expiration 24h)
 - Mots de passe hachés avec **bcrypt** (10 rounds)
 - Gestion des rôles : **admin** (gestion équipe + colonnes) et **utilisateur**
 - Interface **responsive** (desktop + mobile)
-- **Mode sombre** avec sauvegarde dans localStorage
 - Documentation API interactive avec **Swagger**
 - Logs d'audit de toutes les actions (qui a fait quoi et quand)
 
