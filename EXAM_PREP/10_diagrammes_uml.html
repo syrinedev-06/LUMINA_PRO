@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagrammes UML — Lumina Pro</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: #e0e0f0; }
+
+header {
+  background: linear-gradient(135deg, #302b63, #1a1a2e);
+  padding: 28px 40px; border-bottom: 3px solid #d63384;
+  display: flex; align-items: center; gap: 20px;
+}
+header a { color: #d63384; text-decoration: none; font-size: 1.4rem; }
+header h1 { font-size: 1.5rem; color: #fff; }
+
+nav {
+  background: #1a1a2e; padding: 12px 40px;
+  display: flex; flex-wrap: wrap; gap: 10px;
+  border-bottom: 1px solid #302b63;
+  position: sticky; top: 0; z-index: 100;
+}
+nav a {
+  color: #d63384; text-decoration: none; font-size: 0.85rem;
+  background: rgba(214,51,132,0.1); padding: 5px 14px;
+  border-radius: 20px; border: 1px solid rgba(214,51,132,0.3);
+}
+nav a:hover { background: rgba(214,51,132,0.3); }
+
+main { max-width: 1100px; margin: 0 auto; padding: 30px 20px 80px; }
+
+h2 {
+  font-size: 1.4rem; color: #d63384;
+  border-left: 4px solid #d63384; padding-left: 14px;
+  margin: 40px 0 20px;
+}
+h3 { color: #c084fc; font-size: 1.1rem; margin: 20px 0 12px; }
+p { color: #aaa; margin-bottom: 14px; line-height: 1.6; }
+
+/* ── DIAGRAMME DE SÉQUENCE ── */
+.seq-diagram {
+  background: #0d1117; border: 1px solid #30363d;
+  border-radius: 12px; padding: 30px 20px;
+  margin: 20px 0; overflow-x: auto;
+}
+.seq-actors {
+  display: flex; gap: 0; justify-content: space-around;
+  margin-bottom: 0; position: relative;
+}
+.seq-actor {
+  display: flex; flex-direction: column; align-items: center;
+  flex: 1; position: relative;
+}
+.seq-actor-box {
+  background: #302b63; border: 2px solid #d63384;
+  color: #fff; font-weight: 700; font-size: 0.85rem;
+  padding: 10px 16px; border-radius: 8px;
+  text-align: center; white-space: nowrap; z-index: 2;
+}
+.seq-lifeline {
+  width: 2px; background: rgba(214,51,132,0.3);
+  flex: 1; min-height: 520px; margin-top: 0;
+}
+
+.seq-messages {
+  position: relative; margin: -530px 0 0 0;
+  padding: 0 20px;
+}
+.seq-msg {
+  display: flex; align-items: center;
+  margin: 18px 0; position: relative;
+}
+.seq-msg-line {
+  flex: 1; height: 2px;
+  position: relative; display: flex; align-items: center;
+}
+.seq-msg-line.solid { background: #d63384; }
+.seq-msg-line.dashed { background: repeating-linear-gradient(90deg, #10b981 0, #10b981 6px, transparent 6px, transparent 12px); }
+.seq-msg-line.internal { background: #f59e0b; }
+.seq-msg-label {
+  position: absolute; top: -18px; left: 50%;
+  transform: translateX(-50%); white-space: nowrap;
+  font-size: 0.78rem; font-weight: 600;
+  background: #0d1117; padding: 2px 8px; border-radius: 4px;
+}
+.seq-msg-line.solid .seq-msg-label { color: #d63384; }
+.seq-msg-line.dashed .seq-msg-label { color: #10b981; }
+.seq-msg-line.internal .seq-msg-label { color: #f59e0b; }
+.arrow-right::after {
+  content: ''; position: absolute; right: -6px; top: -5px;
+  width: 0; height: 0;
+  border-left: 10px solid #d63384;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+}
+.arrow-left::after {
+  content: ''; position: absolute; left: -6px; top: -5px;
+  width: 0; height: 0;
+  border-right: 10px solid #10b981;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+}
+.seq-note {
+  font-size: 0.8rem; color: #666; font-style: italic;
+  margin-left: 10px; white-space: nowrap;
+}
+.seq-step-num {
+  background: #d63384; color: #fff; border-radius: 50%;
+  width: 22px; height: 22px; display: flex; align-items: center;
+  justify-content: center; font-size: 0.7rem; font-weight: 800;
+  flex-shrink: 0; margin-right: 8px;
+}
+.spacer-col { flex: 1; }
+.col-1 { width: 20%; }
+.col-2 { width: 20%; }
+.col-3 { width: 20%; }
+.col-4 { width: 20%; }
+
+/* Table-based sequence for clarity */
+.seq-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+.seq-table th {
+  background: #302b63; color: #fff; padding: 10px 14px;
+  font-size: 0.85rem; text-align: center; border: 1px solid #1a1a2e;
+}
+.seq-table td {
+  padding: 8px 14px; font-size: 0.82rem; color: #ccc;
+  border: 1px solid #1a1a2e; text-align: center;
+  vertical-align: middle;
+}
+.seq-table tr:nth-child(even) td { background: #111826; }
+.arrow-cell { font-size: 1.1rem; white-space: nowrap; }
+.pink { color: #d63384; font-weight: 700; }
+.green { color: #10b981; font-weight: 700; }
+.yellow { color: #f59e0b; font-weight: 700; }
+
+/* ── USE CASES ── */
+.uc-diagram {
+  background: #0d1117; border: 1px solid #30363d;
+  border-radius: 12px; padding: 30px; margin: 20px 0;
+}
+.uc-system {
+  border: 2px dashed #302b63; border-radius: 12px;
+  padding: 20px; position: relative; margin: 0 80px;
+}
+.uc-system-label {
+  position: absolute; top: -14px; left: 50%;
+  transform: translateX(-50%);
+  background: #0d1117; color: #d63384;
+  font-weight: 800; font-size: 0.9rem; padding: 0 12px;
+}
+.uc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.uc-col { display: flex; flex-direction: column; gap: 10px; }
+.uc-col-title { color: #c084fc; font-weight: 800; font-size: 0.85rem; text-align: center; margin-bottom: 4px; }
+.uc-item {
+  background: #1a1a2e; border: 1px solid #302b63;
+  border-radius: 20px; padding: 8px 16px;
+  text-align: center; font-size: 0.82rem; color: #e0e0f0;
+}
+.uc-item.admin-only { border-color: #d63384; color: #ff80b0; }
+.uc-item.shared { border-color: #10b981; color: #6ee7b7; }
+.actor-box {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.actor-figure { font-size: 2.5rem; }
+.actor-label { color: #fff; font-weight: 700; font-size: 0.85rem; }
+.uc-layout { display: flex; align-items: flex-start; gap: 20px; }
+.uc-actors { display: flex; flex-direction: column; gap: 60px; padding-top: 40px; min-width: 80px; }
+.uc-actors-right { display: flex; flex-direction: column; gap: 60px; padding-top: 40px; min-width: 80px; }
+.uc-legend {
+  display: flex; gap: 20px; flex-wrap: wrap;
+  margin-top: 16px; font-size: 0.8rem;
+}
+.uc-legend span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+/* ── ARBORESCENCE ── */
+.tree {
+  background: #0d1117; border: 1px solid #30363d;
+  border-radius: 12px; padding: 30px; margin: 20px 0;
+  font-family: monospace;
+}
+.tree-node { margin: 4px 0; display: flex; align-items: center; gap: 8px; }
+.tree-indent { color: #302b63; }
+.tree-icon { font-size: 1rem; }
+.tree-name { font-size: 0.88rem; }
+.tree-name.page { color: #d63384; font-weight: 700; }
+.tree-name.component { color: #60a5fa; }
+.tree-name.action { color: #10b981; }
+.tree-name.file { color: #fbbf24; }
+.tree-desc { color: #555; font-size: 0.78rem; margin-left: 8px; }
+
+/* ── GIT WORKFLOW ── */
+.git-flow {
+  background: #0d1117; border: 1px solid #30363d;
+  border-radius: 12px; padding: 24px; margin: 20px 0;
+}
+.commit-row {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 10px 0; border-bottom: 1px solid #1a1a2e;
+}
+.commit-dot {
+  width: 12px; height: 12px; background: #d63384;
+  border-radius: 50%; flex-shrink: 0; margin-top: 5px;
+  box-shadow: 0 0 8px rgba(214,51,132,0.5);
+}
+.commit-line { position: relative; }
+.commit-hash { font-family: monospace; color: #f59e0b; font-size: 0.8rem; }
+.commit-msg { color: #e0e0f0; font-size: 0.88rem; margin-top: 2px; }
+.commit-tag {
+  font-size: 0.72rem; padding: 2px 8px; border-radius: 10px;
+  font-weight: 700; margin-top: 4px; display: inline-block;
+}
+.tag-feat { background: rgba(16,185,129,0.2); color: #10b981; border: 1px solid #10b981; }
+.tag-fix { background: rgba(239,68,68,0.2); color: #f87171; border: 1px solid #ef4444; }
+.tag-sec { background: rgba(214,51,132,0.2); color: #d63384; border: 1px solid #d63384; }
+.tag-docs { background: rgba(96,165,250,0.2); color: #60a5fa; border: 1px solid #3b82f6; }
+.tag-style { background: rgba(245,158,11,0.2); color: #fbbf24; border: 1px solid #f59e0b; }
+
+.info-box {
+  background: #0d1a0d; border-left: 4px solid #10b981;
+  border-radius: 6px; padding: 12px 16px; margin: 14px 0;
+  color: #a7f3d0; font-size: 0.88rem;
+}
+.warn-box {
+  background: #1a1000; border-left: 4px solid #f59e0b;
+  border-radius: 6px; padding: 12px 16px; margin: 14px 0;
+  color: #fde68a; font-size: 0.88rem;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html">←</a>
+  <h1>📐 Diagrammes UML & Architecture — Lumina Pro</h1>
+</header>
+
+<nav>
+  <a href="#sequence">Séquence (Login)</a>
+  <a href="#usecases">Use Cases</a>
+  <a href="#arborescence">Arborescence</a>
+  <a href="#git">Workflow Git</a>
+  <a href="#env">Fichier .env</a>
+</nav>
+
+<main>
+
+<!-- ═══════════════════════════════════════════════ -->
+<section id="sequence">
+<h2>1. Diagramme de séquence — Flux de connexion</h2>
+<p>Montre exactement ce qui se passe quand un utilisateur clique sur "Se connecter". Chaque flèche = une action dans le code.</p>
+
+<div class="seq-diagram">
+  <table class="seq-table">
+    <thead>
+      <tr>
+        <th>Étape</th>
+        <th>🖥️ Navigateur<br><small>login.html + auth.js</small></th>
+        <th>Direction</th>
+        <th>⚙️ Serveur Express<br><small>routes/auth.js</small></th>
+        <th>Direction</th>
+        <th>🗄️ MySQL<br><small>table users</small></th>
+        <th>Ce qui se passe dans le code</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1</strong></td>
+        <td class="pink">Formulaire soumis<br><small>email + password</small></td>
+        <td class="arrow-cell pink">──POST──▶</td>
+        <td>Reçoit <code>/api/auth/login</code></td>
+        <td></td>
+        <td></td>
+        <td><code>e.preventDefault()</code> → <code>fetch('POST /api/auth/login')</code></td>
+      </tr>
+      <tr>
+        <td><strong>2</strong></td>
+        <td></td>
+        <td></td>
+        <td>Cherche l'email</td>
+        <td class="arrow-cell yellow">──SELECT──▶</td>
+        <td class="yellow">SELECT * FROM users WHERE email = ?</td>
+        <td>Requête préparée (anti-injection SQL)</td>
+      </tr>
+      <tr>
+        <td><strong>3</strong></td>
+        <td></td>
+        <td></td>
+        <td>Reçoit le résultat</td>
+        <td class="arrow-cell green">◀── Résultat ──</td>
+        <td class="green">Retourne la ligne user (avec hash)</td>
+        <td><code>results[0]</code> = objet utilisateur</td>
+      </tr>
+      <tr>
+        <td><strong>4</strong></td>
+        <td></td>
+        <td></td>
+        <td class="yellow">bcrypt.compare(password, user.password)</td>
+        <td></td>
+        <td></td>
+        <td>Compare le mot de passe saisi avec le hash stocké → <code>true</code> ou <code>false</code></td>
+      </tr>
+      <tr>
+        <td><strong>5a</strong></td>
+        <td class="pink">401 "Email ou MDP incorrect"</td>
+        <td class="arrow-cell pink">◀── 401 ──</td>
+        <td class="pink">Si isMatch = false → res.status(401)</td>
+        <td></td>
+        <td></td>
+        <td>Mauvais mot de passe → échec</td>
+      </tr>
+      <tr>
+        <td><strong>5b</strong></td>
+        <td></td>
+        <td></td>
+        <td class="green">Si isMatch = true → jwt.sign({id, role}, SECRET, 24h)</td>
+        <td></td>
+        <td></td>
+        <td>Crée le token JWT signé valable 24h</td>
+      </tr>
+      <tr>
+        <td><strong>6</strong></td>
+        <td class="green">Reçoit { token, user }</td>
+        <td class="arrow-cell green">◀── 200 ──</td>
+        <td class="green">res.json({ token, user })</td>
+        <td></td>
+        <td></td>
+        <td>Réponse HTTP 200 avec le token</td>
+      </tr>
+      <tr>
+        <td><strong>7</strong></td>
+        <td class="pink">localStorage.setItem('token', ...)<br>→ Redirige vers index.html</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Token stocké dans le navigateur, redirection</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>Diagramme de séquence — Requête protégée (ex : GET /api/tasks)</h3>
+<div class="seq-diagram">
+  <table class="seq-table">
+    <thead>
+      <tr>
+        <th>Étape</th>
+        <th>🖥️ Navigateur<br><small>kanban.js</small></th>
+        <th>Direction</th>
+        <th>🛡️ Middleware<br><small>verifyToken</small></th>
+        <th>Direction</th>
+        <th>⚙️ Route<br><small>tasks.js</small></th>
+        <th>🗄️ MySQL</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1</strong></td>
+        <td class="pink">authFetch('/api/tasks')<br><small>Header: Bearer eyJ...</small></td>
+        <td class="arrow-cell pink">──GET──▶</td>
+        <td>Lit le header Authorization</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>2a</strong></td>
+        <td class="pink">← 401 Token manquant</td>
+        <td class="arrow-cell pink">◀──401──</td>
+        <td class="pink">Si pas de token → bloque</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>2b</strong></td>
+        <td></td>
+        <td></td>
+        <td class="yellow">jwt.verify(token, SECRET)</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>3a</strong></td>
+        <td class="pink">← 403 Token invalide/expiré</td>
+        <td class="arrow-cell pink">◀──403──</td>
+        <td class="pink">Si verify() échoue → bloque</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>3b</strong></td>
+        <td></td>
+        <td></td>
+        <td class="green">Token OK → req.user = {id,role}<br>next()</td>
+        <td class="arrow-cell green">──▶</td>
+        <td>Exécute la route</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>4</strong></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="arrow-cell yellow">──SELECT LEFT JOIN──▶</td>
+        <td></td>
+        <td class="yellow">tasks + users</td>
+      </tr>
+      <tr>
+        <td><strong>5</strong></td>
+        <td class="green">← 200 [ {tâche1}, {tâche2}... ]</td>
+        <td class="arrow-cell green">◀──200 JSON──</td>
+        <td></td>
+        <td></td>
+        <td class="green">res.json(results)</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<section id="usecases">
+<h2>2. Diagramme de Use Cases (Cas d'utilisation)</h2>
+<p>Montre ce que chaque type d'utilisateur peut faire dans l'application.</p>
+
+<div class="uc-diagram">
+  <div class="uc-layout">
+    <!-- Acteur gauche : Utilisateur -->
+    <div class="uc-actors">
+      <div class="actor-box">
+        <div class="actor-figure">🧑</div>
+        <div class="actor-label">Utilisateur</div>
+        <div style="font-size:0.72rem;color:#888;text-align:center">role = "user"</div>
+      </div>
+    </div>
+
+    <!-- Système -->
+    <div class="uc-system" style="flex:1">
+      <span class="uc-system-label">Lumina Pro — Système</span>
+      <div class="uc-grid">
+        <div class="uc-col">
+          <div class="uc-col-title">🟢 Tous les utilisateurs</div>
+          <div class="uc-item shared">Se connecter</div>
+          <div class="uc-item shared">Créer un compte</div>
+          <div class="uc-item shared">Voir le tableau Kanban</div>
+          <div class="uc-item shared">Créer une tâche</div>
+          <div class="uc-item shared">Modifier une tâche</div>
+          <div class="uc-item shared">Supprimer une tâche</div>
+          <div class="uc-item shared">Déplacer une tâche ⬅️➡️</div>
+          <div class="uc-item shared">Voir son profil</div>
+          <div class="uc-item shared">Se déconnecter</div>
+        </div>
+        <div class="uc-col">
+          <div class="uc-col-title">🔴 Admin uniquement</div>
+          <div class="uc-item admin-only">Créer une colonne</div>
+          <div class="uc-item admin-only">Renommer une colonne</div>
+          <div class="uc-item admin-only">Supprimer une colonne</div>
+          <div class="uc-item admin-only">Voir l'onglet Équipe</div>
+          <div class="uc-item admin-only">Voir la liste des membres</div>
+          <div class="uc-item admin-only">Supprimer un utilisateur</div>
+          <div class="uc-item admin-only">Assigner une tâche à quelqu'un</div>
+          <div class="uc-item admin-only">Voir les logs d'activité</div>
+          <div class="uc-item admin-only">Accéder à Swagger /api-docs</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Acteur droit : Admin -->
+    <div class="uc-actors-right">
+      <div class="actor-box">
+        <div class="actor-figure">👑</div>
+        <div class="actor-label">Admin</div>
+        <div style="font-size:0.72rem;color:#888;text-align:center">role = "admin"</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="uc-legend">
+    <span><span class="dot" style="background:#10b981;border:1px solid #10b981"></span> Accessible à tous</span>
+    <span><span class="dot" style="background:#d63384;border:1px solid #d63384"></span> Admin seulement</span>
+  </div>
+</div>
+
+<div class="warn-box">
+  ⚠️ <strong>Important pour le jury :</strong> La restriction "admin seulement" est appliquée côté frontend (cacher l'onglet) MAIS aussi côté backend via le middleware verifyToken qui lit req.user.role. Un utilisateur ne peut pas contourner ces restrictions même en manipulant le navigateur.
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<section id="arborescence">
+<h2>3. Arborescence des pages</h2>
+<p>Navigation possible dans l'application, selon le rôle de l'utilisateur.</p>
+
+<div class="tree">
+  <div class="tree-node">
+    <span class="tree-icon">🌐</span>
+    <span class="tree-name page">login.html</span>
+    <span class="tree-desc">— Point d'entrée de l'application</span>
+  </div>
+  <div class="tree-node" style="margin-left:24px">
+    <span class="tree-indent">├──</span>
+    <span class="tree-icon">📝</span>
+    <span class="tree-name action">Formulaire Connexion</span>
+    <span class="tree-desc">→ POST /api/auth/login → stocke token → redirige</span>
+  </div>
+  <div class="tree-node" style="margin-left:24px">
+    <span class="tree-indent">└──</span>
+    <span class="tree-icon">📝</span>
+    <span class="tree-name action">Formulaire Inscription</span>
+    <span class="tree-desc">→ POST /api/auth/register → alerte "Compte créé"</span>
+  </div>
+
+  <div class="tree-node" style="margin-top:16px">
+    <span class="tree-icon">🗂️</span>
+    <span class="tree-name page">index.html</span>
+    <span class="tree-desc">— Tableau de bord principal (nécessite JWT valide)</span>
+  </div>
+  <div class="tree-node" style="margin-left:24px">
+    <span class="tree-indent">├──</span>
+    <span class="tree-icon">📊</span>
+    <span class="tree-name component">Sidebar navigation</span>
+  </div>
+  <div class="tree-node" style="margin-left:48px">
+    <span class="tree-indent">├──</span>
+    <span class="tree-icon">🟢</span>
+    <span class="tree-name action">Tableau Kanban</span>
+    <span class="tree-desc">— Vue par défaut, colonnes + cartes tâches</span>
+  </div>
+  <div class="tree-node" style="margin-left:72px">
+    <span class="tree-indent">├──</span>
+    <span class="tree-icon">📌</span>
+    <span class="tree-name component">Colonne "À faire"</span>
+    <span class="tree-desc">→ tâches filtrées par id_col</span>
+  </div>
+  <div class="tree-node" style="margin-left:72px">
+    <span class="tree-indent">├──</span>
+    <span class="tree-icon">📌</span>
+    <span class="tree-name component">Colonne "En cours"</span>
+  </div>
+  <div class="tree-node" style="margin-left:72px">
+    <span class="tree-indent">└──</span>
+    <span class="tree-icon">📌</span>
+    <span class="tree-name component">Colonne "Terminé"</span>
+  </div>
+  <div class="tree-node" style="margin-left:48px">
+    <span class="tree-indent">├──</span>
+    <span class="tree-icon">🔴</span>
+    <span class="tree-name admin-only" style="color:#ff80b0;font-weight:700">Équipe 👑 (admin)</span>
+    <span class="tree-desc">→ GET /api/users → tableau membres</span>
+  </div>
+  <div class="tree-node" style="margin-left:48px">
+    <span class="tree-indent">└──</span>
+    <span class="tree-icon">👤</span>
+    <span class="tree-name action">Profil utilisateur</span>
+    <span class="tree-desc">→ lecture localStorage</span>
+  </div>
+  <div class="tree-node" style="margin-left:24px">
+    <span class="tree-indent">├──</span>
+    <span class="tree-icon">➕</span>
+    <span class="tree-name component">Modale "Nouvelle tâche"</span>
+    <span class="tree-desc">→ POST /api/tasks</span>
+  </div>
+  <div class="tree-node" style="margin-left:24px">
+    <span class="tree-indent">├──</span>
+    <span class="tree-icon">✏️</span>
+    <span class="tree-name component">Modale "Modifier tâche"</span>
+    <span class="tree-desc">→ PUT /api/tasks/:id</span>
+  </div>
+  <div class="tree-node" style="margin-left:24px">
+    <span class="tree-indent">└──</span>
+    <span class="tree-icon">🔌</span>
+    <span class="tree-name action">Déconnexion</span>
+    <span class="tree-desc">→ localStorage.clear() → redirige login.html</span>
+  </div>
+</div>
+
+<div class="info-box">
+  ✅ <strong>Sécurité de navigation :</strong> Si quelqu'un ouvre index.html sans être connecté, le JavaScript vérifie immédiatement <code>localStorage.getItem('token')</code>. Si null → redirection automatique vers login.html. L'utilisateur ne peut jamais voir le Kanban sans token.
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<section id="git">
+<h2>4. Workflow Git — Historique du projet</h2>
+<p>Les commits montrent la progression du projet étape par étape. Chaque commit = une fonctionnalité livrée.</p>
+
+<div class="info-box">
+  Commande pour voir l'historique : <code>git log --oneline</code><br>
+  Branche principale : <strong>main</strong> — pas de branches features (projet solo)
+</div>
+
+<div class="git-flow">
+  <div class="commit-row">
+    <div class="commit-dot"></div>
+    <div>
+      <div class="commit-hash">commit récent</div>
+      <div class="commit-msg">Tri des tâches par priorité (URGENT en haut dans chaque colonne)</div>
+      <span class="commit-tag tag-feat">feat</span>
+    </div>
+  </div>
+  <div class="commit-row">
+    <div class="commit-dot"></div>
+    <div>
+      <div class="commit-hash">commit récent</div>
+      <div class="commit-msg">Suppression du toggle dark/light sur la page connexion</div>
+      <span class="commit-tag tag-fix">fix</span>
+    </div>
+  </div>
+  <div class="commit-row">
+    <div class="commit-dot"></div>
+    <div>
+      <div class="commit-hash">commit récent</div>
+      <div class="commit-msg">Mise à jour README : contenu professionnel complet pour le jury DWWM</div>
+      <span class="commit-tag tag-docs">docs</span>
+    </div>
+  </div>
+  <div class="commit-row">
+    <div class="commit-dot"></div>
+    <div>
+      <div class="commit-hash">9096795</div>
+      <div class="commit-msg">Suppression complète de la fonctionnalité d'édition de profil pour minimaliser le code</div>
+      <span class="commit-tag tag-fix">refactor</span>
+    </div>
+  </div>
+  <div class="commit-row">
+    <div class="commit-dot"></div>
+    <div>
+      <div class="commit-hash">5a4e085</div>
+      <div class="commit-msg">Accentuation du gras + mise en couleur fuchsia des badges tâches</div>
+      <span class="commit-tag tag-style">style</span>
+    </div>
+  </div>
+  <div class="commit-row">
+    <div class="commit-dot" style="background:#888"></div>
+    <div>
+      <div class="commit-hash">... commits précédents</div>
+      <div class="commit-msg">Authentification JWT, CRUD tâches/colonnes, responsive, Swagger, sécurité...</div>
+      <span class="commit-tag tag-feat">feat</span>
+    </div>
+  </div>
+</div>
+
+<h3>Convention des messages de commit utilisée</h3>
+<div class="git-flow" style="padding:16px">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.85rem;">
+    <div><span class="commit-tag tag-feat">feat</span> Nouvelle fonctionnalité</div>
+    <div><span class="commit-tag tag-fix">fix</span> Correction d'un bug</div>
+    <div><span class="commit-tag tag-sec">security</span> Amélioration sécurité</div>
+    <div><span class="commit-tag tag-docs">docs</span> Documentation</div>
+    <div><span class="commit-tag tag-style">style</span> CSS / apparence</div>
+    <div><span class="commit-tag tag-feat" style="background:rgba(192,132,252,0.2);color:#c084fc;border-color:#c084fc">refactor</span> Restructuration code</div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<section id="env">
+<h2>5. Fichier .env — Sécurisation des secrets</h2>
+<p>Le fichier <code>.env</code> a été créé dans <code>backend/</code>. Il contient les informations sensibles hors du code source.</p>
+
+<div class="git-flow" style="font-family:monospace;font-size:0.88rem;color:#a5d6ff;padding:20px">
+<div style="color:#8b949e;margin-bottom:8px"># backend/.env — NE JAMAIS COMMIT CE FICHIER</div>
+<div style="color:#10b981">SECRET_KEY</div>=<span style="color:#fbbf24">LUMINA_SECRET_2024</span><br>
+<div style="color:#10b981">DB_HOST</div>=<span style="color:#fbbf24">localhost</span><br>
+<div style="color:#10b981">DB_USER</div>=<span style="color:#fbbf24">root</span><br>
+<div style="color:#10b981">DB_PASSWORD</div>=<span style="color:#fbbf24">(vide pour XAMPP)</span><br>
+<div style="color:#10b981">DB_NAME</div>=<span style="color:#fbbf24">lumina_pro</span><br>
+<div style="color:#10b981">PORT</div>=<span style="color:#fbbf24">3000</span>
+</div>
+
+<div class="info-box">
+  ✅ Le <code>.gitignore</code> contient déjà <code>.env</code> — ce fichier ne sera jamais envoyé sur GitHub. Un fichier <code>.env.example</code> a été créé pour montrer la structure sans les vraies valeurs.
+</div>
+
+<div class="warn-box">
+  ⚠️ <strong>Pour le jury :</strong> En production, le code source ne contiendrait plus "LUMINA_SECRET_2024" en dur. Il lirait <code>process.env.SECRET_KEY</code> depuis le .env. Pour ce projet DWWM, la clé est dans le code pour simplifier l'installation — c'est une limite connue que je saurais corriger en production.
+</div>
+</section>
+
+</main>
+</body>
+</html>
