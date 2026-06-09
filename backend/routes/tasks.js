@@ -24,10 +24,11 @@ const router = express.Router();
  */
 router.get('/', (req, res) => {
     const sql = `
-        SELECT tasks.*, users.name as assigned_name 
-        FROM tasks 
-        LEFT JOIN users ON tasks.id_assigned = users.id 
-        ORDER BY id_col ASC, created_at DESC`;
+        SELECT tasks.*, users.name as assigned_name
+        FROM tasks
+        LEFT JOIN users ON tasks.id_assigned = users.id
+        ORDER BY id_col ASC, FIELD(tasks.priority, 'high', 'medium', 'low') ASC, created_at DESC`;
+    // FIELD() ordonne : high=1, medium=2, low=3 → URGENT en haut, NORMAL en bas dans chaque colonne
     
     req.db.query(sql, (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
