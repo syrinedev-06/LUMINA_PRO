@@ -51,7 +51,7 @@ async function showTeam() {
                                     </td>
                                     <td><span style="color:#10b981;">●</span> Actif</td>
                                     <td>
-                                        <span class="icon-btn" style="color:var(--danger); opacity:1;" title="Retirer" onclick="deleteUser(${u.id})">🗑️</span>
+                                        <button type="button" class="icon-btn" style="color:var(--danger); opacity:1;" aria-label="Retirer ${escapeHTML(u.name)}" onclick="deleteUser(${u.id})">🗑️</button>
                                     </td>
                                 </tr>
                             `).join('')}

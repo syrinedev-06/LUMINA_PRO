@@ -1,3 +1,13 @@
+#sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 999;
+    cursor: pointer;
+}
+#sidebar-overlay.active { display: block; }
+
 /* ===================== RESPONSIVE — TABLET (≤ 900px) ===================== */
 @media (max-width: 900px) {
     .sidebar {

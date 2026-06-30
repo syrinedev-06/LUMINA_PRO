@@ -6,8 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lumina Workspace - Connexion</title>
     <meta name="description" content="Connectez-vous à Lumina Pro, votre espace de gestion de tâches collaboratif basé sur la méthode Kanban.">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=46">
+    <!-- CSS chargés en parallèle -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/scrollbar.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/kanban.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/forms_modals.css">
+    <link rel="stylesheet" href="css/auth_profile.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- Scripts sans blocage du rendu -->
+    <script src="js/auth.js" defer></script>
 </head>
 
 <body class="auth-page">
@@ -60,7 +70,6 @@
         </div>
     </div>
 
-    <script src="js/auth.js"></script>
     <script>
         function toggleAuth() {
             const login = document.getElementById('login-section');

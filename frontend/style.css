@@ -1,17 +1,8 @@
 /* =========================================================
    LUMINA WORKSPACE - MAIN STYLE SHEET
-   Ce fichier importe tous les modules CSS divisés
-   pour une meilleure lisibilité et maintenance.
+   Les modules CSS sont chargés via <link> dans le HTML
+   pour un chargement parallèle (meilleure performance Lighthouse).
 ========================================================= */
-
-@import url('./css/variables.css?v=2');
-@import url('./css/scrollbar.css?v=2');
-@import url('./css/layout.css?v=2');
-@import url('./css/kanban.css?v=2');
-@import url('./css/components.css?v=2');
-@import url('./css/forms_modals.css?v=2');
-@import url('./css/auth_profile.css?v=2');
-@import url('./css/responsive.css?v=2');
 
 /* ── BOUTONS NAVIGATION (remplacent les <a href="#">) ── */
 .nav-btn {

@@ -127,31 +127,31 @@ function renderBoard(columns, tasks) {
         const colEl = document.createElement('div');
         colEl.className = 'kanban-column';
         colEl.innerHTML = `
-            <h4>
+            <h3>
                 ${col.title.toUpperCase()}
                 <div style="display:flex; align-items:center; gap:8px;">
                     <span class="badge" style="position:static; padding:2px 8px; background-color: var(--danger); color: #000000; font-weight: 900; font-size: 13px;">${colTasks.length}</span>
-                    <span class="icon-btn" title="Renommer" onclick="renameColumn(${col.id}, '${col.title.replace(/'/g, "\\'")}')">✏️</span>
-                    <span class="icon-btn" title="Supprimer" onclick="deleteColumn(${col.id})">×</span>
+                    <button type="button" class="icon-btn" aria-label="Renommer la colonne ${escapeHTML(col.title)}" onclick="renameColumn(${col.id}, '${col.title.replace(/'/g, "\\'")}')">✏️</button>
+                    <button type="button" class="icon-btn" aria-label="Supprimer la colonne ${escapeHTML(col.title)}" onclick="deleteColumn(${col.id})">×</button>
                 </div>
-            </h4>
+            </h3>
             <div class="task-list">
                 ${colTasks.map(task => `
                     <div class="task-card">
                         <span class="badge bg-${escapeHTML(task.priority || 'low')}">${task.priority === 'high' ? 'URGENT' : task.priority === 'medium' ? 'MOYEN' : 'NORMAL'}</span>
-                        <h5>${escapeHTML(task.title)}</h5>
+                        <h4>${escapeHTML(task.title)}</h4>
                         <p>${escapeHTML(task.description || '')}</p>
                         <div class="assigned-to">👤 ${escapeHTML(task.assigned_name || 'Non assigné')}</div>
                         
                         <!-- Actions et Boutons de déplacement -->
                         <div style="display:flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);">
                             <div class="task-move-btns" style="display:flex; gap:5px;">
-                                ${prevCol ? `<span class="icon-btn" title="Déplacer à gauche" onclick="moveTask(${task.id}, ${prevCol.id})">⬅️</span>` : `<span style="width:24px; display:inline-block;"></span>`}
-                                ${nextCol ? `<span class="icon-btn" title="Déplacer à droite" onclick="moveTask(${task.id}, ${nextCol.id})">➡️</span>` : `<span style="width:24px; display:inline-block;"></span>`}
+                                ${prevCol ? `<button type="button" class="icon-btn" aria-label="Déplacer la tâche vers ${escapeHTML(prevCol.title)}" onclick="moveTask(${task.id}, ${prevCol.id})">⬅️</button>` : `<span style="width:24px; display:inline-block;"></span>`}
+                                ${nextCol ? `<button type="button" class="icon-btn" aria-label="Déplacer la tâche vers ${escapeHTML(nextCol.title)}" onclick="moveTask(${task.id}, ${nextCol.id})">➡️</button>` : `<span style="width:24px; display:inline-block;"></span>`}
                             </div>
                             <div class="task-actions" style="margin-top: 0; padding-top: 0; border: none;">
-                                <span class="icon-btn" title="Modifier" onclick="editTask(${JSON.stringify(task).replace(/"/g, '&quot;')})">✏️</span>
-                                <span class="icon-btn" title="Supprimer" onclick="directDeleteTask(${task.id})">🗑️</span>
+                                <button type="button" class="icon-btn" aria-label="Modifier la tâche ${escapeHTML(task.title)}" onclick="editTask(${JSON.stringify(task).replace(/"/g, '&quot;')})">✏️</button>
+                                <button type="button" class="icon-btn" aria-label="Supprimer la tâche ${escapeHTML(task.title)}" onclick="directDeleteTask(${task.id})">🗑️</button>
                             </div>
                         </div>
                     </div>

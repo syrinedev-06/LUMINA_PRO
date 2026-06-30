@@ -7,16 +7,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lumina Workspace - Dashboard</title>
     <meta name="description" content="Lumina Pro — tableau de bord Kanban collaboratif. Gérez vos tâches, colonnes et équipe en temps réel.">
-    <!-- Police de caractères Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <!-- Lier le CSS -->
-    <link rel="stylesheet" href="style.css?v=47">
-
+    <!-- CSS chargés en parallèle (plus rapide que les @import séquentiels) -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/scrollbar.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/kanban.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/forms_modals.css">
+    <link rel="stylesheet" href="css/auth_profile.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- Scripts chargés en parallèle sans bloquer le rendu -->
+    <script src="js/api.js" defer></script>
+    <script src="js/ui.js" defer></script>
+    <script src="js/columns.js" defer></script>
+    <script src="js/tasks.js" defer></script>
+    <script src="js/kanban.js" defer></script>
+    <script src="js/team.js" defer></script>
+    <script src="js/profile.js" defer></script>
 </head>
 
 <body class="dashboard-page">
     <!-- Lien d'évitement pour lecteurs d'écran et navigation clavier -->
     <a href="#content-area" class="skip-link">Aller au contenu principal</a>
+
+    <!-- Fond sombre pour fermer la sidebar en mobile -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()" aria-hidden="true"></div>
 
     <!-- BARRE LATÉRALE (Sidebar) -->
     <nav class="sidebar" id="sidebar" aria-label="Menu de navigation principal">
@@ -62,7 +78,7 @@
         </header>
 
         <!-- ZONE DYNAMIQUE (Ici s'injecte le contenu des différentes pages) -->
-        <div id="content-area" aria-live="polite" aria-label="Contenu principal">
+        <div id="content-area" aria-live="polite">
             <!-- Le contenu changera ici selon la page cliquée (Kanban par défaut) -->
             <div class="kanban-container" id="kanban-view">
                 <div id="kanban-board" class="kanban-board">
@@ -127,15 +143,6 @@
 
 
 
-    <!-- Scripts modulaires (Simplification) -->
-    <script src="js/api.js"></script>
-    <!-- Modules séparés pour le Kanban (KISS & Modularité) -->
-    <script src="js/ui.js"></script>
-    <script src="js/columns.js"></script>
-    <script src="js/tasks.js"></script>
-    <script src="js/kanban.js"></script>
-    <script src="js/team.js"></script>
-    <script src="js/profile.js"></script>
 </body>
 
 </html>
