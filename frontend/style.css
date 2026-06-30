@@ -4,11 +4,66 @@
    pour une meilleure lisibilité et maintenance.
 ========================================================= */
 
-@import url('./css/variables.css');
-@import url('./css/scrollbar.css');
-@import url('./css/layout.css');
-@import url('./css/kanban.css');
-@import url('./css/components.css');
-@import url('./css/forms_modals.css');
-@import url('./css/auth_profile.css');
-@import url('./css/responsive.css');
+@import url('./css/variables.css?v=2');
+@import url('./css/scrollbar.css?v=2');
+@import url('./css/layout.css?v=2');
+@import url('./css/kanban.css?v=2');
+@import url('./css/components.css?v=2');
+@import url('./css/forms_modals.css?v=2');
+@import url('./css/auth_profile.css?v=2');
+@import url('./css/responsive.css?v=2');
+
+/* ── BOUTONS NAVIGATION (remplacent les <a href="#">) ── */
+.nav-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ── LIEN-TEXTE (bouton qui ressemble à un lien) ── */
+.link-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    color: var(--primary);
+    padding: 0;
+    text-decoration: underline;
+}
+.link-btn:hover { color: var(--primary-hover); }
+
+/* ── ACCESSIBILITÉ ── */
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    background: var(--accent, #6c63ff);
+    color: white;
+    padding: 10px 18px;
+    font-weight: bold;
+    font-size: 14px;
+    z-index: 9999;
+    border-radius: 0 0 6px 0;
+    text-decoration: none;
+    transition: top 0.2s;
+}
+.skip-link:focus {
+    top: 0;
+}
+
+/* Focus visible pour la navigation clavier */
+:focus-visible {
+    outline: 3px solid var(--accent, #6c63ff);
+    outline-offset: 2px;
+    border-radius: 3px;
+}

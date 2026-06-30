@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lumina Workspace - Dashboard</title>
+    <meta name="description" content="Lumina Pro — tableau de bord Kanban collaboratif. Gérez vos tâches, colonnes et équipe en temps réel.">
     <!-- Police de caractères Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <!-- Lier le CSS -->
@@ -14,23 +15,21 @@
 </head>
 
 <body class="dashboard-page">
+    <!-- Lien d'évitement pour lecteurs d'écran et navigation clavier -->
+    <a href="#content-area" class="skip-link">Aller au contenu principal</a>
 
     <!-- BARRE LATÉRALE (Sidebar) -->
-    <nav class="sidebar" id="sidebar">
+    <nav class="sidebar" id="sidebar" aria-label="Menu de navigation principal">
         <div class="sidebar-header" style="display: flex; justify-content: center; padding: 0px 5px 0px 5px; margin-top: -40px; margin-bottom: -35px;">
-            <img src="logo.png" alt="Logo" class="logo-large">
+            <img src="logo.png" alt="Logo Lumina Workspace" class="logo-large">
         </div>
         <ul class="nav-links">
-            <!-- Liens de navigation du menu -->
-            <li id="nav-dashboard" class="active"><a href="#" onclick="showKanban()">📊 Dashboard</a></li>
-            <!-- Ce menu sera masqué par défaut et affiché uniquement pour l'admin -->
-            <li id="nav-team" style="display: none;"><a href="#" onclick="showTeam()">👥 Équipe</a></li>
-            <li id="nav-profile"><a href="#" onclick="showProfile()">👤 Mon Profil</a></li>
+            <li id="nav-dashboard" class="active"><button type="button" onclick="showKanban()" class="nav-btn" aria-current="page" aria-label="Tableau de bord Kanban"><span aria-hidden="true">📊</span> Dashboard</button></li>
+            <li id="nav-team" style="display: none;"><button type="button" onclick="showTeam()" class="nav-btn" aria-label="Gérer l'équipe"><span aria-hidden="true">👥</span> Équipe</button></li>
+            <li id="nav-profile"><button type="button" onclick="showProfile()" class="nav-btn" aria-label="Voir mon profil"><span aria-hidden="true">👤</span> Mon Profil</button></li>
         </ul>
         <div class="sidebar-footer">
-
-            <!-- Bouton de déconnexion -->
-            <button id="logout-btn" class="btn-logout">Déconnexion</button>
+            <button id="logout-btn" class="btn-logout" aria-label="Se déconnecter de l'application">Déconnexion</button>
         </div>
     </nav>
 
@@ -39,8 +38,7 @@
         <!-- Barre supérieure (Header) -->
         <header class="top-bar">
             <div style="display: flex; align-items: center; flex: 1; min-width: 0;">
-                <!-- Bouton pour ouvrir le menu sur mobile -->
-                <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+                <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Ouvrir ou fermer le menu de navigation" aria-expanded="false" aria-controls="sidebar"><span aria-hidden="true">☰</span></button>
                 <div class="page-info" style="min-width: 0;">
                     <!-- Titre de la page dynamique -->
                     <h2 id="page-title">Tableau de bord</h2>
@@ -51,20 +49,20 @@
 
                 <!-- Informations utilisateur (nom + avatar cliquable) -->
                 <div class="user-info" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                    <div class="avatar custom-avatar" onclick="showProfile()" style="cursor: pointer; width: 36px; height: 36px; border-radius: 50%;" title="Profil">
-                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <button class="avatar custom-avatar" onclick="showProfile()" aria-label="Voir mon profil" style="cursor: pointer; width: 36px; height: 36px; border-radius: 50%; padding: 0;">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                             <circle cx="10" cy="8" r="5"></circle>
                             <path d="M3 21v-2a7 7 0 0 1 10-6.5"></path>
                             <path d="M15 19l6-6 2 2-6 6-3 1z"></path>
                         </svg>
-                    </div>
-                    <span id="user-name" style="font-size: 11px; margin-top: 4px; color: var(--text-muted); font-weight: 600;">Admin</span>
+                    </button>
+                    <span id="user-name" style="font-size: 11px; margin-top: 4px; color: var(--text-muted); font-weight: 600;" aria-live="polite">Admin</span>
                 </div>
             </div>
         </header>
 
         <!-- ZONE DYNAMIQUE (Ici s'injecte le contenu des différentes pages) -->
-        <div id="content-area">
+        <div id="content-area" aria-live="polite" aria-label="Contenu principal">
             <!-- Le contenu changera ici selon la page cliquée (Kanban par défaut) -->
             <div class="kanban-container" id="kanban-view">
                 <div id="kanban-board" class="kanban-board">
@@ -74,31 +72,31 @@
         </div>
 
         <!-- Bouton flottant pour ajouter une tâche -->
-        <button class="fab" id="open-modal-btn">+</button>
+        <button class="fab" id="open-modal-btn" aria-label="Ajouter une nouvelle tâche" aria-haspopup="dialog"><span aria-hidden="true">+</span></button>
     </main>
 
 
 
     <!-- MODALE TÂCHE (Formulaire d'ajout/édition) -->
-    <div id="task-modal" class="modal">
+    <div id="task-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <div class="modal-content">
             <h2 id="modal-title">Nouvelle Mission</h2>
-            <form id="task-form">
+            <form id="task-form" aria-label="Formulaire de gestion de tâche">
                 <input type="hidden" id="task-id">
 
                 <div class="form-group">
-                    <label>Titre de la tâche</label>
-                    <input type="text" id="task-title" placeholder="Ex: Finir le rapport..." required>
+                    <label for="task-title">Titre de la tâche</label>
+                    <input type="text" id="task-title" placeholder="Ex: Finir le rapport..." required aria-required="true">
                 </div>
 
                 <div class="form-group">
-                    <label>Description</label>
+                    <label for="task-desc">Description</label>
                     <textarea id="task-desc"></textarea>
                 </div>
 
                 <div style="display: flex; gap: 10px; margin-bottom: 12px;">
                     <div class="form-group" style="flex: 1;">
-                        <label>Priorité</label>
+                        <label for="task-priority">Priorité</label>
                         <select id="task-priority">
                             <option value="low">Normal</option>
                             <option value="medium" selected>Moyen</option>
@@ -106,26 +104,24 @@
                         </select>
                     </div>
                     <div class="form-group" style="flex: 1;">
-                        <label>Assigné à</label>
+                        <label for="task-assign">Assigné à</label>
                         <select id="task-assign"></select>
                     </div>
                 </div>
 
                 <div class="modal-footer">
-                    <!-- Boutons d'action -->
                     <button type="submit" class="btn-primary-modal">Enregistrer</button>
-                    <button type="button" class="btn-delete" id="delete-task-btn"
-                        style="display:none;">Supprimer</button>
-                    <button type="button" id="close-modal" class="btn-secondary">Annuler</button>
+                    <button type="button" class="btn-delete" id="delete-task-btn" aria-label="Supprimer cette tâche" style="display:none;">Supprimer</button>
+                    <button type="button" id="close-modal" class="btn-secondary" aria-label="Annuler et fermer la fenêtre">Annuler</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- MODALE INFOS PROFIL -->
-    <div id="profile-info-modal" class="modal">
+    <div id="profile-info-modal" class="modal" role="dialog" aria-modal="true" aria-label="Informations du profil utilisateur">
         <div class="modal-content profile-card" style="text-align: center; padding: 25px;">
-            <div id="profile-info-content"></div>
+            <div id="profile-info-content" aria-live="polite"></div>
         </div>
     </div>
 

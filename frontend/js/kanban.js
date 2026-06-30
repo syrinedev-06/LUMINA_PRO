@@ -138,7 +138,7 @@ function renderBoard(columns, tasks) {
             <div class="task-list">
                 ${colTasks.map(task => `
                     <div class="task-card">
-                        <span class="badge bg-${escapeHTML(task.priority)}">${task.priority === 'high' ? 'URGENT' : task.priority === 'medium' ? 'MOYEN' : 'NORMAL'}</span>
+                        <span class="badge bg-${escapeHTML(task.priority || 'low')}">${task.priority === 'high' ? 'URGENT' : task.priority === 'medium' ? 'MOYEN' : 'NORMAL'}</span>
                         <h5>${escapeHTML(task.title)}</h5>
                         <p>${escapeHTML(task.description || '')}</p>
                         <div class="assigned-to">👤 ${escapeHTML(task.assigned_name || 'Non assigné')}</div>

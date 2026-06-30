@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Guide Simple — Lumina Pro</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f4f8; color: #222; line-height: 1.7; }
+
+  header {
+    background: linear-gradient(135deg, #302b63, #24243e);
+    color: #fff; padding: 28px 48px;
+    display: flex; align-items: center; gap: 20px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  header a { color: #d63384; text-decoration: none; font-size: 22px; }
+  header h1 { font-size: 20px; font-weight: 900; }
+  header span { color: #d63384; }
+
+  .intro {
+    background: #d63384; color: #fff;
+    padding: 20px 48px; font-size: 15px;
+  }
+  .intro strong { font-size: 17px; }
+
+  main { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  /* ── CHAPITRES ── */
+  .chapitre {
+    background: #fff; border-radius: 16px;
+    margin-bottom: 32px; overflow: hidden;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.07);
+  }
+  .chapitre-header {
+    background: linear-gradient(to right, #302b63, #24243e);
+    color: #fff; padding: 22px 28px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .chapitre-icon { font-size: 34px; }
+  .chapitre-titre { font-size: 20px; font-weight: 900; }
+  .chapitre-corps { padding: 28px 32px; }
+
+  /* ── ANALOGIE BOX ── */
+  .analogie {
+    background: #fff8e1; border-left: 5px solid #f59e0b;
+    border-radius: 0 10px 10px 0; padding: 16px 20px;
+    margin: 16px 0; font-size: 15px;
+  }
+  .analogie strong { color: #92400e; }
+  .analogie::before { content: "💡 Analogie : "; font-weight: 800; color: #92400e; }
+
+  /* ── EXPLICATION BOX ── */
+  .explication {
+    background: #f0f7ff; border-left: 5px solid #302b63;
+    border-radius: 0 10px 10px 0; padding: 16px 20px;
+    margin: 12px 0; font-size: 15px;
+  }
+  .explication strong { color: #302b63; }
+
+  /* ── ÉTAPES ── */
+  .etapes { margin: 16px 0; }
+  .etape {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 12px 16px; margin-bottom: 8px;
+    background: #f8f8fc; border-radius: 10px;
+    border-left: 4px solid #d63384;
+  }
+  .etape-num {
+    background: #d63384; color: #fff;
+    font-size: 12px; font-weight: 800;
+    min-width: 28px; height: 28px;
+    border-radius: 50%; display: flex;
+    align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .etape-texte { font-size: 14.5px; }
+  .etape-texte strong { color: #302b63; }
+
+  /* ── CODE ── */
+  pre {
+    background: #1e1e2e; color: #cdd6f4;
+    padding: 16px 20px; border-radius: 10px;
+    font-family: 'Cascadia Code', Consolas, monospace;
+    font-size: 13px; line-height: 1.8;
+    margin: 12px 0; overflow-x: auto;
+    border-left: 4px solid #d63384;
+  }
+  code {
+    background: #302b63; color: #fff;
+    padding: 2px 7px; border-radius: 4px;
+    font-family: monospace; font-size: 13px;
+  }
+  .cm { color: #6c7086; font-style: italic; }
+  .kw { color: #cba6f7; }
+  .str { color: #a6e3a1; }
+  .fn { color: #89b4fa; }
+  .nr { color: #fab387; }
+
+  /* ── COMPARAISON ── */
+  .deux-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 14px 0; }
+  .box-ok { background: #f0fff4; border: 2px solid #28a745; border-radius: 10px; padding: 16px; }
+  .box-non { background: #fff5f5; border: 2px solid #dc3545; border-radius: 10px; padding: 16px; }
+  .box-ok h4 { color: #28a745; font-size: 13px; font-weight: 800; margin-bottom: 8px; }
+  .box-non h4 { color: #dc3545; font-size: 13px; font-weight: 800; margin-bottom: 8px; }
+  .box-ok p, .box-non p { font-size: 13.5px; }
+
+  /* ── MOT CLÉ ── */
+  .mot-cle {
+    display: inline-block; background: #d63384;
+    color: #fff; padding: 2px 10px; border-radius: 20px;
+    font-size: 12px; font-weight: 700; margin: 2px;
+  }
+
+  /* ── RÉSUMÉ FINAL ── */
+  .resume {
+    background: linear-gradient(135deg, #302b63, #1a1a2e);
+    color: #fff; border-radius: 14px; padding: 24px 28px;
+    margin-top: 16px; font-size: 15px; line-height: 1.9;
+  }
+  .resume strong { color: #FFE566; }
+
+  h2 { font-size: 17px; font-weight: 800; color: #302b63; margin: 22px 0 10px; }
+  h2:first-child { margin-top: 0; }
+  p { font-size: 15px; color: #444; margin-bottom: 10px; }
+  ul { padding-left: 20px; margin-bottom: 10px; }
+  li { font-size: 14.5px; color: #444; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html">←</a>
+  <h1>📖 Guide Simple — <span>Lumina Pro</span></h1>
+</header>
+
+<div class="intro">
+  <strong>Ce guide explique tout en langage simple.</strong> Chaque fonctionnalité est expliquée comme si tu n'avais jamais programmé — avec des analogies du quotidien pour bien comprendre.
+</div>
+
+<main>
+
+  <!-- ══════════════════════════════════════════
+       1. QU'EST-CE QUE LUMINA PRO ?
+  ══════════════════════════════════════════ -->
+  <div class="chapitre">
+    <div class="chapitre-header">
+      <span class="chapitre-icon">🗂️</span>
+      <span class="chapitre-titre">Qu'est-ce que Lumina Pro ?</span>
+    </div>
+    <div class="chapitre-corps">
+      <div class="analogie">C'est comme un <strong>tableau blanc avec des post-its</strong>. Chaque post-it = une tâche. Tu les déplaces de colonne en colonne (À faire → En cours → Terminé). La différence : tout ça est dans un navigateur web, plusieurs personnes peuvent travailler dessus en même temps.</div>
+      <h2>Les 3 grandes parties du projet</h2>
+      <div class="etapes">
+        <div class="etape">
+          <div class="etape-num">1</div>
+          <div class="etape-texte"><strong>Le Front-end</strong> = ce que tu VOIS dans le navigateur. Le tableau kanban, les formulaires, les boutons. Fichiers : <code>login.html</code>, <code>index.html</code>, les fichiers <code>CSS</code> et <code>JS</code>.</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">2</div>
+          <div class="etape-texte"><strong>Le Back-end</strong> = le "cerveau" invisible. Le serveur Node.js qui reçoit les demandes, vérifie les droits, et parle à la base de données. Fichiers : <code>server.js</code>, <code>routes/</code>, <code>middleware/</code>.</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">3</div>
+          <div class="etape-texte"><strong>La Base de données</strong> = le "tiroir" où tout est stocké. MySQL avec 5 tables : utilisateurs, tâches, colonnes, logs, notifications.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       2. COMMENT LA CONNEXION FONCTIONNE
+  ══════════════════════════════════════════ -->
+  <div class="chapitre">
+    <div class="chapitre-header">
+      <span class="chapitre-icon">🔐</span>
+      <span class="chapitre-titre">Comment la connexion fonctionne</span>
+    </div>
+    <div class="chapitre-corps">
+      <div class="analogie">C'est comme un <strong>badge d'entrée dans un immeuble</strong>. Tu présentes ton badge (email + mot de passe), le portier vérifie (bcrypt), et te donne un laissez-passer valable 24h (JWT). À chaque porte tu montres ce laissez-passer sans re-présenter ton badge.</div>
+
+      <h2>Les étapes détaillées</h2>
+      <div class="etapes">
+        <div class="etape">
+          <div class="etape-num">1</div>
+          <div class="etape-texte">Tu saisies email + mot de passe dans le formulaire et cliques sur "Connexion"</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">2</div>
+          <div class="etape-texte">JavaScript envoie ces données au serveur (<code>POST /api/auth/login</code>) via <code>fetch()</code></div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">3</div>
+          <div class="etape-texte">Le serveur cherche l'email dans la base de données (<code>SELECT * FROM users WHERE email = ?</code>)</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">4</div>
+          <div class="etape-texte"><strong>bcrypt</strong> compare ton mot de passe avec le hash stocké — sans jamais "décrypter" le hash</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">5</div>
+          <div class="etape-texte">Si c'est bon : le serveur génère un <strong>JWT</strong> avec <code>jwt.sign()</code> et l'envoie en réponse</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">6</div>
+          <div class="etape-texte">JavaScript stocke ce token dans <strong>localStorage</strong> — il sera utilisé pour toutes les prochaines requêtes</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">7</div>
+          <div class="etape-texte">La page se redirige automatiquement vers <code>index.html</code> (le kanban)</div>
+        </div>
+      </div>
+
+      <h2>C'est quoi localStorage ?</h2>
+      <div class="explication">
+        <strong>localStorage</strong> c'est comme un <strong>petit carnet dans ton navigateur</strong>. On peut y écrire des choses qui restent même si tu fermes l'onglet. Dans Lumina, on y écrit le token JWT pour ne pas avoir à se reconnecter à chaque page.
+      </div>
+      <pre><span class="cm">// Écrire dans localStorage</span>
+localStorage.setItem(<span class="str">'token'</span>, <span class="str">'eyJhbGciOiJ...'</span>);
+
+<span class="cm">// Lire depuis localStorage</span>
+<span class="kw">const</span> token = localStorage.getItem(<span class="str">'token'</span>);
+
+<span class="cm">// Tout effacer (déconnexion)</span>
+localStorage.clear();</pre>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       3. C'EST QUOI bcrypt ?
+  ══════════════════════════════════════════ -->
+  <div class="chapitre">
+    <div class="chapitre-header">
+      <span class="chapitre-icon">🔒</span>
+      <span class="chapitre-titre">c'est quoi bcrypt ?</span>
+    </div>
+    <div class="chapitre-corps">
+      <div class="analogie">Imagine un moulin à café très lent. Tu mets ton mot de passe dedans, il ressort sous forme de "café moulu" (le hash). <strong>Personne ne peut remettre le café dans le grain.</strong> Le truc : même avec un mot de passe identique, le résultat est différent à chaque fois (grâce au sel).</div>
+
+      <h2>Hachage ≠ Chiffrement</h2>
+      <div class="deux-col">
+        <div class="box-ok">
+          <h4>✅ Hachage (ce qu'on fait)</h4>
+          <p>On transforme le mot de passe en une suite de caractères <strong>irréversible</strong>. Impossible de retrouver l'original. C'est ce que fait bcrypt.</p>
+        </div>
+        <div class="box-non">
+          <h4>❌ Chiffrement (ce qu'on NE fait PAS)</h4>
+          <p>On transforme les données d'une façon <strong>réversible</strong> avec une clé. Si quelqu'un vole la clé, il peut tout décrypter. Mauvais pour les mots de passe.</p>
+        </div>
+      </div>
+
+      <h2>Le "sel" aléatoire</h2>
+      <div class="explication">
+        Le sel c'est comme <strong>ajouter une pincée de sel différente</strong> dans chaque plat. Même si deux utilisateurs ont le même mot de passe "123456", leurs hashs seront complètement différents. Ça rend les attaques par listes précalculées inutiles.
+      </div>
+
+      <pre><span class="cm">// Deux utilisateurs avec le même mot de passe "azerty"</span>
+<span class="cm">// Mais des hashs différents grâce au sel :</span>
+$2b$10$<span class="str">N9qo8uLOickgx2ZM</span>RZoMyeIjZAgcfl7p92ldGxad68LPVhrNpFVK  ← user 1
+$2b$10$<span class="str">Xy9pKlMnBvQw3RsT</span>UaZmHfKjPqWe1Xy8n37ghLjmPo2QrStUvWx  ← user 2</pre>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       4. C'EST QUOI JWT ?
+  ══════════════════════════════════════════ -->
+  <div class="chapitre">
+    <div class="chapitre-header">
+      <span class="chapitre-icon">🎫</span>
+      <span class="chapitre-titre">C'est quoi un JWT ?</span>
+    </div>
+    <div class="chapitre-corps">
+      <div class="analogie">C'est comme un <strong>ticket de concert avec hologramme</strong>. Le ticket montre qui tu es (nom, siège). L'hologramme garantit que personne ne l'a falsifié. La sécurité peut vérifier le ticket sans appeler l'organisateur.</div>
+
+      <h2>Les 3 parties d'un JWT</h2>
+      <pre>eyJhbGciOiJIUzI1NiJ9      ← <span class="cm">Partie 1 : Header (algorithme)</span>
+.eyJpZCI6MSwicm9sZSI6ImFkbWluIn0   ← <span class="cm">Partie 2 : Payload (tes infos)</span>
+.SflKxwRJSMeKKF2QT4fwpMeJf36       ← <span class="cm">Partie 3 : Signature (le "hologramme")</span></pre>
+
+      <div class="explication">
+        <strong>Partie 2 décodée :</strong> <code>{ "id": 1, "role": "admin", "exp": 1735689600 }</code><br>
+        → visible par tout le monde (c'est juste du Base64)<br>
+        → mais IMPOSSIBLE à modifier sans casser la signature
+      </div>
+
+      <h2>Comment c'est vérifié côté serveur</h2>
+      <div class="etapes">
+        <div class="etape">
+          <div class="etape-num">1</div>
+          <div class="etape-texte">Le front envoie le token dans le header : <code>Authorization: Bearer eyJ...</code></div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">2</div>
+          <div class="etape-texte">Le middleware <code>verifyToken</code> extrait le token du header</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">3</div>
+          <div class="etape-texte"><code>jwt.verify()</code> recalcule la signature → si ça correspond, c'est valide</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">4</div>
+          <div class="etape-texte">Les infos du token (<code>id</code>, <code>role</code>) sont mises dans <code>req.user</code> pour la suite</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       5. C'EST QUOI authFetch ?
+  ══════════════════════════════════════════ -->
+  <div class="chapitre">
+    <div class="chapitre-header">
+      <span class="chapitre-icon">📡</span>
+      <span class="chapitre-titre">C'est quoi authFetch() ?</span>
+    </div>
+    <div class="chapitre-corps">
+      <div class="analogie"><code>fetch()</code> c'est comme <strong>envoyer une lettre</strong>. <code>authFetch()</code> c'est la même chose mais avec une <strong>enveloppe timbrée avec ton badge automatiquement</strong>. Tu n'as pas à coller le timbre à chaque lettre — c'est fait automatiquement.</div>
+
+      <h2>Ce que fait authFetch — ligne par ligne</h2>
+      <pre><span class="kw">async function</span> <span class="fn">authFetch</span>(url, options = {}) {
+
+  <span class="cm">// 1. On récupère le token sauvegardé lors de la connexion</span>
+  <span class="kw">const</span> token = localStorage.getItem(<span class="str">'token'</span>);
+
+  <span class="cm">// 2. On prépare les en-têtes de la requête</span>
+  options.headers = {
+    <span class="str">'Content-Type'</span>: <span class="str">'application/json'</span>,  <span class="cm">// ← dit "j'envoie du JSON"</span>
+    <span class="str">'Authorization'</span>: `Bearer ${token}`,    <span class="cm">// ← le badge JWT</span>
+  };
+
+  <span class="cm">// 3. On envoie vraiment la requête (comme fetch() normal)</span>
+  <span class="kw">const</span> response = <span class="kw">await</span> fetch(url, options);
+
+  <span class="cm">// 4. Si le serveur dit "token expiré" → on déconnecte et on redirige</span>
+  <span class="kw">if</span> (response.status === <span class="nr">401</span>) {
+    localStorage.clear();
+    window.location.href = <span class="str">'login.html'</span>;
+  }
+
+  <span class="kw">return</span> response; <span class="cm">// 5. On retourne la réponse du serveur</span>
+}</pre>
+
+      <h2>Pourquoi pas utiliser fetch() directement ?</h2>
+      <div class="explication">
+        Sans <code>authFetch()</code>, il faudrait réécrire <code>Authorization: Bearer ${token}</code> dans <strong>chaque</strong> requête fetch. Il y en a 13 dans Lumina. Si le format change un jour, il faut changer 13 endroits. Avec <code>authFetch()</code>, on change qu'un seul endroit. C'est le principe <strong>DRY</strong> (Don't Repeat Yourself).
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       6. C'EST QUOI escapeHTML ?
+  ══════════════════════════════════════════ -->
+  <div class="chapitre">
+    <div class="chapitre-header">
+      <span class="chapitre-icon">🛡️</span>
+      <span class="chapitre-titre">C'est quoi escapeHTML() ?</span>
+    </div>
+    <div class="chapitre-corps">
+      <div class="analogie">Imagine que quelqu'un écrit un faux billet de banque et le met dans ta caisse. <code>escapeHTML()</code> c'est le <strong>vérificateur de billets</strong> : il détecte les "billets dangereux" (scripts) et les rend inoffensifs avant de les afficher.</div>
+
+      <h2>Le problème XSS concret</h2>
+      <div class="deux-col">
+        <div class="box-non">
+          <h4>❌ Titre de tâche malveillant</h4>
+          <p style="font-family:monospace;font-size:12px;word-break:break-all;">&lt;script&gt;alert('Je vole ton token: ' + localStorage.getItem('token'))&lt;/script&gt;</p>
+          <p style="margin-top:8px;">Sans protection, ce script s'exécuterait dans ton navigateur ET dans celui de tous tes collègues !</p>
+        </div>
+        <div class="box-ok">
+          <h4>✅ Après escapeHTML()</h4>
+          <p style="font-family:monospace;font-size:12px;word-break:break-all;">&amp;lt;script&amp;gt;alert('Je vole ton token: ' + localStorage.getItem('token'))&amp;lt;/script&amp;gt;</p>
+          <p style="margin-top:8px;">Le navigateur affiche ce texte tel quel. Jamais exécuté.</p>
+        </div>
+      </div>
+
+      <h2>Les 5 remplacements importants</h2>
+      <div class="etapes">
+        <div class="etape">
+          <div class="etape-num">1</div>
+          <div class="etape-texte"><code>&</code> → <code>&amp;amp;</code> — remplacé EN PREMIER pour ne pas "double-échapper" les autres</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">2</div>
+          <div class="etape-texte"><code>&lt;</code> → <code>&amp;lt;</code> — neutralise l'ouverture d'une balise HTML ou script</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">3</div>
+          <div class="etape-texte"><code>&gt;</code> → <code>&amp;gt;</code> — neutralise la fermeture d'une balise</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">4</div>
+          <div class="etape-texte"><code>"</code> → <code>&amp;quot;</code> — empêche de "s'échapper" d'un attribut HTML (<code>onclick="..."</code>)</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">5</div>
+          <div class="etape-texte"><code>'</code> → <code>&amp;#39;</code> — idem avec les apostrophes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       7. COMMENT LE KANBAN S'AFFICHE
+  ══════════════════════════════════════════ -->
+  <div class="chapitre">
+    <div class="chapitre-header">
+      <span class="chapitre-icon">📋</span>
+      <span class="chapitre-titre">Comment le kanban s'affiche</span>
+    </div>
+    <div class="chapitre-corps">
+      <div class="analogie">Imagine que tu as une liste de post-its et une liste de colonnes. Tu dois <strong>trier</strong> les post-its dans leurs colonnes. C'est exactement ce que fait <code>renderBoard()</code>.</div>
+
+      <h2>Les étapes du chargement</h2>
+      <div class="etapes">
+        <div class="etape">
+          <div class="etape-num">1</div>
+          <div class="etape-texte"><strong>Page chargée</strong> → <code>DOMContentLoaded</code> → vérification du token (si absent → login)</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">2</div>
+          <div class="etape-texte"><strong>fetchTasks()</strong> → deux requêtes : GET /api/columns + GET /api/tasks</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">3</div>
+          <div class="etape-texte"><strong>renderBoard(colonnes, tâches)</strong> → pour chaque colonne, on filtre les tâches qui lui appartiennent</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">4</div>
+          <div class="etape-texte"><strong>.filter()</strong> → garde seulement les tâches dont <code>id_col</code> = l'ID de la colonne courante</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">5</div>
+          <div class="etape-texte"><strong>.map()</strong> → transforme chaque tâche en morceau de HTML</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">6</div>
+          <div class="etape-texte"><strong>.join('')</strong> → colle tous les morceaux en une seule chaîne</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">7</div>
+          <div class="etape-texte"><strong>innerHTML</strong> → on injecte le HTML généré dans la page → le kanban apparaît</div>
+        </div>
+      </div>
+
+      <h2>Pourquoi fetchTasks() est appelée après chaque action ?</h2>
+      <div class="explication">
+        Après avoir créé, modifié ou déplacé une tâche, on relance <code>fetchTasks()</code> pour <strong>resynchroniser l'affichage avec la base de données</strong>. Sinon tu verrais une version obsolète. C'est simple et fiable.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       8. LES REQUÊTES SQL IMPORTANTES
+  ══════════════════════════════════════════ -->
+  <div class="chapitre">
+    <div class="chapitre-header">
+      <span class="chapitre-icon">🗃️</span>
+      <span class="chapitre-titre">Les requêtes SQL importantes</span>
+    </div>
+    <div class="chapitre-corps">
+      <div class="analogie">SQL c'est le <strong>langage pour parler à la base de données</strong>. C'est comme donner des ordres en français mais avec des règles précises.</div>
+
+      <h2>Les 4 opérations CRUD</h2>
+      <pre><span class="cm">-- C = Create (créer)</span>
+INSERT INTO tasks (title, priority, id_col) VALUES (<span class="str">'Fix bug'</span>, <span class="str">'high'</span>, 1);
+
+<span class="cm">-- R = Read (lire)</span>
+SELECT tasks.*, users.name AS assigned_name
+FROM tasks
+LEFT JOIN users ON tasks.id_assigned = users.id
+ORDER BY tasks.id_col, tasks.created_at;
+
+<span class="cm">-- U = Update (modifier)</span>
+UPDATE tasks SET title = <span class="str">'Fix bug login'</span> WHERE id = 5;
+
+<span class="cm">-- D = Delete (supprimer)</span>
+DELETE FROM tasks WHERE id = 5;</pre>
+
+      <h2>LEFT JOIN — pourquoi pas INNER JOIN ?</h2>
+      <div class="explication">
+        <strong>INNER JOIN</strong> : montre seulement les tâches qui <strong>ont</strong> un utilisateur assigné.<br>
+        <strong>LEFT JOIN</strong> : montre <strong>toutes</strong> les tâches, même celles sans utilisateur assigné.<br><br>
+        Dans Lumina on utilise LEFT JOIN pour que les tâches "non assignées" apparaissent quand même.
+      </div>
+
+      <h2>ON DELETE CASCADE vs SET NULL</h2>
+      <div class="deux-col">
+        <div class="box-ok" style="border-color:#302b63;background:#f5f5ff;">
+          <h4 style="color:#302b63;">CASCADE — colonnes</h4>
+          <p>Si tu supprimes la colonne "À faire" → toutes ses tâches sont automatiquement supprimées aussi. Comme vider une corbeille avec tout son contenu.</p>
+        </div>
+        <div class="box-ok">
+          <h4>SET NULL — utilisateurs</h4>
+          <p>Si tu supprimes un utilisateur → ses tâches restent mais <code>id_assigned</code> passe à NULL. Les tâches deviennent "non assignées".</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       9. C'EST QUOI async/await ?
+  ══════════════════════════════════════════ -->
+  <div class="chapitre">
+    <div class="chapitre-header">
+      <span class="chapitre-icon">⏳</span>
+      <span class="chapitre-titre">C'est quoi async/await ?</span>
+    </div>
+    <div class="chapitre-corps">
+      <div class="analogie">Imagine que tu commandes une pizza. Tu n'attends pas debout devant la porte 30 minutes — tu vas faire autre chose et tu reviens quand la sonnette sonne. <code>await</code> c'est "attends que la pizza arrive avant de passer à l'étape suivante", sans bloquer tout le reste.</div>
+
+      <h2>Sans async/await (difficile à lire)</h2>
+      <pre><span class="cm">// Ancien style avec .then() — difficile à suivre</span>
+fetch(<span class="str">'/api/tasks'</span>)
+  .then(response => response.json())
+  .then(tasks => { afficherKanban(tasks); })
+  .catch(err => { console.log(err); });</pre>
+
+      <h2>Avec async/await (style Lumina)</h2>
+      <pre><span class="cm">// Beaucoup plus lisible — comme du code normal mais asynchrone</span>
+<span class="kw">async function</span> <span class="fn">fetchTasks</span>() {
+  <span class="kw">try</span> {
+    <span class="kw">const</span> response = <span class="kw">await</span> authFetch(<span class="str">'/api/tasks'</span>); <span class="cm">// ← attend la réponse</span>
+    <span class="kw">const</span> tasks = <span class="kw">await</span> response.<span class="fn">json</span>();           <span class="cm">// ← attend le JSON parsé</span>
+    afficherKanban(tasks);
+  } <span class="kw">catch</span> (err) {
+    alert(<span class="str">"Erreur de connexion"</span>);
+  }
+}</pre>
+
+      <h2>Que se passe-t-il si on oublie await ?</h2>
+      <div class="explication">
+        Sans <code>await</code>, la variable contient une <strong>Promise</strong> (une promesse) au lieu des vraies données. C'est comme si tu essayais de manger la promesse d'une pizza au lieu de la pizza. Ça plante.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       10. C'EST QUOI UN MIDDLEWARE ?
+  ══════════════════════════════════════════ -->
+  <div class="chapitre">
+    <div class="chapitre-header">
+      <span class="chapitre-icon">🚦</span>
+      <span class="chapitre-titre">C'est quoi un middleware ?</span>
+    </div>
+    <div class="chapitre-corps">
+      <div class="analogie">C'est comme un <strong>vigile à l'entrée d'une boîte de nuit</strong>. Toutes les personnes (requêtes) passent devant lui. Il peut laisser passer (<code>next()</code>), refuser (<code>res.status(401)</code>), ou tamponner le passeport (<code>req.user = ...</code>) avant de laisser entrer.</div>
+
+      <h2>L'ordre des middlewares dans server.js</h2>
+      <div class="etapes">
+        <div class="etape">
+          <div class="etape-num">1</div>
+          <div class="etape-texte"><strong>cors()</strong> → "Es-tu d'une origine autorisée ?" → autorise toutes les origins</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">2</div>
+          <div class="etape-texte"><strong>express.json()</strong> → "Je lis le body JSON de ta requête" → remplit <code>req.body</code></div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">3</div>
+          <div class="etape-texte"><strong>req.db = db</strong> → "Je t'attache la connexion à la base de données" → disponible dans toutes les routes</div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">4</div>
+          <div class="etape-texte"><strong>verifyToken</strong> → "Ton badge JWT est valide ?" → si oui, <code>next()</code>, si non, <code>401/403</code></div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">5</div>
+          <div class="etape-texte"><strong>La route</strong> → enfin, la logique métier s'exécute (lire/écrire en BDD)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       11. C'EST QUOI L'API REST ?
+  ══════════════════════════════════════════ -->
+  <div class="chapitre">
+    <div class="chapitre-header">
+      <span class="chapitre-icon">🌐</span>
+      <span class="chapitre-titre">C'est quoi une API REST ?</span>
+    </div>
+    <div class="chapitre-corps">
+      <div class="analogie">C'est comme un <strong>restaurant avec un menu</strong>. Chaque plat = un endpoint. Tu commandes (méthode HTTP) un plat précis (URL) et le cuisinier (serveur) te l'apporte (réponse JSON).</div>
+
+      <h2>Les 4 méthodes = les 4 actions possibles</h2>
+      <div class="etapes">
+        <div class="etape">
+          <div class="etape-num" style="background:#28a745;">GET</div>
+          <div class="etape-texte"><strong>Lire</strong> → "Donne-moi les tâches" → <code>GET /api/tasks</code></div>
+        </div>
+        <div class="etape">
+          <div class="etape-num">POST</div>
+          <div class="etape-texte"><strong>Créer</strong> → "Crée une nouvelle tâche" → <code>POST /api/tasks</code></div>
+        </div>
+        <div class="etape">
+          <div class="etape-num" style="background:#f59e0b;">PUT</div>
+          <div class="etape-texte"><strong>Modifier</strong> → "Change le titre de la tâche 5" → <code>PUT /api/tasks/5</code></div>
+        </div>
+        <div class="etape">
+          <div class="etape-num" style="background:#dc3545;">DEL</div>
+          <div class="etape-texte"><strong>Supprimer</strong> → "Supprime la tâche 5" → <code>DELETE /api/tasks/5</code></div>
+        </div>
+      </div>
+
+      <h2>Les codes de réponse</h2>
+      <div class="explication">
+        <strong>200</strong> = "Tout va bien" · <strong>201</strong> = "Créé avec succès" · <strong>400</strong> = "Ta requête est mal formée" · <strong>401</strong> = "Tu n'es pas connecté" · <strong>403</strong> = "Tu n'as pas le droit" · <strong>500</strong> = "Erreur du serveur"
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       12. RÉSUMÉ FINAL
+  ══════════════════════════════════════════ -->
+  <div class="chapitre">
+    <div class="chapitre-header">
+      <span class="chapitre-icon">🎯</span>
+      <span class="chapitre-titre">Résumé — Les mots-clés à retenir</span>
+    </div>
+    <div class="chapitre-corps">
+      <div class="resume">
+        <strong>JWT</strong> = badge d'entrée valable 24h, impossible à falsifier<br>
+        <strong>bcrypt</strong> = moulin à café à sens unique pour les mots de passe<br>
+        <strong>verifyToken</strong> = vigile qui vérifie le badge avant chaque route protégée<br>
+        <strong>authFetch</strong> = version de fetch() qui colle automatiquement le badge<br>
+        <strong>escapeHTML</strong> = vérificateur de billets qui neutralise les scripts malveillants<br>
+        <strong>LEFT JOIN</strong> = montre toutes les tâches, même celles sans utilisateur assigné<br>
+        <strong>CASCADE</strong> = supprime les tâches automatiquement quand on supprime leur colonne<br>
+        <strong>middleware</strong> = vigile/tampon entre la requête et la route<br>
+        <strong>async/await</strong> = attendre une réponse sans bloquer tout le reste<br>
+        <strong>localStorage</strong> = carnet dans le navigateur pour stocker le token<br>
+        <strong>REST API</strong> = restaurant avec menu (GET/POST/PUT/DELETE sur des URLs)<br>
+        <strong>CORS</strong> = autorisation pour les requêtes venant d'un port différent
+      </div>
+    </div>
+  </div>
+
+</main>
+</body>
+</html>

@@ -16,6 +16,9 @@ const app = express();
 // de faire des requêtes sécurisées vers notre serveur API.
 app.use(cors());
 
+// Sert les fichiers du frontend via HTTP
+app.use(express.static(path.join(__dirname, '..', 'frontend')));
+
 // express.json() : Middleware intégré d'Express qui analyse les corps des requêtes HTTP entrantes au format JSON
 // et rend les données accessibles dans 'req.body'.
 app.use(express.json());
