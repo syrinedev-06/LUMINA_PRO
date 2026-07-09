@@ -1,3 +1,18 @@
+/* Bouton × fermer la sidebar — caché sur desktop */
+.sidebar-close {
+    display: none;
+}
+
+#sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 999;
+    cursor: pointer;
+}
+#sidebar-overlay.active { display: block; }
+
 /* ===================== RESPONSIVE — TABLET (≤ 900px) ===================== */
 @media (max-width: 900px) {
     .sidebar {
@@ -14,6 +29,23 @@
     .sidebar.open { left: 0; }
 
     .sidebar-toggle { display: flex; }
+
+    .sidebar-close {
+        display: flex;
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: none;
+        border: none;
+        font-size: 22px;
+        cursor: pointer;
+        color: var(--text-muted);
+        z-index: 10;
+        padding: 4px 8px;
+        border-radius: 8px;
+        line-height: 1;
+    }
+    .sidebar-close:hover { background: #f1f5f9; }
 
     .top-bar { padding: 0 16px; }
 

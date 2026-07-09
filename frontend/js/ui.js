@@ -90,8 +90,10 @@ function setActiveLink(id) {
 
     // Refermer automatiquement le menu sur mobile après le clic
     const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
     if (sidebar && sidebar.classList.contains('open')) {
         sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('active');
     }
 }
 
@@ -109,5 +111,10 @@ function resetTaskForm() {
  */
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
-    if (sidebar) sidebar.classList.toggle('open');
+    const overlay = document.getElementById('sidebar-overlay');
+    const btn = document.querySelector('.sidebar-toggle');
+    if (!sidebar) return;
+    const isOpen = sidebar.classList.toggle('open');
+    if (overlay) overlay.classList.toggle('active', isOpen);
+    if (btn) btn.setAttribute('aria-expanded', isOpen);
 }
