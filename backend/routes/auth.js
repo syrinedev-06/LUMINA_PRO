@@ -3,8 +3,8 @@ const router = express.Router();
 const bcrypt = require('bcrypt'); // Bibliothèque pour le hachage sécurisé (algorithme Blowfish)
 const jwt = require('jsonwebtoken'); // Module pour la génération de tokens de session signés cryptographiquement
 
-// Clé secrète unifiée pour la génération et validation des tokens JWT
-const SECRET_KEY = "LUMINA_SECRET_2024";
+// Clé secrète unifiée pour la génération et validation des tokens JWT (voir .env)
+const SECRET_KEY = process.env.SECRET_KEY;
 
 /**
  * @brief Route POST pour l'inscription d'un nouvel utilisateur (/api/auth/register).

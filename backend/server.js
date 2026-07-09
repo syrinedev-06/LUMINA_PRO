@@ -1,3 +1,5 @@
+require('dotenv').config(); // Charge les variables d'environnement du fichier .env (SECRET_KEY, DB_*, PORT)
+
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
@@ -113,7 +115,7 @@ app.use('/api/columns', verifyToken, require('./routes/columns'));
 // Les routes logs et stats ont été retirées pour la soutenance (simplification)
 
 // Démarrage du serveur web d'écoute
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Le serveur Lumina tourne sur http://localhost:${PORT}`);
 });

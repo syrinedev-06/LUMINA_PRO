@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Lexique Technique — Lumina Pro</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f4f8; color: #222; font-size: 15px; line-height: 1.6; }
+
+  header {
+    background: linear-gradient(135deg, #1d1d4e, #302b63);
+    color: #fff; padding: 44px 40px 32px; text-align: center;
+  }
+  header h1 { font-size: 26px; font-weight: 900; }
+  header p { font-size: 14px; color: #c9c6ea; margin-top: 8px; }
+
+  nav.toc {
+    max-width: 900px; margin: -18px auto 0; background: #fff;
+    border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    padding: 20px 30px; position: relative; z-index: 2;
+  }
+  nav.toc h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: #D6336C; margin-bottom: 10px; }
+  nav.toc ol { columns: 2; column-gap: 30px; padding-left: 18px; font-size: 13.5px; }
+  nav.toc li { margin-bottom: 5px; break-inside: avoid; }
+  nav.toc a { color: #302b63; text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+
+  main { max-width: 900px; margin: 0 auto; padding: 36px 24px 90px; }
+
+  section { background: #fff; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin-bottom: 22px; padding: 26px 32px; }
+  section h2 { font-size: 19px; font-weight: 900; color: #302b63; border-bottom: 3px solid #D6336C; padding-bottom: 8px; margin-bottom: 16px; }
+
+  dl { margin: 0; }
+  dt { font-weight: 800; color: #D6336C; font-size: 15px; margin-top: 16px; }
+  dt:first-child { margin-top: 0; }
+  dt .en { font-weight: 400; font-style: italic; color: #999; font-size: 12.5px; margin-left: 6px; }
+  dd { margin: 4px 0 0 0; color: #333; }
+  dd .exemple {
+    display: block; margin-top: 6px; background: #f8fafc; border-left: 3px solid #D6336C;
+    padding: 8px 12px; font-family: 'Cascadia Code', Consolas, monospace; font-size: 12.5px; color: #302b63; border-radius: 0 6px 6px 0;
+  }
+  dd .ou { color: #888; font-size: 13px; font-style: italic; }
+
+  footer { text-align: center; padding: 26px; color: #888; font-size: 12px; }
+
+  @media print { section { box-shadow: none; border: 1px solid #ddd; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🗂️ Lexique Technique — Lumina Pro</h1>
+  <p>Tous les mots techniques du projet expliqués simplement — Syrine Ben Hassine, DWWM 2025/2026</p>
+</header>
+
+<nav class="toc">
+  <h2>Sommaire</h2>
+  <ol>
+    <li><a href="#web">Le web et les requêtes</a></li>
+    <li><a href="#backend">Back-end / Node.js</a></li>
+    <li><a href="#securite">Sécurité</a></li>
+    <li><a href="#bdd">Base de données</a></li>
+    <li><a href="#frontend">Front-end</a></li>
+    <li><a href="#accessibilite">Accessibilité</a></li>
+    <li><a href="#outils">Outils et méthodologie</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<section id="web">
+  <h2>1 — Le web et les requêtes</h2>
+  <dl>
+    <dt>API <span class="en">(Application Programming Interface)</span></dt>
+    <dd>Un intermédiaire qui permet à deux programmes de communiquer. Dans Lumina Pro, le front-end (navigateur) parle au back-end (serveur) via une API. C'est comme un serveur de restaurant entre le client et la cuisine.</dd>
+
+    <dt>API REST / RESTful</dt>
+    <dd>Une façon d'organiser une API où chaque adresse (URL) représente une "ressource" (ex: <code>/api/tasks</code> représente les tâches), et où on utilise les méthodes HTTP (GET, POST, PUT, DELETE) pour dire quelle action faire dessus.</dd>
+
+    <dt>Endpoint</dt>
+    <dd>Une adresse précise de l'API que l'on peut appeler. <span class="exemple">POST /api/auth/login est un endpoint.</span></dd>
+
+    <dt>Méthode HTTP</dt>
+    <dd>Le type d'action demandée au serveur : <b>GET</b> (lire), <b>POST</b> (créer), <b>PUT</b> (modifier), <b>DELETE</b> (supprimer).</dd>
+
+    <dt>Code de statut HTTP</dt>
+    <dd>Un nombre renvoyé par le serveur pour dire ce qui s'est passé : <b>200</b> OK, <b>201</b> créé, <b>400</b> mauvaise demande, <b>401</b> non connecté, <b>403</b> interdit, <b>404</b> introuvable, <b>500</b> erreur serveur.</dd>
+
+    <dt>Header <span class="en">(en-tête)</span></dt>
+    <dd>Des informations envoyées en plus du contenu principal d'une requête, par exemple le ticket JWT dans <code>Authorization</code>.</dd>
+
+    <dt>Body / Payload</dt>
+    <dd>Le contenu principal envoyé dans une requête, par exemple <code>{"email": "...", "password": "..."}</code> lors d'une connexion.</dd>
+
+    <dt>JSON <span class="en">(JavaScript Object Notation)</span></dt>
+    <dd>Un format de texte simple pour échanger des données structurées entre le navigateur et le serveur. <span class="exemple">{"id": 1, "title": "Ma tâche"}</span></dd>
+
+    <dt>Fetch API</dt>
+    <dd>La fonction JavaScript du navigateur qui permet d'envoyer des requêtes HTTP vers le serveur sans recharger la page.</dd>
+
+    <dt>CORS <span class="en">(Cross-Origin Resource Sharing)</span></dt>
+    <dd>Une règle de sécurité des navigateurs qui bloque par défaut les requêtes vers un autre serveur/port que celui de la page. On l'active côté serveur avec le paquet <code>cors</code> pour autoriser le navigateur à parler à notre API.</dd>
+  </dl>
+</section>
+
+<section id="backend">
+  <h2>2 — Back-end / Node.js</h2>
+  <dl>
+    <dt>Serveur</dt>
+    <dd>Le programme qui tourne en permanence, écoute les demandes du navigateur et y répond. Dans Lumina Pro, c'est <code>backend/server.js</code> lancé avec Node.js.</dd>
+
+    <dt>Node.js</dt>
+    <dd>Un logiciel qui permet d'exécuter du JavaScript en dehors du navigateur, directement sur un serveur.</dd>
+
+    <dt>Express</dt>
+    <dd>Une bibliothèque (framework) pour Node.js qui simplifie la création d'un serveur web et d'une API REST — sans elle, il faudrait tout écrire à la main.</dd>
+
+    <dt>Middleware</dt>
+    <dd>Une fonction qui s'exécute entre la réception d'une requête et son traitement final. Elle peut vérifier, modifier ou bloquer la requête avant qu'elle continue. <span class="exemple">verifyToken() est un middleware qui vérifie le ticket JWT avant de laisser passer.</span></dd>
+
+    <dt>Route</dt>
+    <dd>Une correspondance entre une adresse (URL) + une méthode HTTP, et le code qui doit s'exécuter. <span class="exemple">router.post('/login', ...) définit la route de connexion.</span></dd>
+
+    <dt>npm <span class="en">(Node Package Manager)</span></dt>
+    <dd>L'outil qui installe et gère les bibliothèques (dépendances) dont un projet Node.js a besoin. <code>npm install</code> les installe, <code>npm start</code> lance le serveur.</dd>
+
+    <dt>package.json</dt>
+    <dd>Le fichier qui liste le nom du projet, ses dépendances et les commandes disponibles (scripts).</dd>
+
+    <dt>Dépendance</dt>
+    <dd>Une bibliothèque externe utilisée par le projet (ex : <code>express</code>, <code>bcrypt</code>, <code>jsonwebtoken</code>). Installée dans le dossier <code>node_modules/</code> (jamais versionné sur Git).</dd>
+
+    <dt>require() / module.exports</dt>
+    <dd>Les mots-clés Node.js pour importer et exporter du code entre fichiers. <span class="exemple">const jwt = require('jsonwebtoken');</span></dd>
+
+    <dt>Callback</dt>
+    <dd>Une fonction donnée en paramètre à une autre fonction, pour être exécutée plus tard (souvent quand une opération asynchrone se termine, comme une requête SQL).</dd>
+
+    <dt>Promise <span class="en">(promesse)</span></dt>
+    <dd>Un objet JavaScript qui représente un résultat qui arrivera plus tard (par exemple la réponse d'une requête réseau), plutôt que tout de suite.</dd>
+
+    <dt>async / await</dt>
+    <dd>Une écriture plus lisible pour travailler avec des Promises : <code>await</code> "attend" qu'une opération asynchrone se termine avant de continuer la ligne suivante.</dd>
+
+    <dt>Framework</dt>
+    <dd>Un ensemble d'outils et de règles qui structurent la façon d'écrire une application (ex : Express côté back-end). S'oppose à "vanilla" (sans framework).</dd>
+
+    <dt>Vanilla</dt>
+    <dd>Écrire du code (souvent JavaScript) sans framework ni bibliothèque, avec les outils natifs du langage. Choix fait pour le front-end de Lumina Pro, dans un but pédagogique.</dd>
+  </dl>
+</section>
+
+<section id="securite">
+  <h2>3 — Sécurité</h2>
+  <dl>
+    <dt>JWT <span class="en">(JSON Web Token)</span></dt>
+    <dd>Un "ticket" numérique signé, donné à l'utilisateur après connexion. Il contient des informations (id, rôle) et une signature qui prouve qu'il n'a pas été modifié. Comme un bracelet de festival : on le montre à chaque action au lieu de redonner son identité.</dd>
+
+    <dt>Bearer token</dt>
+    <dd>Le format standard pour envoyer un JWT dans une requête : <code>Authorization: Bearer &lt;token&gt;</code>.</dd>
+
+    <dt>bcrypt</dt>
+    <dd>Une bibliothèque qui transforme un mot de passe en une suite illisible et irréversible (hachage), avant de le sauvegarder en base. Volontairement lente pour résister aux attaques par force brute.</dd>
+
+    <dt>Hachage / Hash</dt>
+    <dd>Le résultat obtenu après avoir passé une donnée (comme un mot de passe) dans une fonction à sens unique : impossible de remonter à l'original.</dd>
+
+    <dt>Sel <span class="en">(salt)</span></dt>
+    <dd>Une valeur aléatoire ajoutée au mot de passe avant le hachage, pour que deux mots de passe identiques donnent des résultats différents en base.</dd>
+
+    <dt>XSS <span class="en">(Cross-Site Scripting)</span></dt>
+    <dd>Une faille où un attaquant réussit à injecter du code (souvent du JavaScript) dans une page vue par d'autres utilisateurs. On s'en protège en échappant (<code>escapeHTML()</code>) tout contenu utilisateur avant de l'afficher.</dd>
+
+    <dt>CSRF <span class="en">(Cross-Site Request Forgery)</span></dt>
+    <dd>Une attaque qui pousse le navigateur d'un utilisateur connecté à envoyer une requête à son insu. En mettant le JWT dans un header (pas un cookie), Lumina Pro n'est pas vulnérable à cette attaque classique.</dd>
+
+    <dt>Injection SQL</dt>
+    <dd>Une attaque où l'attaquant insère du code SQL dans un champ de formulaire pour manipuler la base de données. Empêchée par les requêtes préparées.</dd>
+
+    <dt>Requête préparée</dt>
+    <dd>Une requête SQL écrite avec des espaces réservés (<code>?</code>) à la place des valeurs, remplacés ensuite de façon sécurisée. <span class="exemple">"SELECT * FROM users WHERE email = ?"</span></dd>
+
+    <dt>IDOR <span class="en">(Insecure Direct Object Reference)</span></dt>
+    <dd>Une faille où un utilisateur peut accéder ou modifier une donnée qui ne lui appartient pas, juste en changeant un identifiant dans la requête. Lumina Pro vérifie côté serveur qu'on ne supprime que ses propres tâches (sauf admin).</dd>
+
+    <dt>.env / variable d'environnement</dt>
+    <dd>Un fichier qui stocke les valeurs secrètes (mots de passe, clés) en dehors du code source, jamais envoyé sur Git. Chargé par la bibliothèque <code>dotenv</code>.</dd>
+
+    <dt>Clé secrète <span class="en">(SECRET_KEY)</span></dt>
+    <dd>La valeur utilisée pour signer et vérifier les JWT. Si elle fuit, n'importe qui peut fabriquer de faux tickets valides.</dd>
+  </dl>
+</section>
+
+<section id="bdd">
+  <h2>4 — Base de données</h2>
+  <dl>
+    <dt>SQL <span class="en">(Structured Query Language)</span></dt>
+    <dd>Le langage utilisé pour interroger et manipuler une base de données relationnelle (MySQL, MariaDB, PostgreSQL…).</dd>
+
+    <dt>Table</dt>
+    <dd>Un tableau qui stocke un type de donnée (ex : la table <code>users</code> stocke les comptes). Chaque ligne = un enregistrement, chaque colonne = un champ.</dd>
+
+    <dt>Clé primaire <span class="en">(Primary Key, PK)</span></dt>
+    <dd>La colonne qui identifie de façon unique chaque ligne d'une table (souvent <code>id</code>, auto-incrémenté).</dd>
+
+    <dt>Clé étrangère <span class="en">(Foreign Key, FK)</span></dt>
+    <dd>Une colonne qui fait référence à la clé primaire d'une autre table, créant un lien entre les deux. <span class="exemple">tasks.id_col référence columns.id</span></dd>
+
+    <dt>ENUM</dt>
+    <dd>Un type de colonne qui n'accepte qu'une liste fixe de valeurs. <span class="exemple">priority ENUM('high','medium','low')</span></dd>
+
+    <dt>ON DELETE CASCADE</dt>
+    <dd>Une règle sur une clé étrangère : si la ligne référencée est supprimée, les lignes liées sont supprimées automatiquement aussi. <span class="ou">Ex : supprimer une colonne supprime ses tâches.</span></dd>
+
+    <dt>ON DELETE SET NULL</dt>
+    <dd>Une autre règle : si la ligne référencée est supprimée, la colonne liée est simplement remise à vide (NULL) plutôt que de tout supprimer. <span class="ou">Ex : supprimer un utilisateur laisse ses tâches, juste non assignées.</span></dd>
+
+    <dt>JOIN / LEFT JOIN</dt>
+    <dd>Une opération SQL qui combine des lignes de deux tables selon une condition. LEFT JOIN garde toutes les lignes de la première table même sans correspondance dans la seconde.</dd>
+
+    <dt>MERISE</dt>
+    <dd>Une méthode française de conception de bases de données, en 3 étapes : MCD → MLD → MPD.</dd>
+
+    <dt>MCD <span class="en">(Modèle Conceptuel de Données)</span></dt>
+    <dd>La première étape : décrire les entités (ex : USERS, TASKS), leurs attributs et leurs relations avec des cardinalités, sans penser à l'implémentation technique.</dd>
+
+    <dt>MLD <span class="en">(Modèle Logique de Données)</span></dt>
+    <dd>La traduction du MCD en tables avec clés primaires/étrangères, toujours indépendante d'un SGBD précis.</dd>
+
+    <dt>MPD <span class="en">(Modèle Physique de Données)</span></dt>
+    <dd>L'implémentation réelle dans un SGBD précis (ici MySQL), avec les types de colonnes exacts et les contraintes SQL.</dd>
+
+    <dt>Cardinalité</dt>
+    <dd>Indique combien de fois une entité peut participer à une relation. <span class="exemple">(0,n) = de zéro à plusieurs fois ; (1,1) = exactement une fois</span></dd>
+
+    <dt>SGBD <span class="en">(Système de Gestion de Base de Données)</span></dt>
+    <dd>Le logiciel qui stocke et gère la base de données. Lumina Pro utilise MySQL.</dd>
+  </dl>
+</section>
+
+<section id="frontend">
+  <h2>5 — Front-end</h2>
+  <dl>
+    <dt>DOM <span class="en">(Document Object Model)</span></dt>
+    <dd>La représentation de la page HTML sous forme d'arbre d'éléments, que JavaScript peut lire et modifier.</dd>
+
+    <dt>localStorage</dt>
+    <dd>Un espace de stockage du navigateur qui garde des données même après fermeture de l'onglet, jusqu'à suppression manuelle. Utilisé pour garder le ticket JWT après connexion.</dd>
+
+    <dt>JSON.parse() / JSON.stringify()</dt>
+    <dd>Convertissent respectivement du texte JSON vers un objet JavaScript, et un objet JavaScript vers du texte JSON.</dd>
+
+    <dt>Événement <span class="en">(event)</span></dt>
+    <dd>Une action détectée par le navigateur (clic, soumission de formulaire…) à laquelle on peut réagir avec du code.</dd>
+
+    <dt>Écouteur d'événement <span class="en">(event listener)</span></dt>
+    <dd>Une fonction posée sur un élément pour réagir à un événement précis. <span class="exemple">button.addEventListener('click', ...)</span></dd>
+
+    <dt>Template literal</dt>
+    <dd>Une chaîne de caractères JavaScript entre back-ticks (`) qui permet d'insérer des variables directement avec <code>${variable}</code>.</dd>
+
+    <dt>escapeHTML()</dt>
+    <dd>Une fonction maison qui neutralise le HTML dans un texte avant de l'insérer dans la page, pour empêcher une attaque XSS.</dd>
+
+    <dt>Responsive design</dt>
+    <dd>Une interface qui s'adapte à la taille de l'écran (desktop, tablette, mobile), grâce aux media queries CSS.</dd>
+
+    <dt>Media query</dt>
+    <dd>Une règle CSS qui applique certains styles seulement en dessous (ou au-dessus) d'une largeur d'écran donnée. <span class="exemple">@media (max-width: 600px) { ... }</span></dd>
+
+    <dt>Flexbox</dt>
+    <dd>Un système d'alignement CSS qui facilite la disposition d'éléments en ligne ou en colonne, avec espacement automatique.</dd>
+
+    <dt>defer</dt>
+    <dd>Un attribut sur une balise <code>&lt;script&gt;</code> qui dit au navigateur de télécharger le script sans bloquer l'affichage de la page, et de l'exécuter seulement une fois la page prête.</dd>
+  </dl>
+</section>
+
+<section id="accessibilite">
+  <h2>6 — Accessibilité</h2>
+  <dl>
+    <dt>ARIA <span class="en">(Accessible Rich Internet Applications)</span></dt>
+    <dd>Un ensemble d'attributs HTML qui donnent des informations supplémentaires aux technologies d'assistance (lecteurs d'écran).</dd>
+
+    <dt>aria-label</dt>
+    <dd>Donne une description parlée à un élément, utile pour les boutons qui n'ont qu'une icône. <span class="exemple">aria-label="Supprimer la tâche"</span></dd>
+
+    <dt>role</dt>
+    <dd>Précise le rôle d'un élément pour les technologies d'assistance. <span class="exemple">role="dialog" indique une fenêtre pop-up.</span></dd>
+
+    <dt>WCAG <span class="en">(Web Content Accessibility Guidelines)</span></dt>
+    <dd>Les règles internationales d'accessibilité web, définies par le W3C.</dd>
+
+    <dt>RGAA <span class="en">(Référentiel Général d'Amélioration de l'Accessibilité)</span></dt>
+    <dd>La déclinaison française des règles d'accessibilité, basée sur les WCAG.</dd>
+
+    <dt>Lien d'évitement <span class="en">(skip link)</span></dt>
+    <dd>Un lien caché, visible seulement au premier Tab, qui permet de sauter directement au contenu principal sans repasser par tout le menu.</dd>
+
+    <dt>Lecteur d'écran</dt>
+    <dd>Un logiciel qui lit à voix haute le contenu d'une page pour les personnes non-voyantes (ex : NVDA, VoiceOver).</dd>
+
+    <dt>HTML sémantique</dt>
+    <dd>Utiliser les bonnes balises pour le bon usage (<code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;button&gt;</code>…) plutôt que des <code>&lt;div&gt;</code> génériques, pour que le sens soit compris par les technologies d'assistance.</dd>
+
+    <dt>Contraste</dt>
+    <dd>La différence de luminosité entre le texte et son fond, mesurée pour garantir une bonne lisibilité (vérifiable avec WebAIM Contrast Checker).</dd>
+  </dl>
+</section>
+
+<section id="outils">
+  <h2>7 — Outils et méthodologie</h2>
+  <dl>
+    <dt>Git</dt>
+    <dd>Un logiciel de gestion de versions qui garde l'historique de tous les changements du code.</dd>
+
+    <dt>Commit</dt>
+    <dd>Un "instantané" du code à un moment donné, avec un message qui décrit ce qui a changé.</dd>
+
+    <dt>GitHub</dt>
+    <dd>Un site qui héberge des dépôts Git en ligne, permettant de sauvegarder et partager le code.</dd>
+
+    <dt>Dépôt <span class="en">(repository / repo)</span></dt>
+    <dd>Le dossier de projet suivi par Git, avec tout son historique.</dd>
+
+    <dt>Swagger / OpenAPI</dt>
+    <dd>Un outil qui génère une page web interactive listant toutes les routes de l'API, pour les tester sans outil externe (accessible sur <code>/api-docs</code>).</dd>
+
+    <dt>MVC <span class="en">(Modèle-Vue-Contrôleur)</span></dt>
+    <dd>Un patron d'architecture qui sépare les données (Modèle), l'affichage (Vue) et la logique de traitement (Contrôleur). Lumina Pro s'en inspire de façon allégée, sans séparation stricte modèle/contrôleur.</dd>
+
+    <dt>MVP <span class="en">(Minimum Viable Product)</span></dt>
+    <dd>La version minimale d'un produit qui reste complète et fonctionnelle, sans les fonctionnalités secondaires.</dd>
+
+    <dt>Roadmap</dt>
+    <dd>La liste des évolutions futures envisagées pour un projet, pas encore réalisées.</dd>
+
+    <dt>Refactoring</dt>
+    <dd>Réorganiser ou simplifier du code existant sans changer son comportement, pour le rendre plus lisible ou maintenable.</dd>
+
+    <dt>DRY <span class="en">(Don't Repeat Yourself)</span></dt>
+    <dd>Un principe qui dit d'éviter de dupliquer le même code à plusieurs endroits — le centraliser à un seul endroit à la place.</dd>
+
+    <dt>Docker / Dockerfile</dt>
+    <dd>Un outil qui permet d'empaqueter une application avec tout son environnement dans un "conteneur", pour qu'elle tourne pareil partout. Le <code>Dockerfile</code> est la recette qui décrit ce conteneur. Non implémenté à ce jour dans Lumina Pro (roadmap).</dd>
+  </dl>
+</section>
+
+</main>
+
+<footer>
+  Lexique technique — <strong>Lumina Pro</strong> — Syrine Ben Hassine — DWWM 2025/2026
+</footer>
+
+</body>
+</html>

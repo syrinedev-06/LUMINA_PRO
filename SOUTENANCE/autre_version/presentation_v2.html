@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumina Pro — Soutenance DWWM</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f0f2f5;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .slideshow { width: 100%; height: 100vh; position: relative; }
+  .slide {
+    display: none;
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0; left: 0;
+    background: #fff;
+  }
+  .slide.active { display: flex; }
+
+  /* ── PALETTE ── */
+  :root {
+    --pink: #D6336C;
+    --pink-dark: #A10057;
+    --ink: #16162b;
+  }
+
+  /* ── SQUIGGLE DECORATIONS (SVG) ── */
+  .squiggle-ladder { position: absolute; }
+  .squiggle-loop { position: absolute; }
+
+  /* ── COVER ── */
+  .cover {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+  }
+  .cover .corner-tl { position:absolute; top:36px; left:56px; font-size:15px; color:#333; line-height:1.5; text-align:left; }
+  .cover .corner-tr { position:absolute; top:36px; right:56px; font-size:16px; font-weight:800; color:var(--pink-dark); display:flex; align-items:center; gap:8px; }
+  .cover h1 {
+    font-size: 88px;
+    font-weight: 900;
+    color: var(--ink);
+    letter-spacing: -1px;
+  }
+  .cover .name-bubble {
+    margin-top: 46px;
+    border: 3px solid var(--pink);
+    border-radius: 40px;
+    padding: 16px 44px;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--ink);
+    text-transform: uppercase;
+  }
+  .cover .top-scribble {
+    position: absolute;
+    top: 18px;
+    left: 46%;
+  }
+
+  /* ── SOMMAIRE ── */
+  .toc { flex-direction: column; padding: 70px 90px; position: relative; }
+  .toc h2 { font-size: 52px; font-weight: 900; color: var(--pink); margin-bottom: 60px; letter-spacing: 1px; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 46px 90px; max-width: 780px; }
+  .toc-item { display: flex; align-items: baseline; gap: 18px; }
+  .toc-item .num { font-size: 40px; font-weight: 900; color: var(--pink); min-width: 60px; }
+  .toc-item .label { font-size: 22px; color: var(--ink); }
+  .toc-deco { position: absolute; right: 0; top: 0; height: 100%; width: 40%; opacity: 0.9; }
+
+  /* ── DIVIDER (section break, full color) ── */
+  .divider {
+    background: var(--pink);
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 90px;
+    position: relative;
+    overflow: hidden;
+  }
+  .divider h1 { font-size: 54px; font-weight: 900; color: #fff; letter-spacing: 1px; }
+  .divider .sect-num { position:absolute; bottom:60px; left:90px; font-size:56px; font-weight:900; color:#fff; }
+  .divider .deco { position:absolute; right:60px; top:0; height:100%; }
+
+  /* ── CONTENT SLIDE (white, big black title) ── */
+  .content { flex-direction: column; padding: 70px 90px; position: relative; }
+  .content h2 {
+    font-size: 44px;
+    font-weight: 900;
+    color: var(--pink);
+    letter-spacing: 0.5px;
+    margin-bottom: 48px;
+  }
+  .content .deco-corner { position: absolute; right: 70px; top: 40px; opacity: 0.9; }
+  .content-body { flex: 1; overflow-y: auto; }
+
+  /* ── ICON ROW (Contexte / Environnements style) ── */
+  .icon-row { display: flex; gap: 90px; margin-top: 30px; }
+  .icon-item { text-align: center; }
+  .icon-item .icon { font-size: 54px; margin-bottom: 18px; }
+  .icon-item .label { font-size: 17px; color: var(--ink); line-height: 1.4; }
+  .icon-item .label b { display: block; color: var(--pink-dark); }
+
+  /* ── CARD GRID (Fonctionnalités style) ── */
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 900px; }
+  .card-box {
+    background: var(--pink);
+    color: #fff;
+    border-radius: 14px;
+    padding: 28px 30px;
+    font-size: 16px;
+    line-height: 1.55;
+    text-align: center;
+  }
+  .card-box strong { display: block; margin-bottom: 6px; font-size: 17px; }
+
+  /* ── MARKET / POSITIONING CARDS ── */
+  .market-row { display: flex; gap: 24px; margin-top: 10px; }
+  .market-card {
+    flex: 1;
+    background: #fafafa;
+    border-top: 4px solid var(--pink);
+    border-radius: 10px;
+    padding: 20px 22px;
+  }
+  .market-card h4 { color: var(--pink-dark); font-size: 16px; margin-bottom: 8px; }
+  .market-card p { font-size: 14px; color: #333; line-height: 1.5; }
+
+  /* ── PHOTO / POLAROID ── */
+  .photo-slide { flex-direction: row; align-items: center; padding: 60px 100px; gap: 80px; position: relative; }
+  .polaroid {
+    background: #f5f3ee;
+    padding: 18px 18px 60px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    transform: rotate(-3deg);
+    width: 340px;
+  }
+  .polaroid .avatar {
+    width: 100%;
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 120px;
+    font-weight: 900;
+  }
+  .photo-text h2 { font-size: 42px; font-weight: 900; color: var(--pink); margin-bottom: 24px; }
+  .photo-text p { font-size: 17px; color: var(--ink); line-height: 1.7; max-width: 480px; }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    border-radius: 12px;
+    padding: 20px 26px;
+    font-family: 'Cascadia Code', 'Consolas', monospace;
+    font-size: 13.5px;
+    line-height: 1.65;
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .code-block .kw { color: #cba6f7; }
+  .code-block .fn { color: #89b4fa; }
+  .code-block .str { color: #a6e3a1; }
+  .code-block .cm { color: #6c7086; font-style: italic; }
+  .code-block .nr { color: #fab387; }
+
+  .lead { font-size: 17px; color: var(--ink); line-height: 1.7; max-width: 820px; margin-bottom: 26px; }
+  .sub { font-size: 15px; color: #666; margin-top: 20px; }
+
+  table.plain { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.plain th { background: var(--ink); color: #fff; padding: 8px 12px; text-align: left; font-size: 12.5px; letter-spacing: 0.5px; }
+  table.plain td { padding: 7px 12px; border-bottom: 1px solid #eee; }
+  table.plain tr:nth-child(even) td { background: #fafafa; }
+
+  .badge-honest { display:inline-block; background:#fff7e6; border:1px solid #f0a500; color:#8a5a00; border-radius: 8px; padding: 10px 16px; font-size: 13.5px; margin-top: 18px; }
+
+  /* ── NAVIGATION ── */
+  .nav { position: fixed; bottom: 24px; right: 32px; display: flex; gap: 10px; z-index: 1000; }
+  .nav-btn {
+    background: rgba(214,51,108,0.92);
+    color: #fff; border: none; border-radius: 50%;
+    width: 44px; height: 44px; font-size: 20px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-btn:disabled { background: rgba(150,150,150,0.4); }
+  .progress { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%); color: rgba(0,0,0,0.35); font-size: 13px; font-weight: 600; z-index: 1000; }
+  .divider .progress, .divider ~ .nav { color: rgba(255,255,255,0.6); }
+
+  @media print { .nav, .progress { display: none; } }
+</style>
+</head>
+<body>
+
+<!-- Squiggle decoration defs reused across slides -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="ladder-deco">
+      <path d="M60 10 L20 800" stroke="#fff" stroke-width="10" stroke-linecap="round" fill="none"/>
+      <path d="M10 60 L90 90" stroke="#fff" stroke-width="8" stroke-linecap="round" fill="none"/>
+      <path d="M5 150 L85 180" stroke="#fff" stroke-width="8" stroke-linecap="round" fill="none"/>
+      <path d="M0 240 L80 270" stroke="#fff" stroke-width="8" stroke-linecap="round" fill="none"/>
+      <path d="M-5 330 L75 360" stroke="#fff" stroke-width="8" stroke-linecap="round" fill="none"/>
+      <path d="M-10 420 L70 450" stroke="#fff" stroke-width="8" stroke-linecap="round" fill="none"/>
+      <path d="M-15 510 L65 540" stroke="#fff" stroke-width="8" stroke-linecap="round" fill="none"/>
+      <path d="M-20 600 L60 630" stroke="#fff" stroke-width="8" stroke-linecap="round" fill="none"/>
+    </g>
+    <g id="loop-deco">
+      <path d="M10 190 C60 210 90 150 120 250 C140 190 160 90 190 110 C220 130 190 200 230 220 C270 240 260 160 300 140 C340 120 350 60 340 10"
+        stroke="#D6336C" stroke-width="12" stroke-linecap="round" fill="none"/>
+    </g>
+  </defs>
+</svg>
+
+<div class="slideshow" id="slideshow">
+
+  <!-- 1. COUVERTURE -->
+  <div class="slide cover active">
+    <div class="corner-tl">Soutenance<br>Titre professionnel DWWM</div>
+    <div class="corner-tr">🗂️ Lumina Pro</div>
+    <svg class="top-scribble" width="160" height="90" viewBox="0 0 160 90"><path d="M10 80 C30 10 50 90 70 20 C90 -10 100 70 120 30 C130 10 140 40 150 20" stroke="var(--pink)" stroke-width="9" stroke-linecap="round" fill="none"/></svg>
+    <h1>Lumina <span style="color:var(--pink);">Pro</span></h1>
+    <div class="name-bubble">Syrine Ben Hassine</div>
+    <svg width="90" height="90" style="position:absolute;bottom:70px;left:70px;" viewBox="0 0 90 90"><path d="M45 5 L45 85 M5 45 L85 45 M15 15 L75 75 M75 15 L15 75" stroke="var(--pink)" stroke-width="6" stroke-linecap="round"/></svg>
+  </div>
+
+  <!-- 2. SOMMAIRE -->
+  <div class="slide toc">
+    <h2>Sommaire</h2>
+    <div class="toc-grid">
+      <div class="toc-item"><span class="num">01</span><span class="label">Introduction</span></div>
+      <div class="toc-item"><span class="num">05</span><span class="label">Missions</span></div>
+      <div class="toc-item"><span class="num">02</span><span class="label">Projet</span></div>
+      <div class="toc-item"><span class="num">06</span><span class="label">Sécurité</span></div>
+      <div class="toc-item"><span class="num">03</span><span class="label">Conception</span></div>
+      <div class="toc-item"><span class="num">07</span><span class="label">SEO</span></div>
+      <div class="toc-item"><span class="num">04</span><span class="label">BDD</span></div>
+      <div class="toc-item"><span class="num">08</span><span class="label">Déploiement</span></div>
+    </div>
+  </div>
+
+  <!-- 3. DIVIDER 01 — INTRODUCTION -->
+  <div class="slide divider">
+    <h1>INTRODUCTION</h1>
+    <div class="sect-num">01</div>
+    <svg class="deco" width="140" height="100%" viewBox="0 0 140 800"><use href="#ladder-deco"/></svg>
+  </div>
+
+  <!-- 4. CONTEXTE -->
+  <div class="slide content">
+    <h2>Contexte</h2>
+    <div class="content-body">
+      <p class="lead">Lumina Pro est un tableau Kanban de gestion de tâches, pensé pour remplacer un suivi informel (messages, tableurs) par un outil centralisé, simple et sécurisé — sans la complexité d'un outil comme Jira.</p>
+      <div class="icon-row">
+        <div class="icon-item"><div class="icon">🔒</div><div class="label"><b>Sécurité</b>JWT, bcrypt, requêtes préparées</div></div>
+        <div class="icon-item"><div class="icon">🧩</div><div class="label"><b>Simplicité</b>Kanban resserré sur l'essentiel</div></div>
+        <div class="icon-item"><div class="icon">👥</div><div class="label"><b>Collaboration</b>Rôles admin / utilisateur</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. LE MARCHÉ -->
+  <div class="slide content">
+    <h2>Le marché</h2>
+    <div class="content-body">
+      <p class="lead">Positionnement face aux outils Kanban existants :</p>
+      <div class="market-row">
+        <div class="market-card"><h4>Trello</h4><p>Simple et populaire, mais limité en gratuit, pensé pour du grand public généraliste.</p></div>
+        <div class="market-card"><h4>Jira</h4><p>Très complet pour les équipes agiles, mais complexe à configurer et coûteux pour une petite équipe.</p></div>
+        <div class="market-card"><h4>Asana</h4><p>Riche en fonctionnalités (rapports, automatisations), au prix d'une prise en main plus longue.</p></div>
+      </div>
+      <div class="badge-honest">Lumina Pro n'a pas vocation à viser une part de marché : c'est un projet de certification qui prouve la maîtrise de toute la chaîne (BDD → API → sécurité → interface), pas un produit commercialisé.</div>
+    </div>
+  </div>
+
+  <!-- 6. DIVIDER 02 — GESTION DE PROJET -->
+  <div class="slide divider">
+    <h1>GESTION DE PROJET</h1>
+    <div class="sect-num">02</div>
+    <svg class="deco" width="140" height="100%" viewBox="0 0 140 800"><use href="#ladder-deco"/></svg>
+  </div>
+
+  <!-- 7. PROJET SOLO (photo) -->
+  <div class="slide photo-slide">
+    <!-- Remplacer .avatar par <img src="votre-photo.jpg"> pour insérer une vraie photo -->
+    <div class="polaroid"><div class="avatar">S</div></div>
+    <div class="photo-text">
+      <h2>Projet Solo</h2>
+      <p>Le référentiel DWWM autorise et évalue un projet individuel. Travailler seule oblige à comprendre toute la chaîne (BDD, back-end, front-end, sécurité) plutôt qu'une seule partie, sans dépendre de la disponibilité d'un binôme.</p>
+      <p class="sub">Contrepartie assumée : un périmètre volontairement resserré (MVP), pour livrer un projet complet et solide plutôt qu'un projet ambitieux mais inachevé.</p>
+    </div>
+  </div>
+
+  <!-- 8. DIVIDER 03 — CONCEPTION -->
+  <div class="slide divider">
+    <h1>CONCEPTION</h1>
+    <div class="sect-num">03</div>
+    <svg class="deco" width="140" height="100%" viewBox="0 0 140 800"><use href="#ladder-deco"/></svg>
+  </div>
+
+  <!-- 9. FONCTIONNALITÉS -->
+  <div class="slide content">
+    <h2>Fonctionnalités</h2>
+    <div class="content-body">
+      <div class="card-grid">
+        <div class="card-box"><strong>Tableau Kanban</strong>Colonnes personnalisables, cartes de tâches, priorités (haute/moyenne/basse)</div>
+        <div class="card-box"><strong>CRUD complet</strong>Créer, modifier, déplacer, supprimer des tâches et des colonnes</div>
+        <div class="card-box"><strong>Authentification</strong>JWT (24h) + bcrypt (10 rounds), jamais de mot de passe en clair</div>
+        <div class="card-box"><strong>Gestion des rôles</strong>Admin (équipe + colonnes) / Utilisateur (ses tâches)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. STACK -->
+  <div class="slide content">
+    <h2>Stack</h2>
+    <div class="content-body">
+      <table class="plain">
+        <tr><th>Côté</th><th>Technologie</th><th>Version exacte</th></tr>
+        <tr><td>Front-end</td><td>HTML5, CSS3 (8 modules), JavaScript ES6+ vanilla</td><td>—</td></tr>
+        <tr><td>Back-end</td><td>Node.js, Express</td><td>Node.js v24.14.0, Express 5.2.1</td></tr>
+        <tr><td>Base de données</td><td>MySQL (via mysql2)</td><td>MySQL 8.0.45, mysql2 3.22.2</td></tr>
+        <tr><td>Sécurité</td><td>jsonwebtoken, bcrypt, cors, dotenv</td><td>jsonwebtoken 9.0.3, bcrypt 6.0.0, cors 2.8.6, dotenv 17.4.2</td></tr>
+        <tr><td>Documentation</td><td>swagger-ui-express</td><td>5.0.1</td></tr>
+      </table>
+      <p class="sub">Choix assumé de JavaScript vanilla (sans framework) et d'un accès direct aux données depuis les routes Express (sans ORM) : objectif pédagogique, comprendre chaque couche sans abstraction tierce.</p>
+    </div>
+  </div>
+
+  <!-- 11. UI DESIGN -->
+  <div class="slide content">
+    <h2>UI Design</h2>
+    <div class="content-body">
+      <ul style="font-size:16px; line-height:2.1; color:var(--ink); list-style:none;">
+        <li>▸ <strong>Rose / fuchsia</strong> — couleur de marque reconnaissable, associée à la créativité</li>
+        <li>▸ <strong>Sidebar sombre + contenu clair</strong> — sépare navigation et zone de travail</li>
+        <li>▸ <strong>Peu de couleurs</strong> — chaque couleur garde un sens précis (priorité, action, navigation)</li>
+        <li>▸ <strong>Police système</strong> — pas de chargement externe, cohérence garantie sur toutes les machines</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 12. VEILLE -->
+  <div class="slide content">
+    <h2>Veille</h2>
+    <div class="content-body">
+      <p class="lead">Recherche de composants Kanban sur Dribbble pour la mise en page des colonnes et cartes de tâches. Le schéma sidebar sombre + contenu clair est un motif courant des outils SaaS de gestion, retenu pour une prise en main immédiate.</p>
+      <p class="sub">Ces références tiennent lieu de moodboard : pas de planche d'inspiration formelle, mais une recherche visuelle ciblée qui a directement nourri la charte graphique.</p>
+    </div>
+  </div>
+
+  <!-- 13. MAQUETTAGE -->
+  <div class="slide content">
+    <h2>Maquettage</h2>
+    <div class="content-body">
+      <p class="lead">Wireframes basse fidélité réalisés en amont pour valider la navigation avant tout travail graphique, sur trois tailles d'écran :</p>
+      <div class="icon-row">
+        <div class="icon-item"><div class="icon">🖥️</div><div class="label"><b>Desktop</b>Sidebar fixe, colonnes côte à côte</div></div>
+        <div class="icon-item"><div class="icon">📱</div><div class="label"><b>Tablette (≤900px)</b>Sidebar en tiroir, colonnes fixes</div></div>
+        <div class="icon-item"><div class="icon">📲</div><div class="label"><b>Mobile (≤600px)</b>Colonnes empilées verticalement</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 14. INTÉGRATION -->
+  <div class="slide content">
+    <h2>Intégration</h2>
+    <div class="content-body">
+      <ul style="font-size:16px; line-height:2.1; color:var(--ink); list-style:none;">
+        <li>▸ HTML5 sémantique (header, nav, main)</li>
+        <li>▸ CSS3 découpé en <strong>8 fichiers</strong> par responsabilité (variables, layout, kanban, responsive, formulaires…)</li>
+        <li>▸ Flexbox pour les mises en page, media queries pour le responsive</li>
+        <li>▸ Aucun framework CSS : chaque règle écrite et comprise à la main</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 15. DYNAMIQUE -->
+  <div class="slide content">
+    <h2>Dynamique</h2>
+    <div class="content-body">
+      <p class="lead">JavaScript ES6+ vanilla, appels asynchrones via la Fetch API. Une fonction centralise l'envoi du jeton JWT sur chaque requête :</p>
+      <div class="code-block"><span class="cm">// frontend/js/api.js</span>
+<span class="kw">async function</span> <span class="fn">authFetch</span>(url, options = {}) {
+  <span class="kw">const</span> token = localStorage.<span class="fn">getItem</span>(<span class="str">'token'</span>);
+  options.headers = { <span class="str">'Authorization'</span>: <span class="str">`Bearer ${token}`</span>, ...options.headers };
+  <span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(url, options);
+  <span class="kw">if</span> (response.status === <span class="nr">401</span>) { localStorage.<span class="fn">clear</span>(); window.location.href = <span class="str">'login.html'</span>; }
+  <span class="kw">return</span> response;
+}</div>
+    </div>
+  </div>
+
+  <!-- 16. SEO ET ACCESSIBILITÉ -->
+  <div class="slide content">
+    <h2>SEO et Accessibilité</h2>
+    <div class="content-body">
+      <div class="icon-row">
+        <div class="icon-item"><div class="icon">♿</div><div class="label"><b>Accessibilité</b>ARIA, navigation clavier, contrastes vérifiés (RGAA/WCAG 2.1)</div></div>
+        <div class="icon-item"><div class="icon">🔎</div><div class="label"><b>SEO</b>HTML5 sémantique, un seul h1 par page</div></div>
+        <div class="icon-item"><div class="icon">⚡</div><div class="label"><b>Lighthouse</b>Performance 99, Accessibilité 93, SEO 100</div></div>
+      </div>
+      <div class="badge-honest">Application authentifiée derrière un login : le SEO reste secondaire, l'accessibilité prioritaire. Accessibilité à 93 plutôt que 100 — quelques contrastes/ARIA à affiner, un point assumé plutôt que caché.</div>
+    </div>
+  </div>
+
+  <!-- 17. RGPD (1) -->
+  <div class="slide content">
+    <h2>RGPD</h2>
+    <div class="content-body">
+      <p class="lead">Données collectées strictement minimales : nom, email, mot de passe (haché). Aucune donnée sensible, aucune transmission à des tiers.</p>
+      <ul style="font-size:16px; line-height:2.1; color:var(--ink); list-style:none;">
+        <li>▸ Suppression de compte possible par un administrateur</li>
+        <li>▸ Variables sensibles (clé JWT, identifiants base de données) isolées dans <code>.env</code>, jamais versionné</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 18. DIVIDER 04 — BASE DE DONNÉES -->
+  <div class="slide divider">
+    <h1>BASE DE DONNÉES</h1>
+    <div class="sect-num">04</div>
+    <svg class="deco" width="140" height="100%" viewBox="0 0 140 800"><use href="#ladder-deco"/></svg>
+  </div>
+
+  <!-- 19. MERISE — MCD -->
+  <div class="slide content">
+    <h2>Merise — MCD</h2>
+    <div class="content-body">
+      <p class="lead">Modèle Conceptuel de Données : entités, associations, cardinalités. Chaque relation porte un verbe à l'infinitif.</p>
+      <ul style="font-size:16px; line-height:2.3; color:var(--ink); list-style:none;">
+        <li>▸ <strong>COLUMNS</strong> (1,1) — <em>Contenir</em> — (0,n) <strong>TASKS</strong></li>
+        <li>▸ <strong>USERS</strong> (0,n) — <em>Assigner</em> — (0,1) <strong>TASKS</strong></li>
+      </ul>
+      <p class="sub">Une colonne contient 0 à n tâches ; une tâche appartient toujours à exactement une colonne. Un utilisateur peut se voir assigner 0 à n tâches ; l'assignation d'une tâche à un utilisateur est optionnelle.</p>
+    </div>
+  </div>
+
+  <!-- 20. MERISE — MLD -->
+  <div class="slide content">
+    <h2>Merise — MLD → MPD</h2>
+    <div class="content-body">
+      <p class="lead">Modèle Logique de Données — traduction en tables, indépendante du SGBD :</p>
+      <div class="code-block" style="font-size:14px;">
+<span class="fn">USERS</span> (id PK, name, email, password, role)
+<span class="fn">COLUMNS</span> (id PK, title, position)
+<span class="fn">TASKS</span> (id PK, title, description, priority, created_at,
+       id_col <span class="cm">FK → COLUMNS.id</span>,
+       id_assigned <span class="cm">FK → USERS.id</span>)</div>
+    </div>
+  </div>
+
+  <!-- 21. MERISE — MPD -->
+  <div class="slide content">
+    <h2>Merise — MLD → MPD</h2>
+    <div class="content-body">
+      <p class="lead">Modèle Physique de Données — implémentation MySQL 8.0.45 (<code>database/schema.sql</code>) :</p>
+      <div class="code-block" style="font-size:12px;">
+<span class="kw">CREATE TABLE</span> tasks (
+  id INT AUTO_INCREMENT <span class="kw">PRIMARY KEY</span>,
+  title VARCHAR(255) <span class="kw">NOT NULL</span>, description TEXT,
+  priority ENUM(<span class="str">'high'</span>,<span class="str">'medium'</span>,<span class="str">'low'</span>) <span class="kw">DEFAULT</span> <span class="str">'medium'</span>,
+  id_assigned INT, id_col INT, created_at TIMESTAMP <span class="kw">DEFAULT</span> CURRENT_TIMESTAMP,
+  <span class="kw">FOREIGN KEY</span> (id_assigned) <span class="kw">REFERENCES</span> users(id) <span class="kw">ON DELETE SET NULL</span>,
+  <span class="kw">FOREIGN KEY</span> (id_col) <span class="kw">REFERENCES</span> columns(id) <span class="kw">ON DELETE CASCADE</span>
+);</div>
+      <p class="sub">Le MPD ne contient pas de cardinalités — uniquement des types de colonnes et des contraintes.</p>
+    </div>
+  </div>
+
+  <!-- 22. DIVIDER 05 — MISSIONS -->
+  <div class="slide divider">
+    <h1>MISSIONS</h1>
+    <div class="sect-num">05</div>
+    <svg class="deco" width="140" height="100%" viewBox="0 0 140 800"><use href="#ladder-deco"/></svg>
+  </div>
+
+  <!-- 23. LE CHEMIN -->
+  <div class="slide content">
+    <h2>Le "chemin"</h2>
+    <div class="content-body">
+      <table class="plain">
+        <tr><th>Période</th><th>Étape</th></tr>
+        <tr><td>18–19 mai</td><td>Initialisation — cahier des charges, MERISE, infrastructure front/back</td></tr>
+        <tr><td>24–27 mai</td><td>Cœur applicatif — API, middleware JWT, Kanban interactif, scripts BDD</td></tr>
+        <tr><td>28 mai</td><td>Sécurisation et nettoyage — DRY, Swagger, simplification du périmètre</td></tr>
+        <tr><td>10 juin</td><td>Finalisation — diagrammes UML, dotenv, README professionnel</td></tr>
+        <tr><td>Juin – juillet</td><td>Préparation soutenance — dossier, cahiers de tests, présentation</td></tr>
+      </table>
+      <p class="sub">Planning reconstitué depuis les 33 commits réels du dépôt GitHub — un suivi de projet vérifiable plutôt qu'un GANTT prévisionnel a posteriori.</p>
+    </div>
+  </div>
+
+  <!-- 24. PROGRESSION -->
+  <div class="slide content">
+    <h2>Progression</h2>
+    <div class="content-body">
+      <p class="lead">Compétences du référentiel DWWM couvertes, sur les deux activités types :</p>
+      <div class="card-grid">
+        <div class="card-box"><strong>Activité 1 — Front-end</strong>Environnement, maquettage, intégration HTML/CSS, dynamisation JS</div>
+        <div class="card-box"><strong>Activité 2 — Back-end</strong>Base de données relationnelle, accès aux données SQL, logique métier serveur, documentation du déploiement</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 25. LA LOOP -->
+  <div class="slide content">
+    <h2>La Loop</h2>
+    <div class="content-body">
+      <p class="lead">Projet mené en solo, par itérations : chaque étape a été testée manuellement avant de passer à la suivante plutôt que de tout développer en parallèle.</p>
+      <div class="icon-row">
+        <div class="icon-item"><div class="icon">✍️</div><div class="label"><b>Coder</b></div></div>
+        <div class="icon-item"><div class="icon">🧪</div><div class="label"><b>Tester</b></div></div>
+        <div class="icon-item"><div class="icon">🛠️</div><div class="label"><b>Corriger</b></div></div>
+        <div class="icon-item"><div class="icon">🔁</div><div class="label"><b>Recommencer</b></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 26. DIVIDER 06 — SÉCURITÉ -->
+  <div class="slide divider">
+    <h1>SÉCURITÉ</h1>
+    <div class="sect-num">06</div>
+    <svg class="deco" width="140" height="100%" viewBox="0 0 140 800"><use href="#ladder-deco"/></svg>
+  </div>
+
+  <!-- 27. XSS -->
+  <div class="slide content">
+    <h2>XSS</h2>
+    <div class="content-body">
+      <p class="lead">Tout contenu utilisateur affiché dans le DOM (titre de tâche, description, nom) passe par une fonction d'échappement HTML avant insertion :</p>
+      <div class="code-block"><span class="cm">// frontend/js/api.js — escapeHTML()</span>
+<span class="kw">function</span> <span class="fn">escapeHTML</span>(str) {
+  <span class="kw">const</span> div = document.<span class="fn">createElement</span>(<span class="str">'div'</span>);
+  div.textContent = str;
+  <span class="kw">return</span> div.innerHTML;
+}</div>
+    </div>
+  </div>
+
+  <!-- 28. CSRF -->
+  <div class="slide content">
+    <h2>CSRF</h2>
+    <div class="content-body">
+      <p class="lead">Le jeton JWT est transmis dans le header <code>Authorization</code>, jamais dans un cookie — les navigateurs n'attachent pas automatiquement ce header comme ils le font pour les cookies, ce qui neutralise l'attaque CSRF classique.</p>
+    </div>
+  </div>
+
+  <!-- 29. CORS -->
+  <div class="slide content">
+    <h2>CORS</h2>
+    <div class="content-body">
+      <p class="lead">CORS est une règle de sécurité des navigateurs qui bloque par défaut les requêtes vers un autre serveur.</p>
+      <div class="code-block"><span class="kw">const</span> cors = require(<span class="str">'cors'</span>);
+app.<span class="fn">use</span>(cors());</div>
+      <p class="sub">Activé de façon ouverte en développement ; à restreindre à l'origine exacte du front en production.</p>
+    </div>
+  </div>
+
+  <!-- 30. INJECTION SQL -->
+  <div class="slide content">
+    <h2>Injection SQL</h2>
+    <div class="content-body">
+      <p class="lead">Requêtes préparées avec placeholders <code>?</code> sur toutes les routes — jamais de concaténation directe de variables dans le SQL.</p>
+      <div class="code-block"><span class="kw">const</span> sql = <span class="str">"INSERT INTO users (name, email, password) VALUES (?, ?, ?)"</span>;
+req.db.<span class="fn">query</span>(sql, [name, email, hashedPassword], callback);</div>
+    </div>
+  </div>
+
+  <!-- 31. RGPD (2) -->
+  <div class="slide content">
+    <h2>RGPD</h2>
+    <div class="content-body">
+      <p class="lead">Côté sécurité applicative, le respect du RGPD s'appuie sur :</p>
+      <ul style="font-size:16px; line-height:2.1; color:var(--ink); list-style:none;">
+        <li>▸ Mots de passe hachés bcrypt, jamais stockés en clair</li>
+        <li>▸ Jeton JWT signé HMAC-SHA256, expiration 24h</li>
+        <li>▸ Secrets (<code>SECRET_KEY</code>, identifiants DB) dans <code>.env</code>, jamais versionné, jamais codé en dur</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 32. DIVIDER 08 — DÉPLOIEMENT -->
+  <div class="slide divider">
+    <h1>DÉPLOIEMENT</h1>
+    <div class="sect-num">08</div>
+    <svg class="deco" width="140" height="100%" viewBox="0 0 140 800"><use href="#ladder-deco"/></svg>
+  </div>
+
+  <!-- 33. DOCKER -->
+  <div class="slide content">
+    <h2>Docker</h2>
+    <div class="content-body">
+      <p class="lead">Non implémenté à ce jour — identifié en amélioration future plutôt que prétendu fait.</p>
+      <p class="sub">Piste envisagée : conteneuriser back-end + base de données pour un déploiement reproductible sur un environnement distant.</p>
+    </div>
+  </div>
+
+  <!-- 34. DOCKERFILE -->
+  <div class="slide content">
+    <h2>Dockerfile</h2>
+    <div class="content-body">
+      <p class="lead">Exemple de <code>Dockerfile</code> minimal envisagé pour le back-end (non encore mis en place) :</p>
+      <div class="code-block"><span class="kw">FROM</span> node:20-alpine
+<span class="kw">WORKDIR</span> /app
+<span class="kw">COPY</span> package*.json ./
+<span class="kw">RUN</span> npm install
+<span class="kw">COPY</span> . .
+<span class="kw">CMD</span> [<span class="str">"node"</span>, <span class="str">"server.js"</span>]</div>
+    </div>
+  </div>
+
+  <!-- 35. TESTS -->
+  <div class="slide content">
+    <h2>Tests</h2>
+    <div class="content-body">
+      <div class="icon-row">
+        <div class="icon-item"><div class="icon">🖱️</div><div class="label"><b>Manuels</b>15 scénarios exécutés contre le serveur réel</div></div>
+        <div class="icon-item"><div class="icon">🧰</div><div class="label"><b>Outils</b>Swagger UI, curl, DevTools</div></div>
+        <div class="icon-item"><div class="icon">⚙️</div><div class="label"><b>Automatisés</b>Non implémentés — piste Jest + Supertest</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 36. TESTS UNITAIRES -->
+  <div class="slide content">
+    <h2>Tests unitaires</h2>
+    <div class="content-body">
+      <p class="lead">Aucune suite automatisée n'est en place à ce jour. Une suite Jest + Supertest ciblant en priorité l'authentification et le CRUD des tâches est identifiée comme amélioration prioritaire.</p>
+    </div>
+  </div>
+
+  <!-- 37. TESTS MANUELS -->
+  <div class="slide content">
+    <h2>Tests manuels</h2>
+    <div class="content-body">
+      <table class="plain" style="font-size:12.5px;">
+        <tr><th>Test</th><th>Description</th><th>Résultat</th></tr>
+        <tr><td>TEST002</td><td>Connexion avec un compte valide</td><td style="color:#166534;font-weight:700;">OK</td></tr>
+        <tr><td>TEST004</td><td>Accès à une route protégée sans token</td><td style="color:#166534;font-weight:700;">OK</td></tr>
+        <tr><td>TEST009</td><td>Suppression d'une colonne contenant une tâche (cascade)</td><td style="color:#166534;font-weight:700;">OK</td></tr>
+        <tr><td>TEST013</td><td>Suppression d'une tâche non assignée à l'utilisateur (IDOR)</td><td style="color:#166534;font-weight:700;">OK</td></tr>
+        <tr><td>TEST015</td><td>Suppression par l'admin d'une tâche d'un autre utilisateur</td><td style="color:#166534;font-weight:700;">OK</td></tr>
+      </table>
+      <p class="sub">15 tests au total (voir cahier de tests dédié) — authentification, CRUD, cascade, non-exposition des mots de passe, anti-IDOR.</p>
+    </div>
+  </div>
+
+  <!-- 38. TESTS AUTOMATISÉS -->
+  <div class="slide content">
+    <h2>Tests automatisés</h2>
+    <div class="content-body">
+      <p class="lead">Non implémentés à ce jour — choix assumé pour concentrer le temps disponible sur le cœur applicatif et sa sécurisation.</p>
+      <div class="badge-honest">Piste roadmap : Jest + Supertest sur les routes d'authentification et le CRUD des tâches en priorité.</div>
+    </div>
+  </div>
+
+  <!-- 39. MEP -->
+  <div class="slide content">
+    <h2>MEP</h2>
+    <div class="content-body">
+      <p class="lead">Mise en production : à ce jour, le projet tourne exclusivement en local — un choix assumé plutôt qu'un oubli, documenté comme tel plutôt que prétendu fait.</p>
+    </div>
+  </div>
+
+  <!-- 40. ENVIRONNEMENTS -->
+  <div class="slide content">
+    <h2>Environnements</h2>
+    <div class="content-body">
+      <div class="icon-row">
+        <div class="icon-item"><div class="icon">💻</div><div class="label"><b>Local</b>MySQL 8.0.45 + node server.js</div></div>
+        <div class="icon-item"><div class="icon">🧪</div><div class="label"><b>Test</b>Variables dans .env, comptes créés via /api/auth/register</div></div>
+        <div class="icon-item"><div class="icon">🌐</div><div class="label"><b>Production (piste)</b>Hébergement mutualisé/VPS, HTTPS</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 41. O2SWITCH -->
+  <div class="slide content">
+    <h2>O2Switch</h2>
+    <div class="content-body">
+      <p class="lead">Piste de mise en production envisagée : hébergement mutualisé français type O2Switch, ou un VPS, avec HTTPS obligatoire.</p>
+      <p class="sub">Non mis en place à ce jour — identifié en roadmap.</p>
+    </div>
+  </div>
+
+  <!-- 42. MERCI -->
+  <div class="slide divider" style="justify-content:center;align-items:center;text-align:center;">
+    <h1 style="font-size:64px;">MERCI !</h1>
+    <svg width="120" height="120" style="margin-top:30px;" viewBox="0 0 120 120"><path d="M20 100 C20 60 30 20 60 20 C90 20 100 60 100 100" stroke="#fff" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M35 100 C35 70 42 40 60 40 C78 40 85 70 85 100" stroke="#fff" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M50 100 C50 80 54 60 60 60 C66 60 70 80 70 100" stroke="#fff" stroke-width="8" fill="none" stroke-linecap="round"/></svg>
+    <div style="color:rgba(255,255,255,0.8);font-size:16px;margin-top:20px;">— Questions ? —</div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled>‹</button>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">›</button>
+</div>
+<div class="progress" id="progress">1 / 42</div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+
+  function changeSlide(dir) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(total - 1, current + dir));
+    slides[current].classList.add('active');
+    document.getElementById('progress').textContent = `${current + 1} / ${total}`;
+    document.getElementById('prevBtn').disabled = current === 0;
+    document.getElementById('nextBtn').disabled = current === total - 1;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') changeSlide(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   changeSlide(-1);
+  });
+</script>
+</body>
+</html>

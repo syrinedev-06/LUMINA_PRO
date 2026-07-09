@@ -1,9 +1,8 @@
 const jwt = require('jsonwebtoken');
 
 // Clé secrète unifiée pour signer et vérifier les jetons JWT.
-// NOTE EXAMEN : En production, cette clé doit impérativement être stockée
-// dans un fichier d'environnement (.env) non versionné pour des raisons de sécurité.
-const SECRET_KEY = "LUMINA_SECRET_2024";
+// Stockée dans le fichier d'environnement (.env), jamais versionné, jamais codée en dur.
+const SECRET_KEY = process.env.SECRET_KEY;
 
 /**
  * @brief Middleware de validation des jetons JWT (JSON Web Tokens).

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arborescence & Wireframes — Lumina Pro</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f0f6; color: #1a1a2e; }
+
+header {
+  background: linear-gradient(135deg, #302b63, #24243e);
+  color: #fff; padding: 24px 48px;
+  display: flex; align-items: center; gap: 20px;
+}
+header a { color: #d63384; text-decoration: none; font-size: 22px; }
+header h1 { font-size: 20px; font-weight: 900; }
+
+main { max-width: 1100px; margin: 0 auto; padding: 36px 20px 80px; }
+
+h2 { font-size: 18px; font-weight: 900; color: #302b63; margin: 40px 0 20px;
+     border-left: 4px solid #d63384; padding-left: 14px; }
+h3 { font-size: 14px; font-weight: 800; color: #d63384; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── ARBORESCENCE ── */
+.tree {
+  background: #fff; border-radius: 14px;
+  padding: 32px 40px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  overflow-x: auto;
+}
+.tree-root {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0;
+}
+.node {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 16px; border-radius: 8px;
+  font-size: 14px; font-weight: 600;
+  position: relative;
+}
+.node-page {
+  background: #302b63; color: #fff;
+  border-radius: 10px; padding: 10px 20px;
+  font-size: 13px; font-weight: 700;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.node-view {
+  background: #e0e7ff; color: #3730a3;
+  border-radius: 8px; padding: 8px 16px;
+  font-size: 13px; font-weight: 700;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.node-action {
+  background: #f0fdf4; color: #065f46;
+  border-radius: 6px; padding: 6px 12px;
+  font-size: 12px; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.node-modal {
+  background: #fef3c7; color: #92400e;
+  border-radius: 6px; padding: 6px 12px;
+  font-size: 12px; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+
+.branch { display: flex; gap: 20px; margin: 8px 0 8px 40px; flex-wrap: wrap; }
+.sub-branch { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin: 8px 0 8px 40px; }
+.connector { color: #d63384; font-size: 18px; margin-left: 20px; }
+.connector-h { color: #d63384; font-size: 14px; }
+.arrow { color: #d63384; font-weight: 900; }
+
+.tree-line {
+  border-left: 2px dashed #d63384;
+  margin-left: 20px;
+  padding-left: 20px;
+}
+
+/* ── WIREFRAMES ── */
+.wireframe-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+@media(max-width: 800px) { .wireframe-grid { grid-template-columns: 1fr; } }
+
+.wf-card {
+  background: #fff; border-radius: 14px;
+  padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+.wf-title { font-size: 15px; font-weight: 800; color: #302b63; margin-bottom: 16px; border-bottom: 2px solid #d63384; padding-bottom: 8px; }
+
+/* wireframe screen */
+.screen {
+  border: 2px solid #302b63; border-radius: 8px;
+  overflow: hidden; background: #f8f8ff;
+  font-family: monospace;
+}
+.screen-bar {
+  background: #302b63; color: #fff;
+  padding: 6px 12px; font-size: 11px;
+  display: flex; align-items: center; gap: 8px;
+}
+.screen-bar .dot { width: 8px; height: 8px; border-radius: 50%; }
+.screen-bar .title { flex: 1; text-align: center; font-size: 11px; }
+.screen-body { display: flex; }
+.screen-sidebar {
+  background: #1a1a2e; color: #fff;
+  width: 90px; min-height: 220px;
+  padding: 10px 6px;
+  font-size: 9px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.screen-sidebar .logo-wf { background: #d63384; border-radius: 50%; width: 28px; height: 28px; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-size: 8px; color: #fff; }
+.screen-sidebar .nav-item { background: rgba(255,255,255,0.1); border-radius: 4px; padding: 4px 6px; font-size: 9px; cursor: pointer; }
+.screen-sidebar .nav-item.active { background: #d63384; }
+.screen-main { flex: 1; padding: 10px; }
+.wf-block { background: rgba(214,51,132,0.15); border: 1px solid #d63384; border-radius: 4px; padding: 4px 6px; margin-bottom: 6px; font-size: 9px; color: #302b63; }
+.wf-h1 { font-size: 11px; font-weight: 900; color: #302b63; margin-bottom: 8px; }
+.wf-kanban { display: flex; gap: 6px; margin-top: 6px; }
+.wf-col { background: rgba(48,43,99,0.08); border-radius: 4px; padding: 4px; flex: 1; min-height: 100px; }
+.wf-col-title { font-size: 8px; font-weight: 900; color: #302b63; text-align: center; margin-bottom: 4px; border-bottom: 1px solid rgba(48,43,99,0.2); padding-bottom: 2px; }
+.wf-task { background: #fff; border-radius: 3px; padding: 3px 4px; margin-bottom: 3px; font-size: 8px; border-left: 2px solid #d63384; }
+.wf-fab { background: #d63384; color: #fff; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px; margin-top: 8px; margin-left: auto; }
+
+/* login wireframe */
+.screen-login { padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; min-height: 220px; }
+.wf-logo-big { background: linear-gradient(135deg, #302b63, #d63384); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 900; }
+.wf-form-box { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; width: 100%; }
+.wf-input { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px; height: 16px; margin-bottom: 6px; width: 100%; }
+.wf-label { font-size: 8px; color: #302b63; font-weight: 700; margin-bottom: 2px; }
+.wf-btn { background: #d63384; color: #fff; border-radius: 4px; padding: 4px; font-size: 9px; text-align: center; font-weight: 700; }
+
+/* modal wireframe */
+.wf-modal-overlay { background: rgba(0,0,0,0.4); border-radius: 6px; padding: 16px; display: flex; align-items: center; justify-content: center; min-height: 220px; }
+.wf-modal-box { background: #fff; border-radius: 8px; padding: 12px; width: 100%; }
+.wf-modal-title { font-size: 11px; font-weight: 900; color: #302b63; margin-bottom: 8px; }
+
+/* stats wireframe */
+.wf-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 8px; }
+.wf-stat-card { background: #fff; border-radius: 4px; padding: 6px; display: flex; gap: 4px; align-items: center; }
+.wf-stat-icon { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+.wf-stat-num { font-size: 11px; font-weight: 900; }
+.wf-pie { width: 60px; height: 60px; border-radius: 50%; background: conic-gradient(#ef4444 0 35%, #f59e0b 35% 70%, #10b981 70% 100%); margin: 8px auto; }
+
+/* legend */
+.wf-legend { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; font-size: 11px; }
+.wf-legend-item { display: flex; align-items: center; gap: 4px; }
+.wf-legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html">←</a>
+  <h1>🗂️ Arborescence & Wireframes — Lumina Pro</h1>
+</header>
+
+<main>
+
+<!-- ══════════════════════════════════════ -->
+<!-- SECTION 1 : ARBORESCENCE             -->
+<!-- ══════════════════════════════════════ -->
+<h2>1 — Arborescence des pages</h2>
+
+<div class="tree">
+
+  <!-- Niveau 0 : Entrée -->
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+    <span style="background:#6b7280;color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;">🌐</span>
+    <span style="font-size:13px;font-weight:700;color:#6b7280;">http://localhost:3000</span>
+  </div>
+
+  <!-- login.html -->
+  <div style="margin-left:40px;">
+    <div class="arrow" style="font-size:18px;margin-bottom:4px;">↓</div>
+    <div class="node-page">🔐 login.html — Page de connexion / inscription</div>
+
+    <div class="tree-line" style="margin-top:12px;">
+
+      <!-- Inscription -->
+      <div style="margin-bottom:10px;">
+        <div class="node-action">📝 Formulaire Inscription → POST /api/auth/register → Créé ✓</div>
+      </div>
+
+      <!-- Connexion -->
+      <div style="margin-bottom:10px;">
+        <div class="node-action">🔑 Formulaire Connexion → POST /api/auth/login → Token JWT stocké</div>
+        <div style="margin-left:20px;margin-top:6px;">
+          <div class="arrow" style="font-size:14px;">↓ Redirection si succès</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- index.html -->
+  <div style="margin-left:40px;margin-top:16px;">
+    <div class="arrow" style="font-size:18px;margin-bottom:4px;">↓</div>
+    <div class="node-page">🏠 index.html — Dashboard principal (protégé JWT)</div>
+
+    <div class="tree-line" style="margin-top:12px;">
+
+      <!-- Vue Kanban -->
+      <div style="margin-bottom:14px;">
+        <div class="node-view">📋 Vue Kanban (par défaut)</div>
+        <div style="margin-left:20px;margin-top:6px;display:flex;flex-direction:column;gap:6px;">
+          <div class="node-action">GET /api/columns → Colonnes (À faire / En cours / Terminé)</div>
+          <div class="node-action">GET /api/tasks → Tâches triées par priorité (SQL FIELD())</div>
+          <div class="node-action">➡️ Bouton déplacer → PUT /api/tasks/:id (id_col)</div>
+          <div class="node-action">✏️ Clic sur tâche → Modale d'édition (AT1.2)</div>
+          <div class="node-modal">➕ Bouton FAB (+) → Modale de création</div>
+        </div>
+      </div>
+
+      <!-- Modale -->
+      <div style="margin-left:20px;margin-bottom:14px;">
+        <div class="node-modal" style="margin-bottom:6px;">🪟 Modale Tâche (role="dialog", aria-modal)</div>
+        <div style="margin-left:20px;display:flex;flex-direction:column;gap:4px;">
+          <div class="node-action">POST /api/tasks → Créer</div>
+          <div class="node-action">PUT /api/tasks/:id → Modifier</div>
+          <div class="node-action">DELETE /api/tasks/:id → Supprimer</div>
+        </div>
+      </div>
+
+      <!-- Vue Équipe (admin) -->
+      <div style="margin-bottom:14px;">
+        <div class="node-view">👥 Vue Équipe (admin uniquement)</div>
+        <div style="margin-left:20px;margin-top:6px;display:flex;flex-direction:column;gap:6px;">
+          <div class="node-action">GET /api/users → Liste des membres</div>
+          <div class="node-action">DELETE /api/users/:id → Retirer un membre</div>
+        </div>
+      </div>
+
+      <!-- Vue Statistiques -->
+      <div style="margin-bottom:14px;">
+        <div class="node-view">📊 Vue Statistiques</div>
+        <div style="margin-left:20px;margin-top:6px;display:flex;flex-direction:column;gap:6px;">
+          <div class="node-action">Promise.all([GET /api/tasks, GET /api/users]) → En parallèle</div>
+          <div class="node-action">.filter() → Compteurs (urgent / moyen / normal / non assigné)</div>
+          <div class="node-action">creerCamembert() → SVG généré en JS pur</div>
+        </div>
+      </div>
+
+      <!-- Déconnexion -->
+      <div>
+        <div class="node-action" style="background:#fee2e2;color:#991b1b;">🚪 Déconnexion → localStorage.clear() → login.html</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="wf-legend">
+  <div class="wf-legend-item"><div class="wf-legend-dot" style="background:#302b63;"></div> Page HTML</div>
+  <div class="wf-legend-item"><div class="wf-legend-dot" style="background:#4338ca;"></div> Vue dynamique (JS)</div>
+  <div class="wf-legend-item"><div class="wf-legend-dot" style="background:#065f46;"></div> Action / Appel API</div>
+  <div class="wf-legend-item"><div class="wf-legend-dot" style="background:#92400e;"></div> Modale / Composant</div>
+  <div class="wf-legend-item"><div class="wf-legend-dot" style="background:#991b1b;"></div> Destructif</div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- SECTION 2 : WIREFRAMES               -->
+<!-- ══════════════════════════════════════ -->
+<h2>2 — Wireframes (maquettes basse fidélité)</h2>
+
+<div class="wireframe-grid">
+
+  <!-- WF 1 : Login -->
+  <div class="wf-card">
+    <div class="wf-title">Page 1 — login.html (Connexion / Inscription)</div>
+    <div class="screen">
+      <div class="screen-bar">
+        <div class="dot" style="background:#ef4444;"></div>
+        <div class="dot" style="background:#f59e0b;"></div>
+        <div class="dot" style="background:#10b981;"></div>
+        <div class="title">localhost:3000/login.html</div>
+      </div>
+      <div class="screen-login">
+        <div class="wf-logo-big">L</div>
+        <div style="font-size:11px;font-weight:900;color:#302b63;margin-bottom:4px;">Lumina Pro</div>
+        <div class="wf-form-box" style="margin-bottom:6px;">
+          <div class="wf-label">Email</div>
+          <div class="wf-input"></div>
+          <div class="wf-label">Mot de passe</div>
+          <div class="wf-input"></div>
+          <div class="wf-btn" style="margin-top:6px;">Se connecter</div>
+        </div>
+        <div style="font-size:9px;color:#6b7280;">Pas de compte ? S'inscrire ↓</div>
+        <div class="wf-form-box" style="opacity:0.5;">
+          <div class="wf-label">Nom</div>
+          <div class="wf-input"></div>
+          <div class="wf-label">Email</div>
+          <div class="wf-input"></div>
+          <div class="wf-label">Mot de passe</div>
+          <div class="wf-input"></div>
+          <div class="wf-btn" style="margin-top:6px;background:#1a1a2e;">Créer mon compte</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:#6b7280;margin-top:10px;">Formulaires d'authentification — JWT émis à la connexion</p>
+  </div>
+
+  <!-- WF 2 : Dashboard Kanban -->
+  <div class="wf-card">
+    <div class="wf-title">Page 2 — index.html (Vue Kanban)</div>
+    <div class="screen">
+      <div class="screen-bar">
+        <div class="dot" style="background:#ef4444;"></div>
+        <div class="dot" style="background:#f59e0b;"></div>
+        <div class="dot" style="background:#10b981;"></div>
+        <div class="title">localhost:3000</div>
+      </div>
+      <div class="screen-body">
+        <div class="screen-sidebar">
+          <div class="logo-wf">L</div>
+          <div class="nav-item active">📊 Dashboard</div>
+          <div class="nav-item">📊 Stats</div>
+          <div class="nav-item">👥 Équipe</div>
+          <div style="margin-top:auto;font-size:8px;background:rgba(214,51,132,0.3);padding:4px;border-radius:3px;text-align:center;">Déco.</div>
+        </div>
+        <div class="screen-main">
+          <div class="wf-h1">Tableau de bord Kanban</div>
+          <div class="wf-kanban">
+            <div class="wf-col">
+              <div class="wf-col-title">À faire</div>
+              <div class="wf-task" style="border-left-color:#ef4444;">Tâche urgente ➡️</div>
+              <div class="wf-task">Tâche normale ➡️</div>
+            </div>
+            <div class="wf-col">
+              <div class="wf-col-title">En cours</div>
+              <div class="wf-task" style="border-left-color:#f59e0b;">⬅️ Tâche moyenne ➡️</div>
+            </div>
+            <div class="wf-col">
+              <div class="wf-col-title">Terminé</div>
+              <div class="wf-task" style="opacity:0.5;">⬅️ Tâche</div>
+            </div>
+          </div>
+          <div class="wf-fab">+</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:#6b7280;margin-top:10px;">Sidebar responsive — contenu injecté dynamiquement via JS</p>
+  </div>
+
+  <!-- WF 3 : Modale Tâche -->
+  <div class="wf-card">
+    <div class="wf-title">Composant — Modale Tâche (role="dialog")</div>
+    <div class="screen">
+      <div class="screen-bar">
+        <div class="dot" style="background:#ef4444;"></div>
+        <div class="dot" style="background:#f59e0b;"></div>
+        <div class="dot" style="background:#10b981;"></div>
+        <div class="title">Fenêtre modale</div>
+      </div>
+      <div class="wf-modal-overlay">
+        <div class="wf-modal-box">
+          <div class="wf-modal-title">Nouvelle Mission</div>
+          <div class="wf-label">Titre <span style="color:#d63384;">*</span></div>
+          <div class="wf-input" style="margin-bottom:8px;background:#fff;border:1px solid #d63384;"></div>
+          <div style="font-size:8px;color:#dc2626;margin-bottom:6px;">(erreur si champ vide)</div>
+          <div class="wf-label">Description</div>
+          <div class="wf-input" style="height:28px;margin-bottom:8px;"></div>
+          <div style="display:flex;gap:6px;margin-bottom:8px;">
+            <div style="flex:1;">
+              <div class="wf-label">Priorité</div>
+              <div class="wf-input"></div>
+            </div>
+            <div style="flex:1;">
+              <div class="wf-label">Assigné à</div>
+              <div class="wf-input"></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <div class="wf-btn" style="flex:1;padding:5px;">Enregistrer</div>
+            <div class="wf-btn" style="flex:1;padding:5px;background:#6b7280;">Annuler</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:#6b7280;margin-top:10px;">Accessible : aria-labelledby, aria-modal, focus piégé dans la modale</p>
+  </div>
+
+  <!-- WF 4 : Page Statistiques -->
+  <div class="wf-card">
+    <div class="wf-title">Vue Statistiques (profile.js)</div>
+    <div class="screen">
+      <div class="screen-bar">
+        <div class="dot" style="background:#ef4444;"></div>
+        <div class="dot" style="background:#f59e0b;"></div>
+        <div class="dot" style="background:#10b981;"></div>
+        <div class="title">localhost:3000 → Statistiques</div>
+      </div>
+      <div class="screen-body">
+        <div class="screen-sidebar">
+          <div class="logo-wf">L</div>
+          <div class="nav-item">📊 Dashboard</div>
+          <div class="nav-item active">📊 Stats</div>
+          <div class="nav-item">👥 Équipe</div>
+        </div>
+        <div class="screen-main">
+          <div class="wf-h1" style="font-size:10px;">Vue d'ensemble</div>
+          <div class="wf-stats">
+            <div class="wf-stat-card">
+              <div class="wf-stat-icon" style="background:#ede9fe;"></div>
+              <div><div class="wf-stat-num" style="color:#6c63ff;">8</div><div style="font-size:7px;color:#6b7280;">Tâches total</div></div>
+            </div>
+            <div class="wf-stat-card">
+              <div class="wf-stat-icon" style="background:#fee2e2;"></div>
+              <div><div class="wf-stat-num" style="color:#ef4444;">3</div><div style="font-size:7px;color:#6b7280;">Urgentes</div></div>
+            </div>
+            <div class="wf-stat-card">
+              <div class="wf-stat-icon" style="background:#fef3c7;"></div>
+              <div><div class="wf-stat-num" style="color:#f59e0b;">2</div><div style="font-size:7px;color:#6b7280;">Non assignées</div></div>
+            </div>
+            <div class="wf-stat-card">
+              <div class="wf-stat-icon" style="background:#dcfce7;"></div>
+              <div><div class="wf-stat-num" style="color:#10b981;">4</div><div style="font-size:7px;color:#6b7280;">Membres</div></div>
+            </div>
+          </div>
+          <div class="wf-pie"></div>
+          <div style="font-size:8px;color:#6b7280;text-align:center;">Camembert SVG (JS pur)</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:#6b7280;margin-top:10px;">Promise.all() — deux API en parallèle — SVG généré sans bibliothèque</p>
+  </div>
+
+  <!-- WF 5 : Mobile -->
+  <div class="wf-card">
+    <div class="wf-title">Vue Mobile — Responsive (max-width: 900px)</div>
+    <div style="display:flex;gap:20px;align-items:flex-start;">
+      <!-- Mobile fermé -->
+      <div>
+        <div style="font-size:10px;font-weight:700;color:#302b63;text-align:center;margin-bottom:6px;">Sidebar fermée</div>
+        <div class="screen" style="width:100px;">
+          <div class="screen-bar" style="padding:4px 8px;">
+            <div class="title" style="font-size:9px;">Lumina Pro</div>
+          </div>
+          <div class="screen-main" style="padding:6px;">
+            <div style="display:flex;align-items:center;gap:4px;margin-bottom:6px;">
+              <div style="background:#302b63;color:#fff;border-radius:2px;padding:2px 4px;font-size:10px;">☰</div>
+              <div style="font-size:9px;font-weight:700;">Dashboard</div>
+            </div>
+            <div class="wf-task" style="font-size:8px;">Tâche A ➡️</div>
+            <div class="wf-task" style="font-size:8px;">Tâche B ➡️</div>
+          </div>
+        </div>
+      </div>
+      <!-- Mobile ouvert -->
+      <div>
+        <div style="font-size:10px;font-weight:700;color:#302b63;text-align:center;margin-bottom:6px;">Sidebar ouverte (☰)</div>
+        <div class="screen" style="width:100px;">
+          <div class="screen-bar" style="padding:4px 8px;">
+            <div class="title" style="font-size:9px;">Lumina Pro</div>
+          </div>
+          <div class="screen-body">
+            <div class="screen-sidebar" style="width:70px;min-height:130px;">
+              <div class="logo-wf" style="width:20px;height:20px;font-size:7px;">L</div>
+              <div class="nav-item active" style="font-size:7px;">📊 Dash</div>
+              <div class="nav-item" style="font-size:7px;">📊 Stats</div>
+              <div style="font-size:7px;color:rgba(255,255,255,0.5);margin-top:auto;">✕ Fermer</div>
+            </div>
+            <div class="screen-main" style="padding:4px;filter:blur(0.5px);opacity:0.4;">
+              <div style="font-size:7px;">Contenu...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:#6b7280;margin-top:10px;">transform: translateX(-100%) → 0 via JS classList.toggle('open')</p>
+  </div>
+
+  <!-- WF 6 : Vue Équipe -->
+  <div class="wf-card">
+    <div class="wf-title">Vue Équipe (admin uniquement)</div>
+    <div class="screen">
+      <div class="screen-bar">
+        <div class="dot" style="background:#ef4444;"></div>
+        <div class="dot" style="background:#f59e0b;"></div>
+        <div class="dot" style="background:#10b981;"></div>
+        <div class="title">localhost:3000 → Équipe</div>
+      </div>
+      <div class="screen-body">
+        <div class="screen-sidebar">
+          <div class="logo-wf">L</div>
+          <div class="nav-item">📊 Dashboard</div>
+          <div class="nav-item">📊 Stats</div>
+          <div class="nav-item active">👥 Équipe</div>
+        </div>
+        <div class="screen-main">
+          <div class="wf-h1" style="font-size:10px;">Gestion Équipe</div>
+          <div style="display:flex;flex-direction:column;gap:4px;margin-top:4px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;background:#f8fafc;padding:4px 6px;border-radius:4px;font-size:8px;border:1px solid #e2e8f0;">
+              <span>👤 Alice Martin</span>
+              <span style="color:#6b7280;">admin</span>
+              <span style="color:#d63384;font-size:7px;cursor:pointer;">Supprimer</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;background:#f8fafc;padding:4px 6px;border-radius:4px;font-size:8px;border:1px solid #e2e8f0;">
+              <span>👤 Bob Dupont</span>
+              <span style="color:#6b7280;">user</span>
+              <span style="color:#d63384;font-size:7px;cursor:pointer;">Supprimer</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;background:#f8fafc;padding:4px 6px;border-radius:4px;font-size:8px;border:1px solid #e2e8f0;">
+              <span>👤 Syrine BH</span>
+              <span style="color:#6b7280;">user</span>
+              <span style="color:#d63384;font-size:7px;cursor:pointer;">Supprimer</span>
+            </div>
+          </div>
+          <div style="margin-top:6px;font-size:7px;color:#6b7280;">GET /api/users → DELETE /api/users/:id</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:#6b7280;margin-top:10px;">Visible uniquement si role = 'admin' (vérification JWT côté serveur)</p>
+  </div>
+
+</div>
+
+</main>
+</body>
+</html>

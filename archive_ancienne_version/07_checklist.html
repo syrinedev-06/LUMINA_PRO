@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Checklist DWWM — Lumina Pro</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f0f6; color: #222; }
+
+  header {
+    background: linear-gradient(135deg, #302b63, #24243e);
+    color: #fff; padding: 24px 48px;
+    display: flex; align-items: center; gap: 20px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  header a { color: #d63384; text-decoration: none; font-size: 22px; }
+  header h1 { font-size: 20px; font-weight: 900; }
+  header span { color: #d63384; }
+
+  /* ── BARRE DE PROGRESSION ── */
+  .progress-bar-wrap {
+    background: #302b63; padding: 16px 48px;
+    display: flex; align-items: center; gap: 20px;
+  }
+  .progress-label { color: #fff; font-size: 14px; font-weight: 700; white-space: nowrap; }
+  .progress-track { flex: 1; background: rgba(255,255,255,0.15); border-radius: 10px; height: 12px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(to right, #d63384, #f59e0b); border-radius: 10px; transition: width 0.5s; }
+  .progress-pct { color: #d63384; font-size: 18px; font-weight: 900; white-space: nowrap; }
+
+  main { max-width: 960px; margin: 0 auto; padding: 36px 20px 80px; }
+
+  /* ── SECTION ── */
+  .section {
+    background: #fff; border-radius: 14px;
+    margin-bottom: 24px; overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+  .section-header {
+    padding: 18px 24px;
+    display: flex; align-items: center; gap: 14px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer; user-select: none;
+  }
+  .section-header:hover { background: #fafafa; }
+  .section-icon { font-size: 26px; }
+  .section-title { font-size: 17px; font-weight: 800; flex: 1; }
+  .section-badge {
+    font-size: 12px; font-weight: 700;
+    padding: 4px 12px; border-radius: 20px;
+  }
+  .badge-done { background: #d1fae5; color: #065f46; }
+  .badge-partial { background: #fef3c7; color: #92400e; }
+  .badge-todo { background: #fee2e2; color: #991b1b; }
+  .section-arrow { color: #888; font-size: 18px; transition: transform 0.2s; }
+  .section-arrow.open { transform: rotate(90deg); }
+  .section-body { padding: 10px 24px 20px; display: none; }
+  .section-body.open { display: block; }
+
+  /* ── ITEMS ── */
+  .item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 12px; margin: 4px 0;
+    border-radius: 8px; font-size: 14.5px;
+    border-left: 3px solid transparent;
+  }
+  .item.done { background: #f0fdf4; border-left-color: #22c55e; }
+  .item.partial { background: #fffbeb; border-left-color: #f59e0b; }
+  .item.todo { background: #fef2f2; border-left-color: #ef4444; }
+  .item.info { background: #eff6ff; border-left-color: #3b82f6; }
+  .item-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .item-text { flex: 1; line-height: 1.5; }
+  .item-text strong { color: #302b63; }
+  .item-tag {
+    font-size: 11px; font-weight: 700; padding: 2px 8px;
+    border-radius: 10px; white-space: nowrap; flex-shrink: 0;
+  }
+  .tag-done { background: #d1fae5; color: #065f46; }
+  .tag-todo { background: #fee2e2; color: #991b1b; }
+  .tag-urgent { background: #d63384; color: #fff; }
+  .tag-toi { background: #e0e7ff; color: #3730a3; }
+
+  .sub-item {
+    margin-left: 30px; padding: 6px 12px;
+    font-size: 13.5px; border-radius: 6px; margin-top: 2px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sub-item.done { background: #f0fdf4; }
+  .sub-item.todo { background: #fef2f2; }
+  .sub-item.partial { background: #fffbeb; }
+
+  /* ── LÉGENDE ── */
+  .legend {
+    display: flex; gap: 20px; flex-wrap: wrap;
+    padding: 16px 0; margin-bottom: 8px;
+    font-size: 13px; font-weight: 600;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html">←</a>
+  <h1>✅ Checklist <span>DWWM Lumina Pro</span></h1>
+</header>
+
+<div class="progress-bar-wrap">
+  <span class="progress-label">Progression globale</span>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill" style="width:52%"></div>
+  </div>
+  <span class="progress-pct" id="progressPct">52%</span>
+</div>
+
+<main>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div> Fait ✅</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div> Partiellement fait ⚠️</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div> À faire ❌</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div> À faire toi-même 👤</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       REPO GITHUB
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-icon">📁</span>
+      <span class="section-title">Repo GitHub</span>
+      <span class="section-badge badge-partial">⚠️ Partiel</span>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body open">
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Créer un repo public GitHub nommé <strong>syrine-ben-hassine-dossiers-pros-DWWM</strong></span>
+        <span class="item-tag tag-urgent">URGENT</span>
+      </div>
+      <div class="item partial">
+        <span class="item-icon">⚠️</span>
+        <span class="item-text">Rédiger les spécifications fonctionnelles (user stories faites, diagrammes UML manquants)</span>
+        <span class="item-tag tag-todo">À compléter</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Technologie choisie : <strong>Node.js + Express + MySQL + HTML/CSS/JS</strong></span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">README rédigé (installation, utilisation, technologies)</span>
+        <span class="item-tag tag-urgent">URGENT</span>
+      </div>
+      <div class="item partial">
+        <span class="item-icon">⚠️</span>
+        <span class="item-text">Dossier de projet en cours de rédaction</span>
+        <span class="item-tag tag-todo">En cours</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       DOSSIER PROFESSIONNEL (DP)
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-icon">✏️</span>
+      <span class="section-title">Dossier Professionnel (DP)</span>
+      <span class="section-badge badge-done">✅ Fait</span>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body open">
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Activités-types recensées (AT1 Front + AT2 Back)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text"><strong>3 exemples AT1 Front</strong> : CSS responsive, Kanban JS dynamique, XSS + JWT client</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text"><strong>3 exemples AT2 Back</strong> : BDD MySQL, API REST Node.js, Sécurité bcrypt + JWT</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item info">
+        <span class="item-icon">👤</span>
+        <span class="item-text">Remplir les champs personnels du DP : adresse, dates, ville, signature</span>
+        <span class="item-tag tag-toi">À toi</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       DOSSIER DE PROJET — INTRODUCTION
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-icon">📄</span>
+      <span class="section-title">Dossier de Projet — Introduction & Présentation</span>
+      <span class="section-badge badge-partial">⚠️ Partiel</span>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Contexte du projet expliqué (Kanban, besoin identifié)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Technologies présentées avec justification</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Introduction accrocheuse rédigée pour le dossier écrit</span>
+        <span class="item-tag tag-todo">À faire</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Présentation de "l'entreprise" (projet solo / formation La Plateforme_)</span>
+        <span class="item-tag tag-todo">À faire</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SPÉCIFICATIONS FONCTIONNELLES
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-icon">📐</span>
+      <span class="section-title">Spécifications fonctionnelles</span>
+      <span class="section-badge badge-partial">⚠️ Partiel</span>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">User stories rédigées (admin et utilisateur)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Cahier des charges avec liste des routes API</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Diagramme de <strong>use cases</strong> (UML) à réaliser</span>
+        <span class="item-tag tag-urgent">URGENT</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Diagramme de <strong>packages</strong> (UML) à réaliser</span>
+        <span class="item-tag tag-todo">À faire</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Arborescence des pages fournie</span>
+        <span class="item-tag tag-todo">À faire</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SPÉCIFICATIONS TECHNIQUES
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-icon">⚙️</span>
+      <span class="section-title">Spécifications techniques</span>
+      <span class="section-badge badge-partial">⚠️ Partiel</span>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Langages et versions listés (Node.js, Express 5, MySQL 8, HTML5/CSS3/JS ES6+)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Frameworks et outils listés (JWT, bcrypt, Swagger, Postman, Git)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Instructions d'installation expliquées : <code>npm install</code>, XAMPP, configuration BDD</span>
+        <span class="item-tag tag-urgent">URGENT</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Workflow Git expliqué (branche main, messages de commits)</span>
+        <span class="item-tag tag-todo">À faire</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       MAQUETTAGE
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-icon">🎨</span>
+      <span class="section-title">Maquettage</span>
+      <span class="section-badge badge-partial">⚠️ Partiel</span>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Charte graphique : couleur primaire <strong>#d63384</strong> (fuchsia), fond sombre, police Inter</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Wireframes à montrer dans le dossier</span>
+        <span class="item-tag tag-todo">À faire</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Mockups Figma (ou captures d'écran de l'app finale) desktop + mobile</span>
+        <span class="item-tag tag-todo">À faire</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Arborescence des pages (login → kanban → modal tâche…)</span>
+        <span class="item-tag tag-todo">À faire</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       INTÉGRATION
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-icon">🖥️</span>
+      <span class="section-title">Intégration (HTML/CSS)</span>
+      <span class="section-badge badge-partial">⚠️ Partiel</span>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">CSS modulaire en 8 fichiers (variables, layout, kanban, responsive…)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Responsive design implémenté avec media queries (sidebar mobile)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Screenshots desktop + mobile à prendre et mettre dans le dossier</span>
+        <span class="item-tag tag-urgent">URGENT</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       CONCEPTION BDD
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-icon">🗃️</span>
+      <span class="section-title">Conception de la BDD</span>
+      <span class="section-badge badge-partial">⚠️ Partiel</span>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">MCD réalisé (entités + relations + cardinalités)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">MLD réalisé (tables + clés)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">MPD réalisé (types SQL réels)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Clés étrangères expliquées (CASCADE + SET NULL)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Propriétés ACID mentionnées</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Diagrammes MCD/MLD exportés en image pour le dossier écrit</span>
+        <span class="item-tag tag-todo">À faire</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       MISE EN PLACE BDD
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-icon">🔧</span>
+      <span class="section-title">Mise en place de la BDD</span>
+      <span class="section-badge badge-done">✅ Fait</span>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">CREATE TABLE avec IF NOT EXISTS (auto-création au démarrage)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">FOREIGN KEY avec CASCADE et SET NULL</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Connexion MySQL via mysql2 dans server.js</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       MISSIONS (CRUD + API)
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-icon">🎯</span>
+      <span class="section-title">Missions — CRUD + API REST</span>
+      <span class="section-badge badge-partial">⚠️ Partiel</span>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">CRUD complet : tâches, colonnes, utilisateurs</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">API REST documentée avec Swagger</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Fetch API + async/await + JSON</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Authentification par token JWT</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Diagramme d'activité à réaliser pour chaque mission</span>
+        <span class="item-tag tag-todo">À faire</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Diagramme de séquence à réaliser (ex : flux de connexion)</span>
+        <span class="item-tag tag-urgent">URGENT</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Validation côté front (e.preventDefault, escapeHTML)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item partial">
+        <span class="item-icon">⚠️</span>
+        <span class="item-text">Validation côté back — titre obligatoire présent, mais pas de validation complète (longueur, format email)</span>
+        <span class="item-tag tag-todo">Partiel</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       DÉPLOIEMENT
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-icon">🚀</span>
+      <span class="section-title">Déploiement</span>
+      <span class="section-badge badge-todo">❌ À faire</span>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Fichier <strong>.env</strong> à créer (SECRET_KEY en dehors du code)</span>
+        <span class="item-tag tag-urgent">URGENT</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Séparation dev / prod expliquée dans le dossier</span>
+        <span class="item-tag tag-todo">À faire</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Docker non utilisé — à mentionner comme amélioration future</span>
+        <span class="item-tag tag-todo">À mentionner</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Git avec commits réguliers (26 commits)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SÉCURITÉ
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-icon">🔒</span>
+      <span class="section-title">Sécurité</span>
+      <span class="section-badge badge-done">✅ Fait</span>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Injection SQL : requêtes préparées avec <code>?</code></span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">XSS : <code>escapeHTML()</code> sur tout contenu affiché</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Hash mots de passe : bcrypt (10 rounds) — différencié du chiffrement</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Contrôle d'accès : <code>verifyToken</code> middleware sur toutes routes protégées</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">CSRF : JWT dans header (pas cookie) — protection partielle expliquée</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       CONCLUSION
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-icon">🏁</span>
+      <span class="section-title">Conclusion générale</span>
+      <span class="section-badge badge-partial">⚠️ Partiel</span>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Bilan des fonctionnalités livrées (dans la présentation)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Améliorations futures listées (.env, HTTPS, rate limiting…)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Bilan personnel de la formation / reconversion à rédiger</span>
+        <span class="item-tag tag-toi">À toi</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">La suite (poursuite d'études, recherche d'emploi…) à rédiger</span>
+        <span class="item-tag tag-toi">À toi</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       CODE
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-icon">💻</span>
+      <span class="section-title">Code</span>
+      <span class="section-badge badge-partial">⚠️ Partiel</span>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Application fonctionnelle (front + back)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Code versionné sur Git (26 commits sur branche main)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Base de données opérationnelle (MySQL, auto-création tables)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">README.md à rédiger dans le repo GitHub</span>
+        <span class="item-tag tag-urgent">URGENT</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Pousser les commits sur GitHub (26 commits en avance sur origin)</span>
+        <span class="item-tag tag-urgent">URGENT</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PRÉSENTATION ORALE
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-icon">🎤</span>
+      <span class="section-title">Présentation Orale</span>
+      <span class="section-badge badge-partial">⚠️ Partiel</span>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Support de présentation créé — <strong>25 slides</strong> (presentation.html)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Plan structuré et logique (sommaire → genèse → tech → BDD → sécurité → conclusion)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Script de présentation rédigé (texte à dire pour chaque slide)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Démo technique à préparer et tester (lancer le serveur, montrer le kanban en live)</span>
+        <span class="item-tag tag-urgent">URGENT</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Scénario de démo à prévoir (compte de test créé, tâches exemples prêtes)</span>
+        <span class="item-tag tag-todo">À faire</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text"><strong>Répétition à blanc</strong> à effectuer (chronomètre les 35 min)</span>
+        <span class="item-tag tag-urgent">URGENT</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       QUESTIONS JURY
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-icon">❓</span>
+      <span class="section-title">Préparation aux Questions du Jury</span>
+      <span class="section-badge badge-done">✅ Fait</span>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Capable d'expliquer chaque partie du code (fiches 01 et 06)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Sécurité révisée (injections SQL, XSS, CSRF, bcrypt, JWT)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">API REST, codes HTTP, méthodes HTTP révisés</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">ACID, cardinalités, MCD/MLD/MPD révisés</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Réponses types préparées (QCM 50 questions)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       LOGISTIQUE
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-icon">🚅</span>
+      <span class="section-title">Logistique le Jour J</span>
+      <span class="section-badge badge-todo">👤 À toi</span>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <div class="item info"><span class="item-icon">👤</span><span class="item-text">Billets de train réservés</span><span class="item-tag tag-toi">À toi</span></div>
+      <div class="item info"><span class="item-icon">👤</span><span class="item-text">Ordinateur chargé + câble d'alimentation</span><span class="item-tag tag-toi">À toi</span></div>
+      <div class="item info"><span class="item-icon">👤</span><span class="item-text">Projet lancé et testé avant d'entrer</span><span class="item-tag tag-toi">À toi</span></div>
+      <div class="item done">
+        <span class="item-icon">✅</span>
+        <span class="item-text">Présentation accessible en local (presentation.html)</span>
+        <span class="item-tag tag-done">Fait</span>
+      </div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Copier la présentation sur <strong>clé USB</strong> + cloud (Google Drive / OneDrive)</span>
+        <span class="item-tag tag-urgent">URGENT</span>
+      </div>
+      <div class="item info"><span class="item-icon">👤</span><span class="item-text">Arrivée 15-30 min en avance</span><span class="item-tag tag-toi">À toi</span></div>
+      <div class="item info"><span class="item-icon">👤</span><span class="item-text">Bouteille d'eau</span><span class="item-tag tag-toi">À toi</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       DOCUMENTS
+  ══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-icon">🪪</span>
+      <span class="section-title">Documents à apporter</span>
+      <span class="section-badge badge-todo">👤 À toi</span>
+      <span class="section-arrow">›</span>
+    </div>
+    <div class="section-body">
+      <div class="item info"><span class="item-icon">👤</span><span class="item-text">Pièce d'identité</span><span class="item-tag tag-toi">À toi</span></div>
+      <div class="item info"><span class="item-icon">👤</span><span class="item-text">Convocation</span><span class="item-tag tag-toi">À toi</span></div>
+      <div class="item info"><span class="item-icon">👤</span><span class="item-text">Enveloppe A4 timbrée à ton adresse</span><span class="item-tag tag-toi">À toi</span></div>
+      <div class="item todo">
+        <span class="item-icon">❌</span>
+        <span class="item-text">Copies papier du dossier de projet</span>
+        <span class="item-tag tag-todo">À faire</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       ACTIONS PRIORITAIRES
+  ══════════════════════════════════════════ -->
+  <div class="section" style="border: 3px solid #d63384;">
+    <div class="section-header" style="background: linear-gradient(to right, #d63384, #b02879);" onclick="toggle(this)">
+      <span class="section-icon">🔥</span>
+      <span class="section-title" style="color:#fff;">Actions URGENTES à faire maintenant</span>
+      <span class="section-arrow" style="color:#fff;">›</span>
+    </div>
+    <div class="section-body open">
+      <div class="item todo" style="border-left-color:#d63384;">
+        <span class="item-icon">1️⃣</span>
+        <span class="item-text"><strong>Pousser le code sur GitHub</strong> (git push) — 26 commits en attente</span>
+        <span class="item-tag tag-urgent">Priorité 1</span>
+      </div>
+      <div class="item todo" style="border-left-color:#d63384;">
+        <span class="item-icon">2️⃣</span>
+        <span class="item-text"><strong>Créer le repo public</strong> nommé <code>syrine-ben-hassine-dossiers-pros-DWWM</code></span>
+        <span class="item-tag tag-urgent">Priorité 1</span>
+      </div>
+      <div class="item todo" style="border-left-color:#d63384;">
+        <span class="item-icon">3️⃣</span>
+        <span class="item-text"><strong>Écrire le README.md</strong> (comment installer et lancer le projet)</span>
+        <span class="item-tag tag-urgent">Priorité 2</span>
+      </div>
+      <div class="item todo" style="border-left-color:#d63384;">
+        <span class="item-icon">4️⃣</span>
+        <span class="item-text"><strong>Prendre des screenshots</strong> de l'application (desktop + mobile) pour le dossier</span>
+        <span class="item-tag tag-urgent">Priorité 2</span>
+      </div>
+      <div class="item todo" style="border-left-color:#d63384;">
+        <span class="item-icon">5️⃣</span>
+        <span class="item-text"><strong>Faire le diagramme de séquence</strong> (flux connexion) sur draw.io ou Lucidchart</span>
+        <span class="item-tag tag-urgent">Priorité 3</span>
+      </div>
+      <div class="item todo" style="border-left-color:#d63384;">
+        <span class="item-icon">6️⃣</span>
+        <span class="item-text"><strong>Répétition à blanc</strong> de la présentation (35 min chrono)</span>
+        <span class="item-tag tag-urgent">Priorité 3</span>
+      </div>
+      <div class="item todo" style="border-left-color:#d63384;">
+        <span class="item-icon">7️⃣</span>
+        <span class="item-text"><strong>Copier presentation.html</strong> sur clé USB + Google Drive</span>
+        <span class="item-tag tag-urgent">Priorité 3</span>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  function toggle(header) {
+    const arrow = header.querySelector('.section-arrow');
+    const body = header.nextElementSibling;
+    arrow.classList.toggle('open');
+    body.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
