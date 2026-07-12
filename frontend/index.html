@@ -83,6 +83,22 @@
         <div id="content-area" aria-live="polite">
             <!-- Le contenu changera ici selon la page cliquée (Kanban par défaut) -->
             <div class="kanban-container" id="kanban-view">
+                <!-- Barre de recherche + statistiques -->
+                <div style="display:flex; align-items:center; gap:16px; padding:16px 28px 0;">
+                    <div style="position:relative; flex:1; max-width:320px;">
+                        <span style="position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--text-muted); pointer-events:none;">🔍</span>
+                        <input
+                            type="search"
+                            id="search-input"
+                            placeholder="Rechercher une tâche..."
+                            oninput="filterTasks()"
+                            style="width:100%; padding:8px 12px 8px 32px; border:1px solid var(--border); border-radius:10px; background:var(--card-bg); color:var(--text); font-size:14px; outline:none;"
+                            aria-label="Rechercher une tâche"
+                        >
+                    </div>
+                    <div id="kanban-stats" style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;"></div>
+                </div>
+
                 <div id="kanban-board" class="kanban-board">
                     <p>Chargement des tâches...</p>
                 </div>
@@ -127,8 +143,14 @@
                     </div>
                 </div>
 
+
+                <div class="form-group">
+                    <label for="task-due">Date d'échéance</label>
+                    <input type="date" id="task-due">
+                </div>
+
                 <div class="modal-footer">
-                    <button type="submit" class="btn-primary-modal">Enregistrer</button>
+                    <button type="button" class="btn-primary-modal" onclick="saveTask()">Enregistrer</button>
                     <button type="button" class="btn-delete" id="delete-task-btn" aria-label="Supprimer cette tâche" style="display:none;">Supprimer</button>
                     <button type="button" id="close-modal" class="btn-secondary" aria-label="Annuler et fermer la fenêtre">Annuler</button>
                 </div>

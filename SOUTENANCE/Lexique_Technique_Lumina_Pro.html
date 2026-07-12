@@ -1,356 +1,540 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Lexique Technique — Lumina Pro</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f4f8; color: #222; font-size: 15px; line-height: 1.6; }
+  <meta charset="UTF-8">
+  <title>Lexique Technique — Lumina Pro</title>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 11pt; color: #1e293b; background: #ddd; margin: 0; }
 
-  header {
-    background: linear-gradient(135deg, #1d1d4e, #302b63);
-    color: #fff; padding: 44px 40px 32px; text-align: center;
-  }
-  header h1 { font-size: 26px; font-weight: 900; }
-  header p { font-size: 14px; color: #c9c6ea; margin-top: 8px; }
+    .page {
+      background: white;
+      width: 210mm;
+      min-height: 297mm;
+      margin: 20px auto;
+      padding: 15mm 20mm;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      page-break-after: always;
+    }
 
-  nav.toc {
-    max-width: 900px; margin: -18px auto 0; background: #fff;
-    border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.12);
-    padding: 20px 30px; position: relative; z-index: 2;
-  }
-  nav.toc h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: #D6336C; margin-bottom: 10px; }
-  nav.toc ol { columns: 2; column-gap: 30px; padding-left: 18px; font-size: 13.5px; }
-  nav.toc li { margin-bottom: 5px; break-inside: avoid; }
-  nav.toc a { color: #302b63; text-decoration: none; }
-  nav.toc a:hover { text-decoration: underline; }
+    .entete {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 3px solid #D4006E;
+      padding-bottom: 8px;
+      margin-bottom: 14px;
+      font-size: 10pt;
+      color: #555;
+    }
 
-  main { max-width: 900px; margin: 0 auto; padding: 36px 24px 90px; }
+    h1 { font-size: 24pt; color: #D4006E; text-align: center; line-height: 1.3; }
+    h2 { background: #D4006E; color: white; padding: 9px 15px; border-radius: 4px; font-size: 13pt; margin: 0 0 14px 0; }
 
-  section { background: #fff; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin-bottom: 22px; padding: 26px 32px; }
-  section h2 { font-size: 19px; font-weight: 900; color: #302b63; border-bottom: 3px solid #D6336C; padding-bottom: 8px; margin-bottom: 16px; }
+    .mot {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .mot-titre {
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 8px 14px;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .mot-nom { font-weight: 900; font-size: 11.5pt; color: #D4006E; }
+    .mot-cat { font-size: 9pt; color: #888; background: #f1f5f9; border-radius: 10px; padding: 2px 8px; }
+    .mot-corps { padding: 10px 14px; line-height: 1.7; }
+    .mot-def { margin-bottom: 6px; }
+    .mot-exemple { font-style: italic; color: #475569; font-size: 10pt; border-left: 3px solid #D4006E; padding-left: 8px; margin-top: 5px; }
 
-  dl { margin: 0; }
-  dt { font-weight: 800; color: #D6336C; font-size: 15px; margin-top: 16px; }
-  dt:first-child { margin-top: 0; }
-  dt .en { font-weight: 400; font-style: italic; color: #999; font-size: 12.5px; margin-left: 6px; }
-  dd { margin: 4px 0 0 0; color: #333; }
-  dd .exemple {
-    display: block; margin-top: 6px; background: #f8fafc; border-left: 3px solid #D6336C;
-    padding: 8px 12px; font-family: 'Cascadia Code', Consolas, monospace; font-size: 12.5px; color: #302b63; border-radius: 0 6px 6px 0;
-  }
-  dd .ou { color: #888; font-size: 13px; font-style: italic; }
+    .sep {
+      background: #D4006E;
+      color: white;
+      padding: 5px 14px;
+      font-weight: bold;
+      font-size: 10.5pt;
+      border-radius: 4px;
+      margin: 14px 0 8px 0;
+    }
 
-  footer { text-align: center; padding: 26px; color: #888; font-size: 12px; }
+    .pied { font-size: 8.5pt; color: #888; text-align: center; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 8px; }
 
-  @media print { section { box-shadow: none; border: 1px solid #ddd; } }
-</style>
+    @media print {
+      body { background: white; }
+      .page { margin: 0; box-shadow: none; }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <h1>🗂️ Lexique Technique — Lumina Pro</h1>
-  <p>Tous les mots techniques du projet expliqués simplement — Syrine Ben Hassine, DWWM 2025/2026</p>
-</header>
-
-<nav class="toc">
-  <h2>Sommaire</h2>
-  <ol>
-    <li><a href="#web">Le web et les requêtes</a></li>
-    <li><a href="#backend">Back-end / Node.js</a></li>
-    <li><a href="#securite">Sécurité</a></li>
-    <li><a href="#bdd">Base de données</a></li>
-    <li><a href="#frontend">Front-end</a></li>
-    <li><a href="#accessibilite">Accessibilité</a></li>
-    <li><a href="#outils">Outils et méthodologie</a></li>
-  </ol>
-</nav>
-
-<main>
-
-<section id="web">
-  <h2>1 — Le web et les requêtes</h2>
-  <dl>
-    <dt>API <span class="en">(Application Programming Interface)</span></dt>
-    <dd>Un intermédiaire qui permet à deux programmes de communiquer. Dans Lumina Pro, le front-end (navigateur) parle au back-end (serveur) via une API. C'est comme un serveur de restaurant entre le client et la cuisine.</dd>
-
-    <dt>API REST / RESTful</dt>
-    <dd>Une façon d'organiser une API où chaque adresse (URL) représente une "ressource" (ex: <code>/api/tasks</code> représente les tâches), et où on utilise les méthodes HTTP (GET, POST, PUT, DELETE) pour dire quelle action faire dessus.</dd>
-
-    <dt>Endpoint</dt>
-    <dd>Une adresse précise de l'API que l'on peut appeler. <span class="exemple">POST /api/auth/login est un endpoint.</span></dd>
-
-    <dt>Méthode HTTP</dt>
-    <dd>Le type d'action demandée au serveur : <b>GET</b> (lire), <b>POST</b> (créer), <b>PUT</b> (modifier), <b>DELETE</b> (supprimer).</dd>
-
-    <dt>Code de statut HTTP</dt>
-    <dd>Un nombre renvoyé par le serveur pour dire ce qui s'est passé : <b>200</b> OK, <b>201</b> créé, <b>400</b> mauvaise demande, <b>401</b> non connecté, <b>403</b> interdit, <b>404</b> introuvable, <b>500</b> erreur serveur.</dd>
-
-    <dt>Header <span class="en">(en-tête)</span></dt>
-    <dd>Des informations envoyées en plus du contenu principal d'une requête, par exemple le ticket JWT dans <code>Authorization</code>.</dd>
-
-    <dt>Body / Payload</dt>
-    <dd>Le contenu principal envoyé dans une requête, par exemple <code>{"email": "...", "password": "..."}</code> lors d'une connexion.</dd>
-
-    <dt>JSON <span class="en">(JavaScript Object Notation)</span></dt>
-    <dd>Un format de texte simple pour échanger des données structurées entre le navigateur et le serveur. <span class="exemple">{"id": 1, "title": "Ma tâche"}</span></dd>
-
-    <dt>Fetch API</dt>
-    <dd>La fonction JavaScript du navigateur qui permet d'envoyer des requêtes HTTP vers le serveur sans recharger la page.</dd>
-
-    <dt>CORS <span class="en">(Cross-Origin Resource Sharing)</span></dt>
-    <dd>Une règle de sécurité des navigateurs qui bloque par défaut les requêtes vers un autre serveur/port que celui de la page. On l'active côté serveur avec le paquet <code>cors</code> pour autoriser le navigateur à parler à notre API.</dd>
-  </dl>
-</section>
-
-<section id="backend">
-  <h2>2 — Back-end / Node.js</h2>
-  <dl>
-    <dt>Serveur</dt>
-    <dd>Le programme qui tourne en permanence, écoute les demandes du navigateur et y répond. Dans Lumina Pro, c'est <code>backend/server.js</code> lancé avec Node.js.</dd>
-
-    <dt>Node.js</dt>
-    <dd>Un logiciel qui permet d'exécuter du JavaScript en dehors du navigateur, directement sur un serveur.</dd>
-
-    <dt>Express</dt>
-    <dd>Une bibliothèque (framework) pour Node.js qui simplifie la création d'un serveur web et d'une API REST — sans elle, il faudrait tout écrire à la main.</dd>
-
-    <dt>Middleware</dt>
-    <dd>Une fonction qui s'exécute entre la réception d'une requête et son traitement final. Elle peut vérifier, modifier ou bloquer la requête avant qu'elle continue. <span class="exemple">verifyToken() est un middleware qui vérifie le ticket JWT avant de laisser passer.</span></dd>
-
-    <dt>Route</dt>
-    <dd>Une correspondance entre une adresse (URL) + une méthode HTTP, et le code qui doit s'exécuter. <span class="exemple">router.post('/login', ...) définit la route de connexion.</span></dd>
-
-    <dt>npm <span class="en">(Node Package Manager)</span></dt>
-    <dd>L'outil qui installe et gère les bibliothèques (dépendances) dont un projet Node.js a besoin. <code>npm install</code> les installe, <code>npm start</code> lance le serveur.</dd>
-
-    <dt>package.json</dt>
-    <dd>Le fichier qui liste le nom du projet, ses dépendances et les commandes disponibles (scripts).</dd>
-
-    <dt>Dépendance</dt>
-    <dd>Une bibliothèque externe utilisée par le projet (ex : <code>express</code>, <code>bcrypt</code>, <code>jsonwebtoken</code>). Installée dans le dossier <code>node_modules/</code> (jamais versionné sur Git).</dd>
-
-    <dt>require() / module.exports</dt>
-    <dd>Les mots-clés Node.js pour importer et exporter du code entre fichiers. <span class="exemple">const jwt = require('jsonwebtoken');</span></dd>
-
-    <dt>Callback</dt>
-    <dd>Une fonction donnée en paramètre à une autre fonction, pour être exécutée plus tard (souvent quand une opération asynchrone se termine, comme une requête SQL).</dd>
-
-    <dt>Promise <span class="en">(promesse)</span></dt>
-    <dd>Un objet JavaScript qui représente un résultat qui arrivera plus tard (par exemple la réponse d'une requête réseau), plutôt que tout de suite.</dd>
-
-    <dt>async / await</dt>
-    <dd>Une écriture plus lisible pour travailler avec des Promises : <code>await</code> "attend" qu'une opération asynchrone se termine avant de continuer la ligne suivante.</dd>
-
-    <dt>Framework</dt>
-    <dd>Un ensemble d'outils et de règles qui structurent la façon d'écrire une application (ex : Express côté back-end). S'oppose à "vanilla" (sans framework).</dd>
-
-    <dt>Vanilla</dt>
-    <dd>Écrire du code (souvent JavaScript) sans framework ni bibliothèque, avec les outils natifs du langage. Choix fait pour le front-end de Lumina Pro, dans un but pédagogique.</dd>
-  </dl>
-</section>
-
-<section id="securite">
-  <h2>3 — Sécurité</h2>
-  <dl>
-    <dt>JWT <span class="en">(JSON Web Token)</span></dt>
-    <dd>Un "ticket" numérique signé, donné à l'utilisateur après connexion. Il contient des informations (id, rôle) et une signature qui prouve qu'il n'a pas été modifié. Comme un bracelet de festival : on le montre à chaque action au lieu de redonner son identité.</dd>
-
-    <dt>Bearer token</dt>
-    <dd>Le format standard pour envoyer un JWT dans une requête : <code>Authorization: Bearer &lt;token&gt;</code>.</dd>
-
-    <dt>bcrypt</dt>
-    <dd>Une bibliothèque qui transforme un mot de passe en une suite illisible et irréversible (hachage), avant de le sauvegarder en base. Volontairement lente pour résister aux attaques par force brute.</dd>
-
-    <dt>Hachage / Hash</dt>
-    <dd>Le résultat obtenu après avoir passé une donnée (comme un mot de passe) dans une fonction à sens unique : impossible de remonter à l'original.</dd>
-
-    <dt>Sel <span class="en">(salt)</span></dt>
-    <dd>Une valeur aléatoire ajoutée au mot de passe avant le hachage, pour que deux mots de passe identiques donnent des résultats différents en base.</dd>
-
-    <dt>XSS <span class="en">(Cross-Site Scripting)</span></dt>
-    <dd>Une faille où un attaquant réussit à injecter du code (souvent du JavaScript) dans une page vue par d'autres utilisateurs. On s'en protège en échappant (<code>escapeHTML()</code>) tout contenu utilisateur avant de l'afficher.</dd>
-
-    <dt>CSRF <span class="en">(Cross-Site Request Forgery)</span></dt>
-    <dd>Une attaque qui pousse le navigateur d'un utilisateur connecté à envoyer une requête à son insu. En mettant le JWT dans un header (pas un cookie), Lumina Pro n'est pas vulnérable à cette attaque classique.</dd>
-
-    <dt>Injection SQL</dt>
-    <dd>Une attaque où l'attaquant insère du code SQL dans un champ de formulaire pour manipuler la base de données. Empêchée par les requêtes préparées.</dd>
-
-    <dt>Requête préparée</dt>
-    <dd>Une requête SQL écrite avec des espaces réservés (<code>?</code>) à la place des valeurs, remplacés ensuite de façon sécurisée. <span class="exemple">"SELECT * FROM users WHERE email = ?"</span></dd>
-
-    <dt>IDOR <span class="en">(Insecure Direct Object Reference)</span></dt>
-    <dd>Une faille où un utilisateur peut accéder ou modifier une donnée qui ne lui appartient pas, juste en changeant un identifiant dans la requête. Lumina Pro vérifie côté serveur qu'on ne supprime que ses propres tâches (sauf admin).</dd>
-
-    <dt>.env / variable d'environnement</dt>
-    <dd>Un fichier qui stocke les valeurs secrètes (mots de passe, clés) en dehors du code source, jamais envoyé sur Git. Chargé par la bibliothèque <code>dotenv</code>.</dd>
-
-    <dt>Clé secrète <span class="en">(SECRET_KEY)</span></dt>
-    <dd>La valeur utilisée pour signer et vérifier les JWT. Si elle fuit, n'importe qui peut fabriquer de faux tickets valides.</dd>
-  </dl>
-</section>
-
-<section id="bdd">
-  <h2>4 — Base de données</h2>
-  <dl>
-    <dt>SQL <span class="en">(Structured Query Language)</span></dt>
-    <dd>Le langage utilisé pour interroger et manipuler une base de données relationnelle (MySQL, MariaDB, PostgreSQL…).</dd>
-
-    <dt>Table</dt>
-    <dd>Un tableau qui stocke un type de donnée (ex : la table <code>users</code> stocke les comptes). Chaque ligne = un enregistrement, chaque colonne = un champ.</dd>
-
-    <dt>Clé primaire <span class="en">(Primary Key, PK)</span></dt>
-    <dd>La colonne qui identifie de façon unique chaque ligne d'une table (souvent <code>id</code>, auto-incrémenté).</dd>
-
-    <dt>Clé étrangère <span class="en">(Foreign Key, FK)</span></dt>
-    <dd>Une colonne qui fait référence à la clé primaire d'une autre table, créant un lien entre les deux. <span class="exemple">tasks.id_col référence columns.id</span></dd>
-
-    <dt>ENUM</dt>
-    <dd>Un type de colonne qui n'accepte qu'une liste fixe de valeurs. <span class="exemple">priority ENUM('high','medium','low')</span></dd>
-
-    <dt>ON DELETE CASCADE</dt>
-    <dd>Une règle sur une clé étrangère : si la ligne référencée est supprimée, les lignes liées sont supprimées automatiquement aussi. <span class="ou">Ex : supprimer une colonne supprime ses tâches.</span></dd>
-
-    <dt>ON DELETE SET NULL</dt>
-    <dd>Une autre règle : si la ligne référencée est supprimée, la colonne liée est simplement remise à vide (NULL) plutôt que de tout supprimer. <span class="ou">Ex : supprimer un utilisateur laisse ses tâches, juste non assignées.</span></dd>
-
-    <dt>JOIN / LEFT JOIN</dt>
-    <dd>Une opération SQL qui combine des lignes de deux tables selon une condition. LEFT JOIN garde toutes les lignes de la première table même sans correspondance dans la seconde.</dd>
-
-    <dt>MERISE</dt>
-    <dd>Une méthode française de conception de bases de données, en 3 étapes : MCD → MLD → MPD.</dd>
-
-    <dt>MCD <span class="en">(Modèle Conceptuel de Données)</span></dt>
-    <dd>La première étape : décrire les entités (ex : USERS, TASKS), leurs attributs et leurs relations avec des cardinalités, sans penser à l'implémentation technique.</dd>
-
-    <dt>MLD <span class="en">(Modèle Logique de Données)</span></dt>
-    <dd>La traduction du MCD en tables avec clés primaires/étrangères, toujours indépendante d'un SGBD précis.</dd>
-
-    <dt>MPD <span class="en">(Modèle Physique de Données)</span></dt>
-    <dd>L'implémentation réelle dans un SGBD précis (ici MySQL), avec les types de colonnes exacts et les contraintes SQL.</dd>
-
-    <dt>Cardinalité</dt>
-    <dd>Indique combien de fois une entité peut participer à une relation. <span class="exemple">(0,n) = de zéro à plusieurs fois ; (1,1) = exactement une fois</span></dd>
-
-    <dt>SGBD <span class="en">(Système de Gestion de Base de Données)</span></dt>
-    <dd>Le logiciel qui stocke et gère la base de données. Lumina Pro utilise MySQL.</dd>
-  </dl>
-</section>
-
-<section id="frontend">
-  <h2>5 — Front-end</h2>
-  <dl>
-    <dt>DOM <span class="en">(Document Object Model)</span></dt>
-    <dd>La représentation de la page HTML sous forme d'arbre d'éléments, que JavaScript peut lire et modifier.</dd>
-
-    <dt>localStorage</dt>
-    <dd>Un espace de stockage du navigateur qui garde des données même après fermeture de l'onglet, jusqu'à suppression manuelle. Utilisé pour garder le ticket JWT après connexion.</dd>
-
-    <dt>JSON.parse() / JSON.stringify()</dt>
-    <dd>Convertissent respectivement du texte JSON vers un objet JavaScript, et un objet JavaScript vers du texte JSON.</dd>
-
-    <dt>Événement <span class="en">(event)</span></dt>
-    <dd>Une action détectée par le navigateur (clic, soumission de formulaire…) à laquelle on peut réagir avec du code.</dd>
-
-    <dt>Écouteur d'événement <span class="en">(event listener)</span></dt>
-    <dd>Une fonction posée sur un élément pour réagir à un événement précis. <span class="exemple">button.addEventListener('click', ...)</span></dd>
-
-    <dt>Template literal</dt>
-    <dd>Une chaîne de caractères JavaScript entre back-ticks (`) qui permet d'insérer des variables directement avec <code>${variable}</code>.</dd>
-
-    <dt>escapeHTML()</dt>
-    <dd>Une fonction maison qui neutralise le HTML dans un texte avant de l'insérer dans la page, pour empêcher une attaque XSS.</dd>
-
-    <dt>Responsive design</dt>
-    <dd>Une interface qui s'adapte à la taille de l'écran (desktop, tablette, mobile), grâce aux media queries CSS.</dd>
-
-    <dt>Media query</dt>
-    <dd>Une règle CSS qui applique certains styles seulement en dessous (ou au-dessus) d'une largeur d'écran donnée. <span class="exemple">@media (max-width: 600px) { ... }</span></dd>
-
-    <dt>Flexbox</dt>
-    <dd>Un système d'alignement CSS qui facilite la disposition d'éléments en ligne ou en colonne, avec espacement automatique.</dd>
-
-    <dt>defer</dt>
-    <dd>Un attribut sur une balise <code>&lt;script&gt;</code> qui dit au navigateur de télécharger le script sans bloquer l'affichage de la page, et de l'exécuter seulement une fois la page prête.</dd>
-  </dl>
-</section>
-
-<section id="accessibilite">
-  <h2>6 — Accessibilité</h2>
-  <dl>
-    <dt>ARIA <span class="en">(Accessible Rich Internet Applications)</span></dt>
-    <dd>Un ensemble d'attributs HTML qui donnent des informations supplémentaires aux technologies d'assistance (lecteurs d'écran).</dd>
-
-    <dt>aria-label</dt>
-    <dd>Donne une description parlée à un élément, utile pour les boutons qui n'ont qu'une icône. <span class="exemple">aria-label="Supprimer la tâche"</span></dd>
-
-    <dt>role</dt>
-    <dd>Précise le rôle d'un élément pour les technologies d'assistance. <span class="exemple">role="dialog" indique une fenêtre pop-up.</span></dd>
-
-    <dt>WCAG <span class="en">(Web Content Accessibility Guidelines)</span></dt>
-    <dd>Les règles internationales d'accessibilité web, définies par le W3C.</dd>
-
-    <dt>RGAA <span class="en">(Référentiel Général d'Amélioration de l'Accessibilité)</span></dt>
-    <dd>La déclinaison française des règles d'accessibilité, basée sur les WCAG.</dd>
-
-    <dt>Lien d'évitement <span class="en">(skip link)</span></dt>
-    <dd>Un lien caché, visible seulement au premier Tab, qui permet de sauter directement au contenu principal sans repasser par tout le menu.</dd>
-
-    <dt>Lecteur d'écran</dt>
-    <dd>Un logiciel qui lit à voix haute le contenu d'une page pour les personnes non-voyantes (ex : NVDA, VoiceOver).</dd>
-
-    <dt>HTML sémantique</dt>
-    <dd>Utiliser les bonnes balises pour le bon usage (<code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;button&gt;</code>…) plutôt que des <code>&lt;div&gt;</code> génériques, pour que le sens soit compris par les technologies d'assistance.</dd>
-
-    <dt>Contraste</dt>
-    <dd>La différence de luminosité entre le texte et son fond, mesurée pour garantir une bonne lisibilité (vérifiable avec WebAIM Contrast Checker).</dd>
-  </dl>
-</section>
-
-<section id="outils">
-  <h2>7 — Outils et méthodologie</h2>
-  <dl>
-    <dt>Git</dt>
-    <dd>Un logiciel de gestion de versions qui garde l'historique de tous les changements du code.</dd>
-
-    <dt>Commit</dt>
-    <dd>Un "instantané" du code à un moment donné, avec un message qui décrit ce qui a changé.</dd>
-
-    <dt>GitHub</dt>
-    <dd>Un site qui héberge des dépôts Git en ligne, permettant de sauvegarder et partager le code.</dd>
-
-    <dt>Dépôt <span class="en">(repository / repo)</span></dt>
-    <dd>Le dossier de projet suivi par Git, avec tout son historique.</dd>
-
-    <dt>Swagger / OpenAPI</dt>
-    <dd>Un outil qui génère une page web interactive listant toutes les routes de l'API, pour les tester sans outil externe (accessible sur <code>/api-docs</code>).</dd>
-
-    <dt>MVC <span class="en">(Modèle-Vue-Contrôleur)</span></dt>
-    <dd>Un patron d'architecture qui sépare les données (Modèle), l'affichage (Vue) et la logique de traitement (Contrôleur). Lumina Pro s'en inspire de façon allégée, sans séparation stricte modèle/contrôleur.</dd>
-
-    <dt>MVP <span class="en">(Minimum Viable Product)</span></dt>
-    <dd>La version minimale d'un produit qui reste complète et fonctionnelle, sans les fonctionnalités secondaires.</dd>
-
-    <dt>Roadmap</dt>
-    <dd>La liste des évolutions futures envisagées pour un projet, pas encore réalisées.</dd>
-
-    <dt>Refactoring</dt>
-    <dd>Réorganiser ou simplifier du code existant sans changer son comportement, pour le rendre plus lisible ou maintenable.</dd>
-
-    <dt>DRY <span class="en">(Don't Repeat Yourself)</span></dt>
-    <dd>Un principe qui dit d'éviter de dupliquer le même code à plusieurs endroits — le centraliser à un seul endroit à la place.</dd>
-
-    <dt>Docker / Dockerfile</dt>
-    <dd>Un outil qui permet d'empaqueter une application avec tout son environnement dans un "conteneur", pour qu'elle tourne pareil partout. Le <code>Dockerfile</code> est la recette qui décrit ce conteneur. Non implémenté à ce jour dans Lumina Pro (roadmap).</dd>
-  </dl>
-</section>
-
-</main>
-
-<footer>
-  Lexique technique — <strong>Lumina Pro</strong> — Syrine Ben Hassine — DWWM 2025/2026
-</footer>
+<!-- PAGE 1 : GARDE -->
+<div class="page">
+  <div style="margin-top: 60px; text-align:center;">
+    <div style="font-size:9pt; color:#888; letter-spacing:2px; text-transform:uppercase; margin-bottom:16px;">DWWM — Titre Professionnel Niveau 5</div>
+    <h1>Lexique Technique<br>Lumina Pro</h1>
+    <div style="font-size:12pt; color:#555; margin-bottom:30px;">Tous les mots techniques expliqués simplement</div>
+
+    <div style="border: 2px solid #D4006E; border-radius: 10px; padding: 16px; max-width: 340px; margin: 0 auto 28px; text-align: left; line-height: 2.2;">
+      <div><b style="color:#D4006E;">Candidate :</b> Syrine BEN HASSINE</div>
+      <div><b style="color:#D4006E;">Projet :</b> Lumina Pro — Tableau Kanban</div>
+      <div><b style="color:#D4006E;">Date :</b> Juin 2026</div>
+    </div>
+
+    <div style="background:#fff7ed; border:1px solid #fed7aa; border-radius:8px; padding:14px; max-width:420px; margin:0 auto; font-size:10.5pt; line-height:1.9; text-align:left;">
+      <b>Comment utiliser ce lexique ?</b><br>
+      Chaque mot est expliqué en langage simple, avec un exemple concret tiré de Lumina Pro. Les mots sont organisés par catégorie. Ce lexique est conçu pour que tu puisses répondre à la question "C'est quoi X ?" en une ou deux phrases claires.
+    </div>
+  </div>
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 2 : BACKEND -->
+<div class="page">
+  <div class="entete"><span>🖥️ Backend — Le côté serveur</span><span>Syrine BEN HASSINE · Page 2/6</span></div>
+  <h2>🖥️ Mots du Backend (côté serveur)</h2>
+
+  <div class="sep">Langages et frameworks</div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Node.js</span><span class="mot-cat">Environnement d'exécution</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Logiciel qui permet d'exécuter du JavaScript en dehors du navigateur, directement sur un ordinateur/serveur. Sans Node.js, JavaScript ne peut tourner que dans Chrome ou Firefox.</div>
+      <div class="mot-exemple">Dans Lumina Pro : Node.js fait tourner le fichier server.js qui gère toute la logique côté serveur.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Express.js</span><span class="mot-cat">Framework Node.js</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Boîte à outils qui simplifie la création d'un serveur web avec Node.js. Il gère la réception des requêtes HTTP et l'envoi des réponses.</div>
+      <div class="mot-exemple">Dans Lumina Pro : Express définit les routes /api/tasks, /api/columns etc. en quelques lignes.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">MySQL</span><span class="mot-cat">Base de données relationnelle</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Système de gestion de base de données qui organise les données en tableaux avec des lignes et des colonnes, reliés entre eux. Les données sont persistantes — elles restent même si le serveur redémarre.</div>
+      <div class="mot-exemple">Dans Lumina Pro : stocke les 4 tables users, columns, tasks, logs.</div>
+    </div>
+  </div>
+
+  <div class="sep">Sécurité</div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">bcrypt</span><span class="mot-cat">Bibliothèque de hachage</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Outil qui transforme un mot de passe en une suite de caractères illisible et irréversible. Cette transformation s'appelle le hachage. On ne peut pas retrouver le mot de passe original à partir du haché.</div>
+      <div class="mot-exemple">Dans Lumina Pro : bcrypt.hash("monmdp", 10) → "$2b$10$Xk8m..." sauvegardé en base. À la connexion, bcrypt.compare() vérifie si les hachés correspondent.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">JWT (JSON Web Token)</span><span class="mot-cat">Système d'authentification</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Ticket numérique chiffré donné après connexion. Il contient l'identifiant et le rôle de l'utilisateur. Le serveur le vérifie à chaque requête pour confirmer que l'utilisateur est bien connecté.</div>
+      <div class="mot-exemple">Dans Lumina Pro : après le login, le navigateur reçoit un token JWT et l'envoie dans chaque requête (Authorization: Bearer ...).</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Middleware</span><span class="mot-cat">Filtre de requêtes</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Fonction qui s'exécute entre la réception d'une requête et l'envoi de la réponse. Elle peut vérifier, modifier ou bloquer la requête.</div>
+      <div class="mot-exemple">Dans Lumina Pro : verifyToken est un middleware — il vérifie le JWT avant chaque route protégée. S'il n'est pas valide → erreur 401, la route n'est jamais atteinte.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">CORS</span><span class="mot-cat">Sécurité navigateur</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Cross-Origin Resource Sharing. Règle de sécurité des navigateurs qui bloque les requêtes vers un domaine différent de celui de la page. Il faut l'activer côté serveur pour l'autoriser.</div>
+      <div class="mot-exemple">Dans Lumina Pro : app.use(cors()) dans server.js autorise le navigateur à appeler l'API sur localhost:3000.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">dotenv / .env</span><span class="mot-cat">Gestion des secrets</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Fichier .env qui stocke les informations sensibles (mots de passe de base, clé secrète) hors du code. dotenv charge ce fichier au démarrage du serveur. Le fichier .env n'est jamais mis en ligne (gitignore).</div>
+      <div class="mot-exemple">Dans Lumina Pro : SECRET_KEY, DB_PASSWORD, DB_NAME sont dans .env et lus via process.env.SECRET_KEY.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Injection SQL</span><span class="mot-cat">Faille de sécurité</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Attaque où un utilisateur malveillant écrit du code SQL dans un champ de formulaire pour manipuler la base de données. On s'en protège en utilisant des requêtes paramétrées (points d'interrogation) au lieu de concaténer des chaînes.</div>
+      <div class="mot-exemple">Dans Lumina Pro : db.query("SELECT * FROM tasks WHERE id = ?", [id]) — le ? est remplacé de manière sécurisée par mysql2.</div>
+    </div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 3 : BASE DE DONNÉES -->
+<div class="page">
+  <div class="entete"><span>🗄️ Base de données</span><span>Syrine BEN HASSINE · Page 3/6</span></div>
+  <h2>🗄️ Mots de la Base de Données</h2>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">API REST</span><span class="mot-cat">Architecture</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Interface de communication entre le frontend et le backend. REST signifie que chaque adresse (URL) représente une ressource, et les actions GET/POST/PUT/DELETE indiquent ce qu'on veut faire avec elle.</div>
+      <div class="mot-exemple">Dans Lumina Pro : GET /api/tasks → lire les tâches. POST /api/tasks → créer une tâche. PUT /api/tasks/3 → modifier la tâche n°3.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">SQL</span><span class="mot-cat">Langage de requêtes</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Structured Query Language. Langage pour interroger et manipuler une base de données relationnelle. Les 4 opérations principales : SELECT (lire), INSERT (créer), UPDATE (modifier), DELETE (supprimer).</div>
+      <div class="mot-exemple">Dans Lumina Pro : SELECT tasks.*, users.name FROM tasks LEFT JOIN users ON tasks.id_assigned = users.id</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">LEFT JOIN</span><span class="mot-cat">SQL — Jointure</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Instruction SQL qui relie deux tableaux et garde TOUTES les lignes du tableau de gauche, même si elles n'ont pas de correspondance dans le tableau de droite. La valeur est alors NULL.</div>
+      <div class="mot-exemple">Dans Lumina Pro : on joint tasks et users. Les tâches non assignées (id_assigned = NULL) sont quand même retournées — INNER JOIN les aurait cachées.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">ON DELETE CASCADE</span><span class="mot-cat">SQL — Contrainte</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Règle sur une clé étrangère qui dit : "si l'enregistrement parent est supprimé, supprime automatiquement tous ses enfants". Évite les données orphelines.</div>
+      <div class="mot-exemple">Dans Lumina Pro : supprimer une colonne Kanban supprime automatiquement toutes ses tâches grâce à ON DELETE CASCADE sur id_col.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">ENUM</span><span class="mot-cat">SQL — Type de champ</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Liste fixe de valeurs autorisées pour un champ. La base de données refuse toute valeur qui n'est pas dans la liste.</div>
+      <div class="mot-exemple">Dans Lumina Pro : priority ENUM('high', 'medium', 'low') — seules ces 3 valeurs sont acceptées.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Clé étrangère (Foreign Key)</span><span class="mot-cat">SQL — Relation</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Champ dans un tableau qui référence l'identifiant d'un enregistrement dans un autre tableau. Crée un lien entre deux tables et garantit la cohérence des données.</div>
+      <div class="mot-exemple">Dans Lumina Pro : id_col dans tasks référence id dans columns. Une tâche ne peut pas appartenir à une colonne qui n'existe pas.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">AUTO_INCREMENT</span><span class="mot-cat">SQL — Type de champ</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Option sur un champ numérique (id) qui le fait s'incrémenter automatiquement à chaque nouvelle ligne insérée. Le développeur n'a pas à gérer les identifiants manuellement.</div>
+      <div class="mot-exemple">Dans Lumina Pro : id INT AUTO_INCREMENT PRIMARY KEY — chaque nouvelle tâche reçoit automatiquement un id unique (1, 2, 3…).</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Migration</span><span class="mot-cat">Base de données</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Script qui modifie la structure d'une base de données existante (ajouter une colonne, modifier un type) sans perdre les données déjà présentes.</div>
+      <div class="mot-exemple">Dans Lumina Pro : ALTER TABLE tasks ADD COLUMN due_date DATE DEFAULT NULL — exécuté au démarrage du serveur pour ajouter la date d'échéance sans toucher aux tâches existantes.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">dateStrings</span><span class="mot-cat">mysql2 — Configuration</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Option de la bibliothèque mysql2 qui retourne les champs DATE sous forme de chaîne "YYYY-MM-DD" au lieu d'un objet JavaScript Date. Évite les décalages de fuseau horaire lors de la sérialisation JSON.</div>
+      <div class="mot-exemple">Dans Lumina Pro : { dateStrings: true } dans config/db.js — task.due_date vaut "2026-07-01" (string) et non un objet Date décalé d'un jour à cause du fuseau UTC+2.</div>
+    </div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 4 : FRONTEND -->
+<div class="page">
+  <div class="entete"><span>⚡ Frontend — Le côté navigateur</span><span>Syrine BEN HASSINE · Page 4/6</span></div>
+  <h2>⚡ Mots du Frontend (côté navigateur)</h2>
+
+  <div class="sep">JavaScript</div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">async / await</span><span class="mot-cat">JavaScript — Asynchronisme</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Mots-clés pour écrire du code qui attend une réponse (réseau, base de données) sans bloquer le reste de la page. async déclare qu'une fonction peut attendre, await attend le résultat.</div>
+      <div class="mot-exemple">Dans Lumina Pro : async function fetchTasks() { const res = await authFetch('/api/tasks'); } — la page reste interactive pendant que les tâches se chargent.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Array.filter()</span><span class="mot-cat">JavaScript — Méthode tableau</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Méthode qui parcourt un tableau et retourne un nouveau tableau contenant uniquement les éléments pour lesquels la condition est vraie. Le tableau original n'est pas modifié.</div>
+      <div class="mot-exemple">Dans Lumina Pro : allTasks.filter(t => t.title.includes(query)) — filtre les tâches selon la recherche, sans appel au serveur.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Array.map()</span><span class="mot-cat">JavaScript — Méthode tableau</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Méthode qui transforme chaque élément d'un tableau et retourne un nouveau tableau du même nombre d'éléments avec les valeurs transformées.</div>
+      <div class="mot-exemple">Dans Lumina Pro : columns.map(col => `&lt;div class="kanban-column"&gt;...&lt;/div&gt;`) — chaque colonne de données devient un bloc HTML.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Template literals (backticks)</span><span class="mot-cat">JavaScript — Syntaxe</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Syntaxe JavaScript (avec les accents graves `) qui permet d'écrire des chaînes de texte multi-lignes et d'y insérer des variables avec ${...}.</div>
+      <div class="mot-exemple">Dans Lumina Pro : `&lt;h4&gt;${task.title}&lt;/h4&gt;` génère du HTML dynamique en insérant le titre de la tâche.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">localStorage</span><span class="mot-cat">JavaScript — Stockage navigateur</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Zone de mémoire du navigateur qui persiste même après fermeture de l'onglet. Stocke des paires clé/valeur en texte. Accessible uniquement par JavaScript sur le même domaine.</div>
+      <div class="mot-exemple">Dans Lumina Pro : le token JWT et les infos utilisateur sont stockés dans localStorage après la connexion, et effacés à la déconnexion.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">XSS (Cross-Site Scripting)</span><span class="mot-cat">Faille de sécurité frontend</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Attaque où un utilisateur malveillant insère du code JavaScript dans un champ (ex: titre de tâche) pour le faire exécuter par le navigateur des autres utilisateurs. On s'en protège en échappant les caractères spéciaux HTML avant affichage.</div>
+      <div class="mot-exemple">Dans Lumina Pro : escapeHTML() remplace &lt; par &amp;lt; et &gt; par &amp;gt; — le code inséré est affiché comme texte, jamais exécuté.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">defer</span><span class="mot-cat">HTML — Attribut de script</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Attribut sur la balise &lt;script&gt; qui dit au navigateur : télécharge ce fichier JS en arrière-plan sans bloquer l'affichage de la page, et exécute-le uniquement quand tout le HTML est chargé.</div>
+      <div class="mot-exemple">Dans Lumina Pro : &lt;script src="kanban.js" defer&gt;&lt;/script&gt; — la page s'affiche sans attendre que kanban.js soit téléchargé.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">fetch() / authFetch()</span><span class="mot-cat">JavaScript — Requête HTTP</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">fetch() est la fonction native du navigateur pour envoyer des requêtes HTTP vers une API. authFetch() est notre version personnalisée qui ajoute automatiquement le token JWT dans chaque requête.</div>
+      <div class="mot-exemple">Dans Lumina Pro : authFetch('/api/tasks') envoie une requête GET avec le header "Authorization: Bearer TOKEN" sans avoir à l'écrire à chaque fois.</div>
+    </div>
+  </div>
+
+  <div class="sep">Accessibilité</div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">ARIA</span><span class="mot-cat">Accessibilité — Attributs HTML</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Accessible Rich Internet Applications. Ensemble d'attributs HTML (aria-label, aria-hidden, role…) qui donnent des informations supplémentaires aux lecteurs d'écran pour décrire des éléments interactifs.</div>
+      <div class="mot-exemple">Dans Lumina Pro : aria-label="Supprimer la tâche Finir le rapport" — le lecteur d'écran lit cette description à la place de l'icône 🗑️.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">WCAG 2.1</span><span class="mot-cat">Accessibilité — Standard</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Web Content Accessibility Guidelines. Ensemble de règles internationales du W3C pour rendre les sites web utilisables par les personnes handicapées. Le niveau AA est la norme requise en France.</div>
+      <div class="mot-exemple">Dans Lumina Pro : navigation au clavier, contrastes suffisants, attributs ARIA, lien d'évitement — autant de règles WCAG 2.1 appliquées.</div>
+    </div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 5 : TERMES GÉNÉRAUX -->
+<div class="page">
+  <div class="entete"><span>📚 Termes généraux et architecture</span><span>Syrine BEN HASSINE · Page 5/6</span></div>
+  <h2>📚 Termes Généraux et Architecture</h2>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Frontend</span><span class="mot-cat">Architecture</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">La partie d'une application web que l'utilisateur voit et avec laquelle il interagit directement. Il tourne dans le navigateur. Composé de HTML (structure), CSS (apparence) et JavaScript (comportement).</div>
+      <div class="mot-exemple">Dans Lumina Pro : le dossier /frontend contient index.html, login.html, et les dossiers /css et /js.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Backend</span><span class="mot-cat">Architecture</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">La partie serveur d'une application web. Invisible pour l'utilisateur, il gère la logique métier, les règles de sécurité et les accès à la base de données.</div>
+      <div class="mot-exemple">Dans Lumina Pro : le dossier /backend contient server.js, les routes et la config de base de données.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Kanban</span><span class="mot-cat">Méthode de gestion</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Méthode visuelle de gestion de tâches inventée au Japon. Les tâches sont représentées par des cartes déplacées entre des colonnes (ex: "À faire", "En cours", "Terminé") selon leur avancement.</div>
+      <div class="mot-exemple">Lumina Pro est entièrement construit autour du principe Kanban : colonnes personnalisables, cartes déplaçables, priorités visuelles.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Full-stack</span><span class="mot-cat">Architecture</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Qualifie un développeur ou une application qui couvre à la fois le frontend (navigateur) et le backend (serveur + base de données). Une fonctionnalité full-stack touche les 3 couches.</div>
+      <div class="mot-exemple">Dans Lumina Pro : la date d'échéance est full-stack — colonne MySQL (BDD) + route Node.js (backend) + formulaire HTML et badge JS (frontend).</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Swagger</span><span class="mot-cat">Documentation API</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Outil qui génère automatiquement une page web interactive listant toutes les routes d'une API, leurs paramètres attendus et leurs réponses. Permet de tester l'API depuis le navigateur sans autre outil.</div>
+      <div class="mot-exemple">Dans Lumina Pro : accessible à http://localhost:3000/api-docs — liste et permet de tester toutes les routes de l'API.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Lighthouse</span><span class="mot-cat">Outil d'audit</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Outil intégré dans Chrome DevTools qui analyse une page web et donne des scores sur 100 pour : Performance, Accessibilité, Bonnes pratiques et SEO. Génère des recommandations concrètes.</div>
+      <div class="mot-exemple">Dans Lumina Pro : scores sur login.html — Performance 87, Accessibilité 79, SEO 91. Les axes d'amélioration : bundler les CSS/JS et améliorer les contrastes ARIA.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Responsive design</span><span class="mot-cat">CSS — Design adaptatif</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Technique CSS qui adapte l'affichage d'une page à la taille de l'écran. On utilise des media queries (@media) pour définir des règles différentes selon la largeur de l'écran.</div>
+      <div class="mot-exemple">Dans Lumina Pro : @media (max-width: 900px) masque le menu latéral et affiche un bouton ☰ à la place. Les colonnes Kanban défilent horizontalement sur mobile.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">ISO 8601</span><span class="mot-cat">Standard — Format de date</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Norme internationale de représentation des dates : YYYY-MM-DD (Année-Mois-Jour). Ce format est universellement reconnu et comparaison alphabétiquement correcte ("2026-07-01" &lt; "2026-07-09").</div>
+      <div class="mot-exemple">Dans Lumina Pro : new Date(task.due_date).toISOString().substring(0,10) convertit la date de MySQL en "2026-07-01" pour une comparaison fiable sans risque de décalage de fuseau horaire.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Client-side filtering</span><span class="mot-cat">Performance frontend</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Filtrage des données directement dans le navigateur, sur des données déjà chargées en mémoire, sans faire de nouvelle requête au serveur. Plus rapide et moins coûteux qu'un appel réseau.</div>
+      <div class="mot-exemple">Dans Lumina Pro : la barre de recherche utilise Array.filter() sur allTasks (déjà en mémoire) — 0 requête réseau, résultats instantanés.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Audit trail / Logs</span><span class="mot-cat">Traçabilité</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Historique chronologique de toutes les actions importantes effectuées dans l'application (création, modification, suppression). Permet de savoir qui a fait quoi et quand.</div>
+      <div class="mot-exemple">Dans Lumina Pro : la table logs enregistre chaque action (ex: 'Création', 'Tâche "Finir le rapport" créée'). Chaque route POST/PUT/DELETE écrit automatiquement une ligne de log après l'opération principale.</div>
+    </div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 6 : OUTILS, MÉTHODES ET RÉFÉRENCES -->
+<div class="page">
+  <div class="entete"><span>🛠️ Outils, méthodes et références</span><span>Syrine BEN HASSINE · Page 6/6</span></div>
+  <h2>🛠️ Outils, Méthodes et Références</h2>
+
+  <div class="sep">Outils de gestion et de suivi</div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Trello</span><span class="mot-cat">Outil de gestion de projet</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Application web qui permet d'organiser un projet avec des tableaux Kanban visuels. On crée des listes (colonnes) et des cartes (tâches) que l'on déplace selon leur avancement. Gratuit pour un usage simple, il convient parfaitement à un projet solo.</div>
+      <div class="mot-exemple">Dans Lumina Pro : Trello a été utilisé pendant le développement pour suivre les fonctionnalités à faire, en cours et terminées — en parallèle de l'historique Git.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Monday.com</span><span class="mot-cat">Outil de gestion de projet</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Plateforme de gestion de projet tout-en-un (tableaux, GANTT, rapports, automatisations). Très visuelle et puissante, mais payante et surdimensionnée pour les petites équipes. Concurrente directe de Trello et Asana.</div>
+      <div class="mot-exemple">Dans Lumina Pro : mentionné dans l'étude de marché comme exemple d'outil existant que Lumina Pro ne prétend pas remplacer.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Git</span><span class="mot-cat">Outil de versionnement</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Logiciel qui enregistre l'historique de toutes les modifications d'un projet. Chaque "commit" est une sauvegarde datée avec un message décrivant ce qui a changé. Permet de revenir en arrière, de collaborer sans se marcher dessus, et de tracer l'évolution du code.</div>
+      <div class="mot-exemple">Dans Lumina Pro : 33 commits Git qui retracent toute l'histoire du projet, de l'initialisation (18 mai) jusqu'à la préparation de la soutenance (juillet 2026).</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">GitHub</span><span class="mot-cat">Plateforme de dépôt Git</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Site web qui héberge les dépôts Git en ligne. Permet de sauvegarder son code sur internet, de le partager, et de le montrer à un jury ou à un recruteur. Le dépôt public est accessible par URL.</div>
+      <div class="mot-exemple">Dans Lumina Pro : dépôt disponible sur github.com/syrinedev-06/LUMINA_PRO — le jury peut y consulter l'historique complet des commits.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Diagramme de GANTT</span><span class="mot-cat">Outil de planification</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Représentation visuelle d'un planning de projet sous forme de barres horizontales sur une ligne du temps. Chaque barre représente une tâche avec sa date de début et de fin. Permet de visualiser d'un coup d'œil l'enchaînement des phases.</div>
+      <div class="mot-exemple">Dans Lumina Pro : GANTT reconstitué à partir des commits Git réels (pas un planning prévisionnel) — montre les phases Initialisation, Cœur applicatif, Sécurisation, Finalisation et Préparation soutenance.</div>
+    </div>
+  </div>
+
+  <div class="sep">UML et modélisation</div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">UML</span><span class="mot-cat">Langage de modélisation</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Unified Modeling Language. Ensemble de diagrammes standardisés pour représenter visuellement la structure et le comportement d'une application. Pas un langage de programmation — c'est un outil de communication entre développeurs et parties prenantes.</div>
+      <div class="mot-exemple">Dans Lumina Pro : deux diagrammes UML utilisés — le diagramme de cas d'utilisation (qui peut faire quoi ?) et le diagramme de séquence (comment se passe la connexion JWT ?).</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Diagramme de cas d'utilisation</span><span class="mot-cat">UML</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Diagramme UML qui montre les interactions entre des utilisateurs (appelés "acteurs") et les fonctionnalités d'une application. Il répond à la question : "qui peut faire quoi ?" Les acteurs sont représentés par des bonhommes, les fonctionnalités par des ellipses.</div>
+      <div class="mot-exemple">Dans Lumina Pro : 2 acteurs (Utilisateur et Admin) reliés à 13 cas d'utilisation (se connecter, créer une tâche, gérer les colonnes…). L'Admin "hérite" de l'Utilisateur et a des droits supplémentaires.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Acteur (UML)</span><span class="mot-cat">UML</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Personne ou système externe qui interagit avec l'application. Dans un diagramme de cas d'utilisation, les acteurs sont représentés à l'extérieur du système. Un acteur peut hériter d'un autre (ex: Admin hérite de Utilisateur = il a tous ses droits + les siens).</div>
+      <div class="mot-exemple">Dans Lumina Pro : Utilisateur (membre de l'équipe) et Admin (hérite Utilisateur + droits de gestion d'équipe et colonnes).</div>
+    </div>
+  </div>
+
+  <div class="sep">Inspirations et références</div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Dribbble</span><span class="mot-cat">Site d'inspiration design</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Plateforme communautaire où les designers partagent leurs créations (interfaces, illustrations, icônes). Utilisée comme source d'inspiration visuelle pour trouver des idées de mise en page, de palette de couleurs ou de composants d'interface.</div>
+      <div class="mot-exemple">Dans Lumina Pro : Dribbble a été consulté pour s'inspirer de la mise en page des colonnes et cartes Kanban, et pour trouver une direction visuelle pour la charte graphique.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">MVP</span><span class="mot-cat">Méthode produit</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Minimum Viable Product (Produit Minimum Viable). Version d'une application qui contient uniquement les fonctionnalités essentielles pour qu'elle soit utilisable. L'idée est de livrer quelque chose de fonctionnel rapidement, plutôt qu'un produit parfait mais jamais terminé.</div>
+      <div class="mot-exemple">Dans Lumina Pro : le MVP = connexion sécurisée + tableau Kanban CRUD + déplacement de tâches. Tout le reste (notifications, dashboard stats…) est écarté pour garder un cœur solide et maîtrisé.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">SaaS</span><span class="mot-cat">Modèle applicatif</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Software as a Service. Application hébergée sur internet et accessible via un navigateur, sans installation. L'utilisateur paie un abonnement mensuel ou annuel. Trello, Monday.com, Jira sont des SaaS.</div>
+      <div class="mot-exemple">Dans Lumina Pro : la sidebar sombre + zone de contenu claire est un schéma visuel courant des SaaS de gestion (Notion, Linear, Monday…), choisi pour une prise en main immédiate.</div>
+    </div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
 
 </body>
 </html>

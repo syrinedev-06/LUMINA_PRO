@@ -4,11 +4,12 @@ CREATE DATABASE IF NOT EXISTS lumina_pro;
 -- On dit au système d'utiliser cette base pour les commandes qui suivent
 USE lumina_pro;
 
--- NOTE : ce script reflète exactement les 3 tables créées automatiquement par backend/server.js
--- au démarrage (auto-réparation). Les tables notifications/logs et les colonnes avatar/deadline/
--- progress d'une version antérieure ont été retirées car elles ne sont plus créées ni utilisées
--- par le code (voir commit "Suppression complète du système de notifications" et "Nettoyage
--- final de la base de données : retrait de la table logs pour correspondre aux schémas UML").
+-- NOTE : ce script reflète exactement les 4 tables créées automatiquement par backend/server.js
+-- au démarrage (auto-réparation) : users, columns, tasks, logs.
+-- La table logs est un journal d'audit : chaque opération CRUD (création, modification, suppression
+-- de tâche) y enregistre une ligne automatiquement via les routes de l'API.
+-- Les tables notifications et les colonnes avatar/deadline/progress d'une version antérieure
+-- ont été retirées lors de la simplification finale du projet.
 
 -- ==========================================================
 -- 1. TABLE DES UTILISATEURS (users)
@@ -57,6 +58,19 @@ CREATE TABLE IF NOT EXISTS tasks (
     -- On crée des "Foreign Keys" (Clés Étrangères) pour lier les tables entre elles
     FOREIGN KEY (id_assigned) REFERENCES users(id) ON DELETE SET NULL,
     FOREIGN KEY (id_col) REFERENCES columns(id) ON DELETE CASCADE
+);
+
+-- ==========================================================
+-- 4. TABLE DU JOURNAL D'AUDIT (logs)
+-- ==========================================================
+CREATE TABLE IF NOT EXISTS logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    -- 'action' décrit le type d'opération : 'Création', 'Modification', 'Suppression'
+    action VARCHAR(100) NOT NULL,
+    -- 'details' contient le message humainement lisible (ex: 'Tâche "Fix bug" créée')
+    details TEXT,
+    -- 'created_at' enregistre automatiquement la date/heure de l'opération
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ==========================================================

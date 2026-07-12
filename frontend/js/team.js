@@ -47,7 +47,10 @@ async function showTeam() {
                                     </td>
                                     <td>${escapeHTML(u.email)}</td>
                                     <td>
-                                        <span class="badge badge-role" style="margin:0;">${escapeHTML(u.role)}</span>
+                                        ${u.role === 'admin'
+                                            ? `<span style="display:inline-flex;align-items:center;gap:4px;background:#fef3c7;color:#92400e;font-weight:700;font-size:11px;padding:3px 10px;border-radius:20px;border:1px solid #fcd34d;">👑 Administrateur</span>`
+                                            : `<span style="display:inline-flex;align-items:center;gap:4px;background:#eff6ff;color:#1d4ed8;font-weight:600;font-size:11px;padding:3px 10px;border-radius:20px;border:1px solid #bfdbfe;">👤 Utilisateur</span>`
+                                        }
                                     </td>
                                     <td><span style="color:#10b981;">●</span> Actif</td>
                                     <td>

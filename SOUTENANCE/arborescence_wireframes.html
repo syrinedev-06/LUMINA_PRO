@@ -131,13 +131,6 @@ h3 { font-size: 14px; font-weight: 800; color: #d63384; margin-bottom: 12px; tex
 .wf-modal-box { background: #fff; border-radius: 8px; padding: 12px; width: 100%; }
 .wf-modal-title { font-size: 11px; font-weight: 900; color: #302b63; margin-bottom: 8px; }
 
-/* stats wireframe */
-.wf-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 8px; }
-.wf-stat-card { background: #fff; border-radius: 4px; padding: 6px; display: flex; gap: 4px; align-items: center; }
-.wf-stat-icon { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
-.wf-stat-num { font-size: 11px; font-weight: 900; }
-.wf-pie { width: 60px; height: 60px; border-radius: 50%; background: conic-gradient(#ef4444 0 35%, #f59e0b 35% 70%, #10b981 70% 100%); margin: 8px auto; }
-
 /* legend */
 .wf-legend { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; font-size: 11px; }
 .wf-legend-item { display: flex; align-items: center; gap: 4px; }
@@ -227,13 +220,13 @@ h3 { font-size: 14px; font-weight: 800; color: #d63384; margin-bottom: 12px; tex
         </div>
       </div>
 
-      <!-- Vue Statistiques -->
+      <!-- Modale Mon Profil -->
       <div style="margin-bottom:14px;">
-        <div class="node-view">📊 Vue Statistiques</div>
+        <div class="node-view">👤 Modale Mon Profil</div>
         <div style="margin-left:20px;margin-top:6px;display:flex;flex-direction:column;gap:6px;">
-          <div class="node-action">Promise.all([GET /api/tasks, GET /api/users]) → En parallèle</div>
-          <div class="node-action">.filter() → Compteurs (urgent / moyen / normal / non assigné)</div>
-          <div class="node-action">creerCamembert() → SVG généré en JS pur</div>
+          <div class="node-action">Clic sur "Mon Profil" ou l'avatar → showProfile()</div>
+          <div class="node-action">Lecture de localStorage('user') → nom, email, rôle, id</div>
+          <div class="node-action">escapeHTML() avant insertion dans le DOM (protection XSS)</div>
         </div>
       </div>
 
@@ -377,49 +370,33 @@ h3 { font-size: 14px; font-weight: 800; color: #d63384; margin-bottom: 12px; tex
     <p style="font-size:11px;color:#6b7280;margin-top:10px;">Accessible : aria-labelledby, aria-modal, focus piégé dans la modale</p>
   </div>
 
-  <!-- WF 4 : Page Statistiques -->
+  <!-- WF 4 : Modale Mon Profil -->
   <div class="wf-card">
-    <div class="wf-title">Vue Statistiques (profile.js)</div>
+    <div class="wf-title">Composant — Modale Mon Profil (profile.js)</div>
     <div class="screen">
       <div class="screen-bar">
         <div class="dot" style="background:#ef4444;"></div>
         <div class="dot" style="background:#f59e0b;"></div>
         <div class="dot" style="background:#10b981;"></div>
-        <div class="title">localhost:3000 → Statistiques</div>
+        <div class="title">Fenêtre modale</div>
       </div>
-      <div class="screen-body">
-        <div class="screen-sidebar">
-          <div class="logo-wf">L</div>
-          <div class="nav-item">📊 Dashboard</div>
-          <div class="nav-item active">📊 Stats</div>
-          <div class="nav-item">👥 Équipe</div>
-        </div>
-        <div class="screen-main">
-          <div class="wf-h1" style="font-size:10px;">Vue d'ensemble</div>
-          <div class="wf-stats">
-            <div class="wf-stat-card">
-              <div class="wf-stat-icon" style="background:#ede9fe;"></div>
-              <div><div class="wf-stat-num" style="color:#6c63ff;">8</div><div style="font-size:7px;color:#6b7280;">Tâches total</div></div>
-            </div>
-            <div class="wf-stat-card">
-              <div class="wf-stat-icon" style="background:#fee2e2;"></div>
-              <div><div class="wf-stat-num" style="color:#ef4444;">3</div><div style="font-size:7px;color:#6b7280;">Urgentes</div></div>
-            </div>
-            <div class="wf-stat-card">
-              <div class="wf-stat-icon" style="background:#fef3c7;"></div>
-              <div><div class="wf-stat-num" style="color:#f59e0b;">2</div><div style="font-size:7px;color:#6b7280;">Non assignées</div></div>
-            </div>
-            <div class="wf-stat-card">
-              <div class="wf-stat-icon" style="background:#dcfce7;"></div>
-              <div><div class="wf-stat-num" style="color:#10b981;">4</div><div style="font-size:7px;color:#6b7280;">Membres</div></div>
-            </div>
-          </div>
-          <div class="wf-pie"></div>
-          <div style="font-size:8px;color:#6b7280;text-align:center;">Camembert SVG (JS pur)</div>
+      <div class="wf-modal-overlay">
+        <div class="wf-modal-box" style="text-align:center;">
+          <div class="custom-avatar" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#6366f1);margin:0 auto 8px;"></div>
+          <div style="font-size:11px;font-weight:800;">Nom Prénom</div>
+          <div style="font-size:7px;color:#6b7280;margin-bottom:8px;">Membre de Lumina Workspace</div>
+          <table style="width:100%;font-size:7px;border-collapse:collapse;text-align:left;">
+            <tr><th style="color:#6b7280;padding:2px 4px;">Nom</th><td style="padding:2px 4px;">—</td></tr>
+            <tr><th style="color:#6b7280;padding:2px 4px;">Email</th><td style="padding:2px 4px;">—</td></tr>
+            <tr><th style="color:#6b7280;padding:2px 4px;">Rôle</th><td style="padding:2px 4px;">user / admin</td></tr>
+            <tr><th style="color:#6b7280;padding:2px 4px;">ID Compte</th><td style="padding:2px 4px;">#—</td></tr>
+            <tr><th style="color:#6b7280;padding:2px 4px;">Statut</th><td style="padding:2px 4px;color:#10b981;">● En ligne</td></tr>
+          </table>
+          <div class="wf-btn" style="margin-top:8px;padding:5px;background:#6b7280;">Fermer</div>
         </div>
       </div>
     </div>
-    <p style="font-size:11px;color:#6b7280;margin-top:10px;">Promise.all() — deux API en parallèle — SVG généré sans bibliothèque</p>
+    <p style="font-size:11px;color:#6b7280;margin-top:10px;">Lecture seule — données lues depuis <code>localStorage</code>, échappées via <code>escapeHTML()</code> avant affichage</p>
   </div>
 
   <!-- WF 5 : Mobile -->

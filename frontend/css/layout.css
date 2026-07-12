@@ -165,13 +165,6 @@ body {
     flex-shrink: 0;
 }
 
-.theme-toggle-mobile {
-    display: none;
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-}
-
 .notif-bell {
     position: relative;
     cursor: pointer;

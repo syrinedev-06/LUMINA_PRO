@@ -67,8 +67,15 @@ db.connect((err) => {
             priority ENUM('high', 'medium', 'low') DEFAULT 'medium',
             id_assigned INT,
             id_col INT,
+            due_date DATE DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (id_col) REFERENCES columns(id) ON DELETE CASCADE
+        )`,
+        `CREATE TABLE IF NOT EXISTS logs (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            action VARCHAR(100) NOT NULL,
+            details TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )`
     ];
 
@@ -77,6 +84,19 @@ db.connect((err) => {
         db.query(sql, (err) => {
             if (err) console.error("Erreur création table:", err.message);
         });
+    });
+
+    // Migration : ajoute due_date sur les bases existantes
+    db.query("ALTER TABLE tasks ADD COLUMN due_date DATE DEFAULT NULL", (err) => {
+        if (err) {
+            if (err.code === 'ER_DUP_FIELDNAME') {
+                console.log("✅ due_date déjà présente en base");
+            } else {
+                console.error("❌ Migration due_date ÉCHOUÉE:", err.message);
+            }
+        } else {
+            console.log("✅ Colonne due_date ajoutée avec succès !");
+        }
     });
 
     // Initialisation du Kanban : Création des 3 colonnes par défaut si la table est vide

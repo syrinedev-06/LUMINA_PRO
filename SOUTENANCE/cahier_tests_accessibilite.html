@@ -301,7 +301,7 @@ Intitulé explicite, destination claire</td>
             <td class="evidence">Tous les boutons nav ont aria-label explicite :
 aria-label="Tableau de bord Kanban"
 aria-label="Gérer l'équipe"
-aria-label="Voir les statistiques"</td>
+aria-label="Voir mon profil"</td>
           </tr>
         </tbody>
       </table>
@@ -514,14 +514,14 @@ Pas de défilement horizontal sur mobile</td>
             <td>Le texte reste lisible à 200% de zoom ?</td>
             <td><span class="badge badge-warn">⚠️ À améliorer</span></td>
             <td class="evidence">La mise en page principale s'adapte bien au zoom 200%
-Quelques cartes statistiques peuvent se chevaucher à zoom très élevé</td>
+Quelques cartes de tâches (task-card) peuvent se resserrer à zoom très élevé sur mobile</td>
           </tr>
           <tr>
             <td class="critere">10.9</td>
             <td>L'info n'est pas donnée uniquement par forme/taille/position ?</td>
             <td><span class="badge badge-ok">✅ Conforme</span></td>
-            <td class="evidence">Chaque carte de statistique a un libellé texte
-("Tâches urgentes", "Sans assignation"...) en plus de la couleur</td>
+            <td class="evidence">Chaque badge de priorité a un libellé texte ("high", "medium", "low")
+en plus de la couleur (bg-high / bg-medium / bg-low) — voir kanban.css</td>
           </tr>
           <tr>
             <td class="critere">10.13</td>
@@ -679,10 +679,11 @@ Tout reste dans la même page (SPA)</td>
           <tr>
             <td class="critere">13.5</td>
             <td>Les contenus cryptiques (emoji) ont-ils une alternative ?</td>
-            <td><span class="badge badge-warn">⚠️ À améliorer</span></td>
-            <td class="evidence">Emojis dans les cartes statistiques (📋🔥⏳👥) sans aria-label
-Le texte adjacent ("Tâches urgentes") compense partiellement
-Amélioration : ajouter aria-label sur les span emoji</td>
+            <td><span class="badge badge-ok">✅ Conforme</span></td>
+            <td class="evidence">Emojis de la nav (📊 Dashboard, 👥 Équipe, 👤 Mon Profil) placés dans
+&lt;span aria-hidden="true"&gt;, avec aria-label explicite porté par le &lt;button&gt; parent
+(ex. aria-label="Voir mon profil") — l'emoji est donc ignoré par les lecteurs d'écran
+et le libellé textuel du bouton est lu à la place</td>
           </tr>
           <tr>
             <td class="critere">13.9</td>
@@ -722,15 +723,9 @@ Testé sur mobile en portrait et paysage : aucune perte de contenu</td>
           </tr>
           <tr>
             <td><span class="badge badge-warn">P3 — Faible</span></td>
-            <td class="critere">13.5</td>
-            <td>Emojis dans les cartes statistiques sans alternative textuelle explicite</td>
-            <td>Ajouter aria-hidden="true" sur les emojis (le texte adjacent suffit)</td>
-          </tr>
-          <tr>
-            <td><span class="badge badge-warn">P4 — Faible</span></td>
             <td class="critere">10.4</td>
-            <td>Chevauchement possible à 200% de zoom sur les cartes statistiques</td>
-            <td>Vérifier les cartes avec flex-wrap et tester à 200% dans les DevTools</td>
+            <td>Resserrement possible des cartes de tâches à 200% de zoom sur mobile</td>
+            <td>Vérifier les colonnes Kanban avec flex-wrap et tester à 200% dans les DevTools</td>
           </tr>
         </tbody>
       </table>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Diagramme d'Activité — Lumina Pro</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Arial,sans-serif; background:#f0f2f5; color:#1e293b; }
+
+  header {
+    background:linear-gradient(135deg,#1a1a2e,#302b63);
+    color:#fff; padding:36px 48px 28px; text-align:center;
+  }
+  header h1 { font-size:26px; font-weight:900; letter-spacing:1px; }
+  header p  { font-size:14px; color:#c9c6ea; margin-top:8px; }
+
+  main { max-width:1100px; margin:0 auto; padding:32px 24px 80px; }
+
+  .section-title {
+    font-size:11px; font-weight:900; text-transform:uppercase;
+    letter-spacing:3px; color:#D6336C; margin:40px 0 16px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .section-title::after { content:''; flex:1; height:2px; background:#ecdce3; }
+
+  .diagram-wrap {
+    background:#fff; border-radius:16px; padding:32px 40px;
+    box-shadow:0 2px 12px rgba(0,0,0,0.07); margin-bottom:28px;
+  }
+  .diagram-title { font-size:16px; font-weight:800; color:#1e293b; margin-bottom:24px; }
+  .diagram-subtitle { font-size:12px; color:#888; font-weight:700; text-transform:uppercase; letter-spacing:1px; }
+
+  /* ── DIAGRAMME SVG-LIKE EN HTML/CSS ── */
+  .activity-flow {
+    display:flex; flex-direction:column; align-items:center; gap:0;
+  }
+
+  /* Nœud de départ/fin */
+  .node-start, .node-end {
+    width:28px; height:28px; border-radius:50%; background:#1e293b;
+    flex-shrink:0;
+  }
+  .node-end { border:4px solid #1e293b; background:#fff; box-shadow:0 0 0 5px #1e293b; }
+
+  /* Flèche */
+  .arrow {
+    width:2px; background:#94a3b8; min-height:24px;
+    position:relative; flex-shrink:0;
+  }
+  .arrow::after {
+    content:''; position:absolute; bottom:-6px; left:50%;
+    transform:translateX(-50%);
+    border-left:6px solid transparent; border-right:6px solid transparent;
+    border-top:8px solid #94a3b8;
+  }
+  .arrow.arrow-label {
+    position:relative;
+  }
+  .arrow-text {
+    position:absolute; left:12px; top:50%; transform:translateY(-50%);
+    font-size:11px; color:#D6336C; font-weight:700; white-space:nowrap;
+    background:#fff; padding:0 4px;
+  }
+
+  /* Action */
+  .node-action {
+    background:#f8fafc; border:2px solid #e2e8f0; border-radius:12px;
+    padding:12px 24px; font-size:14px; font-weight:600; color:#1e293b;
+    text-align:center; min-width:260px; max-width:400px; flex-shrink:0;
+  }
+  .node-action.colored { background:#fff0f5; border-color:#D6336C; color:#D6336C; font-weight:800; }
+  .node-action.gray    { background:#f1f5f9; border-color:#94a3b8; color:#475569; }
+  .node-action.green   { background:#f0fdf4; border-color:#22c55e; color:#15803d; }
+  .node-action.orange  { background:#fff7ed; border-color:#f97316; color:#c2410c; }
+
+  /* Losange décision */
+  .node-decision {
+    width:160px; height:60px; background:#fff; border:2px solid #302b63;
+    transform:rotate(45deg); display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; position:relative;
+  }
+  .node-decision span {
+    transform:rotate(-45deg); font-size:12px; font-weight:800;
+    color:#302b63; text-align:center; line-height:1.3;
+  }
+
+  .decision-wrap { position:relative; width:260px; height:80px; flex-shrink:0; }
+  .diamond {
+    width:80px; height:80px; background:#fff; border:2px solid #302b63;
+    transform:rotate(45deg); position:absolute; left:50%; top:0; margin-left:-40px;
+  }
+  .diamond-label {
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    font-size:11px; font-weight:800; color:#302b63; text-align:center; line-height:1.2; white-space:nowrap;
+  }
+
+  /* Branche parallèle */
+  .fork-join {
+    width:220px; height:6px; background:#1e293b; border-radius:3px; flex-shrink:0;
+  }
+
+  .branch-row {
+    display:flex; gap:40px; align-items:flex-start; justify-content:center; flex-shrink:0;
+  }
+  .branch-col {
+    display:flex; flex-direction:column; align-items:center; gap:0;
+  }
+
+  /* Swimlane */
+  .swimlane-wrap {
+    display:grid; grid-template-columns:120px 1fr 1fr;
+    border:1px solid #e2e8f0; border-radius:12px; overflow:hidden;
+  }
+  .swimlane-header {
+    background:#1a1a2e; color:#fff; font-size:11px; font-weight:800;
+    text-transform:uppercase; letter-spacing:1px; padding:10px 16px;
+    display:flex; align-items:center;
+  }
+  .swimlane-label {
+    background:#f8fafc; border-right:1px solid #e2e8f0;
+    font-size:11px; font-weight:800; color:#475569; text-transform:uppercase;
+    letter-spacing:1px; padding:0 12px; display:flex; align-items:center;
+    writing-mode:vertical-rl; transform:rotate(180deg); text-align:center;
+  }
+  .swimlane-col { padding:16px 20px; border-right:1px solid #e2e8f0; }
+  .swimlane-col:last-child { border-right:none; }
+
+  .note-box {
+    background:#fff7ed; border:1px solid #fed7aa; border-radius:8px;
+    padding:10px 14px; font-size:12.5px; color:#92400e; line-height:1.7; margin-top:16px;
+  }
+  .note-box b { color:#c2410c; }
+
+  .legend-row { display:flex; gap:16px; flex-wrap:wrap; margin-top:12px; font-size:12px; }
+  .legend-item { display:flex; align-items:center; gap:6px; }
+  .legend-dot { width:14px; height:14px; border-radius:3px; flex-shrink:0; }
+
+  footer { text-align:center; padding:30px; color:#888; font-size:12px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🔄 Diagrammes d'Activité — Lumina Pro</h1>
+  <p>UML · Modélisation des flux principaux · Syrine BEN HASSINE · DWWM 2026</p>
+</header>
+
+<main>
+
+<!-- ────────────────────────────────────────────── -->
+<div class="section-title">Diagramme 1 — Créer une tâche (flux complet)</div>
+
+<div class="diagram-wrap">
+  <div class="diagram-title">Création d'une tâche — du clic au stockage en base</div>
+
+  <div style="display:flex; gap:0; justify-content:center;">
+
+    <!-- SWIMLANE : Navigateur / Serveur / Base -->
+    <div style="display:flex; flex-direction:column; width:100%; max-width:860px;">
+
+      <!-- En-têtes swimlane -->
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; margin-bottom:0;">
+        <div style="background:#302b63; color:#fff; font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:1.5px; padding:10px 20px; text-align:center; border-radius:10px 0 0 0;">🌐 Navigateur (Front)</div>
+        <div style="background:#D6336C; color:#fff; font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:1.5px; padding:10px 20px; text-align:center; border:1px solid #c01d5a;">⚙️ Serveur (Back)</div>
+        <div style="background:#1e293b; color:#fff; font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:1.5px; padding:10px 20px; text-align:center; border-radius:0 10px 0 0;">🗄️ Base de données</div>
+      </div>
+
+      <!-- Corps -->
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; border:1px solid #e2e8f0; border-top:none; border-radius:0 0 10px 10px; overflow:hidden;">
+
+        <!-- Col Navigateur -->
+        <div style="border-right:1px solid #e2e8f0; padding:20px 16px; display:flex; flex-direction:column; align-items:center; gap:10px; background:#fafbff;">
+          <div class="node-start" title="Début"></div>
+          <div class="arrow" style="height:18px;"></div>
+          <div class="node-action colored">L'utilisateur clique<br>"+ Nouvelle tâche"</div>
+          <div class="arrow" style="height:18px;"></div>
+          <div class="node-action">Le modal s'ouvre<br>(HTML/CSS visible)</div>
+          <div class="arrow" style="height:18px;"></div>
+          <div class="node-action">Remplit le formulaire<br>(titre, priorité, date…)</div>
+          <div class="arrow" style="height:18px;"></div>
+          <div class="node-action colored">Clique "Enregistrer"</div>
+          <div class="arrow" style="height:18px;"></div>
+          <div class="node-action gray">JS valide les champs<br>(titre non vide)</div>
+          <div class="arrow" style="height:18px;"></div>
+          <div class="node-action gray">authFetch POST /api/tasks<br>+ token JWT dans header</div>
+          <div style="height:180px;"></div>
+          <div class="node-action green">Affiche la nouvelle carte<br>dans la bonne colonne</div>
+          <div class="arrow" style="height:18px;"></div>
+          <div class="node-end" title="Fin"></div>
+        </div>
+
+        <!-- Col Serveur -->
+        <div style="border-right:1px solid #e2e8f0; padding:20px 16px; display:flex; flex-direction:column; align-items:center; gap:10px; background:#fff5f7;">
+          <div style="height:248px;"></div>
+          <div class="node-action colored" style="font-size:13px;">Reçoit la requête POST<br>/api/tasks</div>
+          <div class="arrow" style="height:18px;"></div>
+          <div class="node-action gray" style="font-size:13px;">Middleware verifyToken<br>vérifie le JWT</div>
+          <div class="arrow" style="height:18px;"></div>
+
+          <!-- Décision JWT -->
+          <div style="position:relative; width:200px; height:50px; flex-shrink:0;">
+            <div style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) rotate(45deg); width:50px; height:50px; border:2px solid #302b63; background:#fff;"></div>
+            <div style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:10px; font-weight:900; color:#302b63; text-align:center;">Token<br>valide ?</div>
+          </div>
+
+          <div style="display:flex; gap:32px; align-items:flex-start; width:100%;">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:6px; flex:1;">
+              <div style="font-size:10px; color:#ef4444; font-weight:800;">NON</div>
+              <div class="node-action orange" style="font-size:11px; padding:8px 10px;">Retourne 401<br>Unauthorized</div>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:6px; flex:1;">
+              <div style="font-size:10px; color:#22c55e; font-weight:800;">OUI</div>
+              <div class="node-action gray" style="font-size:11px; padding:8px 10px;">Valide le body<br>(titre requis)</div>
+            </div>
+          </div>
+
+          <div class="arrow" style="height:18px;"></div>
+          <div class="node-action gray" style="font-size:13px;">Exécute INSERT INTO tasks<br>(requête préparée ?)</div>
+          <div style="height:80px;"></div>
+          <div class="node-action green" style="font-size:13px;">Retourne 201<br>+ tâche créée (JSON)</div>
+        </div>
+
+        <!-- Col Base -->
+        <div style="padding:20px 16px; display:flex; flex-direction:column; align-items:center; gap:10px; background:#f8fafc;">
+          <div style="height:430px;"></div>
+          <div class="node-action gray" style="font-size:13px; background:#e0f2fe; border-color:#0ea5e9; color:#0369a1;">Insère la ligne<br>dans la table tasks</div>
+          <div class="arrow" style="height:18px;"></div>
+          <div class="node-action green" style="font-size:13px;">Retourne l'id<br>AUTO_INCREMENT</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="note-box" style="margin-top:20px;">
+    <b>Points clés expliqués :</b><br>
+    • <b>authFetch()</b> = wrapper autour de fetch() qui injecte automatiquement le token JWT<br>
+    • <b>verifyToken</b> = middleware Express qui vérifie la signature JWT avant chaque route protégée<br>
+    • <b>Requête préparée</b> = INSERT INTO tasks VALUES (?, ?, ?) — les ? évitent l'injection SQL<br>
+    • <b>201 Created</b> = code HTTP signifiant "ressource créée avec succès"
+  </div>
+</div>
+
+<!-- ────────────────────────────────────────────── -->
+<div class="section-title">Diagramme 2 — Connexion utilisateur (authentification)</div>
+
+<div class="diagram-wrap">
+  <div class="diagram-title">Flux de connexion — Login → JWT → Kanban</div>
+
+  <div class="activity-flow" style="max-width:460px; margin:0 auto;">
+    <div class="node-start"></div>
+    <div class="arrow" style="height:20px;"></div>
+    <div class="node-action colored">Saisit email + mot de passe<br>et clique "Se connecter"</div>
+    <div class="arrow" style="height:20px;"></div>
+    <div class="node-action gray">JS envoie POST /api/auth/login</div>
+    <div class="arrow" style="height:20px;"></div>
+    <div class="node-action">Serveur cherche l'email<br>en base (SELECT users)</div>
+    <div class="arrow" style="height:20px;"></div>
+
+    <!-- Décision 1 -->
+    <div style="position:relative; width:300px; height:60px; flex-shrink:0; margin:8px 0;">
+      <div style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) rotate(45deg); width:52px; height:52px; border:2px solid #302b63; background:#fff;"></div>
+      <div style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:11px; font-weight:900; color:#302b63; text-align:center; line-height:1.3;">Email<br>existe ?</div>
+      <div style="position:absolute; right:8px; top:50%; transform:translateY(-50%); font-size:10px; font-weight:800; color:#ef4444;">NON → 401</div>
+    </div>
+
+    <div style="font-size:10px; font-weight:800; color:#22c55e; margin-bottom:6px;">OUI</div>
+    <div class="node-action">bcrypt.compare(mdp, hash)<br>vérifie le mot de passe</div>
+    <div class="arrow" style="height:20px;"></div>
+
+    <!-- Décision 2 -->
+    <div style="position:relative; width:300px; height:60px; flex-shrink:0; margin:8px 0;">
+      <div style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) rotate(45deg); width:52px; height:52px; border:2px solid #302b63; background:#fff;"></div>
+      <div style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:10px; font-weight:900; color:#302b63; text-align:center; line-height:1.3;">Mdp<br>correct ?</div>
+      <div style="position:absolute; right:8px; top:50%; transform:translateY(-50%); font-size:10px; font-weight:800; color:#ef4444;">NON → 401</div>
+    </div>
+
+    <div style="font-size:10px; font-weight:800; color:#22c55e; margin-bottom:6px;">OUI</div>
+    <div class="node-action colored">jwt.sign() génère un token<br>signé (clé secrète .env, 24h)</div>
+    <div class="arrow" style="height:20px;"></div>
+    <div class="node-action gray">Serveur retourne 200 + token</div>
+    <div class="arrow" style="height:20px;"></div>
+    <div class="node-action">JS stocke le token<br>dans localStorage</div>
+    <div class="arrow" style="height:20px;"></div>
+    <div class="node-action green">Redirection vers index.html<br>(tableau Kanban)</div>
+    <div class="arrow" style="height:20px;"></div>
+    <div class="node-end"></div>
+  </div>
+</div>
+
+<!-- ────────────────────────────────────────────── -->
+<div class="section-title">Diagramme 3 — Déplacer une tâche entre colonnes</div>
+
+<div class="diagram-wrap">
+  <div class="diagram-title">Déplacement d'une tâche — bouton ← / →</div>
+
+  <div class="activity-flow" style="max-width:420px; margin:0 auto;">
+    <div class="node-start"></div>
+    <div class="arrow" style="height:20px;"></div>
+    <div class="node-action colored">Clique sur ← ou → d'une tâche</div>
+    <div class="arrow" style="height:20px;"></div>
+    <div class="node-action gray">JS identifie l'id de la tâche<br>et l'id de la colonne cible</div>
+    <div class="arrow" style="height:20px;"></div>
+    <div class="node-action gray">authFetch PUT /api/tasks/:id<br>body: { id_col: idColonneCible }</div>
+    <div class="arrow" style="height:20px;"></div>
+    <div class="node-action">Middleware vérifie le JWT</div>
+    <div class="arrow" style="height:20px;"></div>
+    <div class="node-action colored">UPDATE tasks SET id_col = ?<br>WHERE id = ?</div>
+    <div class="arrow" style="height:20px;"></div>
+    <div class="node-action gray">Serveur retourne 200 + tâche mise à jour</div>
+    <div class="arrow" style="height:20px;"></div>
+    <div class="node-action green">fetchTasks() recharge le board<br>(renderBoard re-dessine tout)</div>
+    <div class="arrow" style="height:20px;"></div>
+    <div class="node-end"></div>
+  </div>
+
+  <div class="note-box">
+    <b>Pourquoi recharger tout le board ?</b> Après un PUT réussi, on rappelle fetchTasks() qui récupère la liste complète depuis le serveur et redessine tout le tableau. C'est plus simple qu'un déplacement DOM manuel et garantit la cohérence avec la base de données.
+  </div>
+</div>
+
+</main>
+
+<footer>Lumina Pro · Syrine BEN HASSINE · DWWM 2026 · Diagrammes d'activité UML</footer>
+</body>
+</html>

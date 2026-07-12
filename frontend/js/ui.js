@@ -56,6 +56,15 @@ function showKanban() {
 
     document.getElementById('content-area').innerHTML = `
         <div class="kanban-container" id="kanban-view">
+            <div style="display:flex; align-items:center; gap:16px; padding:16px 28px 0;">
+                <div style="position:relative; flex:1; max-width:320px;">
+                    <span style="position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--text-muted); pointer-events:none;">🔍</span>
+                    <input type="search" id="search-input" placeholder="Rechercher une tâche..." oninput="filterTasks()"
+                        style="width:100%; padding:8px 12px 8px 32px; border:1px solid var(--border); border-radius:10px; background:var(--card-bg); color:var(--text); font-size:14px; outline:none;"
+                        aria-label="Rechercher une tâche">
+                </div>
+                <div id="kanban-stats" style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;"></div>
+            </div>
             <div id="kanban-board" class="kanban-board">
                 <p style="padding:20px;">Chargement du tableau...</p>
             </div>

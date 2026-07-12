@@ -7,6 +7,61 @@ const jwt = require('jsonwebtoken'); // Module pour la génération de tokens de
 const SECRET_KEY = process.env.SECRET_KEY;
 
 /**
+ * PROTECTION BRUTE FORCE — Rate Limiting sur le login
+ *
+ * Problème : sans cette protection, un attaquant peut essayer 100 000 mots de passe
+ * automatiquement (attaque par dictionnaire / force brute) sans jamais être bloqué.
+ *
+ * Solution : on garde en mémoire le nombre de tentatives par adresse IP.
+ * Après MAX_ATTEMPTS échecs en moins de WINDOW_MS millisecondes, on bloque pendant
+ * BLOCK_MS millisecondes et on répond 429 Too Many Requests.
+ *
+ * Note : cette implémentation est en mémoire (objet JS). En production, on utiliserait
+ * Redis pour persister les compteurs entre plusieurs instances du serveur.
+ */
+const loginAttempts = {}; // { ip: { count, blockedUntil } }
+const MAX_ATTEMPTS = 5;         // Max 5 tentatives ratées
+const WINDOW_MS = 15 * 60 * 1000; // Fenêtre de 15 minutes
+const BLOCK_MS  = 15 * 60 * 1000; // Blocage de 15 minutes
+
+function checkRateLimit(ip) {
+    const now = Date.now();
+    if (!loginAttempts[ip]) {
+        loginAttempts[ip] = { count: 0, blockedUntil: null };
+    }
+    const entry = loginAttempts[ip];
+
+    // Si l'IP est actuellement bloquée
+    if (entry.blockedUntil && now < entry.blockedUntil) {
+        const minutesLeft = Math.ceil((entry.blockedUntil - now) / 60000);
+        return { blocked: true, minutesLeft };
+    }
+
+    // Si le blocage est passé, on remet à zéro
+    if (entry.blockedUntil && now >= entry.blockedUntil) {
+        entry.count = 0;
+        entry.blockedUntil = null;
+    }
+
+    return { blocked: false };
+}
+
+function recordFailedAttempt(ip) {
+    const now = Date.now();
+    if (!loginAttempts[ip]) {
+        loginAttempts[ip] = { count: 0, blockedUntil: null };
+    }
+    loginAttempts[ip].count += 1;
+    if (loginAttempts[ip].count >= MAX_ATTEMPTS) {
+        loginAttempts[ip].blockedUntil = now + BLOCK_MS;
+    }
+}
+
+function resetAttempts(ip) {
+    delete loginAttempts[ip];
+}
+
+/**
  * @brief Route POST pour l'inscription d'un nouvel utilisateur (/api/auth/register).
  * 
  * CONCEPT EXAMEN (Inscription & Sécurité) :
@@ -24,19 +79,36 @@ const SECRET_KEY = process.env.SECRET_KEY;
 router.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
 
+    // Validation des entrées côté serveur (indispensable même si le formulaire HTML valide aussi)
+    // Un attaquant peut envoyer une requête directement à l'API sans passer par le formulaire.
+    if (!name || !email || !password) {
+        return res.status(400).json({ error: "Nom, email et mot de passe sont obligatoires." });
+    }
+    // Validation format email avec une expression régulière simple
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ error: "Format d'email invalide." });
+    }
+    // Mot de passe : minimum 6 caractères
+    if (password.length < 6) {
+        return res.status(400).json({ error: "Le mot de passe doit contenir au moins 6 caractères." });
+    }
+
     try {
         // Hachage du mot de passe avec un coût algorithmique de 10 (compromis idéal vitesse/sécurité)
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Requête d'insertion SQL avec placeholders pour éviter l'injection SQL
         const sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
-        
+
         req.db.query(sql, [name, email, hashedPassword], (err, result) => {
             if (err) {
-                // Si une erreur survient (ex: contrainte d'unicité violée sur l'email)
-                return res.status(500).json({ 
-                    error: "Erreur lors de l'inscription. L'email existe peut-être déjà." 
-                });
+                // ER_DUP_ENTRY = contrainte d'unicité violée sur l'email (email déjà pris)
+                // HTTP 409 Conflict = la ressource existe déjà, c'est une erreur client, pas serveur
+                if (err.code === 'ER_DUP_ENTRY') {
+                    return res.status(409).json({ error: "Cet email est déjà utilisé par un autre compte." });
+                }
+                return res.status(500).json({ error: "Erreur serveur lors de l'inscription." });
             }
             res.status(201).json({ message: "Utilisateur créé avec succès !" });
         });
@@ -65,13 +137,25 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
+    // Récupération de l'IP du client pour le rate limiting
+    const clientIP = req.ip || req.connection.remoteAddress || 'unknown';
+
+    // Vérification du rate limit AVANT tout traitement
+    const rateCheck = checkRateLimit(clientIP);
+    if (rateCheck.blocked) {
+        return res.status(429).json({
+            error: `Trop de tentatives. Réessayez dans ${rateCheck.minutesLeft} minute(s).`
+        });
+    }
+
     // A. Recherche de l'utilisateur par son email unique
     const sql = "SELECT * FROM users WHERE email = ?";
     req.db.query(sql, [email], async (err, results) => {
         if (err) return res.status(500).json({ error: "Erreur serveur de base de données." });
-        
-        // Si aucun utilisateur ne possède cet email
+
+        // Si aucun utilisateur ne possède cet email → échec → comptabiliser la tentative
         if (results.length === 0) {
+            recordFailedAttempt(clientIP);
             return res.status(401).json({ error: "Email ou mot de passe incorrect." });
         }
 
@@ -81,18 +165,26 @@ router.post('/login', async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
-            return res.status(401).json({ error: "Email ou mot de passe incorrect." });
+            // Mauvais mot de passe → comptabiliser la tentative ratée
+            recordFailedAttempt(clientIP);
+            const remaining = MAX_ATTEMPTS - (loginAttempts[clientIP]?.count || 0);
+            const msg = remaining > 0
+                ? `Email ou mot de passe incorrect. Il vous reste ${remaining} tentative(s).`
+                : `Compte temporairement bloqué pendant 15 minutes.`;
+            return res.status(401).json({ error: msg });
         }
+
+        // Connexion réussie → remettre le compteur à zéro
+        resetAttempts(clientIP);
 
         // C. Création du Token de session JWT sécurisé
         const token = jwt.sign(
-            { id: user.id, role: user.role }, 
-            SECRET_KEY, 
+            { id: user.id, role: user.role },
+            SECRET_KEY,
             { expiresIn: '24h' }
         );
 
         // D. Retour des données au client
-        // Le client stockera ce token dans le localStorage pour authentifier ses requêtes futures.
         res.json({
             message: "Connexion réussie !",
             token: token,

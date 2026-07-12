@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Veille Technologique — Syrine BEN HASSINE — DWWM 2026</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11pt; color: #1e293b; background: #ddd; margin: 0; }
+    .page {
+      background: white;
+      width: 210mm;
+      min-height: 297mm;
+      margin: 20px auto;
+      padding: 15mm 20mm;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      page-break-after: always;
+    }
+    .entete { display: flex; justify-content: space-between; border-bottom: 3px solid #0ea5e9; padding-bottom: 8px; margin-bottom: 14px; font-size: 10pt; color: #555; }
+    h1 { font-size: 22pt; color: #0ea5e9; text-align: center; line-height: 1.3; margin-bottom: 8px; }
+    h2 { background: #0ea5e9; color: white; padding: 9px 15px; border-radius: 4px; font-size: 13pt; margin: 0 0 14px 0; }
+    h3 { color: #0369a1; border-left: 4px solid #0ea5e9; padding-left: 10px; font-size: 11pt; margin: 14px 0 8px 0; }
+    p { line-height: 1.7; margin-bottom: 10px; }
+    ul, ol { padding-left: 22px; line-height: 1.8; margin-bottom: 10px; }
+    li { margin-bottom: 4px; }
+    .encadre { background: #f0f9ff; border: 1px solid #7dd3fc; border-radius: 8px; padding: 12px 16px; margin: 12px 0; line-height: 1.7; }
+    .alerte  { background: #fff7ed; border-left: 5px solid #f97316; padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 12px 0; line-height: 1.7; }
+    .vert    { background: #f0fdf4; border-left: 5px solid #22c55e; padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 12px 0; line-height: 1.7; }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 10pt; }
+    th { background: #0ea5e9; color: white; padding: 8px 10px; text-align: left; }
+    td { padding: 7px 10px; border-bottom: 1px solid #e2e8f0; vertical-align: top; line-height: 1.6; }
+    tr:nth-child(even) td { background: #f8fafc; }
+    .centre { text-align: center; }
+    .pied { font-size: 8.5pt; color: #888; text-align: center; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 8px; }
+    .source { font-size: 9pt; color: #64748b; font-style: italic; }
+    @media print { body { background: white; } .page { margin: 0; box-shadow: none; } }
+  </style>
+</head>
+<body>
+
+<!-- PAGE 1 : GARDE -->
+<div class="page">
+  <div style="margin-top: 50px;" class="centre">
+    <div style="font-size:9pt; color:#888; letter-spacing:2px; text-transform:uppercase; margin-bottom:16px;">La Plateforme_ · Cannes · DWWM 2025/2026</div>
+    <h1>Veille Technologique<br>Sécurité des Applications Web</h1>
+    <div style="font-size:11pt; color:#555; margin-bottom:30px;">Les nouvelles menaces et bonnes pratiques pour protéger une API REST en 2025</div>
+
+    <div style="border: 2px solid #0ea5e9; border-radius: 10px; padding: 16px; max-width: 360px; margin: 0 auto 30px; text-align: left; line-height: 2.2;">
+      <div><b style="color:#0ea5e9;">Candidate :</b> Syrine BEN HASSINE</div>
+      <div><b style="color:#0ea5e9;">Formation :</b> DWWM 2025/2026 · La Plateforme_ Cannes</div>
+      <div><b style="color:#0ea5e9;">Thème :</b> Sécurité des API REST</div>
+      <div><b style="color:#0ea5e9;">Période de veille :</b> Janvier → Juillet 2026</div>
+    </div>
+
+    <div style="background:#f0f9ff; border:1px solid #7dd3fc; border-radius:8px; padding:14px; max-width:440px; margin:0 auto; font-size:10.5pt; line-height:1.9; text-align:left;">
+      <b>Pourquoi ce thème ?</b><br>
+      Lumina Pro est une application web avec une API REST et des données utilisateurs sensibles (mots de passe, tâches). Durant la formation, j'ai suivi l'actualité de la sécurité web pour appliquer les bonnes pratiques directement dans le projet et comprendre les risques réels. Ce document résume ma veille sur 6 mois.
+    </div>
+  </div>
+  <div class="pied">Veille Technologique · Syrine BEN HASSINE · La Plateforme_ Cannes · DWWM 2026</div>
+</div>
+
+<!-- PAGE 2 : MÉTHODE DE VEILLE -->
+<div class="page">
+  <div class="entete"><span>🔍 Méthode de veille</span><span>Syrine BEN HASSINE · Page 2</span></div>
+  <h2>🔍 Comment j'ai organisé ma veille technologique</h2>
+
+  <h3>Définition — Qu'est-ce que la veille technologique ?</h3>
+  <p>La veille technologique est le processus de surveillance régulière de l'actualité d'un domaine technique pour rester informé des nouvelles pratiques, outils, menaces ou standards. Pour un développeur web, c'est indispensable car le secteur évolue très vite : une bibliothèque peut devenir vulnérable, un standard peut être remplacé, une nouvelle pratique peut devenir incontournable.</p>
+
+  <h3>Mes sources de veille</h3>
+  <table>
+    <tr><th>Source</th><th>Type</th><th>Fréquence de consultation</th><th>Ce que j'y trouve</th></tr>
+    <tr>
+      <td><b>OWASP.org</b></td>
+      <td>Site de référence</td>
+      <td>Mensuelle</td>
+      <td>Les 10 failles web les plus critiques (OWASP Top 10), guides de bonnes pratiques</td>
+    </tr>
+    <tr>
+      <td><b>MDN Web Docs</b><br><span class="source">developer.mozilla.org</span></td>
+      <td>Documentation officielle</td>
+      <td>Hebdomadaire</td>
+      <td>Nouvelles API JavaScript, mises à jour HTML5/CSS3, sécurité navigateur</td>
+    </tr>
+    <tr>
+      <td><b>Dev.to</b></td>
+      <td>Blog communautaire</td>
+      <td>Hebdomadaire</td>
+      <td>Articles de praticiens sur Node.js, sécurité, accessibilité</td>
+    </tr>
+    <tr>
+      <td><b>CVE Details</b><br><span class="source">cvedetails.com</span></td>
+      <td>Base de vulnérabilités</td>
+      <td>Mensuelle</td>
+      <td>Vulnérabilités publiées sur les bibliothèques npm utilisées</td>
+    </tr>
+    <tr>
+      <td><b>npm audit</b></td>
+      <td>Outil CLI</td>
+      <td>À chaque mise à jour</td>
+      <td>Détecte les dépendances vulnérables dans le projet</td>
+    </tr>
+    <tr>
+      <td><b>State of JS Survey</b><br><span class="source">stateofjs.com</span></td>
+      <td>Enquête annuelle</td>
+      <td>Annuelle</td>
+      <td>Tendances d'usage des frameworks, outils et pratiques JavaScript</td>
+    </tr>
+  </table>
+
+  <h3>Ma méthode de veille</h3>
+  <div class="encadre">
+    <b>Étape 1 — Collecte :</b> Chaque semaine, je consulte mes sources et je note les sujets qui me semblent pertinents pour mon projet ou mon futur métier.<br><br>
+    <b>Étape 2 — Filtrage :</b> Je sélectionne les informations qui ont un lien direct avec mes technologies (Node.js, MySQL, JWT, JavaScript vanilla).<br><br>
+    <b>Étape 3 — Application :</b> Je teste les recommandations dans Lumina Pro ou dans des exercices séparés, et je mets à jour le code si une faille me concerne.<br><br>
+    <b>Étape 4 — Mémorisation :</b> Je résume les points importants dans mes notes de formation pour pouvoir les réutiliser et les expliquer.
+  </div>
+
+  <div class="pied">Veille Technologique · Syrine BEN HASSINE · La Plateforme_ Cannes · DWWM 2026</div>
+</div>
+
+<!-- PAGE 3 : OWASP TOP 10 ET MON PROJET -->
+<div class="page">
+  <div class="entete"><span>🛡️ OWASP Top 10 — Analyse Lumina Pro</span><span>Syrine BEN HASSINE · Page 3</span></div>
+  <h2>🛡️ Sujet 1 — OWASP Top 10 et Lumina Pro</h2>
+
+  <p>L'OWASP (Open Web Application Security Project) publie régulièrement une liste des 10 failles de sécurité web les plus dangereuses. J'ai appliqué cette liste à Lumina Pro pour identifier ce qui est protégé et ce qui reste à améliorer.</p>
+
+  <table>
+    <tr><th>#</th><th>Faille OWASP</th><th>Dans Lumina Pro</th><th>Protection appliquée</th></tr>
+    <tr>
+      <td><b>A01</b></td>
+      <td>Contrôle d'accès insuffisant (IDOR)</td>
+      <td>⚠️ Corrigé en cours de projet</td>
+      <td>Vérification du rôle admin sur DELETE tasks et DELETE users. Vérification assignee pour supprimer sa propre tâche.</td>
+    </tr>
+    <tr>
+      <td><b>A02</b></td>
+      <td>Mauvaise configuration cryptographique</td>
+      <td>✅ Protégé</td>
+      <td>bcrypt avec salt aléatoire (10 rounds). Jamais SHA1/MD5. Clé JWT dans .env.</td>
+    </tr>
+    <tr>
+      <td><b>A03</b></td>
+      <td>Injection (SQL, XSS, HTML)</td>
+      <td>✅ Protégé</td>
+      <td>Requêtes préparées mysql2 (?) contre SQL injection. escapeHTML() contre XSS.</td>
+    </tr>
+    <tr>
+      <td><b>A07</b></td>
+      <td>Échecs d'authentification</td>
+      <td>✅ Protégé</td>
+      <td>JWT + bcrypt.compare() résistant aux attaques temporelles. Message d'erreur générique (ne précise pas si c'est l'email ou le mot de passe).</td>
+    </tr>
+    <tr>
+      <td><b>A09</b></td>
+      <td>Logging insuffisant</td>
+      <td>✅ Partiel</td>
+      <td>Table logs : toutes les opérations CRUD écrivent une entrée. Amélioration prévue : inclure l'IP et l'ID utilisateur dans les logs.</td>
+    </tr>
+  </table>
+
+  <h3>Ce que j'ai appris et appliqué grâce à cette veille</h3>
+  <div class="vert">
+    En lisant l'OWASP Top 10, j'ai découvert la faille IDOR (A01 — Broken Access Control) et j'ai réalisé que mon DELETE /api/tasks/:id original n'avait aucune vérification de propriété. J'ai corrigé le code pour ajouter une vérification du rôle (admin uniquement peut supprimer n'importe quelle tâche) ou de l'assignation (l'utilisateur peut supprimer sa propre tâche). Cette correction vient directement de ma veille OWASP.
+  </div>
+
+  <div class="alerte">
+    Ce que OWASP recommande et que Lumina Pro n'a pas encore : rate limiting sur le login (limiter le nombre de tentatives pour éviter les attaques par force brute), HTTPS en production, cookies httpOnly à la place du localStorage pour le JWT. Ces points sont identifiés comme améliorations prioritaires.
+  </div>
+
+  <div class="pied">Veille Technologique · Syrine BEN HASSINE · La Plateforme_ Cannes · DWWM 2026</div>
+</div>
+
+<!-- PAGE 4 : JWT ET AUTHENTIFICATION MODERNE -->
+<div class="page">
+  <div class="entete"><span>🔑 JWT et authentification moderne</span><span>Syrine BEN HASSINE · Page 4</span></div>
+  <h2>🔑 Sujet 2 — Évolution des pratiques d'authentification</h2>
+
+  <h3>JWT : standard largement adopté mais débats en 2025</h3>
+  <p>JWT (JSON Web Token) est aujourd'hui un standard de l'industrie pour l'authentification des API REST. Il est utilisé par des milliers d'applications. Mais en 2025, des développeurs expérimentés discutent de ses limites et des alternatives à considérer selon le contexte.</p>
+
+  <table>
+    <tr><th>Aspect</th><th>JWT (ma solution)</th><th>Sessions serveur (alternative)</th><th>Cookies httpOnly (alternative)</th></tr>
+    <tr>
+      <td>Stockage</td>
+      <td>localStorage (côté client)</td>
+      <td>Base de données serveur</td>
+      <td>Cookie navigateur (inaccessible par JS)</td>
+    </tr>
+    <tr>
+      <td>Risque XSS</td>
+      <td>⚠️ JWT lisible par JS malveillant</td>
+      <td>✅ Le token ne quitte pas le serveur</td>
+      <td>✅ httpOnly = inaccessible par JS</td>
+    </tr>
+    <tr>
+      <td>Révocation immédiate</td>
+      <td>❌ Impossible sans blacklist</td>
+      <td>✅ Suppression en base immédiate</td>
+      <td>✅ Suppression de session</td>
+    </tr>
+    <tr>
+      <td>Scalabilité</td>
+      <td>✅ Stateless, pas de DB pour vérifier</td>
+      <td>❌ Dépend de la DB à chaque requête</td>
+      <td>✅ Avec Redis/cache</td>
+    </tr>
+    <tr>
+      <td>Complexité</td>
+      <td>✅ Simple à implémenter</td>
+      <td>Moyenne</td>
+      <td>Plus complexe (CORS + SameSite)</td>
+    </tr>
+  </table>
+
+  <h3>Pourquoi j'ai quand même choisi JWT + localStorage</h3>
+  <div class="encadre">
+    Pour Lumina Pro, JWT + localStorage est un choix adapté au contexte de formation : simple à implémenter, bien documenté, et suffisant pour démontrer les compétences DWWM. Le risque XSS est limité par escapeHTML() qui empêche l'injection de scripts malveillants. En production réelle avec des données sensibles, je recommanderait des cookies httpOnly + HTTPS — c'est ce que j'ai appris grâce à ma veille et que je mentionnerai dans ma roadmap.
+  </div>
+
+  <h3>Ce que j'ai appris : les nouvelles recommandations 2025</h3>
+  <ul>
+    <li><b>Durée d'expiration courte :</b> Les bonnes pratiques recommandent des access tokens courts (15 min) + refresh tokens. Mon JWT expire en 24h — durée raisonnable pour un projet de gestion d'équipe.</li>
+    <li><b>Algorithme HS256 :</b> Toujours utiliser HS256 ou RS256 — jamais l'algorithme "none" qui est une faille documentée de JWT.</li>
+    <li><b>Payload minimal :</b> Ne stocker que l'ID et le rôle dans le payload JWT — jamais de données sensibles (email, mot de passe). C'est ce que fait Lumina Pro.</li>
+  </ul>
+
+  <div class="pied">Veille Technologique · Syrine BEN HASSINE · La Plateforme_ Cannes · DWWM 2026</div>
+</div>
+
+<!-- PAGE 5 : ACCESSIBILITÉ ET IA -->
+<div class="page">
+  <div class="entete"><span>♿ Accessibilité web · IA générative</span><span>Syrine BEN HASSINE · Page 5</span></div>
+  <h2>♿ Sujet 3 — Accessibilité web : vers WCAG 3.0</h2>
+
+  <p>En 2025, le W3C (World Wide Web Consortium — organisation qui définit les standards du web) travaille sur WCAG 3.0, la prochaine version des règles d'accessibilité web. Ma veille sur ce sujet m'a directement influencé dans les choix de Lumina Pro.</p>
+
+  <h3>WCAG 2.1 → WCAG 3.0 : les changements à venir</h3>
+  <table>
+    <tr><th>Aspect</th><th>WCAG 2.1 (actuel)</th><th>WCAG 3.0 (en développement)</th></tr>
+    <tr><td>Système de notation</td><td>Niveaux A / AA / AAA</td><td>Score numérique 0-100 par fonctionnalité</td></tr>
+    <tr><td>Contraste des couleurs</td><td>Ratio 4.5:1 pour le texte normal</td><td>Nouveau modèle APCA plus précis (tient compte de la taille, la police, le fond)</td></tr>
+    <tr><td>Portée</td><td>Contenu web</td><td>Applications mobiles, VR, IoT inclus</td></tr>
+    <tr><td>Tests cognitifs</td><td>Limités</td><td>Critères pour les troubles cognitifs et neurologiques</td></tr>
+  </table>
+
+  <h3>Ce que j'ai appliqué dans Lumina Pro grâce à cette veille</h3>
+  <ul>
+    <li>30 critères WCAG 2.1 niveau AA testés manuellement et documentés</li>
+    <li>Attributs aria-label sur tous les boutons sans texte visible</li>
+    <li>Navigation clavier complète (Tab, Entrée, Échap pour fermer les modales)</li>
+    <li>Contrastes vérifiés avec l'outil de contraste de Chrome DevTools</li>
+    <li>Dark mode (prefers-color-scheme) — recommandation émergente pour le confort visuel</li>
+    <li>Choix des flèches plutôt que le drag & drop — le drag & drop natif n'est pas accessible au clavier</li>
+  </ul>
+
+  <h2 style="margin-top:20px;">🤖 Sujet 4 — L'IA générative dans le développement web</h2>
+
+  <p>En 2025, les outils d'IA (GitHub Copilot, ChatGPT, Claude) sont devenus des assistants courants pour les développeurs. Ma veille sur ce sujet m'amène à une réflexion sur leur bonne utilisation.</p>
+
+  <h3>Ce que j'ai observé et ma position</h3>
+  <div class="encadre">
+    Les outils d'IA génèrent du code rapidement mais ne comprennent pas le contexte métier, ne testent pas, et peuvent introduire des failles de sécurité sans les signaler. L'utilisation responsable demande de toujours relire, comprendre et tester le code suggéré. Pour Lumina Pro, chaque fonctionnalité a été comprise et testée manuellement — pas copiée-collée sans vérification. La compréhension du code que j'ai réalisé me permet d'en expliquer chaque ligne.
+  </div>
+
+  <div class="alerte">
+    Tendance 2025 : les entreprises cherchent des développeurs qui savent <b>travailler avec l'IA</b> (prompt engineering, revue de code généré) mais aussi <b>comprendre et auditer</b> ce que l'IA produit. La connaissance des fondamentaux (SQL, HTTP, sécurité) reste indispensable pour ne pas accepter du code vulnérable.
+  </div>
+
+  <div class="pied">Veille Technologique · Syrine BEN HASSINE · La Plateforme_ Cannes · DWWM 2026</div>
+</div>
+
+<!-- PAGE 6 : SYNTHÈSE ET CONCLUSION -->
+<div class="page">
+  <div class="entete"><span>📊 Synthèse et conclusion</span><span>Syrine BEN HASSINE · Page 6</span></div>
+  <h2>📊 Synthèse — Ce que j'ai retenu et appliqué</h2>
+
+  <table>
+    <tr><th>Sujet de veille</th><th>Source</th><th>Apprentissage clé</th><th>Application dans Lumina Pro</th></tr>
+    <tr>
+      <td>OWASP Top 10</td>
+      <td>owasp.org</td>
+      <td>La faille IDOR (Broken Access Control) est la n°1 en 2021 et 2025</td>
+      <td>Ajout de vérifications propriétaire/admin sur les routes DELETE</td>
+    </tr>
+    <tr>
+      <td>Hachage des mots de passe</td>
+      <td>OWASP + MDN</td>
+      <td>bcrypt est toujours recommandé. SHA1/MD5 sont interdits pour les mots de passe</td>
+      <td>bcrypt avec 10 rounds dans auth.js</td>
+    </tr>
+    <tr>
+      <td>JWT — bonnes pratiques</td>
+      <td>jwt.io + Dev.to</td>
+      <td>Payload minimal, expiration courte, jamais l'algorithme "none"</td>
+      <td>Payload = {id, role}, expiration 24h, HS256 implicite via jsonwebtoken</td>
+    </tr>
+    <tr>
+      <td>Accessibilité WCAG</td>
+      <td>W3C + RGAA</td>
+      <td>Le drag & drop n'est pas accessible. Les boutons avec aria-label sont la bonne pratique.</td>
+      <td>Flèches de déplacement au lieu du drag & drop. 30 critères testés.</td>
+    </tr>
+    <tr>
+      <td>IA dans le dev</td>
+      <td>Dev.to + State of JS</td>
+      <td>L'IA accélère mais ne remplace pas la compréhension et la revue de code</td>
+      <td>Chaque ligne du projet comprise et testable manuellement</td>
+    </tr>
+    <tr>
+      <td>WCAG 3.0 (en cours)</td>
+      <td>W3C Working Draft</td>
+      <td>Accessibilité va s'étendre aux apps mobiles et aux troubles cognitifs</td>
+      <td>Prise en compte pour les évolutions futures de Lumina Pro</td>
+    </tr>
+  </table>
+
+  <h3>Conclusion personnelle</h3>
+  <p>Cette veille technologique m'a permis de prendre conscience que le développement web ne s'arrête pas à "faire fonctionner le code". La sécurité, l'accessibilité et l'évolution des standards sont des préoccupations permanentes dans le métier. J'ai appliqué directement plusieurs recommandations dans Lumina Pro — notamment la protection contre les failles IDOR, le hachage des mots de passe avec bcrypt, et le choix de boutons accessibles plutôt que du drag & drop.</p>
+
+  <p>Je compte continuer cette veille dans mon activité professionnelle future, en consultant régulièrement les publications OWASP, les notes de version des technologies que j'utilise, et la communauté Dev.to. C'est pour moi une habitude de travail indispensable pour rester à jour dans un secteur qui évolue aussi vite que le développement web.</p>
+
+  <div class="vert">
+    <b>Compétence développée :</b> Savoir identifier des sources fiables, filtrer l'information pertinente, et transformer une lecture technique en action concrète dans un projet — c'est ce que j'ai pratiqué tout au long de cette formation avec cette veille technologique.
+  </div>
+
+  <div class="pied">Veille Technologique · Syrine BEN HASSINE · La Plateforme_ Cannes · DWWM 2026</div>
+</div>
+
+</body>
+</html>

@@ -51,20 +51,19 @@ router.get('/', (req, res) => {
  * @returns {void}
  */
 router.post('/', (req, res) => {
-    const { title, description, priority, id_col, id_assigned } = req.body;
+    const { title, description, priority, id_col, id_assigned, due_date } = req.body;
     if (!title) return res.status(400).json({ error: "Le titre est obligatoire." });
 
-    // Si aucune colonne n'est fournie, recherche de la première colonne par ordre de position
     const findColSql = "SELECT id FROM columns ORDER BY position ASC LIMIT 1";
     req.db.query(findColSql, (err, cols) => {
         if (err || cols.length === 0) {
             return res.status(400).json({ error: "Aucune colonne trouvée. Créez une colonne d'abord." });
         }
-        
+
         const targetCol = id_col || cols[0].id;
-        const sql = "INSERT INTO tasks (title, description, priority, id_col, id_assigned) VALUES (?, ?, ?, ?, ?)";
-        
-        req.db.query(sql, [title, description, priority, targetCol, id_assigned || null], (err, result) => {
+        const sql = "INSERT INTO tasks (title, description, priority, id_col, id_assigned, due_date) VALUES (?, ?, ?, ?, ?, ?)";
+
+        req.db.query(sql, [title, description, priority, targetCol, id_assigned || null, due_date || null], (err, result) => {
             if (err) return res.status(500).json({ error: err.message });
             
             // Écriture du log d'activité
@@ -92,17 +91,18 @@ router.post('/', (req, res) => {
  */
 router.put('/:id', (req, res) => {
     const taskId = req.params.id;
-    const { title, description, priority, id_col, id_assigned } = req.body;
+    const { title, description, priority, id_col, id_assigned, due_date } = req.body;
 
     // Construction dynamique du corps du SET SQL
     let sql = "UPDATE tasks SET ";
     let params = [];
-    
+
     if (title) { sql += "title = ?, "; params.push(title); }
     if (description !== undefined) { sql += "description = ?, "; params.push(description); }
     if (priority) { sql += "priority = ?, "; params.push(priority); }
     if (id_col) { sql += "id_col = ?, "; params.push(id_col); }
     if (id_assigned !== undefined) { sql += "id_assigned = ?, "; params.push(id_assigned); }
+    if (due_date !== undefined) { sql += "due_date = ?, "; params.push(due_date || null); }
 
     sql = sql.slice(0, -2); // Nettoyage de la virgule et de l'espace finaux
     sql += " WHERE id = ?";
@@ -122,25 +122,45 @@ router.put('/:id', (req, res) => {
 
 /**
  * @brief Route DELETE pour supprimer définitivement une tâche (/api/tasks/:id).
- * 
- * CONCEPT EXAMEN (Suppression de ressource) :
+ *
+ * CONCEPT EXAMEN (Suppression de ressource + Protection IDOR) :
  * - Supprime l'enregistrement physique correspondant à l'identifiant.
  * - Enregistre une entrée de log indiquant la suppression.
- * 
- * @param {Object} req - Contient req.params.id (l'ID de la tâche).
+ * - Protection IDOR (Insecure Direct Object Reference) : seul un administrateur
+ *   peut supprimer n'importe quelle tâche. Un utilisateur standard ne peut supprimer
+ *   que les tâches qui lui sont assignées (id_assigned === son propre id).
+ *   Sans cette vérification, n'importe quel compte connecté pourrait supprimer
+ *   les tâches des autres en devinant l'ID — c'est la faille IDOR.
+ *
+ * @param {Object} req - Contient req.params.id (l'ID de la tâche) et req.user (décodé par verifyToken).
  * @param {Object} res - Réponse HTTP confirmant la suppression.
  * @returns {void}
  */
 router.delete('/:id', (req, res) => {
-    const sql = "DELETE FROM tasks WHERE id = ?";
-    req.db.query(sql, [req.params.id], (err, result) => {
+    const taskId = req.params.id;
+
+    // Protection IDOR : on vérifie d'abord qui est propriétaire de la tâche
+    req.db.query("SELECT id_assigned FROM tasks WHERE id = ?", [taskId], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
+        if (results.length === 0) return res.status(404).json({ error: "Tâche introuvable." });
 
-        // Log de suppression
-        const logSql = "INSERT INTO logs (action, details) VALUES ('Suppression', 'Une tâche a été supprimée')";
-        req.db.query(logSql);
+        const task = results[0];
+        const isAdmin = req.user.role === 'admin';
+        const isAssignee = task.id_assigned === req.user.id;
 
-        res.json({ message: "Tâche supprimée." });
+        // Seul l'admin ou la personne assignée peut supprimer
+        if (!isAdmin && !isAssignee) {
+            return res.status(403).json({ error: "Action interdite. Vous n'êtes pas autorisé à supprimer cette tâche." });
+        }
+
+        req.db.query("DELETE FROM tasks WHERE id = ?", [taskId], (err, result) => {
+            if (err) return res.status(500).json({ error: err.message });
+
+            const logSql = "INSERT INTO logs (action, details) VALUES ('Suppression', 'Une tâche a été supprimée')";
+            req.db.query(logSql);
+
+            res.json({ message: "Tâche supprimée." });
+        });
     });
 });
 

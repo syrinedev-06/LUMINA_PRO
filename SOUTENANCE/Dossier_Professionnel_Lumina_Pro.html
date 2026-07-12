@@ -84,19 +84,20 @@
   <ol>
     <li><a href="#intro">Introduction</a></li>
     <li><a href="#competences">Compétences du référentiel couvertes</a></li>
-    <li><a href="#fondation">Fondation conceptuelle et direction du projet</a></li>
+    <li><a href="#fondation">Présentation, équipe et gestion de projet</a></li>
     <li><a href="#archi">Environnement et architecture technique</a></li>
     <li><a href="#front-conception">Conception du front-end</a></li>
-    <li><a href="#back-conception">Conception du back-end</a></li>
-    <li><a href="#front-impl">Implémentation du front-end</a></li>
-    <li><a href="#back-impl">Implémentation du back-end</a></li>
-    <li><a href="#routes">Routes</a></li>
+    <li><a href="#back-conception">Conception du back-end (MCD, MLD, MPD, ACID)</a></li>
+    <li><a href="#mission1">Mission 1 — CRUD des tâches (front-end)</a></li>
+    <li><a href="#mission2">Mission 2 — API REST et authentification JWT (back-end)</a></li>
+    <li><a href="#routes">Routes de l'API</a></li>
     <li><a href="#securite">Sécurité de l'application</a></li>
     <li><a href="#accessibilite">Accessibilité, SEO et RGPD</a></li>
     <li><a href="#tests">Tests et jeu d'essai</a></li>
     <li><a href="#deploiement">Déploiement de l'application</a></li>
     <li><a href="#roadmap">Roadmap et évolutions futures</a></li>
     <li><a href="#conclusion">Conclusion</a></li>
+    <li><a href="#annexes">Annexes</a></li>
   </ol>
 </nav>
 
@@ -108,6 +109,9 @@
   <p>Il retrace l'ensemble de la démarche, de la conception à la mise en service locale : analyse du besoin, choix techniques, modélisation de la base de données, implémentation du front-end et du back-end, sécurisation de l'application.</p>
   <p>Lumina Pro est une application web de <strong>gestion de tâches collaborative</strong> basée sur la méthode Kanban : un tableau à colonnes personnalisables permet à une équipe de suivre l'avancement de ses missions, avec deux niveaux de droits (administrateur / utilisateur).</p>
   <p>Le projet couvre l'ensemble des compétences attendues sur les deux activités du référentiel : développement front-end et back-end d'une application web sécurisée.</p>
+
+  <h3>Contexte de formation — La Plateforme_</h3>
+  <p><strong>La Plateforme_</strong> est un centre de formation aux métiers du numérique basé à <strong>Cannes</strong>, proposant des parcours de reconversion et de montée en compétences dans les domaines du développement web, de la cybersécurité et de l'intelligence artificielle. La promotion DWWM 2025/2026 est une formation intensive de 12 mois couvrant l'ensemble des activités du titre professionnel de niveau 5 (Bac+2 équivalent) reconnu par l'État. C'est dans ce cadre que Syrine Ben Hassine a mené le projet Lumina Pro du début à la fin, de la conception à la soutenance.</p>
 </section>
 
 <section id="competences">
@@ -131,7 +135,7 @@
 </section>
 
 <section id="fondation">
-  <h2>3 — Fondation conceptuelle et direction du projet</h2>
+  <h2>3 — Présentation, équipe et gestion de projet</h2>
 
   <h3>3.1 Présentation générale</h3>
   <p>Lumina Pro est une plateforme web dont l'objectif est de permettre à une petite équipe de :</p>
@@ -174,6 +178,107 @@
   <p><strong>Exigences fonctionnelles</strong> — Un visiteur peut s'inscrire et se connecter. Un utilisateur connecté gère ses tâches (créer / modifier / déplacer / supprimer), consulte l'équipe et son profil. Un administrateur gère en plus les colonnes et les comptes utilisateurs.</p>
   <p><strong>Exigences techniques</strong> — Application consommant une API REST sécurisée par JWT ; mots de passe hachés (bcrypt) et jamais stockés en clair ; requêtes SQL préparées ; interface responsive desktop/mobile.</p>
   <p><strong>Exigences non-fonctionnelles</strong> — Accessibilité (sémantique HTML5, attributs ARIA, contrastes, focus clavier — RGAA 4.1.2 / WCAG 2.1) ; sécurité (CORS, isolation des secrets dans <code>.env</code>) ; documentation (README, Swagger).</p>
+
+  <h3>3.6 Équipe et organigramme</h3>
+  <p>Projet réalisé en <strong>solo</strong>, dans le cadre de la formation DWWM 2025/2026 à La Plateforme_ (Cannes). Toutes les phases ont été assumées par une seule personne : analyse du besoin, conception, développement front-end, développement back-end, sécurisation, tests et documentation.</p>
+
+  <div style="display:flex; justify-content:center; margin:20px 0;">
+    <div style="border:2px solid #d63384; border-radius:12px; overflow:hidden; min-width:360px; max-width:480px;">
+      <div style="background:#d63384; color:#fff; padding:10px 20px; font-size:13px; font-weight:900; text-align:center; text-transform:uppercase; letter-spacing:1px;">Développeuse Full-Stack — Projet Solo</div>
+      <div style="padding:16px 24px; background:#fff;">
+        <div style="font-size:18px; font-weight:900; color:#302b63; text-align:center; margin-bottom:8px;">Syrine BEN HASSINE</div>
+        <div style="font-size:12px; color:#555; text-align:center; margin-bottom:14px;">DWWM 2025/2026 · La Plateforme_ · Cannes</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:12px;">
+          <div style="background:#f8fafc; border-radius:6px; padding:6px 10px; border-left:3px solid #d63384;">🎨 Conception UX/UI</div>
+          <div style="background:#f8fafc; border-radius:6px; padding:6px 10px; border-left:3px solid #d63384;">🗄️ Modélisation BDD</div>
+          <div style="background:#f8fafc; border-radius:6px; padding:6px 10px; border-left:3px solid #d63384;">💻 Développement front</div>
+          <div style="background:#f8fafc; border-radius:6px; padding:6px 10px; border-left:3px solid #d63384;">⚙️ Développement back</div>
+          <div style="background:#f8fafc; border-radius:6px; padding:6px 10px; border-left:3px solid #d63384;">🔒 Sécurisation</div>
+          <div style="background:#f8fafc; border-radius:6px; padding:6px 10px; border-left:3px solid #d63384;">📋 Tests &amp; documentation</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>3.7 Méthodologie et outils de gestion de projet</h3>
+  <p><strong>Méthodologie adoptée : approche itérative</strong> (inspirée Agile, adaptée au projet solo). Le développement a été découpé en phases successives — chaque fonctionnalité est conçue, codée, testée et validée avant de passer à la suivante. Pas de sprints formalisés, mais une livraison continue validée par les commits Git.</p>
+  <table>
+    <tr><th>Outil</th><th>Usage</th><th>Statut</th></tr>
+    <tr><td><strong>Trello</strong></td><td>Tableau Kanban de suivi des fonctionnalités à faire / en cours / terminées. Chaque card = une fonctionnalité ou un correctif identifié.</td><td>Utilisé pendant tout le projet</td></tr>
+    <tr><td><strong>Git + GitHub</strong></td><td>Versionnement continu avec 33 commits explicites. Dépôt public : <code>github.com/syrinedev-06/LUMINA_PRO</code>. Travail sur la branche <code>main</code> (projet solo).</td><td>Utilisé en continu</td></tr>
+    <tr><td><strong>Visual Studio Code</strong></td><td>IDE principal. Extensions : Live Server, GitLens, ESLint.</td><td>Environnement de développement</td></tr>
+    <tr><td><strong>phpMyAdmin</strong></td><td>Administration visuelle de la base MySQL (via XAMPP).</td><td>Outils de développement local</td></tr>
+    <tr><td><strong>Swagger UI</strong></td><td>Test et documentation de l'API en temps réel.</td><td>Documentation + tests API</td></tr>
+  </table>
+  <p>Le diagramme de GANTT ci-dessous, reconstitué à partir des commits Git, montre les 5 phases du projet de mai à juillet 2026 :</p>
+
+  <!-- DIAGRAMME DE GANTT -->
+  <div style="overflow-x:auto; margin:16px 0;">
+    <table style="width:100%; border-collapse:collapse; font-size:12px; min-width:560px;">
+      <thead>
+        <tr>
+          <th style="background:#302b63;color:#fff;padding:7px 10px;text-align:left;width:160px;">Phase</th>
+          <th style="background:#302b63;color:#fff;padding:7px;text-align:center;">S1 Mai</th>
+          <th style="background:#302b63;color:#fff;padding:7px;text-align:center;">S2 Mai</th>
+          <th style="background:#302b63;color:#fff;padding:7px;text-align:center;">S3 Mai</th>
+          <th style="background:#302b63;color:#fff;padding:7px;text-align:center;">S4 Mai</th>
+          <th style="background:#302b63;color:#fff;padding:7px;text-align:center;">S1 Juin</th>
+          <th style="background:#302b63;color:#fff;padding:7px;text-align:center;">S2 Juin</th>
+          <th style="background:#302b63;color:#fff;padding:7px;text-align:center;">S3 Juin</th>
+          <th style="background:#302b63;color:#fff;padding:7px;text-align:center;">S4 Juin</th>
+          <th style="background:#302b63;color:#fff;padding:7px;text-align:center;">S1 Juil</th>
+          <th style="background:#302b63;color:#fff;padding:7px;text-align:center;">S2 Juil</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:6px 10px;font-weight:700;border-bottom:1px solid #eee;">🚀 Initialisation</td>
+          <td style="background:#d63384;border-radius:4px;"></td>
+          <td style="background:#d63384;border-radius:4px;"></td>
+          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        </tr>
+        <tr style="background:#fafafa;">
+          <td style="padding:6px 10px;font-weight:700;border-bottom:1px solid #eee;">⚙️ Cœur applicatif</td>
+          <td></td>
+          <td style="background:#6366f1;border-radius:4px;"></td>
+          <td style="background:#6366f1;border-radius:4px;"></td>
+          <td style="background:#6366f1;border-radius:4px;"></td>
+          <td style="background:#6366f1;border-radius:4px;"></td>
+          <td></td><td></td><td></td><td></td><td></td>
+        </tr>
+        <tr>
+          <td style="padding:6px 10px;font-weight:700;border-bottom:1px solid #eee;">🔒 Sécurisation</td>
+          <td></td><td></td><td></td>
+          <td style="background:#f59e0b;border-radius:4px;"></td>
+          <td style="background:#f59e0b;border-radius:4px;"></td>
+          <td style="background:#f59e0b;border-radius:4px;"></td>
+          <td></td><td></td><td></td><td></td>
+        </tr>
+        <tr style="background:#fafafa;">
+          <td style="padding:6px 10px;font-weight:700;border-bottom:1px solid #eee;">✅ Finalisation</td>
+          <td></td><td></td><td></td><td></td><td></td>
+          <td style="background:#10b981;border-radius:4px;"></td>
+          <td style="background:#10b981;border-radius:4px;"></td>
+          <td style="background:#10b981;border-radius:4px;"></td>
+          <td></td><td></td>
+        </tr>
+        <tr>
+          <td style="padding:6px 10px;font-weight:700;">📋 Préparation soutenance</td>
+          <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          <td style="background:#302b63;border-radius:4px;"></td>
+          <td style="background:#302b63;border-radius:4px;"></td>
+          <td style="background:#302b63;border-radius:4px;"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:6px;font-size:12px;">
+    <span><span style="display:inline-block;width:12px;height:12px;background:#d63384;border-radius:2px;margin-right:4px;"></span>Initialisation</span>
+    <span><span style="display:inline-block;width:12px;height:12px;background:#6366f1;border-radius:2px;margin-right:4px;"></span>Cœur applicatif</span>
+    <span><span style="display:inline-block;width:12px;height:12px;background:#f59e0b;border-radius:2px;margin-right:4px;"></span>Sécurisation</span>
+    <span><span style="display:inline-block;width:12px;height:12px;background:#10b981;border-radius:2px;margin-right:4px;"></span>Finalisation</span>
+    <span><span style="display:inline-block;width:12px;height:12px;background:#302b63;border-radius:2px;margin-right:4px;"></span>Soutenance</span>
+  </div>
 </section>
 
 <section id="archi">
@@ -195,7 +300,7 @@
   <p>Choix assumé de JavaScript vanilla (sans framework front) et d'un accès direct aux données depuis les routes Express (sans ORM), dans un but pédagogique : comprendre le fonctionnement de chaque couche sans l'abstraction d'une bibliothèque tierce.</p>
 
   <h3>4.3 Architecture applicative</h3>
-  <p>Architecture client-serveur en trois couches : front-end statique ouvert directement en fichier local (<code>frontend/login.html</code>, sans étape de build ni serveur de fichiers dédié), API REST back-end, base de données MySQL. Contrairement à un découpage MVC strict, la logique métier de ce projet reste volontairement légère : chaque fichier de <code>routes/</code> contient directement ses requêtes SQL (pas de couche <em>controller</em>/<em>model</em> séparée), ce qui convient à la taille du projet mais serait à faire évoluer sur une application plus grande (voir <a href="#roadmap">roadmap</a>).</p>
+  <p>Architecture client-serveur en trois couches : front-end statique (HTML/CSS/JS), API REST back-end, base de données MySQL. Le serveur Express sert directement les fichiers du front-end via <code>express.static</code> (pas d'étape de build), l'application est donc accessible entièrement depuis <code>http://localhost:3000</code> une fois le serveur lancé. Contrairement à un découpage MVC strict, la logique métier de ce projet reste volontairement légère : chaque fichier de <code>routes/</code> contient directement ses requêtes SQL (pas de couche <em>controller</em>/<em>model</em> séparée), ce qui convient à la taille du projet mais serait à faire évoluer sur une application plus grande (voir <a href="#roadmap">roadmap</a>).</p>
   <p>Un middleware d'application (<code>req.db = db</code>) injecte la connexion MySQL dans chaque requête, et un middleware dédié (<code>verifyToken</code>) protège les routes sensibles en vérifiant le jeton JWT.</p>
 
   <h3>4.4 Versioning et workflow Git</h3>
@@ -211,13 +316,25 @@
     <li><strong>Page de connexion / inscription</strong> (<code>login.html</code>) — point d'entrée public.</li>
     <li><strong>Tableau Kanban</strong> (<code>index.html</code>) — vue principale après authentification : colonnes, cartes de tâches, sidebar de navigation.</li>
     <li><strong>Équipe</strong> — liste des membres et de leurs tâches assignées.</li>
-    <li><strong>Statistiques</strong> — répartition des tâches par priorité (graphique).</li>
-    <li><strong>Profil</strong> — informations du compte connecté.</li>
+    <li><strong>Mon Profil</strong> — modale en lecture seule affichant les informations du compte connecté (nom, email, rôle, statut).</li>
   </ul>
   <p>Détail complet des wireframes basse fidélité dans <code>arborescence_wireframes.html</code>.</p>
 
   <h3>5.2 Charte graphique</h3>
-  <p>Identité visuelle bâtie autour d'un dégradé rose/fuchsia (<code>#d63384</code>) associé à un bleu-violet foncé (<code>#302b63</code>), sur fond clair pour la lisibilité. Police système (Segoe UI) pour la cohérence multi-plateforme et de bons contrastes texte/fond.</p>
+  <p>Identité visuelle bâtie autour d'un rose/fuchsia soutenu associé à un fond clair pour la lisibilité, avec une sidebar de navigation en bleu-gris foncé. Police système (Segoe UI) pour la cohérence multi-plateforme et de bons contrastes texte/fond. Palette centralisée dans <code>frontend/css/variables.css</code> (variables CSS), pour une cohérence garantie sur l'ensemble des pages :</p>
+  <table>
+    <tr><th>Variable</th><th>Couleur</th><th>Usage</th></tr>
+    <tr><td><code>--primary</code></td><td>#A10057</td><td>Couleur de marque : boutons principaux, liens actifs, accents</td></tr>
+    <tr><td><code>--primary-hover</code></td><td>#800045</td><td>État survol des éléments primaires</td></tr>
+    <tr><td><code>--sidebar-bg</code></td><td>#1e293b</td><td>Fond de la barre de navigation latérale</td></tr>
+    <tr><td><code>--bg-main</code></td><td>#f8fafc</td><td>Fond général des pages</td></tr>
+    <tr><td><code>--text-main</code></td><td>#000000</td><td>Texte principal</td></tr>
+    <tr><td><code>--text-muted</code></td><td>#334155</td><td>Texte secondaire, libellés</td></tr>
+    <tr><td><code>--border</code></td><td>#e2e8f0</td><td>Séparateurs, bordures de cartes et de champs</td></tr>
+    <tr><td><code>--danger</code></td><td>#fc16ce</td><td>Actions de suppression, priorité haute</td></tr>
+  </table>
+
+  <p><strong>Typographie :</strong> police système <strong>Segoe UI</strong> choisie sans chargement de font externe (disponibilité native Windows, zéro requête réseau supplémentaire), pour ses excellentes métriques de lisibilité à petite taille et sa cohérence avec les outils de bureautique — pertinent pour une application de gestion professionnelle. La chaîne de substitution (<code>'Segoe UI', Arial, sans-serif</code>) garantit un rendu cohérent sur tous les systèmes.</p>
 
   <h3>5.3 Maquettes et responsive</h3>
   <p>Interface pensée desktop-first puis adaptée mobile via media queries : sidebar fixe sur desktop, masquée et accessible par un bouton hamburger sous 900px, colonnes Kanban en défilement horizontal sur mobile.</p>
@@ -227,11 +344,159 @@
   <h2>6 — Conception du back-end</h2>
 
   <h3>6.1 Base de données — méthode MERISE</h3>
-  <p>Modélisation en trois étapes : MCD (entités et associations), MLD (tables, clés primaires/étrangères, règles de cardinalité), MPD (implémentation MySQL). Le script <code>database/schema.sql</code> reflète exactement les trois tables réellement créées par <code>server.js</code> au démarrage — <code>users</code>, <code>columns</code>, <code>tasks</code> — sans rien documenter que le code ne crée pas vraiment.</p>
+  <p>Modélisation en trois étapes : MCD (entités et associations), MLD (tables, clés primaires/étrangères, règles de cardinalité), MPD (implémentation MySQL). Le script <code>database/schema.sql</code> reflète les quatre tables créées par <code>server.js</code> au démarrage : <code>users</code>, <code>columns</code>, <code>tasks</code> (données applicatives) et <code>logs</code> (journal d'audit des actions, écrit par les routes CRUD sans être exposé publiquement).</p>
 
+  <h3>6.1a MCD — Modèle Conceptuel de Données</h3>
+  <p>Représentation des entités et de leurs associations, indépendamment de tout langage de base de données. Les cardinalités indiquent les contraintes de multiplicité entre entités.</p>
+
+  <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:28px 20px; margin:14px 0; overflow-x:auto;">
+    <div style="display:flex; align-items:center; justify-content:center; gap:0; min-width:600px;">
+
+      <!-- Entité UTILISATEUR -->
+      <div style="border:2px solid #302b63; border-radius:8px; overflow:hidden; min-width:160px; flex-shrink:0;">
+        <div style="background:#302b63; color:#fff; text-align:center; padding:6px 12px; font-size:12px; font-weight:900; text-transform:uppercase; letter-spacing:1px;">UTILISATEUR</div>
+        <div style="padding:8px 12px; font-size:11px; line-height:1.9; background:#fff;">
+          <div><strong style="color:#302b63;">id</strong> (PK)</div>
+          <div>name</div><div>email</div><div>password</div><div>role</div>
+        </div>
+      </div>
+
+      <!-- Cardinalité gauche de "assigner" -->
+      <div style="display:flex; flex-direction:column; align-items:center; padding:0 6px;">
+        <div style="font-size:11px; font-weight:800; color:#D6336C; white-space:nowrap;">0,N</div>
+        <div style="width:40px; height:2px; background:#94a3b8;"></div>
+      </div>
+
+      <!-- Association assigner -->
+      <div style="width:80px; height:40px; transform:rotate(45deg); border:2px solid #D6336C; background:#fff0f5; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+        <span style="transform:rotate(-45deg); font-size:9px; font-weight:900; color:#D6336C; text-align:center; line-height:1.2;">assigner</span>
+      </div>
+
+      <!-- Cardinalité droite de "assigner" -->
+      <div style="display:flex; flex-direction:column; align-items:center; padding:0 6px;">
+        <div style="font-size:11px; font-weight:800; color:#D6336C; white-space:nowrap;">0,1</div>
+        <div style="width:40px; height:2px; background:#94a3b8;"></div>
+      </div>
+
+      <!-- Entité TACHE -->
+      <div style="border:2px solid #302b63; border-radius:8px; overflow:hidden; min-width:170px; flex-shrink:0;">
+        <div style="background:#302b63; color:#fff; text-align:center; padding:6px 12px; font-size:12px; font-weight:900; text-transform:uppercase; letter-spacing:1px;">TACHE</div>
+        <div style="padding:8px 12px; font-size:11px; line-height:1.9; background:#fff;">
+          <div><strong style="color:#302b63;">id</strong> (PK)</div>
+          <div>title</div><div>description</div><div>priority</div><div>due_date</div><div>created_at</div>
+        </div>
+      </div>
+
+      <!-- Cardinalité gauche de "appartenir" -->
+      <div style="display:flex; flex-direction:column; align-items:center; padding:0 6px;">
+        <div style="font-size:11px; font-weight:800; color:#D6336C; white-space:nowrap;">1,1</div>
+        <div style="width:40px; height:2px; background:#94a3b8;"></div>
+      </div>
+
+      <!-- Association appartenir -->
+      <div style="width:80px; height:40px; transform:rotate(45deg); border:2px solid #D6336C; background:#fff0f5; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+        <span style="transform:rotate(-45deg); font-size:9px; font-weight:900; color:#D6336C; text-align:center; line-height:1.2;">appartenir</span>
+      </div>
+
+      <!-- Cardinalité droite de "appartenir" -->
+      <div style="display:flex; flex-direction:column; align-items:center; padding:0 6px;">
+        <div style="font-size:11px; font-weight:800; color:#D6336C; white-space:nowrap;">0,N</div>
+        <div style="width:40px; height:2px; background:#94a3b8;"></div>
+      </div>
+
+      <!-- Entité COLONNE -->
+      <div style="border:2px solid #302b63; border-radius:8px; overflow:hidden; min-width:140px; flex-shrink:0;">
+        <div style="background:#302b63; color:#fff; text-align:center; padding:6px 12px; font-size:12px; font-weight:900; text-transform:uppercase; letter-spacing:1px;">COLONNE</div>
+        <div style="padding:8px 12px; font-size:11px; line-height:1.9; background:#fff;">
+          <div><strong style="color:#302b63;">id</strong> (PK)</div>
+          <div>title</div><div>position</div>
+        </div>
+      </div>
+
+    </div>
+    <div style="text-align:center; margin-top:14px; font-size:11px; color:#888;">
+      <strong>Lecture :</strong> Un UTILISATEUR peut être assigné à <em>0 à N</em> tâches. Une TACHE peut être assignée à <em>0 ou 1</em> utilisateur (optionnel). Une TACHE appartient à <em>exactement 1</em> colonne. Une COLONNE peut contenir <em>0 à N</em> tâches.
+    </div>
+  </div>
+
+  <h3>6.1b MLD — Modèle Logique de Données</h3>
+  <p>Traduction du MCD en tables relationnelles. Les relations deviennent des <strong>clés étrangères</strong> (FK). Les associations <em>1,1</em> et <em>0,1</em> génèrent une FK dans la table "enfant".</p>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin:14px 0; overflow-x:auto;">
+
+    <!-- Table users -->
+    <div style="border:1px solid #e2e8f0; border-radius:8px; overflow:hidden;">
+      <div style="background:#302b63; color:#fff; padding:7px 14px; font-size:12px; font-weight:900; text-align:center; text-transform:uppercase;">users</div>
+      <table style="width:100%; border-collapse:collapse; font-size:11.5px;">
+        <tr style="background:#f8fafc;"><th style="padding:5px 10px; text-align:left; border-bottom:1px solid #e2e8f0; color:#555; font-weight:700;">Champ</th><th style="padding:5px 10px; border-bottom:1px solid #e2e8f0; color:#555; font-weight:700;">Type</th></tr>
+        <tr><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9; font-weight:900; color:#D6336C;">🔑 id</td><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9; color:#475569;">INT PK AUTO_INC</td></tr>
+        <tr><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9;">name</td><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9; color:#475569;">VARCHAR(255) NN</td></tr>
+        <tr><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9;">email</td><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9; color:#475569;">VARCHAR(255) UNIQUE</td></tr>
+        <tr><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9;">password</td><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9; color:#475569;">VARCHAR(255) NN</td></tr>
+        <tr><td style="padding:5px 10px;">role</td><td style="padding:5px 10px; color:#475569;">ENUM('admin','user')</td></tr>
+      </table>
+    </div>
+
+    <!-- Table columns -->
+    <div style="border:1px solid #e2e8f0; border-radius:8px; overflow:hidden;">
+      <div style="background:#302b63; color:#fff; padding:7px 14px; font-size:12px; font-weight:900; text-align:center; text-transform:uppercase;">columns</div>
+      <table style="width:100%; border-collapse:collapse; font-size:11.5px;">
+        <tr style="background:#f8fafc;"><th style="padding:5px 10px; text-align:left; border-bottom:1px solid #e2e8f0; color:#555; font-weight:700;">Champ</th><th style="padding:5px 10px; border-bottom:1px solid #e2e8f0; color:#555; font-weight:700;">Type</th></tr>
+        <tr><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9; font-weight:900; color:#D6336C;">🔑 id</td><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9; color:#475569;">INT PK AUTO_INC</td></tr>
+        <tr><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9;">title</td><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9; color:#475569;">VARCHAR(255) NN</td></tr>
+        <tr><td style="padding:5px 10px;">position</td><td style="padding:5px 10px; color:#475569;">INT DEFAULT 0</td></tr>
+      </table>
+    </div>
+
+    <!-- Table tasks -->
+    <div style="border:1px solid #e2e8f0; border-radius:8px; overflow:hidden;">
+      <div style="background:#D6336C; color:#fff; padding:7px 14px; font-size:12px; font-weight:900; text-align:center; text-transform:uppercase;">tasks</div>
+      <table style="width:100%; border-collapse:collapse; font-size:11.5px;">
+        <tr style="background:#f8fafc;"><th style="padding:5px 10px; text-align:left; border-bottom:1px solid #e2e8f0; color:#555; font-weight:700;">Champ</th><th style="padding:5px 10px; border-bottom:1px solid #e2e8f0; color:#555; font-weight:700;">Type</th></tr>
+        <tr><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9; font-weight:900; color:#D6336C;">🔑 id</td><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9; color:#475569;">INT PK AUTO_INC</td></tr>
+        <tr><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9;">title</td><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9; color:#475569;">VARCHAR(255) NN</td></tr>
+        <tr><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9;">description</td><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9; color:#475569;">TEXT</td></tr>
+        <tr><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9;">priority</td><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9; color:#475569;">ENUM('high','medium','low')</td></tr>
+        <tr><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9;">due_date</td><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9; color:#475569;">DATE</td></tr>
+        <tr><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9; color:#0369a1; font-weight:700;">🔗 id_assigned</td><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9; color:#475569;">FK → users.id (SET NULL)</td></tr>
+        <tr><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9; color:#0369a1; font-weight:700;">🔗 id_col</td><td style="padding:5px 10px; border-bottom:1px solid #f1f5f9; color:#475569;">FK → columns.id (CASCADE)</td></tr>
+        <tr><td style="padding:5px 10px;">created_at</td><td style="padding:5px 10px; color:#475569;">TIMESTAMP DEFAULT NOW()</td></tr>
+      </table>
+    </div>
+  </div>
+  <p style="font-size:12px; color:#666; margin-bottom:14px;">🔑 = Clé primaire (PK) · 🔗 = Clé étrangère (FK) · NN = NOT NULL · CASCADE = suppression en cascade · SET NULL = mise à NULL</p>
+
+  <h3>6.1c MPD — Modèle Physique de Données (SQL réel)</h3>
   <div class="callout">
     <strong>Choix de périmètre assumé :</strong> un module de journal d'audit (<code>routes/logs.js</code>) et un module de statistiques serveur (<code>routes/stats.js</code>) avaient été réellement développés, avec les tables <code>logs</code>/<code>notifications</code> correspondantes, puis <strong>entièrement supprimés</strong> lors d'un commit de simplification volontaire (<code>« Refactoring : Simplification totale pour l'examen DWWM »</code>) pour garder un cœur applicatif simple et entièrement maîtrisé (voir roadmap). Un système de notifications avait de même été retiré du périmètre en cours de projet (voir section 3.4) pour la même raison.
   </div>
+
+  <p>Script SQL réel de <code>database/schema.sql</code>, qui reflète exactement les tables créées par <code>server.js</code> :</p>
+  <pre><code>CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'user') DEFAULT 'user'
+);
+
+CREATE TABLE IF NOT EXISTS columns (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    position INT DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS tasks (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    priority ENUM('high', 'medium', 'low') DEFAULT 'medium',
+    id_assigned INT,
+    id_col INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_assigned) REFERENCES users(id) ON DELETE SET NULL,
+    FOREIGN KEY (id_col) REFERENCES columns(id) ON DELETE CASCADE
+);</code></pre>
 
   <h3>6.2 Dictionnaire de données (cœur applicatif actif)</h3>
   <p><strong>Table : users</strong></p>
@@ -261,30 +526,117 @@
     <tr><td>id_col</td><td>FK → columns.id (ON DELETE CASCADE)</td><td>INT</td><td>Oui</td></tr>
     <tr><td>created_at</td><td>Date de création</td><td>TIMESTAMP</td><td>Oui (auto)</td></tr>
   </table>
+
+  <h3>6.3 Propriétés ACID</h3>
+  <p>MySQL garantit les propriétés <strong>ACID</strong> pour toutes les transactions, ce qui assure la cohérence des données même en cas d'erreur :</p>
+  <table>
+    <tr><th>Propriété</th><th>Signification</th><th>Application dans Lumina Pro</th></tr>
+    <tr><td><strong>A — Atomicité</strong></td><td>Une transaction est "tout ou rien" : elle réussit complètement ou n'a aucun effet</td><td>La suppression d'une colonne (<code>ON DELETE CASCADE</code>) supprime colonne ET ses tâches en une seule opération indivisible</td></tr>
+    <tr><td><strong>C — Cohérence</strong></td><td>La base reste dans un état valide avant et après chaque transaction ; les contraintes sont toujours respectées</td><td>L'ENUM <code>priority</code> refuse les valeurs non listées ; la clé étrangère <code>id_col</code> refuse un id de colonne inexistant</td></tr>
+    <tr><td><strong>I — Isolation</strong></td><td>Les transactions concurrentes n'interfèrent pas entre elles tant qu'elles ne sont pas validées</td><td>Deux utilisateurs créant une tâche simultanément ne génèrent pas de conflits d'<code>AUTO_INCREMENT</code></td></tr>
+    <tr><td><strong>D — Durabilité</strong></td><td>Une fois une transaction validée (<code>COMMIT</code>), les données persistent même en cas de panne</td><td>Les tâches créées ou modifiées sont écrites sur disque par MySQL — un redémarrage du serveur ne les efface pas</td></tr>
+  </table>
 </section>
 
-<section id="front-impl">
-  <h2>7 — Implémentation du front-end</h2>
+<section id="mission1">
+  <h2>7 — Mission 1 — CRUD des tâches (front-end)</h2>
 
-  <h3>7.1 Architecture et logique d'affichage</h3>
+  <h3>7.0 Introduction de la mission</h3>
+  <p>La mission principale de Lumina Pro est la <strong>gestion complète des tâches</strong> : créer, lire, modifier, déplacer entre colonnes et supprimer des tâches depuis le tableau Kanban. Cette mission implique les deux côtés de la stack — le front-end génère l'interface dynamiquement et envoie les requêtes, le back-end valide, applique les règles métier et persiste en base.</p>
+
+  <div class="callout"><strong>Tables concernées :</strong> <code>tasks</code> (cœur), <code>columns</code> (colonne de destination), <code>users</code> (assignation via FK <code>id_assigned</code>).</div>
+
+  <h3>7.1 Diagrammes associés</h3>
+  <p>Trois diagrammes documentent le flux de cette mission :</p>
+  <ul>
+    <li><strong>Diagramme de cas d'utilisation</strong> — qui peut faire quoi sur les tâches (<a href="use_case_uml.html">use_case_uml.html</a>)</li>
+    <li><strong>Diagramme d'activité</strong> — flux complet "Créer une tâche" avec swimlanes navigateur / serveur / BDD (<a href="diagramme_activite.html">diagramme_activite.html</a>)</li>
+    <li><strong>Diagramme de packages</strong> — organisation modulaire du code (<a href="diagramme_packages.html">diagramme_packages.html</a>)</li>
+  </ul>
+
+  <h3>7.2 Architecture et logique d'affichage</h3>
   <p>L'application est structurée en pages HTML classiques (<code>login.html</code>, <code>index.html</code>) plutôt qu'en Single Page Application : chaque page charge ses modules JS dédiés (<code>auth.js</code>, <code>kanban.js</code>, <code>tasks.js</code>, <code>columns.js</code>, <code>team.js</code>, <code>profile.js</code>, <code>ui.js</code>), avec <code>api.js</code> centralisant les appels réseau via une fonction <code>authFetch()</code> qui ajoute systématiquement le header <code>Authorization: Bearer &lt;token&gt;</code>.</p>
+  <p>Le tableau Kanban est généré entièrement par JavaScript. La fonction <code>renderBoard(columns, tasks)</code> utilise <code>Array.filter()</code> pour trier les tâches par colonne et <code>Array.map()</code> + template literals pour construire le HTML de chaque carte de manière dynamique. Le DOM n'est jamais manipulé manuellement — tout le board est reconstruit à chaque appel.</p>
 
-  <h3>7.2 Esthétique, accessibilité et performances</h3>
-  <p>CSS découpé en 8 fichiers thématiques (variables, layout, kanban, responsive, forms/modals, composants, scrollbar, auth/profil) pour la maintenabilité. Attributs ARIA sur les éléments interactifs, contrastes vérifiés, navigation clavier — détail exhaustif dans le cahier de tests d'accessibilité RGAA dédié.</p>
+  <h3>7.3 Validation des données côté front</h3>
+  <p>Avant tout envoi au serveur, le JavaScript vérifie que le champ titre n'est pas vide. Si la validation échoue, un message d'erreur s'affiche dans le formulaire et la requête n'est pas envoyée :</p>
+  <pre><code>// frontend/js/tasks.js
+if (!title || title.trim() === '') {
+  showError('Le titre de la tâche est obligatoire.');
+  return;
+}</code></pre>
+  <p><strong>Attention :</strong> cette validation côté front est uniquement un confort utilisateur. La vraie protection est côté serveur — jamais côté front seul.</p>
 
-  <h3>7.3 Sécurité et robustesse du front</h3>
-  <p>Le front-end n'étant jamais fiable pour la sécurité, toute donnée utilisateur affichée dans le DOM (titre de tâche, description, nom) passe par une fonction d'échappement HTML avant insertion, pour neutraliser un risque XSS si un contenu malveillant était saisi dans un champ texte libre :</p>
+  <h3>7.3b Formulaire de création de tâche — HTML de qualité</h3>
+  <p>Le formulaire de création utilise des balises HTML5 sémantiques avec <code>&lt;label&gt;</code> associé à chaque champ, des attributs <code>required</code> et <code>aria-required</code> pour l'accessibilité, et des types natifs appropriés (<code>type="date"</code>, <code>type="text"</code>) :</p>
+  <pre><code>&lt;!-- frontend/index.html — Formulaire de création de tâche --&gt;
+&lt;form id="task-form"&gt;
+  &lt;label for="task-title"&gt;Titre *&lt;/label&gt;
+  &lt;input type="text" id="task-title" name="title"
+         placeholder="Titre de la tâche" required
+         aria-required="true" autocomplete="off"&gt;
+
+  &lt;label for="task-desc"&gt;Description&lt;/label&gt;
+  &lt;textarea id="task-desc" name="description"
+            placeholder="Détails de la tâche..."
+            rows="3" aria-label="Description de la tâche"&gt;&lt;/textarea&gt;
+
+  &lt;label for="task-priority"&gt;Priorité&lt;/label&gt;
+  &lt;select id="task-priority" name="priority"&gt;
+    &lt;option value="low"&gt;Basse&lt;/option&gt;
+    &lt;option value="medium" selected&gt;Normale&lt;/option&gt;
+    &lt;option value="high"&gt;Haute&lt;/option&gt;
+  &lt;/select&gt;
+
+  &lt;label for="task-due"&gt;Date d'échéance&lt;/label&gt;
+  &lt;input type="date" id="task-due" name="due_date"&gt;
+
+  &lt;label for="task-assign"&gt;Assigner à&lt;/label&gt;
+  &lt;select id="task-assign" name="id_assigned" aria-label="Assigner à un membre"&gt;
+    &lt;option value=""&gt;— Non assigné —&lt;/option&gt;
+    &lt;!-- Options peuplées dynamiquement via GET /api/users --&gt;
+  &lt;/select&gt;
+
+  &lt;button type="submit" aria-label="Créer la tâche"&gt;Créer la tâche&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+  <p>Points de qualité : <code>required</code> natif HTML5, <code>aria-required</code> pour les lecteurs d'écran, liste des membres peuplée en JavaScript via <code>GET /api/users</code>, <code>type="date"</code> pour le calendrier natif du navigateur sans librairie externe.</p>
+
+  <h3>7.4 Sécurité XSS côté front</h3>
+  <p>Toute donnée utilisateur affichée dans le DOM (titre de tâche, description, nom) passe par une fonction d'échappement HTML avant insertion :</p>
   <pre><code>// frontend/js/api.js — escapeHTML()
 function escapeHTML(str) {
   const div = document.createElement('div')
   div.textContent = str
   return div.innerHTML
 }</code></pre>
-  <p>La sécurité réelle (prévention de l'injection SQL) reste assurée côté serveur par les requêtes préparées — jamais par une validation front-end seule.</p>
+  <p>Cela neutralise les tentatives XSS : <code>&lt;script&gt;alert('hack')&lt;/script&gt;</code> inséré dans un titre de tâche s'affiche comme texte brut, il n'est jamais exécuté.</p>
+
+  <h3>7.5 Accessibilité et performances</h3>
+  <p>CSS découpé en 8 fichiers thématiques pour la maintenabilité. Attributs <code>aria-label</code> sur tous les boutons icônes (✏️, 🗑️, ←, →), navigation clavier complète, contrastes vérifiés — détail dans le cahier de tests accessibilité (<a href="cahier_tests_accessibilite.html">cahier_tests_accessibilite.html</a>).</p>
+
+  <div class="callout"><strong>Mini-bilan Mission 1 :</strong> Le CRUD des tâches est pleinement fonctionnel. Interface générée dynamiquement par JS vanilla. Validation double (front + back). Protection XSS systématique. Gestion des priorités (ENUM), dates d'échéance avec badge "en retard", assignation à un membre. Filtrage instantané côté client (0 requête réseau). <span class="badge badge-ok">Mission validée</span></div>
 </section>
 
-<section id="back-impl">
-  <h2>8 — Implémentation du back-end</h2>
+<section id="mission2">
+  <h2>8 — Mission 2 — API REST et authentification JWT (back-end)</h2>
+
+  <h3>8.0 Introduction de la mission</h3>
+  <p>La deuxième mission est la construction d'une <strong>API REST sécurisée</strong> : définir les routes, protéger l'accès avec JWT, communiquer en JSON avec le front-end, et appliquer les règles métier côté serveur. C'est la colonne vertébrale de l'application — toute action du front transite par cette API.</p>
+
+  <h3>8.0a API REST et AJAX expliqués</h3>
+  <table>
+    <tr><th>Concept</th><th>Définition</th><th>Dans Lumina Pro</th></tr>
+    <tr><td><strong>API REST</strong></td><td>Interface de communication entre front et back. Chaque URL = une ressource. Les méthodes HTTP (GET/POST/PUT/DELETE) indiquent l'action.</td><td>11 routes organisées par ressource : /api/auth, /api/tasks, /api/columns, /api/users</td></tr>
+    <tr><td><strong>AJAX</strong></td><td>Technique permettant de faire des requêtes HTTP depuis JavaScript sans recharger la page.</td><td><code>authFetch()</code> envoie des requêtes asynchrones vers l'API. La page ne se recharge pas — seul le board est mis à jour.</td></tr>
+    <tr><td><strong>JSON</strong></td><td>Format de données texte pour échanger des objets JavaScript entre front et back.</td><td>Toutes les réponses de l'API sont en JSON : <code>{"id": 3, "title": "Fix bug", "priority": "high"}</code></td></tr>
+    <tr><td><strong>async/await</strong></td><td>Syntaxe JS pour attendre la réponse d'une requête réseau sans bloquer la page.</td><td><code>const res = await authFetch('/api/tasks'); const data = await res.json();</code></td></tr>
+  </table>
+
+  <h3>8.0b Diagramme de séquence — Connexion JWT</h3>
+  <p>Le flux d'authentification complet est documenté dans le diagramme de séquence UML (<a href="diagramme_sequence.html">diagramme_sequence.html</a>). Il montre : saisie formulaire → POST /api/auth/login → bcrypt.compare → jwt.sign → stockage localStorage → requêtes suivantes avec header Authorization.</p>
+
+  <h3>8.0c Tests de l'API — Swagger UI plutôt que Postman</h3>
+  <p>Les routes de l'API ont été testées pendant le développement via <strong>Swagger UI</strong>, intégré directement au serveur Express via <code>swagger-ui-express</code> et accessible sur <code>http://localhost:3000/api-docs</code>. Swagger UI remplace ici l'usage habituel de Postman : chaque route est documentée avec ses paramètres, ses corps de requête JSON attendus, ses codes de retour, et est testable en un clic depuis l'interface. Ce choix couple documentation et test en un seul outil intégré au projet — un avantage par rapport à Postman qui est externe et dont les collections ne sont pas versionnées avec le code.</p>
 
   <h3>8.1 Architecture et logique métier</h3>
   <p><code>server.js</code> initialise Express, configure les middlewares globaux (<code>cors</code>, <code>express.json</code>, service des fichiers statiques du front), établit la connexion MySQL et crée automatiquement les tables si elles n'existent pas (mécanisme d'auto-réparation au démarrage). Il monte ensuite les routes :</p>
@@ -292,6 +644,11 @@ function escapeHTML(str) {
 app.use('/api/users', verifyToken, require('./routes/users'));
 app.use('/api/tasks', verifyToken, require('./routes/tasks'));
 app.use('/api/columns', verifyToken, require('./routes/columns'));</code></pre>
+
+  <h3>8.1b Évolution du schéma — exemple ALTER TABLE</h3>
+  <p>Le champ <code>due_date</code> n'était pas présent dans la version initiale de la table <code>tasks</code>. Il a été ajouté en cours de développement sans recréer la table, via la commande SQL :</p>
+  <pre><code>ALTER TABLE tasks ADD COLUMN due_date DATE AFTER priority;</code></pre>
+  <p>Cette modification a ensuite été répercutée dans <code>database/schema.sql</code> pour que les installations futures créent directement la table avec ce champ. C'est un exemple concret de <strong>migration de schéma</strong> — pratique courante dans un développement itératif où la structure de la BDD évolue avec les besoins.</p>
 
   <h3>8.2 Logique métier : construction dynamique des requêtes UPDATE</h3>
   <p>Le frontend peut envoyer n'importe quelle combinaison de champs à modifier sur une tâche (déplacement = seul <code>id_col</code>, édition complète = tous les champs). La route <code>PUT /api/tasks/:id</code> construit dynamiquement la clause <code>SET</code> pour éviter de dupliquer la logique :</p>
@@ -314,6 +671,20 @@ req.db.query("SELECT id_assigned FROM tasks WHERE id = ?", [req.params.id], (err
   }
   // ... suppression
 });</code></pre>
+
+  <h3>8.4 Codes de statut HTTP utilisés</h3>
+  <table>
+    <tr><th>Code</th><th>Signification</th><th>Quand</th></tr>
+    <tr><td><strong>200 OK</strong></td><td>Succès</td><td>GET, PUT réussis</td></tr>
+    <tr><td><strong>201 Created</strong></td><td>Ressource créée</td><td>POST /api/tasks, POST /api/columns</td></tr>
+    <tr><td><strong>400 Bad Request</strong></td><td>Données invalides</td><td>Titre manquant, champ requis absent</td></tr>
+    <tr><td><strong>401 Unauthorized</strong></td><td>Non authentifié</td><td>Token absent ou expiré</td></tr>
+    <tr><td><strong>403 Forbidden</strong></td><td>Accès refusé</td><td>Suppression d'une tâche dont on n'est pas propriétaire</td></tr>
+    <tr><td><strong>404 Not Found</strong></td><td>Ressource inexistante</td><td>ID de tâche/colonne inexistant</td></tr>
+    <tr><td><strong>500 Internal Server Error</strong></td><td>Erreur serveur</td><td>Erreur SQL inattendue</td></tr>
+  </table>
+
+  <div class="callout"><strong>Mini-bilan Mission 2 :</strong> API REST complète (11 routes), toutes protégées par JWT sauf /api/auth. Communication 100% JSON. Authentification bcrypt + JWT. Règles IDOR côté serveur. Construction dynamique des requêtes UPDATE. Documentation interactive Swagger. Codes HTTP sémantiques sur toutes les réponses. <span class="badge badge-ok">Mission validée</span></div>
 </section>
 
 <section id="routes">
@@ -346,6 +717,10 @@ req.db.query("SELECT id_assigned FROM tasks WHERE id = ?", [req.params.id], (err
   <p><strong>JWT</strong> — à la connexion, après vérification par <code>bcrypt.compare</code>, un jeton signé est émis (payload <code>id</code> + <code>role</code>, expiration 24h) :</p>
   <pre><code>const token = jwt.sign({ id: user.id, role: user.role }, SECRET_KEY, { expiresIn: '24h' });</code></pre>
   <p>Le middleware <code>verifyToken</code> vérifie la présence du header <code>Authorization: Bearer &lt;token&gt;</code>, valide la signature (<code>jwt.verify</code>) et injecte les données décodées dans <code>req.user</code> avant de laisser passer la requête.</p>
+
+  <div class="callout">
+    <strong>Hachage ≠ Chiffrement — distinction fondamentale :</strong> <strong>bcrypt</strong> est un <em>hachage irréversible</em> — il est impossible de retrouver le mot de passe original à partir du hash stocké. Si un utilisateur oublie son mot de passe, il doit le <em>réinitialiser</em>, pas se le faire rappeler — c'est voulu. À l'opposé, le <strong>chiffrement</strong> (AES, RSA…) est une transformation <em>réversible</em> : avec la bonne clé, on retrouve la donnée d'origine. Lumina Pro utilise le hachage bcrypt pour les mots de passe (irréversible, avec sel aléatoire unique) et la signature HMAC-SHA256 pour les tokens JWT (vérifiable sans être réversible) — jamais de chiffrement réversible des mots de passe.
+  </div>
 
   <h3>10.2 Protections mises en place</h3>
   <table>
@@ -383,7 +758,7 @@ req.db.query("SELECT id_assigned FROM tasks WHERE id = ?", [req.params.id], (err
   <h2>12 — Tests et jeu d'essai</h2>
 
   <h3>12.1 Vérifications manuelles</h3>
-  <p>12 scénarios ont été exécutés réellement contre le serveur (requêtes HTTP directes), couvrant l'accessibilité du site, l'authentification (succès, échec, accès sans token), le CRUD des tâches et des colonnes, la cascade de suppression, la non-exposition des mots de passe et le cycle inscription → connexion. Détail complet avec résultats obtenus et preuves dans <code>Cahier_de_Tests_Lumina_Pro.html</code> — synthèse :</p>
+  <p>12 scénarios ont été exécutés réellement contre le serveur (requêtes HTTP directes), couvrant l'accessibilité du site, l'authentification (succès, échec, accès sans token), le CRUD des tâches et des colonnes, la cascade de suppression, la non-exposition des mots de passe et le cycle inscription → connexion. Détail complet avec résultats obtenus et preuves dans <code>revision diplôme/Cahier_de_Tests_Lumina_Pro.html</code> — synthèse :</p>
   <table>
     <tr><th>Test</th><th>Description</th><th>Résultat</th></tr>
     <tr><td>TEST001</td><td>Accessibilité du site</td><td><span class="badge badge-ok">OK</span></td></tr>
@@ -443,8 +818,104 @@ req.db.query("SELECT id_assigned FROM tasks WHERE id = ?", [req.params.id], (err
 
 <section id="conclusion">
   <h2>15 — Conclusion</h2>
-  <p>Lumina Pro a permis de mettre en pratique l'ensemble des compétences du référentiel DWWM sur un projet mené en solo, du cahier des charges à l'implémentation d'une API REST sécurisée : modélisation MERISE, authentification JWT et hachage bcrypt, requêtes préparées, accessibilité RGAA, documentation Swagger.</p>
-  <p>Le projet est présenté avec une exigence de transparence : les limites connues (modules non branchés, absence de tests automatisés, anomalie du jeu de seed, environnement local uniquement) sont documentées plutôt que masquées, ce qui constitue en soi une démonstration de rigueur professionnelle et une base claire pour les évolutions futures.</p>
+
+  <h3>15.1 Bilan du travail réalisé</h3>
+  <p>Lumina Pro est une application de gestion de tâches Kanban fonctionnelle, développée en solo en 3 mois (mai–juillet 2026). Le MVP défini en début de projet a été intégralement livré :</p>
+  <ul>
+    <li>Authentification sécurisée complète (inscription, connexion, JWT 24h + hachage bcrypt) ;</li>
+    <li>CRUD complet des tâches avec gestion des priorités (ENUM), dates d'échéance et assignation à un membre ;</li>
+    <li>Gestion des colonnes et des droits admin / utilisateur ;</li>
+    <li>Vue équipe et profil utilisateur ;</li>
+    <li>API REST documentée avec Swagger UI (11 routes, codes HTTP sémantiques sur toutes les réponses) ;</li>
+    <li>Interface responsive (desktop / tablette / mobile) avec accessibilité RGAA 4.1.2 vérifiée sur 30 critères.</li>
+  </ul>
+  <p>Plusieurs fonctionnalités plus avancées avaient été développées (journal d'audit, statistiques serveur, drag &amp; drop, système de notifications) puis volontairement retirées lors d'une phase de simplification. Ce choix stratégique — préférer un cœur solide entièrement maîtrisé à une accumulation de fonctionnalités partielles — est assumé et documenté en roadmap.</p>
+  <p>Les principales erreurs rencontrées ont été identifiées, corrigées et documentées : bug CSS de scroll dans les colonnes Kanban (<code>min-height: 0</code> sur les flex-children avec <code>overflow-y: auto</code>), secrets JWT codés en dur migrés vers <code>.env</code>, appels <code>console.log()</code> de debug retirés, et une faille IDOR sur la suppression de tâches comblée par une vérification de propriété côté serveur (et non uniquement via masquage du bouton côté front).</p>
+  <div class="callout"><strong>Périmètre honnête :</strong> l'application tourne exclusivement en local (XAMPP + Node.js). Absence de tests automatisés, de rate limiting et de mise en production : ces limites sont documentées en roadmap plutôt que masquées — c'est en soi une démonstration de rigueur professionnelle.</div>
+
+  <h3>15.2 Bilan de la formation</h3>
+  <p>Cette formation DWWM à La Plateforme_ représente <strong>[à compléter — décrire ta reconversion : ex. "une reconversion depuis le secteur de [domaine précédent]" ou "une première expérience structurée dans le développement web après une formation autodidacte"]</strong>. En 12 mois, elle m'a permis de passer de <strong>[situation de départ]</strong> à la capacité de concevoir, développer et documenter une application full-stack complète de bout en bout, seule.</p>
+  <p>Les principales difficultés surmontées ont été <strong>[à compléter — par exemple : "comprendre le flux d'authentification JWT et pourquoi le token ne doit pas être en cookie ; la modélisation MERISE qui impose de réfléchir aux données avant d'écrire la moindre ligne de code ; la gestion des erreurs asynchrones en JavaScript ; et debugger un bug CSS de scroll qu'aucune documentation ne décrit directement"]</strong>. Ces obstacles ont été levés par la pratique directe sur Lumina Pro plutôt que par des exercices isolés — ce qui a rendu l'apprentissage concret et durable.</p>
+  <p>La formation a également renforcé des compétences transversales : gestion de projet solo (Trello, Git avec 33+ commits explicites), documentation technique (Swagger UI, README, dossier professionnel complet), et rigueur dans l'identification et la correction des failles de sécurité. Elle a confirmé une appétence particulière pour <strong>[à compléter : ex. "le développement back-end et la sécurisation des API" / "l'architecture technique d'une application web" / "la conception d'interfaces accessibles"]</strong>.</p>
+
+  <h3>15.3 La suite</h3>
+  <p>À court terme, l'objectif est <strong>[à compléter — ex. "de décrocher un premier poste de développeur web junior, idéalement orienté back-end Node.js ou full-stack, dans une structure où je pourrai continuer à progresser sur des projets réels" / "d'intégrer une alternance de niveau Bac+3 en développement web ou cybersécurité" / "de poursuivre la formation vers un titre de niveau 6"]</strong>.</p>
+  <p>Sur Lumina Pro spécifiquement, les évolutions prioritaires identifiées sont : la mise en production sur un VPS avec HTTPS, l'ajout d'une suite de tests automatisés Jest + Supertest sur l'authentification et le CRUD, et l'introduction d'un vrai workflow de branches Git pour simuler un contexte d'équipe. Ces améliorations sont réalistes et permettront de faire vivre le projet au-delà de l'examen.</p>
+  <p>Ce titre DWWM constitue <strong>[à compléter — ex. "une première étape solide dans ma reconversion dans le numérique, que j'envisage de poursuivre vers un niveau Bac+3 à moyen terme" / "la confirmation que le développement web est le domaine dans lequel je veux m'inscrire durablement" / "une base technique que je compte approfondir, notamment sur les frameworks front-end (React) et la containerisation (Docker)"]</strong>.</p>
+</section>
+
+
+<section id="annexes">
+  <h2>16 — Annexes</h2>
+  <p>Tous les documents complémentaires sont disponibles dans le dossier <code>SOUTENANCE/</code> du projet. Les liens ci-dessous sont accessibles en ouvrant les fichiers HTML localement :</p>
+
+  <table>
+    <tr><th>Document</th><th>Fichier</th><th>Contenu</th></tr>
+    <tr>
+      <td><strong>Diagramme de cas d'utilisation</strong></td>
+      <td><code>use_case_uml.html</code></td>
+      <td>UML — 2 acteurs, 13 cas d'utilisation, relations «include» et héritage</td>
+    </tr>
+    <tr>
+      <td><strong>Diagramme de séquence</strong></td>
+      <td><code>diagramme_sequence.html</code></td>
+      <td>UML — Flux complet de la connexion JWT (navigateur → serveur → BDD → token)</td>
+    </tr>
+    <tr>
+      <td><strong>Diagramme d'activité</strong></td>
+      <td><code>diagramme_activite.html</code></td>
+      <td>UML — 3 flux : créer une tâche (swimlanes), connexion, déplacement de tâche</td>
+    </tr>
+    <tr>
+      <td><strong>Diagramme de packages</strong></td>
+      <td><code>diagramme_packages.html</code></td>
+      <td>UML — Organisation modulaire : packages frontend, backend, database, sécurité</td>
+    </tr>
+    <tr>
+      <td><strong>Arborescence et wireframes</strong></td>
+      <td><code>arborescence_wireframes.html</code></td>
+      <td>Arborescence des pages, wireframes basse fidélité (login, kanban, mobile)</td>
+    </tr>
+    <tr>
+      <td><strong>Charte graphique</strong></td>
+      <td><code>Charte_Graphique_Lumina_Pro.html</code></td>
+      <td>Palette complète, typographie, composants visuels</td>
+    </tr>
+    <tr>
+      <td><strong>Cahier de tests fonctionnels</strong></td>
+      <td><code>revision diplôme/Cahier_de_Tests_Lumina_Pro.html</code></td>
+      <td>12 scénarios de test avec résultats</td>
+    </tr>
+    <tr>
+      <td><strong>Cahier de tests accessibilité</strong></td>
+      <td><code>cahier_tests_accessibilite.html</code></td>
+      <td>30 critères WCAG 2.1 / RGAA testés manuellement</td>
+    </tr>
+    <tr>
+      <td><strong>Résumé du projet</strong></td>
+      <td><code>Resume_Projet_Lumina_Pro.html</code></td>
+      <td>Résumé court en style Arte Facto (présentation jury)</td>
+    </tr>
+    <tr>
+      <td><strong>Lexique technique</strong></td>
+      <td><code>revision diplôme/Lexique_Technique_Lumina_Pro.html</code></td>
+      <td>30+ termes techniques expliqués simplement (6 pages A4)</td>
+    </tr>
+    <tr>
+      <td><strong>Schéma SQL de référence</strong></td>
+      <td><code>database/schema.sql</code></td>
+      <td>Script SQL complet : CREATE TABLE, clés étrangères, contraintes</td>
+    </tr>
+    <tr>
+      <td><strong>README</strong></td>
+      <td><code>README.md</code></td>
+      <td>Installation complète, comptes de démo, structure du projet, sécurité</td>
+    </tr>
+  </table>
+
+  <div class="callout warn">
+    <strong>Note screenshots :</strong> Les captures d'écran des pages intégrées (login, tableau Kanban, version mobile) seront ajoutées dans cette section avant la soutenance. L'application est fonctionnelle et démontrable en live depuis <code>http://localhost:3000</code>.
+  </div>
 </section>
 
 </main>

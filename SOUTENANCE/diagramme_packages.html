@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Diagramme de Packages — Lumina Pro</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI',Arial,sans-serif; background:#f0f2f5; color:#1e293b; }
+
+  header {
+    background:linear-gradient(135deg,#1a1a2e,#302b63);
+    color:#fff; padding:36px 48px 28px; text-align:center;
+  }
+  header h1 { font-size:26px; font-weight:900; letter-spacing:1px; }
+  header p  { font-size:14px; color:#c9c6ea; margin-top:8px; }
+
+  main { max-width:1060px; margin:0 auto; padding:32px 24px 80px; }
+
+  .section-title {
+    font-size:11px; font-weight:900; text-transform:uppercase;
+    letter-spacing:3px; color:#D6336C; margin:36px 0 16px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .section-title::after { content:''; flex:1; height:2px; background:#ecdce3; }
+
+  .diagram-wrap {
+    background:#fff; border-radius:16px; padding:32px 40px;
+    box-shadow:0 2px 12px rgba(0,0,0,0.07); margin-bottom:28px;
+  }
+
+  /* ── PACKAGE BOXES ── */
+  .pkg-grid {
+    display:grid; gap:24px;
+  }
+  .pkg-grid-3 { grid-template-columns:1fr 1fr 1fr; }
+  .pkg-grid-2 { grid-template-columns:1fr 1fr; }
+
+  .pkg {
+    border:2px solid #e2e8f0; border-radius:12px; overflow:hidden;
+    display:flex; flex-direction:column;
+  }
+  .pkg-header {
+    padding:8px 16px; font-size:12px; font-weight:900; text-transform:uppercase;
+    letter-spacing:1px; display:flex; align-items:center; gap:8px;
+    flex-shrink:0;
+  }
+  .pkg-body {
+    padding:12px 16px; flex:1; display:flex; flex-direction:column; gap:6px;
+  }
+  .pkg-file {
+    font-size:12.5px; color:#334155; padding:5px 10px;
+    background:#f8fafc; border-radius:6px; border-left:3px solid #e2e8f0;
+    display:flex; align-items:center; gap:6px;
+  }
+  .pkg-file code { font-family:'Cascadia Code','Consolas',monospace; font-size:11.5px; color:#1e293b; }
+  .pkg-file .role { font-size:10px; color:#888; }
+
+  .pkg.front .pkg-header { background:#dbeafe; color:#1d4ed8; border-bottom:2px solid #bfdbfe; }
+  .pkg.front .pkg-file   { border-left-color:#3b82f6; }
+
+  .pkg.back .pkg-header  { background:#fce7f3; color:#be185d; border-bottom:2px solid #fbcfe8; }
+  .pkg.back .pkg-file    { border-left-color:#D6336C; }
+
+  .pkg.db .pkg-header    { background:#d1fae5; color:#065f46; border-bottom:2px solid #a7f3d0; }
+  .pkg.db .pkg-file      { border-left-color:#10b981; }
+
+  .pkg.sec .pkg-header   { background:#fef3c7; color:#92400e; border-bottom:2px solid #fde68a; }
+  .pkg.sec .pkg-file     { border-left-color:#f59e0b; }
+
+  .pkg.doc .pkg-header   { background:#ede9fe; color:#5b21b6; border-bottom:2px solid #ddd6fe; }
+  .pkg.doc .pkg-file     { border-left-color:#7c3aed; }
+
+  .pkg.root .pkg-header  { background:#f1f5f9; color:#1e293b; border-bottom:2px solid #e2e8f0; }
+  .pkg.root .pkg-file    { border-left-color:#64748b; }
+
+  /* ── FLÈCHES DE DÉPENDANCE ── */
+  .dep-table { width:100%; border-collapse:collapse; font-size:13px; margin-top:8px; }
+  .dep-table th { background:#1a1a2e; color:#fff; padding:8px 14px; text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; }
+  .dep-table td { padding:9px 14px; border-bottom:1px solid #f1f5f9; vertical-align:top; }
+  .dep-table tr:last-child td { border-bottom:none; }
+  .dep-arrow { color:#D6336C; font-weight:900; }
+  .dep-type { font-size:11px; background:#fff0f5; color:#D6336C; padding:2px 8px; border-radius:10px; font-weight:700; }
+
+  .note-box {
+    background:#fff7ed; border:1px solid #fed7aa; border-radius:8px;
+    padding:10px 16px; font-size:12.5px; color:#92400e; line-height:1.7; margin-top:16px;
+  }
+
+  .top-pkg {
+    background:#1a1a2e; border-radius:14px; padding:20px 28px; margin-bottom:28px;
+    border:3px solid #D6336C;
+  }
+  .top-pkg .title { color:#D6336C; font-size:13px; font-weight:900; text-transform:uppercase; letter-spacing:2px; margin-bottom:12px; }
+  .top-pkg .sub   { color:#94a3b8; font-size:12px; line-height:1.8; }
+
+  footer { text-align:center; padding:30px; color:#888; font-size:12px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📦 Diagramme de Packages — Lumina Pro</h1>
+  <p>UML · Organisation modulaire de l'application · Syrine BEN HASSINE · DWWM 2026</p>
+</header>
+
+<main>
+
+<div class="section-title">Vue d'ensemble — Architecture en packages</div>
+
+<div class="diagram-wrap">
+
+  <!-- Paquet racine -->
+  <div class="top-pkg">
+    <div class="title">📦 lumina_pro (racine)</div>
+    <div class="sub">
+      Application web full-stack · Node.js + Express + MySQL + HTML/CSS/JS vanilla<br>
+      3 sous-packages principaux : <b style="color:#fff;">frontend</b> · <b style="color:#fff;">backend</b> · <b style="color:#fff;">database</b>
+    </div>
+  </div>
+
+  <!-- 3 packages principaux -->
+  <div class="pkg-grid pkg-grid-3" style="margin-bottom:24px;">
+
+    <!-- FRONTEND -->
+    <div class="pkg front">
+      <div class="pkg-header">🌐 &lt;&lt;package&gt;&gt; frontend</div>
+      <div class="pkg-body">
+
+        <div class="pkg-file">📄 <code>index.html</code> <span class="role">— Tableau Kanban</span></div>
+        <div class="pkg-file">📄 <code>login.html</code> <span class="role">— Connexion / Inscription</span></div>
+
+        <div style="margin:8px 0 4px; font-size:10px; font-weight:900; text-transform:uppercase; color:#3b82f6; letter-spacing:1px;">📂 /css — 8 modules</div>
+        <div class="pkg-file" style="border-left-color:#93c5fd;">📄 <code>variables.css</code> <span class="role">— Palette, tokens</span></div>
+        <div class="pkg-file" style="border-left-color:#93c5fd;">📄 <code>layout.css</code> <span class="role">— Sidebar, structure</span></div>
+        <div class="pkg-file" style="border-left-color:#93c5fd;">📄 <code>kanban.css</code> <span class="role">— Colonnes, cartes</span></div>
+        <div class="pkg-file" style="border-left-color:#93c5fd;">📄 <code>responsive.css</code> <span class="role">— Media queries</span></div>
+        <div class="pkg-file" style="border-left-color:#93c5fd;">📄 <code>components.css</code> <span class="role">— Badges, boutons</span></div>
+        <div class="pkg-file" style="border-left-color:#93c5fd;">📄 <code>forms_modals.css</code> <span class="role">— Formulaires</span></div>
+
+        <div style="margin:8px 0 4px; font-size:10px; font-weight:900; text-transform:uppercase; color:#3b82f6; letter-spacing:1px;">📂 /js — 8 modules</div>
+        <div class="pkg-file" style="border-left-color:#93c5fd;">📄 <code>api.js</code> <span class="role">— authFetch, escapeHTML</span></div>
+        <div class="pkg-file" style="border-left-color:#93c5fd;">📄 <code>auth.js</code> <span class="role">— Login / Register</span></div>
+        <div class="pkg-file" style="border-left-color:#93c5fd;">📄 <code>kanban.js</code> <span class="role">— Rendu du board</span></div>
+        <div class="pkg-file" style="border-left-color:#93c5fd;">📄 <code>tasks.js</code> <span class="role">— CRUD tâches</span></div>
+        <div class="pkg-file" style="border-left-color:#93c5fd;">📄 <code>columns.js</code> <span class="role">— CRUD colonnes</span></div>
+        <div class="pkg-file" style="border-left-color:#93c5fd;">📄 <code>ui.js</code> <span class="role">— Sidebar, modals</span></div>
+        <div class="pkg-file" style="border-left-color:#93c5fd;">📄 <code>team.js</code> <span class="role">— Vue équipe (admin)</span></div>
+        <div class="pkg-file" style="border-left-color:#93c5fd;">📄 <code>profile.js</code> <span class="role">— Profil utilisateur</span></div>
+      </div>
+    </div>
+
+    <!-- BACKEND -->
+    <div class="pkg back">
+      <div class="pkg-header">⚙️ &lt;&lt;package&gt;&gt; backend</div>
+      <div class="pkg-body">
+
+        <div class="pkg-file">📄 <code>server.js</code> <span class="role">— Point d'entrée, auto-create tables</span></div>
+        <div class="pkg-file">📄 <code>.env</code> <span class="role">— Secrets (hors git)</span></div>
+        <div class="pkg-file">📄 <code>.env.example</code> <span class="role">— Modèle de config</span></div>
+        <div class="pkg-file">📄 <code>swagger.json</code> <span class="role">— Spec OpenAPI</span></div>
+        <div class="pkg-file">📄 <code>package.json</code> <span class="role">— Dépendances npm</span></div>
+
+        <div style="margin:8px 0 4px; font-size:10px; font-weight:900; text-transform:uppercase; color:#D6336C; letter-spacing:1px;">📂 /config</div>
+        <div class="pkg-file">📄 <code>db.js</code> <span class="role">— Pool MySQL, dateStrings:true</span></div>
+
+        <div style="margin:8px 0 4px; font-size:10px; font-weight:900; text-transform:uppercase; color:#D6336C; letter-spacing:1px;">📂 /middleware</div>
+        <div class="pkg-file">📄 <code>security.js</code> <span class="role">— verifyToken (JWT)</span></div>
+
+        <div style="margin:8px 0 4px; font-size:10px; font-weight:900; text-transform:uppercase; color:#D6336C; letter-spacing:1px;">📂 /routes — 4 fichiers</div>
+        <div class="pkg-file">📄 <code>auth.js</code> <span class="role">— POST /login, /register</span></div>
+        <div class="pkg-file">📄 <code>tasks.js</code> <span class="role">— GET/POST/PUT/DELETE tasks</span></div>
+        <div class="pkg-file">📄 <code>columns.js</code> <span class="role">— GET/POST/PUT/DELETE columns</span></div>
+        <div class="pkg-file">📄 <code>users.js</code> <span class="role">— GET/DELETE users</span></div>
+      </div>
+    </div>
+
+    <!-- DATABASE -->
+    <div class="pkg db">
+      <div class="pkg-header">🗄️ &lt;&lt;package&gt;&gt; database</div>
+      <div class="pkg-body">
+
+        <div class="pkg-file">📄 <code>schema.sql</code> <span class="role">— Schéma de référence SQL</span></div>
+
+        <div style="margin:12px 0 4px; font-size:10px; font-weight:900; text-transform:uppercase; color:#10b981; letter-spacing:1px;">Tables MySQL</div>
+        <div class="pkg-file">🗂 <code>users</code> <span class="role">— id, name, email, password, role</span></div>
+        <div class="pkg-file">🗂 <code>columns</code> <span class="role">— id, title, position</span></div>
+        <div class="pkg-file">🗂 <code>tasks</code> <span class="role">— id, title, description, priority, id_assigned, id_col, due_date, created_at</span></div>
+
+        <div style="margin:12px 0 4px; font-size:10px; font-weight:900; text-transform:uppercase; color:#10b981; letter-spacing:1px;">Contraintes</div>
+        <div class="pkg-file" style="background:#f0fdf4; border-color:#22c55e; color:#15803d; font-size:11.5px;">FK id_col → columns (CASCADE)</div>
+        <div class="pkg-file" style="background:#f0fdf4; border-color:#22c55e; color:#15803d; font-size:11.5px;">FK id_assigned → users (SET NULL)</div>
+        <div class="pkg-file" style="background:#f0fdf4; border-color:#22c55e; color:#15803d; font-size:11.5px;">ENUM role, ENUM priority</div>
+        <div class="pkg-file" style="background:#f0fdf4; border-color:#22c55e; color:#15803d; font-size:11.5px;">email UNIQUE</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Packages transversaux -->
+  <div class="pkg-grid pkg-grid-2">
+
+    <!-- SÉCURITÉ -->
+    <div class="pkg sec">
+      <div class="pkg-header">🔒 &lt;&lt;package&gt;&gt; sécurité (transversal)</div>
+      <div class="pkg-body">
+        <div class="pkg-file">🔑 <code>jsonwebtoken</code> <span class="role">— Génération et vérification JWT</span></div>
+        <div class="pkg-file">🔑 <code>bcrypt</code> <span class="role">— Hachage des mots de passe</span></div>
+        <div class="pkg-file">🔑 <code>dotenv</code> <span class="role">— Variables d'environnement (.env)</span></div>
+        <div class="pkg-file">🔑 <code>cors</code> <span class="role">— Politique Cross-Origin</span></div>
+        <div class="pkg-file">🔑 <code>escapeHTML()</code> <span class="role">— Sanitisation XSS côté front</span></div>
+        <div class="pkg-file">🔑 <code>? placeholders</code> <span class="role">— Protection injection SQL</span></div>
+      </div>
+    </div>
+
+    <!-- DOCUMENTATION -->
+    <div class="pkg doc">
+      <div class="pkg-header">📚 &lt;&lt;package&gt;&gt; documentation</div>
+      <div class="pkg-body">
+        <div class="pkg-file">📄 <code>README.md</code> <span class="role">— Installation, usage, API</span></div>
+        <div class="pkg-file">📄 <code>swagger.json</code> <span class="role">— Spec OpenAPI 3.0</span></div>
+        <div class="pkg-file">📄 <code>swagger-ui-express</code> <span class="role">— UI interactive /api-docs</span></div>
+        <div class="pkg-file">📄 <code>schema.sql</code> <span class="role">— Schéma BDD commenté</span></div>
+        <div class="pkg-file">📄 <code>SOUTENANCE/</code> <span class="role">— Dossiers de soutenance HTML</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ────────────────────────────────────────────── -->
+<div class="section-title">Dépendances entre packages</div>
+
+<div class="diagram-wrap">
+  <table class="dep-table">
+    <tr>
+      <th>Source</th><th></th><th>Cible</th><th>Type de dépendance</th><th>Explication</th>
+    </tr>
+    <tr>
+      <td><b>frontend</b></td>
+      <td class="dep-arrow">──uses──▶</td>
+      <td><b>backend / API</b></td>
+      <td><span class="dep-type">«use»</span></td>
+      <td>Le front envoie des requêtes HTTP (fetch) vers les routes Express</td>
+    </tr>
+    <tr>
+      <td><b>backend / routes</b></td>
+      <td class="dep-arrow">──uses──▶</td>
+      <td><b>database</b></td>
+      <td><span class="dep-type">«use»</span></td>
+      <td>Chaque route exécute des requêtes SQL via le pool MySQL (config/db.js)</td>
+    </tr>
+    <tr>
+      <td><b>backend / routes</b></td>
+      <td class="dep-arrow">──uses──▶</td>
+      <td><b>sécurité</b></td>
+      <td><span class="dep-type">«import»</span></td>
+      <td>Les routes importent verifyToken, bcrypt, jwt depuis les modules sécurité</td>
+    </tr>
+    <tr>
+      <td><b>frontend / api.js</b></td>
+      <td class="dep-arrow">──uses──▶</td>
+      <td><b>sécurité</b></td>
+      <td><span class="dep-type">«use»</span></td>
+      <td>authFetch() lit le token JWT depuis localStorage et escapeHTML() sanitise les données</td>
+    </tr>
+    <tr>
+      <td><b>backend</b></td>
+      <td class="dep-arrow">──serves──▶</td>
+      <td><b>frontend</b></td>
+      <td><span class="dep-type">«deploy»</span></td>
+      <td>express.static() sert les fichiers HTML/CSS/JS du dossier frontend</td>
+    </tr>
+    <tr>
+      <td><b>documentation</b></td>
+      <td class="dep-arrow">──describes──▶</td>
+      <td><b>backend / API</b></td>
+      <td><span class="dep-type">«document»</span></td>
+      <td>swagger.json décrit toutes les routes de l'API, affiché par swagger-ui-express</td>
+    </tr>
+  </table>
+
+  <div class="note-box" style="margin-top:16px;">
+    <b>Note de conception :</b> Il n'y a pas de couche <em>Model/Controller</em> séparée — les routes contiennent directement leurs requêtes SQL. C'est un choix délibéré adapté à la taille du projet (solo, 4 tables), documenté comme piste d'amélioration dans la roadmap.
+  </div>
+</div>
+
+</main>
+
+<footer>Lumina Pro · Syrine BEN HASSINE · DWWM 2026 · Diagramme de packages UML</footer>
+</body>
+</html>
