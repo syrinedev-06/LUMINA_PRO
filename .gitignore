@@ -70,3 +70,6 @@ cv/
 
 # Dossier de soutenance (documents d'examen) - reste en local, converti en PDF a part
 SOUTENANCE/
+
+# Script de lancement local, pas utile au jury
+LANCER_LUMINA.bat
