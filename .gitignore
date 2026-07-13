@@ -67,3 +67,6 @@ jspm_packages/
 
 # Personal files not related to the project (contains personal contact info)
 cv/
+
+# Dossier de soutenance (documents d'examen) - reste en local, converti en PDF a part
+SOUTENANCE/
