@@ -1,6 +1,9 @@
 async function showProfile() {
     if (window.innerWidth <= 900) toggleSidebar();
 
+    setActiveLink('nav-profile');
+    document.getElementById('page-title').innerText = "Statistiques";
+
     const zone = document.getElementById('content-area');
     zone.innerHTML = '<p style="padding:40px; color:var(--text-muted);">Chargement...</p>';
 

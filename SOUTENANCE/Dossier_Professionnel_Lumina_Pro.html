@@ -110,8 +110,11 @@
   <p>Lumina Pro est une application web de <strong>gestion de tâches collaborative</strong> basée sur la méthode Kanban : un tableau à colonnes personnalisables permet à une équipe de suivre l'avancement de ses missions, avec deux niveaux de droits (administrateur / utilisateur).</p>
   <p>Le projet couvre l'ensemble des compétences attendues sur les deux activités du référentiel : développement front-end et back-end d'une application web sécurisée.</p>
 
+  <h3>Qui suis-je ?</h3>
+  <p>Je m'appelle <strong>Syrine Ben Hassine</strong>. Avant cette formation, je gérais des ateliers de couture et je faisais du stylisme assisté par ordinateur. La technologie m'a toujours intéressée, depuis une première certification en bureautique en 2001 : c'est cette envie de comprendre ce qui se cache derrière un site web qui m'a menée jusqu'ici, en reconversion vers le développement web.</p>
+
   <h3>Contexte de formation — La Plateforme_</h3>
-  <p><strong>La Plateforme_</strong> est un centre de formation aux métiers du numérique basé à <strong>Cannes</strong>, proposant des parcours de reconversion et de montée en compétences dans les domaines du développement web, de la cybersécurité et de l'intelligence artificielle. La promotion DWWM 2025/2026 est une formation intensive de 12 mois couvrant l'ensemble des activités du titre professionnel de niveau 5 (Bac+2 équivalent) reconnu par l'État. C'est dans ce cadre que Syrine Ben Hassine a mené le projet Lumina Pro du début à la fin, de la conception à la soutenance.</p>
+  <p><strong>La Plateforme_</strong> est un centre de formation aux métiers du numérique basé à <strong>Cannes</strong>, qui propose des parcours de reconversion dans le développement web, la cybersécurité et l'intelligence artificielle. La formation prépare au titre professionnel de niveau 5 (Bac+2), reconnu par l'État. C'est dans ce cadre que j'ai mené le projet Lumina Pro du début à la fin, de la conception à la soutenance.</p>
 </section>
 
 <section id="competences">
@@ -120,17 +123,17 @@
   <h3>2.1 Activité type n°1 — Développer la partie front-end d'une application web sécurisée</h3>
   <div class="comp-grid">
     <div class="comp-num">1</div><div><strong>Installer et configurer son environnement de travail</strong> — VS Code, Node.js, MySQL 8.0, Git/GitHub.</div>
-    <div class="comp-num">2</div><div><strong>Maquetter des interfaces utilisateur</strong> — arborescence des pages et wireframes basse fidélité réalisés en amont (voir <code>arborescence_wireframes.html</code>).</div>
-    <div class="comp-num">3</div><div><strong>Réaliser des interfaces utilisateur statiques</strong> — HTML5 sémantique, CSS3 découpé en 8 modules, design responsive mobile-first (media queries).</div>
-    <div class="comp-num">4</div><div><strong>Développer la partie dynamique des interfaces utilisateur</strong> — JavaScript ES6+ vanilla, appels <code>fetch</code> asynchrones vers l'API REST, gestion des erreurs, échappement systématique du contenu utilisateur (<code>escapeHTML()</code>).</div>
+    <div class="comp-num">2</div><div><strong>Maquetter des interfaces utilisateur</strong> — plan des pages et wireframes (maquettes simples) faits avant de commencer à coder (voir <code>arborescence_wireframes.html</code>).</div>
+    <div class="comp-num">3</div><div><strong>Réaliser des interfaces utilisateur statiques</strong> — HTML5, CSS3 découpé en 8 fichiers, design qui s'adapte à toutes les tailles d'écran (media queries).</div>
+    <div class="comp-num">4</div><div><strong>Développer la partie dynamique des interfaces utilisateur</strong> — JavaScript, appels <code>fetch</code> vers l'API pour récupérer les données, gestion des erreurs, et protection contre les failles XSS : le texte tapé par l'utilisateur est nettoyé avant d'être affiché (<code>escapeHTML()</code>).</div>
   </div>
 
   <h3>2.2 Activité type n°2 — Développer la partie back-end d'une application web sécurisée</h3>
   <div class="comp-grid">
-    <div class="comp-num">5</div><div><strong>Mettre en place une base de données relationnelle</strong> — méthode MERISE (MCD → MLD → MPD), script SQL de création (<code>database/schema.sql</code>), comptes de démonstration créés via le flux d'inscription normal.</div>
-    <div class="comp-num">6</div><div><strong>Développer des composants d'accès aux données SQL</strong> — <code>mysql2</code>, requêtes préparées (placeholders <code>?</code>) sur toutes les routes pour prévenir l'injection SQL.</div>
-    <div class="comp-num">7</div><div><strong>Développer des composants métier côté serveur</strong> — Express 5, middlewares (authentification JWT, injection de connexion DB), routes REST organisées par ressource.</div>
-    <div class="comp-num">8</div><div><strong>Documenter le déploiement d'une application dynamique</strong> — <code>README.md</code> complet (installation, variables d'environnement, lancement), documentation API interactive via Swagger UI.</div>
+    <div class="comp-num">5</div><div><strong>Mettre en place une base de données relationnelle</strong> — méthode MERISE (MCD → MLD → MPD), script SQL de création (<code>database/schema.sql</code>), comptes de démonstration créés en s'inscrivant normalement sur le site.</div>
+    <div class="comp-num">6</div><div><strong>Développer des composants d'accès aux données SQL</strong> — <code>mysql2</code>, requêtes préparées (avec des <code>?</code> à la place des valeurs) sur toutes les routes pour éviter les injections SQL.</div>
+    <div class="comp-num">7</div><div><strong>Développer des composants métier côté serveur</strong> — Express 5, middlewares (vérification du token JWT, connexion à la base de données), routes REST classées par ressource (tâches, colonnes, utilisateurs).</div>
+    <div class="comp-num">8</div><div><strong>Documenter le déploiement d'une application dynamique</strong> — <code>README.md</code> complet (installation, variables d'environnement, lancement), documentation de l'API avec Swagger UI.</div>
   </div>
 </section>
 
@@ -172,16 +175,16 @@
     <li>vue équipe et page Statistiques (répartition des tâches par priorité) ;</li>
     <li>documentation API interactive (Swagger).</li>
   </ul>
-  <p>Des fonctionnalités plus avancées (drag &amp; drop natif, système de notifications) ont été <strong>réellement développées puis volontairement retirées</strong> lors d'un commit de simplification (<code>« Refactoring : Simplification totale pour l'examen DWWM (DRY, découpage JS, retrait stats/logs) »</code>), afin de concentrer l'effort et le code sur un cœur Kanban solide plutôt que sur une accumulation de fonctionnalités annexes — voir <a href="#roadmap">évolutions futures</a>. Un système de notifications avait de même été envisagé puis <strong>retiré volontairement</strong> du périmètre (commit <code>« Suppression complète du système de notifications »</code>).</p>
-  <p><strong>Précision sur les statistiques et l'audit :</strong> la première version d'une route serveur dédiée aux statistiques (<code>routes/stats.js</code>, agrégation SQL côté back-end) avait été retirée lors de cette simplification. Une page <strong>Statistiques</strong> plus légère a ensuite été réintroduite côté <strong>front-end uniquement</strong> : elle calcule la répartition des tâches (urgentes / moyennes / normales) directement dans le navigateur à partir des données déjà renvoyées par <code>/api/tasks</code> et <code>/api/users</code> (<code>Promise.all()</code>), et dessine un camembert en SVG pur sans bibliothèque — donc sans exposer de nouvelle route serveur. De même, la table <code>logs</code> (journal d'audit) existe toujours en base et s'alimente automatiquement à chaque suppression de tâche ; seule la route de <em>consultation</em> (<code>GET /api/logs</code>) a été retirée du périmètre d'examen.</p>
+  <p>Pour déplacer une tâche, on utilise des boutons (⬅️ ➡️) plutôt que le glisser-déposer, et il n'y a pas de système de notifications dans cette version — deux pistes gardées pour la suite (voir <a href="#roadmap">évolutions futures</a>).</p>
+  <p><strong>Statistiques et journal d'audit :</strong> la page Statistiques ne passe pas par une route serveur spéciale — elle récupère les tâches et les membres avec <code>/api/tasks</code> et <code>/api/users</code> (<code>Promise.all()</code> pour lancer les deux requêtes en même temps), puis calcule et affiche le résultat directement dans le navigateur (camembert en SVG fait à la main, sans bibliothèque). La table <code>logs</code> (journal d'audit) existe dans la base de données et garde une trace de chaque suppression de tâche.</p>
 
   <h3>3.5 Cahier des charges</h3>
   <p><strong>Exigences fonctionnelles</strong> — Un visiteur peut s'inscrire et se connecter. Un utilisateur connecté gère ses tâches (créer / modifier / déplacer / supprimer), consulte l'équipe et les statistiques du projet. Un administrateur gère en plus les colonnes et les comptes utilisateurs.</p>
-  <p><strong>Exigences techniques</strong> — Application consommant une API REST sécurisée par JWT ; mots de passe hachés (bcrypt) et jamais stockés en clair ; requêtes SQL préparées ; interface responsive desktop/mobile.</p>
-  <p><strong>Exigences non-fonctionnelles</strong> — Accessibilité (sémantique HTML5, attributs ARIA, contrastes, focus clavier — RGAA 4.1.2 / WCAG 2.1) ; sécurité (CORS, isolation des secrets dans <code>.env</code>) ; documentation (README, Swagger).</p>
+  <p><strong>Exigences techniques</strong> — L'application utilise une API sécurisée par token JWT ; les mots de passe sont hachés (bcrypt), jamais stockés en clair ; les requêtes SQL sont préparées ; l'interface s'adapte à l'écran (ordinateur/mobile).</p>
+  <p><strong>Exigences non-fonctionnelles</strong> — Accessibilité (HTML sémantique, attributs ARIA, bons contrastes, navigation au clavier — RGAA 4.1.2 / WCAG 2.1) ; sécurité (CORS, secrets isolés dans <code>.env</code>) ; documentation (README, Swagger).</p>
 
   <h3>3.6 Équipe et organigramme</h3>
-  <p>Projet réalisé en <strong>solo</strong>, dans le cadre de la formation DWWM 2025/2026 à La Plateforme_ (Cannes). Toutes les phases ont été assumées par une seule personne : analyse du besoin, conception, développement front-end, développement back-end, sécurisation, tests et documentation.</p>
+  <p>Projet réalisé <strong>seule</strong>, dans le cadre de la formation DWWM 2025/2026 à La Plateforme_ (Cannes). J'ai fait toutes les étapes moi-même : comprendre le besoin, concevoir, coder le front-end, coder le back-end, sécuriser, tester et documenter.</p>
 
   <div style="display:flex; justify-content:center; margin:20px 0;">
     <div style="border:2px solid #d63384; border-radius:12px; overflow:hidden; min-width:360px; max-width:480px;">
@@ -202,7 +205,7 @@
   </div>
 
   <h3>3.7 Méthodologie et outils de gestion de projet</h3>
-  <p><strong>Méthodologie adoptée : approche itérative</strong> (inspirée Agile, adaptée au projet solo). Le développement a été découpé en phases successives — chaque fonctionnalité est conçue, codée, testée et validée avant de passer à la suivante. Pas de sprints formalisés, mais une livraison continue validée par les commits Git.</p>
+  <p><strong>Méthode de travail : étape par étape</strong> (inspirée de la méthode Agile, adaptée à un projet solo). Chaque fonctionnalité est d'abord pensée, puis codée, puis testée, avant de passer à la suivante. Pas de sprints formels comme en entreprise, mais un travail régulier suivi avec les commits Git.</p>
   <table>
     <tr><th>Outil</th><th>Usage</th><th>Statut</th></tr>
     <tr><td><strong>Trello</strong></td><td>Tableau Kanban de suivi des fonctionnalités à faire / en cours / terminées. Chaque card = une fonctionnalité ou un correctif identifié.</td><td>Utilisé pendant tout le projet</td></tr>
@@ -298,15 +301,15 @@
     <tr><td>Documentation</td><td>swagger-ui-express</td><td>5.0.1</td></tr>
     <tr><td>Versioning</td><td>Git + GitHub</td><td>—</td></tr>
   </table>
-  <p>Choix assumé de JavaScript vanilla (sans framework front) et d'un accès direct aux données depuis les routes Express (sans ORM), dans un but pédagogique : comprendre le fonctionnement de chaque couche sans l'abstraction d'une bibliothèque tierce.</p>
+  <p>J'ai choisi du JavaScript simple (sans framework front) et un accès direct aux données depuis les routes Express (sans ORM), pour bien comprendre comment chaque partie fonctionne, sans qu'une bibliothèque fasse le travail à ma place.</p>
 
   <h3>4.3 Architecture applicative</h3>
-  <p>Architecture client-serveur en trois couches : front-end statique (HTML/CSS/JS), API REST back-end, base de données MySQL. Le serveur Express sert directement les fichiers du front-end via <code>express.static</code> (pas d'étape de build), l'application est donc accessible entièrement depuis <code>http://localhost:3000</code> une fois le serveur lancé. Contrairement à un découpage MVC strict, la logique métier de ce projet reste volontairement légère : chaque fichier de <code>routes/</code> contient directement ses requêtes SQL (pas de couche <em>controller</em>/<em>model</em> séparée), ce qui convient à la taille du projet mais serait à faire évoluer sur une application plus grande (voir <a href="#roadmap">roadmap</a>).</p>
-  <p>Un middleware d'application (<code>req.db = db</code>) injecte la connexion MySQL dans chaque requête, et un middleware dédié (<code>verifyToken</code>) protège les routes sensibles en vérifiant le jeton JWT.</p>
+  <p>L'application a trois parties : le front-end (HTML/CSS/JS), l'API back-end, et la base de données MySQL. Le serveur Express sert directement les fichiers du front-end (<code>express.static</code>), donc tout est accessible depuis <code>http://localhost:3000</code> une fois le serveur lancé. Je n'ai pas séparé le code en trois couches strictes (MVC) : chaque fichier de <code>routes/</code> contient directement ses requêtes SQL. C'est plus simple à gérer pour un projet de cette taille, mais ça serait à revoir si l'application devait grandir (voir <a href="#roadmap">roadmap</a>).</p>
+  <p>Un middleware (<code>req.db = db</code>) donne accès à la base de données à chaque requête, et un autre middleware (<code>verifyToken</code>) protège les routes sensibles en vérifiant le token JWT.</p>
 
   <h3>4.4 Versioning et workflow Git</h3>
-  <p>Projet versionné en continu sur GitHub (<code>syrinedev-06/LUMINA_PRO</code>), avec des commits fréquents et explicites (ex. <em>« Découpage modulaire de kanban.js en kanban.js, columns.js et tasks.js »</em>). Le développement s'est fait directement sur la branche <code>main</code>, sans branches de fonctionnalités séparées — un choix simple adapté à un projet solo, mais qui serait à faire évoluer vers un vrai workflow de branches (<code>feature/</code>, <code>fix/</code>) sur un projet en équipe.</p>
-  <p>Le fichier <code>.gitignore</code> exclut <code>node_modules/</code> et les fichiers de logs. Le fichier <code>.env</code> n'est jamais versionné ; <code>.env.example</code> sert de modèle de configuration pour un autre développeur.</p>
+  <p>Le projet est suivi en continu sur GitHub (<code>syrinedev-06/LUMINA_PRO</code>), avec des commits fréquents et clairs (ex. <em>« Découpage modulaire de kanban.js en kanban.js, columns.js et tasks.js »</em>). J'ai travaillé directement sur la branche <code>main</code>, sans créer de branches séparées par fonctionnalité — simple pour un travail en solo, mais à changer pour un vrai travail d'équipe (avec des branches <code>feature/</code>, <code>fix/</code>).</p>
+  <p>Le fichier <code>.gitignore</code> exclut <code>node_modules/</code> et les fichiers de logs. Le fichier <code>.env</code> (qui contient les secrets) n'est jamais envoyé sur GitHub ; <code>.env.example</code> sert de modèle pour un autre développeur.</p>
 </section>
 
 <section id="front-conception">
@@ -322,7 +325,7 @@
   <p>Détail complet des wireframes basse fidélité dans <code>arborescence_wireframes.html</code>.</p>
 
   <h3>5.2 Charte graphique</h3>
-  <p>Identité visuelle bâtie autour d'un rose/fuchsia soutenu associé à un fond clair pour la lisibilité, avec une sidebar de navigation en bleu-gris foncé. Police système (Segoe UI) pour la cohérence multi-plateforme et de bons contrastes texte/fond. Palette centralisée dans <code>frontend/css/variables.css</code> (variables CSS), pour une cohérence garantie sur l'ensemble des pages :</p>
+  <p>Les couleurs principales sont un rose/fuchsia sur fond clair (pour bien lire le texte), avec une barre de navigation en bleu-gris foncé. La police est celle déjà installée sur l'ordinateur (Segoe UI), pour rester cohérent partout. Toutes les couleurs sont regroupées dans un seul fichier (<code>frontend/css/variables.css</code>), pour que chaque page utilise exactement les mêmes :</p>
   <table>
     <tr><th>Variable</th><th>Couleur</th><th>Usage</th></tr>
     <tr><td><code>--primary</code></td><td>#A10057</td><td>Couleur de marque : boutons principaux, liens actifs, accents</td></tr>
@@ -335,17 +338,17 @@
     <tr><td><code>--danger</code></td><td>#fc16ce</td><td>Actions de suppression, priorité haute</td></tr>
   </table>
 
-  <p><strong>Typographie :</strong> police système <strong>Segoe UI</strong> choisie sans chargement de font externe (disponibilité native Windows, zéro requête réseau supplémentaire), pour ses excellentes métriques de lisibilité à petite taille et sa cohérence avec les outils de bureautique — pertinent pour une application de gestion professionnelle. La chaîne de substitution (<code>'Segoe UI', Arial, sans-serif</code>) garantit un rendu cohérent sur tous les systèmes.</p>
+  <p><strong>Police d'écriture :</strong> j'ai choisi <strong>Segoe UI</strong>, déjà installée sur Windows — pas besoin de la télécharger, elle s'affiche instantanément et reste lisible même en petite taille. Si elle n'est pas disponible (autre système), le navigateur utilise Arial à la place (<code>'Segoe UI', Arial, sans-serif</code>).</p>
 
   <h3>5.3 Maquettes et responsive</h3>
-  <p>Interface pensée desktop-first puis adaptée mobile via media queries : sidebar fixe sur desktop, masquée et accessible par un bouton hamburger sous 900px, colonnes Kanban en défilement horizontal sur mobile.</p>
+  <p>J'ai conçu l'interface d'abord pour ordinateur, puis je l'ai adaptée au mobile avec des media queries : la barre de navigation reste fixe sur ordinateur, mais devient un menu caché (accessible avec un bouton hamburger) en dessous de 900px ; les colonnes Kanban se scrollent horizontalement sur mobile.</p>
 </section>
 
 <section id="back-conception">
   <h2>6 — Conception du back-end</h2>
 
   <h3>6.1 Base de données — méthode MERISE</h3>
-  <p>Modélisation en trois étapes : MCD (entités et associations), MLD (tables, clés primaires/étrangères, règles de cardinalité), MPD (implémentation MySQL). Le script <code>database/schema.sql</code> reflète les quatre tables créées par <code>server.js</code> au démarrage : <code>users</code>, <code>columns</code>, <code>tasks</code> (données applicatives) et <code>logs</code> (journal d'audit des actions, écrit par les routes CRUD sans être exposé publiquement).</p>
+  <p>J'ai modélisé la base de données en trois étapes, avec la méthode MERISE : MCD (les entités et leurs liens), MLD (les tables avec leurs clés), puis MPD (la vraie base MySQL). Le script <code>database/schema.sql</code> montre les quatre tables que <code>server.js</code> crée au démarrage : <code>users</code>, <code>columns</code>, <code>tasks</code> (les données de l'application) et <code>logs</code> (le journal qui garde une trace des actions, sans route pour le consulter).</p>
 
   <h3>6.1a MCD — Modèle Conceptuel de Données</h3>
   <p>Représentation des entités et de leurs associations, indépendamment de tout langage de base de données. Les cardinalités indiquent les contraintes de multiplicité entre entités.</p>
@@ -421,7 +424,7 @@
   </div>
 
   <h3>6.1b MLD — Modèle Logique de Données</h3>
-  <p>Traduction du MCD en tables relationnelles. Les relations deviennent des <strong>clés étrangères</strong> (FK). Les associations <em>1,1</em> et <em>0,1</em> génèrent une FK dans la table "enfant".</p>
+  <p>C'est la traduction du MCD en tables. Chaque relation devient une <strong>clé étrangère</strong> (FK) : un champ qui pointe vers l'id d'une autre table.</p>
 
   <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin:14px 0; overflow-x:auto;">
 
@@ -469,7 +472,7 @@
 
   <h3>6.1c MPD — Modèle Physique de Données (SQL réel)</h3>
   <div class="callout">
-    <strong>Choix de périmètre assumé :</strong> une route de <em>consultation</em> du journal d'audit (<code>routes/logs.js</code>) et une route serveur dédiée aux statistiques (<code>routes/stats.js</code>) avaient été réellement développées, avec une table <code>notifications</code> associée, puis <strong>retirées</strong> lors d'un commit de simplification volontaire (<code>« Refactoring : Simplification totale pour l'examen DWWM »</code>) pour garder un cœur applicatif simple et entièrement maîtrisé (voir roadmap). La table <code>logs</code>, elle, a été conservée : chaque suppression de tâche continue d'y écrire une entrée d'audit (voir <code>routes/tasks.js</code>), seule sa consultation via API a été retirée. Un système de notifications avait de même été retiré du périmètre en cours de projet (voir section 3.4) pour la même raison.
+    La table <code>logs</code> garde une trace de chaque suppression de tâche (voir <code>routes/tasks.js</code>) : c'est le journal d'audit de l'application. Les statistiques, elles, sont calculées directement dans le navigateur plutôt que par une route serveur dédiée (voir section 3.4) — pas besoin d'une table supplémentaire pour ça.
   </div>
 
   <p>Script SQL réel de <code>database/schema.sql</code>, qui reflète exactement les tables créées par <code>server.js</code> :</p>
@@ -543,7 +546,7 @@ CREATE TABLE IF NOT EXISTS tasks (
   <h2>7 — Mission 1 — CRUD des tâches (front-end)</h2>
 
   <h3>7.0 Introduction de la mission</h3>
-  <p>La mission principale de Lumina Pro est la <strong>gestion complète des tâches</strong> : créer, lire, modifier, déplacer entre colonnes et supprimer des tâches depuis le tableau Kanban. Cette mission implique les deux côtés de la stack — le front-end génère l'interface dynamiquement et envoie les requêtes, le back-end valide, applique les règles métier et persiste en base.</p>
+  <p>La mission principale de Lumina Pro est la <strong>gestion complète des tâches</strong> : créer, lire, modifier, déplacer entre colonnes et supprimer des tâches depuis le tableau Kanban. Ça passe par le front-end (qui affiche l'interface et envoie les requêtes) et le back-end (qui vérifie les données et les enregistre en base).</p>
 
   <div class="callout"><strong>Tables concernées :</strong> <code>tasks</code> (cœur), <code>columns</code> (colonne de destination), <code>users</code> (assignation via FK <code>id_assigned</code>).</div>
 
@@ -556,8 +559,8 @@ CREATE TABLE IF NOT EXISTS tasks (
   </ul>
 
   <h3>7.2 Architecture et logique d'affichage</h3>
-  <p>L'application est structurée en pages HTML classiques (<code>login.html</code>, <code>index.html</code>) plutôt qu'en Single Page Application : chaque page charge ses modules JS dédiés (<code>auth.js</code>, <code>kanban.js</code>, <code>tasks.js</code>, <code>columns.js</code>, <code>team.js</code>, <code>profile.js</code>, <code>ui.js</code>), avec <code>api.js</code> centralisant les appels réseau via une fonction <code>authFetch()</code> qui ajoute systématiquement le header <code>Authorization: Bearer &lt;token&gt;</code>.</p>
-  <p>Le tableau Kanban est généré entièrement par JavaScript. La fonction <code>renderBoard(columns, tasks)</code> utilise <code>Array.filter()</code> pour trier les tâches par colonne et <code>Array.map()</code> + template literals pour construire le HTML de chaque carte de manière dynamique. Le DOM n'est jamais manipulé manuellement — tout le board est reconstruit à chaque appel.</p>
+  <p>L'application a des pages HTML classiques (<code>login.html</code>, <code>index.html</code>), pas une Single Page Application (une seule page qui change tout sans jamais recharger). Chaque page charge ses propres fichiers JS (<code>auth.js</code>, <code>kanban.js</code>, <code>tasks.js</code>, <code>columns.js</code>, <code>team.js</code>, <code>profile.js</code>, <code>ui.js</code>), et <code>api.js</code> regroupe tous les appels réseau dans une fonction <code>authFetch()</code> qui ajoute le token JWT à chaque requête.</p>
+  <p>Le tableau Kanban est généré entièrement par JavaScript. La fonction <code>renderBoard(columns, tasks)</code> utilise <code>Array.filter()</code> pour trier les tâches par colonne, puis <code>Array.map()</code> pour construire le HTML de chaque carte. Le tableau entier est reconstruit à chaque appel, plutôt que modifié bout par bout.</p>
 
   <h3>7.3 Validation des données côté front</h3>
   <p>Avant tout envoi au serveur, le JavaScript vérifie que le champ titre n'est pas vide. Si la validation échoue, un message d'erreur s'affiche dans le formulaire et la requête n'est pas envoyée :</p>
@@ -639,8 +642,25 @@ function escapeHTML(str) {
   <h3>8.0c Tests de l'API — Swagger UI plutôt que Postman</h3>
   <p>Les routes de l'API ont été testées pendant le développement via <strong>Swagger UI</strong>, intégré directement au serveur Express via <code>swagger-ui-express</code> et accessible sur <code>http://localhost:3000/api-docs</code>. Swagger UI remplace ici l'usage habituel de Postman : chaque route est documentée avec ses paramètres, ses corps de requête JSON attendus, ses codes de retour, et est testable en un clic depuis l'interface. Ce choix couple documentation et test en un seul outil intégré au projet — un avantage par rapport à Postman qui est externe et dont les collections ne sont pas versionnées avec le code.</p>
 
+  <div style="text-align:center; margin:16px 0;">
+    <img src="captures/swagger-overview.png" alt="Page d'accueil de Swagger UI pour Lumina Pro" style="max-width:100%; width:600px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #ddd;">
+    <p style="font-size:12px; color:#888; margin-top:8px;">Page d'accueil de Swagger UI : titre, version de l'API, sélecteur de serveur et bouton d'autorisation JWT.</p>
+  </div>
+  <div style="text-align:center; margin:16px 0;">
+    <img src="captures/swagger-routes-list.png" alt="Liste complète des routes dans Swagger UI, regroupées par ressource" style="max-width:100%; width:600px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #ddd;">
+    <p style="font-size:12px; color:#888; margin-top:8px;">Les routes regroupées par ressource (Tâches, Colonnes, Membres), chacune avec sa méthode HTTP et sa description.</p>
+  </div>
+  <div style="text-align:center; margin:16px 0;">
+    <img src="captures/swagger-login-detail.png" alt="Détail de la route POST /auth/login dans Swagger UI, avec le schéma du corps de requête et les codes de réponse" style="max-width:100%; width:600px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #ddd;">
+    <p style="font-size:12px; color:#888; margin-top:8px;">Détail d'une route dépliée (<code>POST /auth/login</code>) : schéma du corps de requête attendu et codes de réponse possibles (200, 401).</p>
+  </div>
+  <div style="text-align:center; margin:16px 0;">
+    <img src="captures/swagger-code.png" alt="Extrait du fichier swagger.json définissant la route POST /auth/login" style="max-width:100%; width:520px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #ddd;">
+    <p style="font-size:12px; color:#888; margin-top:8px;">Le code source correspondant dans <code>swagger.json</code> : c'est cette définition JSON qui génère automatiquement l'écran ci-dessus.</p>
+  </div>
+
   <h3>8.1 Architecture et logique métier</h3>
-  <p><code>server.js</code> initialise Express, configure les middlewares globaux (<code>cors</code>, <code>express.json</code>, service des fichiers statiques du front), établit la connexion MySQL et crée automatiquement les tables si elles n'existent pas (mécanisme d'auto-réparation au démarrage). Il monte ensuite les routes :</p>
+  <p><code>server.js</code> démarre Express, configure les middlewares (<code>cors</code>, <code>express.json</code>, envoi des fichiers du front), se connecte à MySQL et crée les tables automatiquement si elles n'existent pas encore. Il monte ensuite les routes :</p>
   <pre><code>app.use('/api/auth', require('./routes/auth'));
 app.use('/api/users', verifyToken, require('./routes/users'));
 app.use('/api/tasks', verifyToken, require('./routes/tasks'));
@@ -649,7 +669,7 @@ app.use('/api/columns', verifyToken, require('./routes/columns'));</code></pre>
   <h3>8.1b Évolution du schéma — exemple ALTER TABLE</h3>
   <p>Le champ <code>due_date</code> n'était pas présent dans la version initiale de la table <code>tasks</code>. Il a été ajouté en cours de développement sans recréer la table, via la commande SQL :</p>
   <pre><code>ALTER TABLE tasks ADD COLUMN due_date DATE AFTER priority;</code></pre>
-  <p>Cette modification a ensuite été répercutée dans <code>database/schema.sql</code> pour que les installations futures créent directement la table avec ce champ. C'est un exemple concret de <strong>migration de schéma</strong> — pratique courante dans un développement itératif où la structure de la BDD évolue avec les besoins.</p>
+  <p>J'ai ensuite mis à jour <code>database/schema.sql</code> pour que les prochaines installations créent directement la table avec ce champ. C'est ce qu'on appelle une <strong>migration de schéma</strong> : modifier une base de données déjà en place, sans perdre les données existantes.</p>
 
   <h3>8.2 Logique métier : construction dynamique des requêtes UPDATE</h3>
   <p>Le frontend peut envoyer n'importe quelle combinaison de champs à modifier sur une tâche (déplacement = seul <code>id_col</code>, édition complète = tous les champs). La route <code>PUT /api/tasks/:id</code> construit dynamiquement la clause <code>SET</code> pour éviter de dupliquer la logique :</p>
@@ -662,8 +682,8 @@ sql = sql.slice(0, -2) + " WHERE id = ?";
 params.push(req.params.id);</code></pre>
 
   <h3>8.3 Sécurité et intégrité des données</h3>
-  <p>Les routes <code>/api/users</code>, <code>/api/tasks</code> et <code>/api/columns</code> sont protégées par le middleware <code>verifyToken</code>. La suppression d'une colonne entraîne, grâce à la contrainte <code>ON DELETE CASCADE</code>, la suppression automatique des tâches associées — un effet de bord assumé pour éviter les tâches orphelines.</p>
-  <p>La suppression d'une tâche (<code>DELETE /api/tasks/:id</code>) vérifie en plus la propriété de la ressource pour éviter une faille IDOR (Insecure Direct Object Reference) : un utilisateur standard ne peut supprimer que les tâches qui lui sont assignées, un administrateur peut supprimer n'importe quelle tâche. Cette règle est appliquée côté serveur (pas seulement en masquant le bouton côté front) :</p>
+  <p>Les routes <code>/api/users</code>, <code>/api/tasks</code> et <code>/api/columns</code> sont protégées par le middleware <code>verifyToken</code>. Quand on supprime une colonne, la contrainte <code>ON DELETE CASCADE</code> supprime automatiquement ses tâches avec elle — volontairement, pour ne pas laisser de tâches "orphelines" sans colonne.</p>
+  <p>La suppression d'une tâche (<code>DELETE /api/tasks/:id</code>) vérifie en plus qui en est le propriétaire, pour éviter une faille IDOR (Insecure Direct Object Reference — accéder à une ressource qui ne nous appartient pas juste en devinant son id) : un utilisateur standard ne peut supprimer que les tâches qui lui sont assignées, un administrateur peut tout supprimer. Cette règle est vérifiée côté serveur, pas seulement en cachant le bouton à l'écran :</p>
   <pre><code>// backend/routes/tasks.js — DELETE /:id
 req.db.query("SELECT id_assigned FROM tasks WHERE id = ?", [req.params.id], (err, results) => {
   const isOwner = results[0].id_assigned === req.user.id;
@@ -717,7 +737,7 @@ req.db.query("SELECT id_assigned FROM tasks WHERE id = ?", [req.params.id], (err
   <pre><code>const hashedPassword = await bcrypt.hash(password, 10);</code></pre>
   <p><strong>JWT</strong> — à la connexion, après vérification par <code>bcrypt.compare</code>, un jeton signé est émis (payload <code>id</code> + <code>role</code>, expiration 24h) :</p>
   <pre><code>const token = jwt.sign({ id: user.id, role: user.role }, SECRET_KEY, { expiresIn: '24h' });</code></pre>
-  <p>Le middleware <code>verifyToken</code> vérifie la présence du header <code>Authorization: Bearer &lt;token&gt;</code>, valide la signature (<code>jwt.verify</code>) et injecte les données décodées dans <code>req.user</code> avant de laisser passer la requête.</p>
+  <p>Le middleware <code>verifyToken</code> vérifie que le header <code>Authorization: Bearer &lt;token&gt;</code> est présent, contrôle la signature du token (<code>jwt.verify</code>), puis range les infos décodées (id, rôle) dans <code>req.user</code> pour que la route suivante puisse les utiliser.</p>
 
   <div class="callout">
     <strong>Hachage ≠ Chiffrement — distinction fondamentale :</strong> <strong>bcrypt</strong> est un <em>hachage irréversible</em> — il est impossible de retrouver le mot de passe original à partir du hash stocké. Si un utilisateur oublie son mot de passe, il doit le <em>réinitialiser</em>, pas se le faire rappeler — c'est voulu. À l'opposé, le <strong>chiffrement</strong> (AES, RSA…) est une transformation <em>réversible</em> : avec la bonne clé, on retrouve la donnée d'origine. Lumina Pro utilise le hachage bcrypt pour les mots de passe (irréversible, avec sel aléatoire unique) et la signature HMAC-SHA256 pour les tokens JWT (vérifiable sans être réversible) — jamais de chiffrement réversible des mots de passe.
@@ -736,7 +756,7 @@ req.db.query("SELECT id_assigned FROM tasks WHERE id = ?", [req.params.id], (err
   </table>
 
   <div class="callout">
-    <strong>Correction apportée :</strong> la clé secrète JWT (<code>SECRET_KEY</code>) et les identifiants de connexion à la base de données étaient auparavant codés en dur dans <code>middleware/security.js</code>, <code>routes/auth.js</code> et <code>config/db.js</code>, alors même que <code>dotenv</code> figurait déjà parmi les dépendances installées sans être réellement utilisé. Le chargement de <code>.env</code> via <code>require('dotenv').config()</code> a été ajouté en tête de <code>server.js</code>, et les trois fichiers lisent désormais <code>process.env.SECRET_KEY</code> / <code>process.env.DB_*</code> — plus aucun secret en dur dans le code source.
+    La clé secrète JWT (<code>SECRET_KEY</code>) et les identifiants de connexion à la base de données sont lus depuis <code>.env</code> via <code>dotenv</code> (chargé en tête de <code>server.js</code>) — aucun secret en dur dans le code source.
   </div>
   <div class="callout warn">
     <strong>Point d'amélioration restant :</strong> le rate limiting actuel est stocké en mémoire (objet JS), donc réinitialisé à chaque redémarrage du serveur et non partagé entre plusieurs instances ; une solution Redis serait nécessaire pour une mise à l'échelle en production (voir roadmap).
@@ -754,13 +774,29 @@ req.db.query("SELECT id_assigned FROM tasks WHERE id = ?", [req.params.id], (err
 
   <h3>11.3 RGPD</h3>
   <p>Données collectées strictement minimales : nom, email, mot de passe (haché). Aucune donnée sensible. Aucune transmission à des tiers. Suppression de compte possible par un administrateur. Variables sensibles (<code>SECRET_KEY</code>, identifiants base de données) isolées dans <code>.env</code>, non versionné.</p>
+
+  <h3>11.4 Audit Lighthouse — page index.html</h3>
+  <table>
+    <tr><th>Performance</th><th>Accessibilité</th><th>Best Practices</th><th>SEO</th></tr>
+    <tr style="text-align:center; font-size:20px; font-weight:800;"><td>97</td><td>96</td><td>100</td><td>100</td></tr>
+  </table>
+  <p><strong>Performance (97) :</strong> chargement quasi instantané — First Contentful Paint 0,3 s, Total Blocking Time 0 ms, Speed Index 0,3 s. Seule piste d'amélioration identifiée : réduire le poids des images (~42 KiB d'économie estimée).</p>
+  <p><strong>Accessibilité (96) :</strong> 21 audits automatiques passés — attributs <code>aria-*</code> valides et correctement orthographiés, boutons avec nom accessible, images avec <code>alt</code>, champs de formulaire associés à un <code>&lt;label&gt;</code>.</p>
+  <p><strong>Best Practices et SEO (100) :</strong> page non bloquée à l'indexation, balise <code>&lt;title&gt;</code> et <code>meta description</code> présentes, statut HTTP correct, liens explicites et crawlables.</p>
+  <div style="text-align:center; margin:16px 0;">
+    <img src="captures/lighthouse-overview.png" alt="Résultat de l'audit Lighthouse sur index.html : Performance 97, Accessibilité 96, Best Practices 100, SEO 100" style="max-width:100%; width:520px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #ddd;">
+  </div>
+  <div style="text-align:center; margin:16px 0;">
+    <img src="captures/lighthouse-accessibility-audits.png" alt="Liste des audits d'accessibilité passés dans Lighthouse" style="max-width:100%; width:520px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #ddd;">
+    <p style="font-size:12px; color:#888; margin-top:8px;">Détail des 21 audits d'accessibilité passés avec succès.</p>
+  </div>
 </section>
 
 <section id="tests">
   <h2>12 — Tests et jeu d'essai</h2>
 
   <h3>12.1 Vérifications manuelles</h3>
-  <p>12 scénarios ont été exécutés réellement contre le serveur (requêtes HTTP directes), couvrant l'accessibilité du site, l'authentification (succès, échec, accès sans token), le CRUD des tâches et des colonnes, la cascade de suppression, la non-exposition des mots de passe et le cycle inscription → connexion. Détail complet avec résultats obtenus et preuves dans <code>revision diplôme/Cahier_de_Tests_Lumina_Pro.html</code> — synthèse :</p>
+  <p>J'ai testé 12 scénarios directement sur le serveur (vraies requêtes HTTP) : l'accessibilité du site, la connexion (avec un bon compte, un mauvais, sans token), le CRUD des tâches et des colonnes, la suppression en cascade, la protection du mot de passe, et le parcours inscription → connexion. Détail complet dans <code>revision diplôme/Cahier_de_Tests_Lumina_Pro.html</code> — voici le résumé :</p>
   <table>
     <tr><th>Test</th><th>Description</th><th>Résultat</th></tr>
     <tr><td>TEST001</td><td>Accessibilité du site</td><td><span class="badge badge-ok">OK</span></td></tr>
@@ -781,7 +817,7 @@ req.db.query("SELECT id_assigned FROM tasks WHERE id = ?", [req.params.id], (err
   <p>Aucune suite automatisée n'est en place à ce jour. Une suite Jest + Supertest ciblant en priorité l'authentification et le CRUD des tâches est identifiée comme amélioration prioritaire (voir roadmap).</p>
 
   <h3>12.3 Jeu d'essai</h3>
-  <p>Un script <code>seed.js</code> avait été développé en cours de projet pour générer un jeu de données de démonstration, puis supprimé lors du commit de simplification du 28 mai (<em>« Suppression des fichiers utilitaires inutiles pour l'examen »</em>), avec <code>force_admin.js</code> et d'autres utilitaires. Le compte de démonstration est aujourd'hui créé manuellement, via le fonctionnement normal de l'application : inscription par <code>POST /api/auth/register</code> (qui applique le hachage bcrypt normalement), puis promotion du rôle en base :</p>
+  <p>Le compte de démonstration est créé simplement, avec le fonctionnement normal de l'application : inscription par <code>POST /api/auth/register</code> (le mot de passe est haché avec bcrypt comme pour n'importe quel compte), puis le rôle est changé en admin directement dans la base :</p>
   <table>
     <tr><th>Rôle</th><th>Email</th><th>Mot de passe</th></tr>
     <tr><td>admin</td><td>admin@lumina.com</td><td>Lumina1!</td></tr>
@@ -789,7 +825,7 @@ req.db.query("SELECT id_assigned FROM tasks WHERE id = ?", [req.params.id], (err
   </table>
   <pre><code>UPDATE users SET role='admin' WHERE email='admin@lumina.com';</code></pre>
   <div class="callout">
-    <strong>Choix assumé :</strong> pas de script de seed maintenu à ce jour — les comptes de démonstration passent par le vrai chemin applicatif (inscription + hachage bcrypt réel) plutôt que par une insertion SQL directe qui contournerait la logique métier. Seul le compte admin nécessite une promotion manuelle du rôle en base (l'inscription crée toujours un compte <code>user</code> par défaut).
+    Les comptes de démonstration passent par le vrai parcours de l'application (inscription + hachage bcrypt), pas par une insertion directe en base qui sauterait ces étapes. Seul le rôle admin doit être changé à la main en base, car l'inscription crée toujours un compte <code>user</code> par défaut.
   </div>
 </section>
 
@@ -797,22 +833,22 @@ req.db.query("SELECT id_assigned FROM tasks WHERE id = ?", [req.params.id], (err
   <h2>13 — Déploiement de l'application</h2>
 
   <h3>13.1 Préparation de l'environnement</h3>
-  <p>L'application est composée d'un serveur Node.js/Express exposant une API REST et servant directement les fichiers statiques du front-end (pas d'étape de build). Un serveur MySQL 8.0 doit être démarré ; les tables du cœur applicatif sont créées automatiquement au premier lancement du serveur.</p>
+  <p>L'application, c'est un serveur Node.js/Express qui expose une API et qui envoie aussi directement les fichiers du front-end (pas d'étape de build à faire avant). Il faut un serveur MySQL 8.0 démarré ; les tables se créent automatiquement au premier lancement du serveur.</p>
 
   <h3>13.2 Configuration</h3>
-  <p>La configuration repose sur un fichier <code>.env</code> non versionné (modèle fourni par <code>.env.example</code>), chargé par <code>dotenv</code> dès la première ligne de <code>server.js</code>, contenant la clé <code>SECRET_KEY</code> et les identifiants de connexion à la base (<code>DB_HOST</code>, <code>DB_USER</code>, <code>DB_PASSWORD</code>, <code>DB_NAME</code>, <code>PORT</code>). Les dépendances s'installent via <code>npm install</code>, le serveur démarre avec <code>npm start</code>. Le service MySQL80 doit être démarré au préalable (démarrage manuel).</p>
+  <p>La configuration est dans un fichier <code>.env</code> (jamais envoyé sur GitHub, avec <code>.env.example</code> comme modèle), chargé par <code>dotenv</code> dès la première ligne de <code>server.js</code> : il contient la clé secrète <code>SECRET_KEY</code> et les identifiants de connexion à la base (<code>DB_HOST</code>, <code>DB_USER</code>, <code>DB_PASSWORD</code>, <code>DB_NAME</code>, <code>PORT</code>). On installe les dépendances avec <code>npm install</code>, on démarre avec <code>npm start</code> — après avoir démarré le service MySQL80.</p>
 
   <h3>13.3 Mise en ligne et exploitation</h3>
-  <p>À ce jour, le projet tourne exclusivement <strong>en local</strong> (XAMPP + Node), sans conteneurisation ni hébergement distant. C'est un choix assumé plutôt qu'un oubli : les pistes de mise en production (hébergement mutualisé type O2Switch ou VPS, HTTPS obligatoire, Docker) sont identifiées en roadmap plutôt que prétendues faites.</p>
+  <p>Pour l'instant, le projet tourne seulement <strong>en local</strong> (XAMPP + Node), sans hébergement en ligne. Les pistes pour la suite (hébergement type O2Switch ou VPS, HTTPS, Docker) sont notées dans la roadmap.</p>
 </section>
 
 <section id="roadmap">
   <h2>14 — Roadmap et évolutions futures</h2>
   <ul>
-    <li>Réintroduire, si le besoin se confirme, une route serveur dédiée aux statistiques et une route de consultation du journal d'audit (retirées volontairement pour simplifier le périmètre d'examen ; une version front-end légère des statistiques existe déjà, voir section 3.4).</li>
+    <li>Ajouter, si le besoin se confirme, une route serveur dédiée aux statistiques et une route de consultation du journal d'audit — une version front-end légère des statistiques existe déjà (voir section 3.4).</li>
     <li>Ajouter une suite de tests automatisés (Jest + Supertest) sur l'authentification et le CRUD des tâches.</li>
     <li>Persister le <em>rate limiting</em> de <code>/api/auth</code> dans Redis plutôt qu'en mémoire, pour tenir la charge sur plusieurs instances du serveur (la protection anti brute-force elle-même est déjà en place, voir section 10.2).</li>
-    <li>Introduire une séparation formelle routes / controllers / models pour préparer la montée en complexité de l'application.</li>
+    <li>Séparer plus clairement les routes, les contrôleurs et les modèles, pour que le code reste facile à gérer si l'application grandit.</li>
     <li>Conteneuriser l'application avec Docker et documenter un déploiement en environnement distant (HTTPS, variables d'environnement de production).</li>
     <li>Drag &amp; drop natif pour le déplacement des tâches (actuellement via boutons directionnels, un choix pris pour simplifier l'UI et le code).</li>
   </ul>
@@ -831,19 +867,19 @@ req.db.query("SELECT id_assigned FROM tasks WHERE id = ?", [req.params.id], (err
     <li>API REST documentée avec Swagger UI (12 routes, codes HTTP sémantiques sur toutes les réponses) ;</li>
     <li>Interface responsive (desktop / tablette / mobile) avec accessibilité RGAA 4.1.2 vérifiée sur 30 critères.</li>
   </ul>
-  <p>Plusieurs fonctionnalités plus avancées avaient été développées (route serveur de statistiques, consultation du journal d'audit, drag &amp; drop, système de notifications) puis volontairement retirées lors d'une phase de simplification. Ce choix stratégique — préférer un cœur solide entièrement maîtrisé à une accumulation de fonctionnalités partielles — est assumé et documenté en roadmap. Une version plus légère des statistiques, calculée côté front-end sans route serveur dédiée, a depuis été réintroduite (voir section 3.4), et la table <code>logs</code> continue d'enregistrer un audit trail à chaque suppression de tâche.</p>
-  <p>Les principales erreurs rencontrées ont été identifiées, corrigées et documentées : bug CSS de scroll dans les colonnes Kanban (<code>min-height: 0</code> sur les flex-children avec <code>overflow-y: auto</code>), secrets JWT codés en dur migrés vers <code>.env</code>, appels <code>console.log()</code> de debug retirés, et une faille IDOR sur la suppression de tâches comblée par une vérification de propriété côté serveur (et non uniquement via masquage du bouton côté front).</p>
-  <div class="callout"><strong>Périmètre honnête :</strong> l'application tourne exclusivement en local (XAMPP + Node.js). Absence de tests automatisés et de mise en production, rate limiting en mémoire uniquement (non partagé entre instances) : ces limites sont documentées en roadmap plutôt que masquées — c'est en soi une démonstration de rigueur professionnelle.</div>
+  <p>J'ai préféré un cœur d'application simple et bien maîtrisé plutôt que d'accumuler des fonctionnalités à moitié finies — le drag & drop et les notifications restent des pistes pour plus tard (voir roadmap). La page Statistiques est calculée directement dans le navigateur (voir section 3.4), et la table <code>logs</code> garde une trace de chaque suppression de tâche.</p>
+  <p>Pendant le développement, j'ai trouvé et corrigé plusieurs problèmes : un bug d'affichage CSS dans les colonnes Kanban (<code>min-height: 0</code> avec <code>overflow-y: auto</code>), des secrets JWT écrits en dur dans le code que j'ai déplacés dans <code>.env</code>, des <code>console.log()</code> de test que j'ai enlevés, et une faille de sécurité (IDOR) sur la suppression de tâches, corrigée en vérifiant côté serveur que l'utilisateur a bien le droit de supprimer (et pas seulement en cachant le bouton côté écran).</p>
+  <div class="callout"><strong>Ce qui manque encore, en toute transparence :</strong> l'application tourne seulement en local (XAMPP + Node.js), il n'y a pas encore de tests automatisés ni de mise en ligne, et le rate limiting est en mémoire seulement. Ces points sont notés dans la roadmap plutôt que cachés.</div>
 
   <h3>15.2 Bilan de la formation</h3>
-  <p>Cette formation DWWM à La Plateforme_ représente <strong>[à compléter — décrire ta reconversion : ex. "une reconversion depuis le secteur de [domaine précédent]" ou "une première expérience structurée dans le développement web après une formation autodidacte"]</strong>. En 12 mois, elle m'a permis de passer de <strong>[situation de départ]</strong> à la capacité de concevoir, développer et documenter une application full-stack complète de bout en bout, seule.</p>
-  <p>Les principales difficultés surmontées ont été <strong>[à compléter — par exemple : "comprendre le flux d'authentification JWT et pourquoi le token ne doit pas être en cookie ; la modélisation MERISE qui impose de réfléchir aux données avant d'écrire la moindre ligne de code ; la gestion des erreurs asynchrones en JavaScript ; et debugger un bug CSS de scroll qu'aucune documentation ne décrit directement"]</strong>. Ces obstacles ont été levés par la pratique directe sur Lumina Pro plutôt que par des exercices isolés — ce qui a rendu l'apprentissage concret et durable.</p>
-  <p>La formation a également renforcé des compétences transversales : gestion de projet solo (Trello, Git avec 33+ commits explicites), documentation technique (Swagger UI, README, dossier professionnel complet), et rigueur dans l'identification et la correction des failles de sécurité. Elle a confirmé une appétence particulière pour <strong>[à compléter : ex. "le développement back-end et la sécurisation des API" / "l'architecture technique d'une application web" / "la conception d'interfaces accessibles"]</strong>.</p>
+  <p>Cette formation DWWM à La Plateforme_ représente <strong>une reconversion depuis le secteur de la couture et du stylisme assisté par ordinateur</strong>. La passion pour la technologie, présente depuis une première certification en bureautique en 2001, n'avait jamais disparu ; cette formation a été l'occasion de la poursuivre concrètement. Durant cette formation, elle m'a permis de passer d'une <strong>curiosité pour ce qui se cache derrière un site web</strong> à la capacité de concevoir, développer et documenter une application complète de bout en bout, seule.</p>
+  <p>Les principales difficultés surmontées ont été celles d'une débutante en programmation : comprendre la logique asynchrone de JavaScript (pourquoi une réponse du serveur n'arrive pas instantanément), me familiariser avec la syntaxe et les erreurs qu'elle provoque au début, apprendre à lire un message d'erreur pour remonter à sa cause, et prendre l'habitude de modéliser les données avant d'écrire la moindre ligne de code. Ces obstacles ont été levés par la pratique directe sur Lumina Pro plutôt que par des exercices isolés — ce qui a rendu l'apprentissage concret et durable.</p>
+  <p>La formation a également renforcé des compétences transversales : gestion de projet solo (Trello, Git avec 33+ commits explicites), documentation technique (Swagger UI, README, dossier professionnel complet), et rigueur dans l'identification et la correction des failles de sécurité. Elle a confirmé une appétence particulière pour <strong>le développement back-end</strong>.</p>
 
   <h3>15.3 La suite</h3>
-  <p>À court terme, l'objectif est <strong>[à compléter — ex. "de décrocher un premier poste de développeur web junior, idéalement orienté back-end Node.js ou full-stack, dans une structure où je pourrai continuer à progresser sur des projets réels" / "d'intégrer une alternance de niveau Bac+3 en développement web ou cybersécurité" / "de poursuivre la formation vers un titre de niveau 6"]</strong>.</p>
+  <p>À court terme, l'objectif est <strong>de continuer à me former et de progresser vers l'intelligence artificielle</strong>, un domaine qui me passionne, tout en consolidant les bases acquises en développement web durant cette formation.</p>
   <p>Sur Lumina Pro spécifiquement, les évolutions prioritaires identifiées sont : la mise en production sur un VPS avec HTTPS, l'ajout d'une suite de tests automatisés Jest + Supertest sur l'authentification et le CRUD, et l'introduction d'un vrai workflow de branches Git pour simuler un contexte d'équipe. Ces améliorations sont réalistes et permettront de faire vivre le projet au-delà de l'examen.</p>
-  <p>Ce titre DWWM constitue <strong>[à compléter — ex. "une première étape solide dans ma reconversion dans le numérique, que j'envisage de poursuivre vers un niveau Bac+3 à moyen terme" / "la confirmation que le développement web est le domaine dans lequel je veux m'inscrire durablement" / "une base technique que je compte approfondir, notamment sur les frameworks front-end (React) et la containerisation (Docker)"]</strong>.</p>
+  <p>Ce titre DWWM constitue <strong>un bon début dans les nouvelles technologies</strong>, une base solide sur laquelle m'appuyer pour aller vers ce qui me passionne aujourd'hui : l'intelligence artificielle.</p>
 </section>
 
 
@@ -856,7 +892,7 @@ req.db.query("SELECT id_assigned FROM tasks WHERE id = ?", [req.params.id], (err
     <tr>
       <td><strong>Diagramme de cas d'utilisation</strong></td>
       <td><code>use_case_uml.html</code></td>
-      <td>UML — 2 acteurs, 13 cas d'utilisation, relations «include» et héritage</td>
+      <td>UML — 2 acteurs, 14 cas d'utilisation, relations «include» et héritage</td>
     </tr>
     <tr>
       <td><strong>Diagramme de séquence</strong></td>
@@ -915,8 +951,68 @@ req.db.query("SELECT id_assigned FROM tasks WHERE id = ?", [req.params.id], (err
     </tr>
   </table>
 
-  <div class="callout warn">
-    <strong>Note screenshots :</strong> Les captures d'écran des pages intégrées (login, tableau Kanban, version mobile) seront ajoutées dans cette section avant la soutenance. L'application est fonctionnelle et démontrable en live depuis <code>http://localhost:3000</code>.
+  <h3>16.1 Capture de code — Protection anti brute-force (rate limiting)</h3>
+  <p>Extrait de <code>backend/routes/auth.js</code> : les trois fonctions qui protègent la route de connexion contre les attaques par force brute (voir section 10.2).</p>
+
+  <div style="text-align:center; margin:16px 0;">
+    <img src="captures/01-ratelimit-check.png" alt="Code de la fonction checkRateLimit dans backend/routes/auth.js" style="max-width:100%; width:600px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #ddd;">
+    <p style="font-size:12px; color:#888; margin-top:8px;">Les constantes (MAX_ATTEMPTS, BLOCK_MS...) et <code>checkRateLimit()</code>, appelée avant tout traitement de connexion.</p>
+  </div>
+
+  <div style="text-align:center; margin:16px 0;">
+    <img src="captures/02-ratelimit-record.png" alt="Code des fonctions recordFailedAttempt et resetAttempts dans backend/routes/auth.js" style="max-width:100%; width:600px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #ddd;">
+    <p style="font-size:12px; color:#888; margin-top:8px;"><code>recordFailedAttempt()</code> incrémente le compteur et déclenche le blocage au 5ᵉ échec ; <code>resetAttempts()</code> remet le compteur à zéro après une connexion réussie.</p>
+  </div>
+
+  <h3>16.2 Captures d'écran de l'application</h3>
+  <p>Application fonctionnelle et démontrable en live depuis <code>http://localhost:3000</code>.</p>
+
+  <div style="text-align:center; margin:16px 0;">
+    <img src="captures/app-login.png" alt="Page de connexion de Lumina Pro" style="max-width:100%; width:500px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #ddd;">
+    <p style="font-size:12px; color:#888; margin-top:8px;">Page de connexion (login.html).</p>
+  </div>
+  <div style="text-align:center; margin:16px 0;">
+    <img src="captures/app-kanban.png" alt="Tableau de bord Kanban de Lumina Pro avec ses colonnes et tâches" style="max-width:100%; width:600px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #ddd;">
+    <p style="font-size:12px; color:#888; margin-top:8px;">Tableau de bord Kanban : colonnes, cartes de tâches, badges de priorité et d'échéance.</p>
+  </div>
+  <div style="text-align:center; margin:16px 0;">
+    <img src="captures/app-nouvelle-tache.png" alt="Modale de création d'une nouvelle tâche" style="max-width:100%; width:500px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #ddd;">
+    <p style="font-size:12px; color:#888; margin-top:8px;">Modale de création d'une tâche (titre, description, priorité, assignation, échéance).</p>
+  </div>
+  <div style="text-align:center; margin:16px 0;">
+    <img src="captures/app-equipe.png" alt="Page Membres de l'équipe" style="max-width:100%; width:600px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #ddd;">
+    <p style="font-size:12px; color:#888; margin-top:8px;">Page Équipe, réservée à l'administrateur : liste des membres, rôle, statut.</p>
+  </div>
+
+  <h3>16.3 Version mobile (≤ 600px)</h3>
+  <div style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin:16px 0;">
+    <div style="text-align:center;">
+      <img src="captures/app-mobile-login.png" alt="Page de connexion en version mobile" style="max-width:100%; width:220px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #ddd;">
+      <p style="font-size:12px; color:#888; margin-top:8px;">Connexion</p>
+    </div>
+    <div style="text-align:center;">
+      <img src="captures/app-mobile-kanban.png" alt="Tableau Kanban en version mobile, colonnes empilées verticalement" style="max-width:100%; width:220px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #ddd;">
+      <p style="font-size:12px; color:#888; margin-top:8px;">Kanban (colonnes empilées)</p>
+    </div>
+    <div style="text-align:center;">
+      <img src="captures/app-mobile-menu.png" alt="Menu latéral ouvert en tiroir plein écran sur mobile" style="max-width:100%; width:220px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #ddd;">
+      <p style="font-size:12px; color:#888; margin-top:8px;">Menu en tiroir</p>
+    </div>
+    <div style="text-align:center;">
+      <img src="captures/app-mobile-statistiques.png" alt="Page Statistiques en version mobile" style="max-width:100%; width:220px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #ddd;">
+      <p style="font-size:12px; color:#888; margin-top:8px;">Statistiques</p>
+    </div>
+  </div>
+  <p style="font-size:13px;">Le tableau de la page Équipe est plus large que l'écran mobile ; il se scrolle horizontalement au doigt pour révéler les colonnes Rôle, Statut et Action.</p>
+  <div style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin:16px 0;">
+    <div style="text-align:center;">
+      <img src="captures/app-mobile-equipe.png" alt="Page Équipe sur mobile, position de scroll initiale" style="max-width:100%; width:220px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #ddd;">
+      <p style="font-size:12px; color:#888; margin-top:8px;">Équipe — vue initiale</p>
+    </div>
+    <div style="text-align:center;">
+      <img src="captures/app-mobile-equipe-scroll.png" alt="Page Équipe sur mobile après scroll horizontal, colonnes Rôle/Statut/Action visibles" style="max-width:100%; width:220px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #ddd;">
+      <p style="font-size:12px; color:#888; margin-top:8px;">Équipe — après scroll</p>
+    </div>
   </div>
 </section>
 

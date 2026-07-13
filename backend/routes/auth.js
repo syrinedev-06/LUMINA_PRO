@@ -61,6 +61,7 @@ function resetAttempts(ip) {
     delete loginAttempts[ip];
 }
 
+
 /**
  * @brief Route POST pour l'inscription d'un nouvel utilisateur (/api/auth/register).
  * 
