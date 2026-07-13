@@ -57,27 +57,35 @@ body {
     flex-grow: 1;
 }
 
-.nav-links li { margin-bottom: 4px; }
+.nav-links li { margin-bottom: 12px; }
 
-.nav-links a {
+.nav-links a,
+.nav-links .nav-btn {
     color: black;
     text-decoration: none;
     display: flex;
     align-items: center;
-    padding: 11px 18px;
+    padding: 13px 18px;
     border-radius: 12px;
     font-weight: 500;
     transition: 0.2s;
     gap: 10px;
     font-size: 14px;
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-links .nav-btn:hover {
     background-color: #e536b7;
     color: black;
 }
 
-.nav-links li.active a {
+.nav-links li.active a,
+.nav-links li.active .nav-btn {
     background-color: #e536b7;
     color: black;
     font-weight: 700;

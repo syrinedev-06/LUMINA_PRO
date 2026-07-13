@@ -24,6 +24,7 @@
  * 3. Rôles (Admin vs Utilisateur normal) : Si l'utilisateur est admin, on lui montre l'onglet "Équipe", 
  *    sinon on le cache.
  */
+
 document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
     if (!token) { 
@@ -112,6 +113,11 @@ function renderBoard(columns, tasks) {
     if (!board) return;
     board.innerHTML = "";
 
+    // On ne propose la suppression que sur ses propres tâches (celles qui nous sont assignées) ;
+    // un admin garde le droit de supprimer n'importe quelle tâche. Le serveur revérifie
+    // cette même règle de son côté (voir routes/tasks.js), le frontend ne fait que l'UX.
+    const currentUser = JSON.parse(localStorage.getItem('user'));
+
     if (columns.length === 0) {
         board.innerHTML = "<p style='padding:20px;'>Aucune colonne. Cliquez sur le bouton pour en créer une !</p>";
     }
@@ -127,35 +133,39 @@ function renderBoard(columns, tasks) {
         const colEl = document.createElement('div');
         colEl.className = 'kanban-column';
         colEl.innerHTML = `
-            <h4>
+            <h3>
                 ${col.title.toUpperCase()}
                 <div style="display:flex; align-items:center; gap:8px;">
                     <span class="badge" style="position:static; padding:2px 8px; background-color: var(--danger); color: #000000; font-weight: 900; font-size: 13px;">${colTasks.length}</span>
-                    <span class="icon-btn" title="Renommer" onclick="renameColumn(${col.id}, '${col.title.replace(/'/g, "\\'")}')">✏️</span>
-                    <span class="icon-btn" title="Supprimer" onclick="deleteColumn(${col.id})">×</span>
+                    <button type="button" class="icon-btn" aria-label="Renommer la colonne ${escapeHTML(col.title)}" onclick="renameColumn(${col.id}, '${col.title.replace(/'/g, "\\'")}')">✏️</button>
+                    <button type="button" class="icon-btn" aria-label="Supprimer la colonne ${escapeHTML(col.title)}" onclick="deleteColumn(${col.id})">×</button>
                 </div>
-            </h4>
+            </h3>
             <div class="task-list">
-                ${colTasks.map(task => `
+                ${colTasks.map(task => {
+                    // Un utilisateur standard ne peut supprimer que les tâches qui lui sont assignées ;
+                    // un admin peut toujours tout supprimer. Le serveur revérifie cette règle (voir routes/tasks.js).
+                    const canDelete = currentUser.role === 'admin' || task.id_assigned === currentUser.id;
+                    return `
                     <div class="task-card">
-                        <span class="badge bg-${escapeHTML(task.priority)}">${task.priority === 'high' ? 'URGENT' : task.priority === 'medium' ? 'MOYEN' : 'NORMAL'}</span>
-                        <h5>${escapeHTML(task.title)}</h5>
+                        <span class="badge bg-${escapeHTML(task.priority || 'low')}">${task.priority === 'high' ? 'URGENT' : task.priority === 'medium' ? 'MOYEN' : 'NORMAL'}</span>
+                        <h4>${escapeHTML(task.title)}</h4>
                         <p>${escapeHTML(task.description || '')}</p>
                         <div class="assigned-to">👤 ${escapeHTML(task.assigned_name || 'Non assigné')}</div>
-                        
+
                         <!-- Actions et Boutons de déplacement -->
                         <div style="display:flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);">
                             <div class="task-move-btns" style="display:flex; gap:5px;">
-                                ${prevCol ? `<span class="icon-btn" title="Déplacer à gauche" onclick="moveTask(${task.id}, ${prevCol.id})">⬅️</span>` : `<span style="width:24px; display:inline-block;"></span>`}
-                                ${nextCol ? `<span class="icon-btn" title="Déplacer à droite" onclick="moveTask(${task.id}, ${nextCol.id})">➡️</span>` : `<span style="width:24px; display:inline-block;"></span>`}
+                                ${prevCol ? `<button type="button" class="icon-btn" aria-label="Déplacer la tâche vers ${escapeHTML(prevCol.title)}" onclick="moveTask(${task.id}, ${prevCol.id})">⬅️</button>` : `<span style="width:24px; display:inline-block;"></span>`}
+                                ${nextCol ? `<button type="button" class="icon-btn" aria-label="Déplacer la tâche vers ${escapeHTML(nextCol.title)}" onclick="moveTask(${task.id}, ${nextCol.id})">➡️</button>` : `<span style="width:24px; display:inline-block;"></span>`}
                             </div>
                             <div class="task-actions" style="margin-top: 0; padding-top: 0; border: none;">
-                                <span class="icon-btn" title="Modifier" onclick="editTask(${JSON.stringify(task).replace(/"/g, '&quot;')})">✏️</span>
-                                <span class="icon-btn" title="Supprimer" onclick="directDeleteTask(${task.id})">🗑️</span>
+                                <button type="button" class="icon-btn" aria-label="Modifier la tâche ${escapeHTML(task.title)}" onclick="editTask(${JSON.stringify(task).replace(/"/g, '&quot;')})">✏️</button>
+                                ${canDelete ? `<button type="button" class="icon-btn" aria-label="Supprimer la tâche ${escapeHTML(task.title)}" onclick="directDeleteTask(${task.id})">🗑️</button>` : ''}
                             </div>
                         </div>
                     </div>
-                `).join('')}
+                `}).join('')}
             </div>
         `;
         board.appendChild(colEl);

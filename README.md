@@ -16,7 +16,8 @@ Développée dans le cadre du titre professionnel **DWWM** — La Plateforme_ �
 - Authentification sécurisée par **JWT** (expiration 24h)
 - Mots de passe hachés avec **bcrypt** (10 rounds)
 - Gestion des rôles : **admin** (gestion équipe + colonnes) et **utilisateur**
-- Interface **responsive** (desktop + mobile)
+- Page **Statistiques** avec graphique camembert SVG généré en JavaScript pur (sans bibliothèque), utilisant `Promise.all()` pour charger tâches et membres en parallèle
+- Interface **responsive** (desktop + mobile) avec attributs ARIA (accessibilité WCAG 2.1 / RGAA 4.1.2)
 - Documentation API interactive avec **Swagger**
 - Logs d'audit de toutes les actions (qui a fait quoi et quand)
 
@@ -56,24 +57,38 @@ cd backend
 npm install
 ```
 
-**3. Démarrer MySQL**  
+**3. Configurer les variables d'environnement**  
+Copier le fichier d'exemple et le renseigner :
+```bash
+cp backend/.env.example backend/.env
+```
+Contenu du `.env` à adapter :
+```
+JWT_SECRET=votre_cle_secrete_ici
+```
+
+**4. Démarrer MySQL**  
 Ouvrir XAMPP et démarrer le service **MySQL**.
 
-**4. Créer la base de données**  
+**5. Créer la base de données**  
 Dans phpMyAdmin (`http://localhost/phpmyadmin`), créer une base nommée :
 ```sql
 CREATE DATABASE lumina_pro;
 ```
 
-**5. Lancer le serveur**
+**6. Lancer le serveur**
 ```bash
-node server.js
+cd backend
+npm start
 ```
 Le serveur démarre sur **http://localhost:3000**.  
 Les tables sont créées automatiquement au premier démarrage.
 
-**6. Ouvrir l'application**  
-Ouvrir `frontend/login.html` dans un navigateur (ou via Live Server sur VSCode).
+**7. Ouvrir l'application**  
+```
+http://localhost:3000
+```
+Ou via Live Server VS Code sur `frontend/login.html`.
 
 ---
 
@@ -115,7 +130,11 @@ lumina_pro/
 │   │   ├── tasks.js        # CRUD tâches
 │   │   ├── columns.js      # CRUD colonnes
 │   │   └── users.js        # GET/DELETE utilisateurs
-│   └── swagger.json        # Documentation API
+│   ├── config/
+│   │   └── db.js           # Configuration connexion MySQL (DRY)
+│   ├── swagger.json        # Documentation OpenAPI
+│   ├── .env                # Clé JWT (non versionné)
+│   └── .env.example        # Modèle de configuration
 └── README.md
 ```
 

@@ -33,6 +33,15 @@ function setupEventListeners() {
     const taskForm = document.getElementById('task-form');
     if (taskForm) taskForm.onsubmit = handleTaskSubmit;
 
+    const titleInput = document.getElementById('task-title');
+    if (titleInput) {
+        titleInput.addEventListener('input', () => {
+            const err = document.getElementById('task-title-error');
+            if (err) err.style.display = 'none';
+            titleInput.removeAttribute('aria-invalid');
+        });
+    }
+
     const deleteBtn = document.getElementById('delete-task-btn');
     if (deleteBtn) deleteBtn.onclick = deleteTask;
 
@@ -90,8 +99,10 @@ function setActiveLink(id) {
 
     // Refermer automatiquement le menu sur mobile après le clic
     const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
     if (sidebar && sidebar.classList.contains('open')) {
         sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('active');
     }
 }
 
@@ -99,9 +110,14 @@ function setActiveLink(id) {
 function resetTaskForm() {
     const form = document.getElementById('task-form');
     if (form) form.reset();
-    
+
     document.getElementById('task-id').value = "";
-    document.getElementById('delete-task-btn').style.display = "none"; 
+    document.getElementById('delete-task-btn').style.display = "none";
+
+    const err = document.getElementById('task-title-error');
+    if (err) err.style.display = 'none';
+    const titleInput = document.getElementById('task-title');
+    if (titleInput) titleInput.removeAttribute('aria-invalid');
 }
 
 /**
@@ -109,5 +125,10 @@ function resetTaskForm() {
  */
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
-    if (sidebar) sidebar.classList.toggle('open');
+    const overlay = document.getElementById('sidebar-overlay');
+    const btn = document.querySelector('.sidebar-toggle');
+    if (!sidebar) return;
+    const isOpen = sidebar.classList.toggle('open');
+    if (overlay) overlay.classList.toggle('active', isOpen);
+    if (btn) btn.setAttribute('aria-expanded', isOpen);
 }

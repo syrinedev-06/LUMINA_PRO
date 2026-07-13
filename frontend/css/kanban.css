@@ -29,7 +29,7 @@
     flex-shrink: 0;
 }
 
-.kanban-column h4 {
+.kanban-column h3 {
     padding: 4px 8px 14px;
     font-size: 12px;
     text-transform: uppercase;
@@ -65,7 +65,7 @@
     box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
-.task-card h5 { font-size: 14px; margin: 6px 0 4px; }
+.task-card h4 { font-size: 14px; margin: 6px 0 4px; font-weight: 600; }
 .task-card p { font-size: 13px; color: var(--text-muted); }
 .assigned-to { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
 

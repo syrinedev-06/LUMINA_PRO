@@ -32,9 +32,10 @@ function escapeHTML(str) {
  * 2. Pourquoi faire cette fonction ?
  *    Pour éviter de réécrire le code du ticket sur chaque demande. Cette fonction le fait 
  *    automatiquement à notre place.
- * 3. Erreur 401 (Non autorisé) :
- *    Si le serveur dit "erreur 401", ça veut dire que notre ticket n'est plus bon (périmé). 
- *    Dans ce cas, on vide la mémoire et on renvoie l'utilisateur à la page de connexion.
+ * 3. Erreur 401 ou 403 :
+ *    Le serveur renvoie 401 quand le ticket est absent, et 403 quand il est présent mais invalide
+ *    ou expiré (voir backend/middleware/security.js). Dans les deux cas, notre ticket n'est plus bon :
+ *    on vide la mémoire et on renvoie l'utilisateur à la page de connexion.
  */
 async function authFetch(url, options = {}) {
     const token = localStorage.getItem('token');
@@ -55,10 +56,10 @@ async function authFetch(url, options = {}) {
 
     const response = await fetch(url, options);
     
-    // Si le ticket est faux ou expiré
-    if (response.status === 401) {
-        localStorage.clear(); 
-        window.location.href = 'login.html'; 
+    // Si le ticket est absent (401) ou invalide/expiré (403)
+    if (response.status === 401 || response.status === 403) {
+        localStorage.clear();
+        window.location.href = 'login.html';
         throw new Error("Session finie. Retour à la page de connexion.");
     }
     

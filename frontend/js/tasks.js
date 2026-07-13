@@ -18,8 +18,11 @@ function editTask(task) {
     document.getElementById('task-priority').value = task.priority;
     document.getElementById('task-assign').value = task.id_assigned || "";
 
-    // On montre le bouton supprimer parce que la tâche existe déjà
-    document.getElementById('delete-task-btn').style.display = "block";
+    // On ne montre le bouton supprimer que si l'utilisateur a le droit de supprimer cette tâche :
+    // un admin peut tout supprimer, un utilisateur standard seulement ses propres tâches assignées.
+    const currentUser = JSON.parse(localStorage.getItem('user'));
+    const canDelete = currentUser.role === 'admin' || task.id_assigned === currentUser.id;
+    document.getElementById('delete-task-btn').style.display = canDelete ? "block" : "none";
     
     modal.style.display = 'flex';
 }
@@ -30,12 +33,23 @@ function editTask(task) {
 async function handleTaskSubmit(e) {
     e.preventDefault();
     const id = document.getElementById('task-id').value;
-    
+    const titleInput = document.getElementById('task-title');
+    const titleError = document.getElementById('task-title-error');
+
+    if (!titleInput.value.trim()) {
+        titleError.style.display = 'block';
+        titleInput.setAttribute('aria-invalid', 'true');
+        titleInput.focus();
+        return;
+    }
+    titleError.style.display = 'none';
+    titleInput.removeAttribute('aria-invalid');
+
     const taskData = {
-        title: document.getElementById('task-title').value,
+        title: titleInput.value.trim(),
         description: document.getElementById('task-desc').value,
         priority: document.getElementById('task-priority').value,
-        id_assigned: document.getElementById('task-assign').value || null
+        id_assigned: document.getElementById('task-assign').value || null,
     };
 
     // Si on a un ID → modification (PUT), sinon → création (POST)
@@ -63,9 +77,13 @@ async function handleTaskSubmit(e) {
 /** Supprime une tâche. */
 async function directDeleteTask(id) {
     if (confirm("Voulez-vous vraiment supprimer cette tâche ?")) {
-        await authFetch(`http://localhost:3000/api/tasks/${id}`, { 
-            method: 'DELETE' 
+        const response = await authFetch(`http://localhost:3000/api/tasks/${id}`, {
+            method: 'DELETE'
         });
+        if (!response.ok) {
+            const data = await response.json().catch(() => ({}));
+            alert("Erreur : " + (data.error || "Suppression impossible."));
+        }
         fetchTasks();
     }
 }

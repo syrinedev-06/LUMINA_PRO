@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Charte Graphique — Lumina Pro</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f8fafc; color: #000; font-size: 15px; line-height: 1.6; }
+
+  header {
+    background: #ffffff; color: #000;
+    padding: 40px 40px 34px; text-align: center;
+    border-bottom: 3px solid #A10057;
+  }
+  header img {
+    /* Reproduit exactement .logo-large de layout.css : fond blanc, pas d'ombre ni de halo,
+       le logo s'affiche tel qu'il apparaît réellement dans la sidebar de l'application. */
+    width: 100%; max-width: 260px; height: auto; object-fit: contain; margin-bottom: 6px;
+  }
+  header h1 { font-size: 22px; font-weight: 800; letter-spacing: 1px; color: #1e293b; }
+  header p { font-size: 13px; color: #64748b; margin-top: 8px; }
+  header p code { background: #f0eeff; color: #A10057; padding: 2px 7px; border-radius: 4px; font-weight: 600; }
+
+  main { max-width: 900px; margin: 0 auto; padding: 40px 24px 90px; }
+
+  section { background: #fff; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin-bottom: 24px; padding: 28px 34px; }
+  section h2 { font-size: 18px; font-weight: 800; color: #A10057; border-bottom: 3px solid #A10057; padding-bottom: 8px; margin-bottom: 18px; }
+  section h3 { font-size: 14px; font-weight: 700; color: #1e293b; text-transform: uppercase; letter-spacing: 0.5px; margin: 18px 0 10px; }
+  section p { margin-bottom: 10px; color: #334155; }
+
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; margin-bottom: 10px; }
+  .swatch { border-radius: 10px; overflow: hidden; border: 1px solid #e2e8f0; }
+  .swatch-color { height: 70px; }
+  .swatch-info { padding: 8px 12px; background: #fff; }
+  .swatch-name { font-size: 12.5px; font-weight: 700; color: #1e293b; }
+  .swatch-hex { font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 12px; color: #64748b; }
+  .swatch-usage { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+  code { background: #f0eeff; color: #A10057; padding: 1px 6px; border-radius: 4px; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 12.5px; }
+
+  .type-sample { font-family: 'Inter', 'Segoe UI', sans-serif; }
+  .fw-900 { font-weight: 900; }
+  .fw-700 { font-weight: 700; }
+  .fw-600 { font-weight: 600; }
+
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-right: 8px; }
+  .bg-high   { background: #fee2e2; color: #991b1b; }
+  .bg-medium { background: #fef3c7; color: #92400e; }
+  .bg-low    { background: #dcfce7; color: #166534; }
+
+  .btn-demo { display: inline-block; padding: 9px 20px; border-radius: 8px; font-size: 13px; font-weight: 700; margin-right: 10px; cursor: default; }
+  .btn-primary-demo { background: #A10057; color: #fff; }
+  .btn-primary-demo:hover { background: #800045; }
+  .btn-danger-demo { background: #fc16ce; color: #fff; }
+
+  .sidebar-demo { background: #1e293b; color: #fff; border-radius: 10px; padding: 20px; width: 200px; }
+  .sidebar-demo .item { padding: 8px 10px; border-radius: 6px; font-size: 13px; margin-bottom: 4px; }
+  .sidebar-demo .item.active { background: #A10057; font-weight: 700; }
+
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+
+  footer { text-align: center; padding: 24px; color: #94a3b8; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="../frontend/logo.png" alt="Logo Lumina">
+  <h1>Charte Graphique — Lumina Pro</h1>
+  <p>Identité visuelle réelle de l'application, extraite de <code>frontend/css/variables.css</code> et <code>kanban.css</code></p>
+</header>
+
+<main>
+
+  <section>
+    <h2>Logo et signature</h2>
+    <p>Forme organique fluide en dégradés de rose et fuchsia (symbole de mouvement et d'organisation), associée au nom <strong>LUMINA</strong> en typographie serif noire, accompagné de la signature :</p>
+    <p style="font-style:italic;text-align:center;font-size:16px;color:#A10057;margin:14px 0;">« Organisez vos idées avec clarté »</p>
+  </section>
+
+  <section>
+    <h2>Palette de couleurs</h2>
+    <div class="swatch-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#A10057;"></div>
+        <div class="swatch-info"><div class="swatch-name">Primary</div><div class="swatch-hex">#A10057</div><div class="swatch-usage">Boutons principaux, liens actifs, sidebar active</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#800045;"></div>
+        <div class="swatch-info"><div class="swatch-name">Primary Hover</div><div class="swatch-hex">#800045</div><div class="swatch-usage">Survol des éléments primaires</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#fc16ce;"></div>
+        <div class="swatch-info"><div class="swatch-name">Danger / Accent</div><div class="swatch-hex">#fc16ce</div><div class="swatch-usage">Suppression, barre de défilement, badges de comptage</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#1e293b;"></div>
+        <div class="swatch-info"><div class="swatch-name">Sidebar</div><div class="swatch-hex">#1e293b</div><div class="swatch-usage">Fond de la navigation latérale</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#f8fafc; border-bottom:1px solid #e2e8f0;"></div>
+        <div class="swatch-info"><div class="swatch-name">Background</div><div class="swatch-hex">#f8fafc</div><div class="swatch-usage">Fond général de l'application</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#ffffff; border-bottom:1px solid #e2e8f0;"></div>
+        <div class="swatch-info"><div class="swatch-name">Surface</div><div class="swatch-hex">#ffffff</div><div class="swatch-usage">Cartes de tâches, panneaux</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#000000;"></div>
+        <div class="swatch-info"><div class="swatch-name">Texte principal</div><div class="swatch-hex">#000000</div><div class="swatch-usage">Titres, contenu principal</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#334155;"></div>
+        <div class="swatch-info"><div class="swatch-name">Texte atténué</div><div class="swatch-hex">#334155</div><div class="swatch-usage">Descriptions, méta-informations</div></div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#e2e8f0;"></div>
+        <div class="swatch-info"><div class="swatch-name">Bordure</div><div class="swatch-hex">#e2e8f0</div><div class="swatch-usage">Séparateurs, contours de cartes</div></div>
+      </div>
+    </div>
+  </section>
+
+
+  <section>
+    <h2>Typographie</h2>
+    <p>Police de référence : <strong>Inter</strong> (déclarée dans <code>layout.css</code>), avec repli système <code>-apple-system, sans-serif</code> — cohérente sur toutes les plateformes sans dépendance à un chargement de police externe.</p>
+    <p class="type-sample fw-900" style="font-size:22px;">Titre de section — Inter 900 (noir maximal)</p>
+    <p class="type-sample fw-700" style="font-size:16px;">Sous-titre / libellé de colonne — Inter 700</p>
+    <p class="type-sample fw-600" style="font-size:14px;">Titre de tâche — Inter 600</p>
+    <p class="type-sample" style="font-size:13px;color:#334155;">Texte courant / description — Inter 400, couleur atténuée</p>
+  </section>
+
+  <section>
+    <h2>Composants</h2>
+
+    <h3>Badges de priorité</h3>
+    <p>Code couleur sémantique appliqué aux tâches (<code>kanban.css</code>) :</p>
+    <span class="badge bg-high">high</span>
+    <span class="badge bg-medium">medium</span>
+    <span class="badge bg-low">low</span>
+
+    <h3>Boutons</h3>
+    <span class="btn-demo btn-primary-demo">Créer une tâche</span>
+    <span class="btn-demo btn-danger-demo">Supprimer</span>
+
+    <h3>Navigation latérale</h3>
+    <div class="sidebar-demo">
+      <div class="item active">Tableau Kanban</div>
+      <div class="item">Équipe</div>
+      <div class="item">Statistiques</div>
+      <div class="item">Profil</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Principes directeurs</h2>
+    <ul style="padding-left:20px;color:#334155;">
+      <li>Un seul rose de marque (<code>#A10057</code>) utilisé avec parcimonie — il signale l'action ou l'état actif, jamais le décor.</li>
+      <li>Fonds clairs et bordures fines plutôt que des ombres marquées, pour une lecture rapide du tableau.</li>
+      <li>Le code couleur des priorités (rouge/ambre/vert) suit une convention universelle, sans surcharge d'icônes.</li>
+      <li>Responsive mobile-first : la sidebar sombre devient un menu rétractable sous 900px (voir <code>responsive.css</code>).</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  Charte graphique — Lumina Pro — DWWM 2025/2026
+</footer>
+
+</body>
+</html>

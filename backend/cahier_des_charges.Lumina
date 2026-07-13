@@ -1,0 +1,18 @@
+# 📋 Cahier des Charges - LUMINA WORKSPACE
+
+## 1. Présentation du projet
+LUMINA WORKSPACE est une plateforme collaborative de gestion de missions. Le concept est basé sur la "clarté" (d'où le nom Lumina) pour permettre aux équipes de ne jamais perdre le fil de leurs projets.
+
+## 2. Identité Visuelle (Adaptée au Logo)
+Le projet utilise une identité visuelle basée sur le logo "Lumina" : une forme organique fluide aux dégradés de rose et fuchsia, symbole de mouvement et d'organisation.
+
+## 3. Fonctionnalités Clés
+*   **Tableau Kanban** : Visualisation des tâches par colonnes (To Do, In Progress, Review, Done).
+*   **Système d'Authentification** : Accès sécurisé par email/mot de passe.
+*   **Gestion des Rôles** : Distinction entre Administrateur et Collaborateur.
+*   **Journal d'Activité** : Historique complet des actions effectuées sur le site.
+
+## 4. Architecture Technique
+*   **Frontend** : Interface utilisateur (HTML/CSS/JS).
+*   **Backend** : Logique serveur (Node.js/Express).
+*   **Base de données** : Stockage persistant (MySQL).

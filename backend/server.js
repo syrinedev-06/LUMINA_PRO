@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
@@ -15,6 +16,9 @@ const app = express();
 // CORS (Cross-Origin Resource Sharing) : permet au frontend (ex: tournant sur un autre port ou double-cliqué en local)
 // de faire des requêtes sécurisées vers notre serveur API.
 app.use(cors());
+
+// Sert les fichiers du frontend via HTTP
+app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
 // express.json() : Middleware intégré d'Express qui analyse les corps des requêtes HTTP entrantes au format JSON
 // et rend les données accessibles dans 'req.body'.

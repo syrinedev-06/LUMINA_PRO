@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cahier de Tests Fonctionnels — Lumina Pro</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f4f8; color: #222; font-size: 14px; }
+
+  header {
+    background: linear-gradient(135deg, #1d1d4e, #302b63);
+    color: #fff; padding: 24px 40px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  header .flag { font-size: 32px; }
+  header h1 { font-size: 18px; font-weight: 800; }
+  header p { font-size: 12px; color: #c0c4e0; margin-top: 4px; }
+
+  .meta-bar {
+    background: #302b63; color: #c0c4e0;
+    padding: 10px 40px; font-size: 12px;
+    display: flex; gap: 40px; border-top: 1px solid rgba(255,255,255,0.1);
+    flex-wrap: wrap;
+  }
+  .meta-bar span strong { color: #fff; }
+
+  .summary-bar {
+    background: #fff; padding: 16px 40px;
+    display: flex; gap: 24px; align-items: center;
+    border-bottom: 3px solid #e0e0ee;
+    flex-wrap: wrap;
+  }
+  .summary-bar .stat { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }
+  .dot { width: 14px; height: 14px; border-radius: 50%; }
+  .dot-ok { background: #22c55e; }
+  .dot-ko { background: #ef4444; }
+
+  main { max-width: 1150px; margin: 0 auto; padding: 28px 20px 80px; }
+
+  .callout { background: #fff7e6; border-left: 5px solid #f0a500; border-radius: 10px; padding: 14px 20px; margin-bottom: 20px; font-size: 13px; }
+  .callout strong { color: #b97600; }
+
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+  th {
+    background: #302b63; color: #fff;
+    padding: 10px 12px; text-align: left;
+    font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  td { padding: 9px 12px; border-bottom: 1px solid #eee; font-size: 12.5px; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafafa; }
+
+  .num { font-weight: 800; color: #302b63; white-space: nowrap; }
+  code { background: #f0eeff; color: #302b63; padding: 1px 5px; border-radius: 4px; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 11.5px; }
+
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+  .badge-ok { background: #d1fae5; color: #065f46; }
+  .badge-ko { background: #fee2e2; color: #991b1b; }
+
+  footer { text-align: center; padding: 24px; color: #888; font-size: 12px; border-top: 2px solid #e0e0ee; margin-top: 30px; }
+  footer strong { color: #302b63; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="flag">🗂️</div>
+  <div>
+    <h1>Cahier de Tests Fonctionnels — Lumina Pro</h1>
+    <p>Application Kanban collaborative — API REST (Node.js/Express) + interface web</p>
+  </div>
+</header>
+
+<div class="meta-bar">
+  <span><strong>Date d'exécution :</strong> 07/07/2026</span>
+  <span><strong>Environnement :</strong> Local (XAMPP MySQL + <code style="color:#fff;background:rgba(255,255,255,0.15);">node server.js</code>)</span>
+  <span><strong>Méthode :</strong> Requêtes HTTP directes (curl) sur l'API, données remises à zéro via <code style="color:#fff;background:rgba(255,255,255,0.15);">seed.js</code></span>
+</div>
+
+<div class="summary-bar">
+  <strong style="font-size:14px;">Résultats :</strong>
+  <div class="stat"><div class="dot dot-ok"></div> Réussis : <strong>15</strong></div>
+  <div class="stat"><div class="dot dot-ko"></div> Échoués : <strong>0</strong></div>
+</div>
+
+<main>
+
+  <div class="callout">
+    <strong>Méthodologie :</strong> ces 12 tests ont été exécutés réellement contre le serveur Lumina Pro lancé en local (MySQL via XAMPP + <code>node server.js</code>), en appelant directement les routes de l'API REST. La base a ensuite été remise dans son état de démonstration via <code>node seed.js</code>. Les identifiants de démo utilisés (<code>admin@lumina.com</code> / <code>Lumina1!</code>) correspondent à ceux documentés dans le README, désormais alignés avec ce que <code>seed.js</code> insère réellement (voir correctif appliqué au script).
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:70px;">Num test</th>
+        <th style="width:230px;">Description</th>
+        <th style="width:150px;">Prérequis</th>
+        <th style="width:220px;">Données</th>
+        <th style="width:220px;">Résultat attendu</th>
+        <th style="width:90px;">Résultat obtenu</th>
+        <th>Preuves</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num">TEST001</td>
+        <td>En tant qu'utilisateur je souhaite accéder à l'application Lumina Pro</td>
+        <td>Aucun</td>
+        <td>Aucune</td>
+        <td>Le site est accessible</td>
+        <td><span class="badge badge-ok">OK</span></td>
+        <td><code>GET http://localhost:3000/</code> → HTTP 200</td>
+      </tr>
+      <tr>
+        <td class="num">TEST002</td>
+        <td>En tant qu'utilisateur inscrit je souhaite me connecter</td>
+        <td>Avoir un compte</td>
+        <td>login : admin@lumina.com<br>mdp : Lumina1!</td>
+        <td>Utilisateur connecté (token JWT renvoyé)</td>
+        <td><span class="badge badge-ok">OK</span></td>
+        <td><code>POST /api/auth/login</code> → HTTP 200, <code>{"message":"Connexion réussie !","token":"eyJ...","user":{"role":"admin"}}</code></td>
+      </tr>
+      <tr>
+        <td class="num">TEST003</td>
+        <td>En tant qu'utilisateur inscrit je souhaite me connecter avec un compte inexistant</td>
+        <td>Aucun</td>
+        <td>login : fake@lumina.com<br>mdp : Lumina1!</td>
+        <td>Le compte n'existe pas</td>
+        <td><span class="badge badge-ok">OK</span></td>
+        <td><code>POST /api/auth/login</code> → HTTP 401, <code>{"error":"Email ou mot de passe incorrect."}</code></td>
+      </tr>
+      <tr>
+        <td class="num">TEST004</td>
+        <td>En tant que visiteur je tente d'accéder à une ressource protégée sans être connecté</td>
+        <td>Aucun</td>
+        <td><code>GET /api/tasks</code> sans header Authorization</td>
+        <td>Accès refusé</td>
+        <td><span class="badge badge-ok">OK</span></td>
+        <td>HTTP 401, <code>{"error":"Accès refusé. Jeton d'authentification manquant ou mal formaté."}</code></td>
+      </tr>
+      <tr>
+        <td class="num">TEST005</td>
+        <td>En tant qu'utilisateur connecté je crée une tâche sans titre</td>
+        <td>Être connecté</td>
+        <td><code>{"description":"sans titre"}</code></td>
+        <td>Erreur de validation, tâche non créée</td>
+        <td><span class="badge badge-ok">OK</span></td>
+        <td>HTTP 400, <code>{"error":"Le titre est obligatoire."}</code></td>
+      </tr>
+      <tr>
+        <td class="num">TEST006</td>
+        <td>En tant qu'utilisateur connecté je crée une tâche valide</td>
+        <td>Être connecté</td>
+        <td><code>{"title":"Tache de test","priority":"medium","id_col":1}</code></td>
+        <td>Tâche créée dans la colonne "À faire"</td>
+        <td><span class="badge badge-ok">OK</span></td>
+        <td>HTTP 201, <code>{"message":"Tâche créée !"}</code></td>
+      </tr>
+      <tr>
+        <td class="num">TEST007</td>
+        <td>En tant qu'utilisateur connecté je consulte les colonnes du tableau</td>
+        <td>Être connecté</td>
+        <td>Aucune</td>
+        <td>Liste des 3 colonnes triées par position</td>
+        <td><span class="badge badge-ok">OK</span></td>
+        <td>HTTP 200, colonnes "À faire" (1) / "En cours" (2) / "Terminé" (3)</td>
+      </tr>
+      <tr>
+        <td class="num">TEST008</td>
+        <td>En tant qu'utilisateur connecté je déplace une tâche vers une autre colonne</td>
+        <td>Être connecté, avoir une tâche</td>
+        <td><code>PUT /api/tasks/4</code> avec <code>{"id_col":2}</code></td>
+        <td>La tâche apparaît dans la colonne "En cours"</td>
+        <td><span class="badge badge-ok">OK</span></td>
+        <td>HTTP 200, tâche 4 relue avec <code>id_col = 2</code></td>
+      </tr>
+      <tr>
+        <td class="num">TEST009</td>
+        <td>En tant qu'administrateur je supprime une colonne contenant une tâche</td>
+        <td>Être admin connecté, colonne avec 1 tâche</td>
+        <td>Colonne "Colonne Test Cascade" (id 13) contenant "Tache a supprimer"</td>
+        <td>La colonne et sa tâche sont supprimées (ON DELETE CASCADE)</td>
+        <td><span class="badge badge-ok">OK</span></td>
+        <td>HTTP 200, <code>{"message":"Colonne supprimée."}</code> — tâche absente de <code>GET /api/tasks</code> après suppression</td>
+      </tr>
+      <tr>
+        <td class="num">TEST010</td>
+        <td>En tant qu'utilisateur connecté je consulte la liste de l'équipe</td>
+        <td>Être connecté</td>
+        <td>Aucune</td>
+        <td>Liste des utilisateurs sans exposition du mot de passe</td>
+        <td><span class="badge badge-ok">OK</span></td>
+        <td>HTTP 200, champs renvoyés : <code>id, name, email, role</code> uniquement (pas de <code>password</code>)</td>
+      </tr>
+      <tr>
+        <td class="num">TEST011</td>
+        <td>En tant que visiteur je m'inscris avec un nouveau compte</td>
+        <td>Email non déjà utilisé</td>
+        <td><code>{"name":"Testeur QA","email":"qa.test@lumina.com","password":"TestQA1!"}</code></td>
+        <td>Compte créé, mot de passe haché en base</td>
+        <td><span class="badge badge-ok">OK</span></td>
+        <td>HTTP 201, <code>{"message":"Utilisateur créé avec succès !"}</code></td>
+      </tr>
+      <tr>
+        <td class="num">TEST012</td>
+        <td>En tant qu'utilisateur fraîchement inscrit je me connecte avec mon mot de passe en clair</td>
+        <td>Avoir terminé TEST011</td>
+        <td>login : qa.test@lumina.com<br>mdp : TestQA1!</td>
+        <td>Connexion réussie (le hash bcrypt stocké correspond bien au mot de passe saisi)</td>
+        <td><span class="badge badge-ok">OK</span></td>
+        <td>HTTP 200, <code>{"message":"Connexion réussie !","user":{"role":"user"}}</code></td>
+      </tr>
+      <tr>
+        <td class="num">TEST013</td>
+        <td>En tant qu'utilisateur standard je tente de supprimer une tâche qui ne m'est pas assignée</td>
+        <td>Être connecté en tant que <code>user</code>, tâche assignée à un autre compte</td>
+        <td><code>DELETE /api/tasks/1</code> (tâche assignée à admin) avec le token de <code>user@lumina.com</code></td>
+        <td>Suppression refusée</td>
+        <td><span class="badge badge-ok">OK</span></td>
+        <td>HTTP 403, <code>{"error":"Vous ne pouvez supprimer que vos propres tâches."}</code></td>
+      </tr>
+      <tr>
+        <td class="num">TEST014</td>
+        <td>En tant qu'utilisateur standard je supprime ma propre tâche</td>
+        <td>Être connecté en tant que <code>user</code>, tâche m'étant assignée</td>
+        <td><code>DELETE /api/tasks/3</code> (tâche assignée à <code>user@lumina.com</code>, id 2)</td>
+        <td>Tâche supprimée</td>
+        <td><span class="badge badge-ok">OK</span></td>
+        <td>HTTP 200, <code>{"message":"Tâche supprimée."}</code></td>
+      </tr>
+      <tr>
+        <td class="num">TEST015</td>
+        <td>En tant qu'administrateur je supprime une tâche assignée à un autre utilisateur</td>
+        <td>Être connecté en tant qu'admin</td>
+        <td><code>DELETE</code> sur une tâche créée avec <code>id_assigned: 2</code>, requête faite avec le token admin</td>
+        <td>Suppression autorisée (l'admin outrepasse la restriction de propriétaire)</td>
+        <td><span class="badge badge-ok">OK</span></td>
+        <td>HTTP 200, <code>{"message":"Tâche supprimée."}</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout" style="margin-top:20px;">
+    <strong>Note :</strong> après exécution, la base de données a été remise dans son état de démonstration initial via <code>node seed.js</code> (les données créées ou modifiées pour TEST006, TEST009, TEST011/012 et TEST013-015 ont été effacées). Les tests couvrent l'authentification, le CRUD des tâches et des colonnes, la cascade de suppression, la non-exposition des mots de passe et la restriction de suppression par propriétaire (anti-IDOR) — soit les parcours critiques identifiés dans le dossier professionnel (section 12).
+  </div>
+
+</main>
+
+<footer>
+  Cahier de tests fonctionnels — <strong>Lumina Pro</strong> — Syrine Ben Hassine — DWWM 2025/2026
+</footer>
+
+</body>
+</html>
