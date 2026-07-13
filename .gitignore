@@ -57,6 +57,7 @@ jspm_packages/
 # IDEs and editors
 .idea/
 .vscode/
+.claude/
 *.suo
 *.ntvs*
 *.njsproj

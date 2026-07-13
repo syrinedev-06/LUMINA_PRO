@@ -352,7 +352,7 @@
     <tr><td><b>tasks.js</b></td><td>Créer, modifier, supprimer, déplacer des tâches</td></tr>
     <tr><td><b>columns.js</b></td><td>Créer, renommer, supprimer des colonnes</td></tr>
     <tr><td><b>team.js</b></td><td>Afficher et gérer les membres de l'équipe</td></tr>
-    <tr><td><b>profile.js</b></td><td>Affiche la fenêtre "Mon Profil" (nom, email, rôle, statut du compte connecté)</td></tr>
+    <tr><td><b>profile.js</b></td><td>Affiche la page "Statistiques" (répartition des tâches par priorité, camembert SVG)</td></tr>
   </table>
 
   <h3>Vitesse d'affichage — defer et CSS en parallèle</h3>
@@ -467,43 +467,46 @@
   <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
 </div>
 
-<!-- PAGE 8 : PAGE MON PROFIL -->
+<!-- PAGE 8 : PAGE STATISTIQUES -->
 <div class="page">
-  <div class="entete"><span>👤 Partie 6 — Mon Profil</span><span>Syrine BEN HASSINE · Page 8/11</span></div>
-  <h2>👤 Partie 6 — Mon Profil (profile.js)</h2>
+  <div class="entete"><span>📊 Partie 6 — Statistiques</span><span>Syrine BEN HASSINE · Page 8/11</span></div>
+  <h2>📊 Partie 6 — Statistiques (profile.js)</h2>
 
   <h3>C'est quoi cette page ?</h3>
   <div class="gris">
-    "Mon Profil" est une fenêtre modale simple qui affiche les informations du compte connecté : nom, email, rôle et un statut "En ligne". Une fonctionnalité de modification du profil existait à une étape du projet puis a été volontairement retirée (commit <em>« Suppression complète de la fonctionnalité d'édition de profil »</em>) pour garder un code minimal — le profil est aujourd'hui en lecture seule.
+    "Statistiques" remplace l'ancienne page "Mon Profil" (modification de profil retirée, puis la consultation de profil elle-même remplacée par cette vue). Elle affiche une vue d'ensemble du projet : nombre total de tâches, tâches urgentes, tâches non assignées, nombre de membres, et un camembert de répartition par priorité — entièrement calculée côté front, sans route serveur dédiée.
   </div>
 
-  <h3>localStorage — Récupérer l'utilisateur connecté</h3>
+  <h3>Promise.all() — Charger deux ressources en parallèle</h3>
   <div class="jaune">
-    Après la connexion, les informations de l'utilisateur (nom, email, rôle, id) sont sauvegardées dans le navigateur via localStorage. La page Profil n'a pas besoin de redemander ces informations au serveur : elle les relit directement depuis la mémoire du navigateur.
+    La page a besoin des tâches (pour les compter par priorité) et des utilisateurs (pour le nombre de membres). Plutôt que d'attendre les deux requêtes l'une après l'autre, Promise.all() les lance en même temps et attend que les deux soient terminées.
   </div>
   <div class="code-bloc">
     <div class="code-titre">📄 showProfile() (profile.js)</div>
-    <div class="code-ligne"><span class="code-texte">function showProfile() {</span><span class="code-expl">← affiche la fenêtre profil</span></div>
-    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">  const user = JSON.parse(localStorage.getItem('user'));</span><span class="code-expl">← relit l'utilisateur sauvegardé</span></div>
-    <div class="code-ligne"><span class="code-texte">  // ... affichage de user.name, user.email, user.role, user.id</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte">async function showProfile() {</span><span class="code-expl">← affiche la page Statistiques</span></div>
+    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">  const [resTasks, resUsers] = await Promise.all([</span><span class="code-expl">← deux requêtes en parallèle</span></div>
+    <div class="code-ligne"><span class="code-texte">    authFetch('/api/tasks'), authFetch('/api/users')</span><span class="code-expl">← tâches + membres</span></div>
+    <div class="code-ligne"><span class="code-texte">  ]);</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte">  const urgentes = tasks.filter(t => t.priority === 'high').length;</span><span class="code-expl">← comptage par priorité</span></div>
+    <div class="code-ligne"><span class="code-texte">  const svgPie = creerCamembert(urgentes, moyennes, normales, total);</span><span class="code-expl">← camembert SVG généré à la main</span></div>
     <div class="code-ligne"><span class="code-texte">}</span><span class="code-expl"></span></div>
   </div>
   <div class="bleu">
-    <div class="q">🎤 "D'où viennent les informations affichées dans le profil ?"</div>
-    <div class="r">Elles ne viennent pas d'une nouvelle demande au serveur : elles sont déjà sauvegardées dans le localStorage du navigateur depuis la connexion (login.html). showProfile() les relit simplement avec JSON.parse(localStorage.getItem('user')) et les affiche dans une fenêtre modale.</div>
+    <div class="q">🎤 "D'où viennent les informations affichées dans les statistiques ?"</div>
+    <div class="r">D'un nouvel appel au serveur à chaque ouverture de la page : Promise.all() interroge /api/tasks et /api/users en parallèle. Les statistiques (total, urgentes, non assignées, membres) sont ensuite calculées côté client avec Array.filter() sur les données reçues — aucune route serveur dédiée aux statistiques n'existe.</div>
   </div>
 
-  <h3>escapeHTML() — Même principe de sécurité que partout ailleurs</h3>
+  <h3>Camembert SVG — Sans bibliothèque</h3>
   <div class="gris">
-    Le nom, l'email et le rôle affichés dans le profil passent par la même fonction escapeHTML() que le reste de l'application, avant d'être insérés dans le HTML. C'est la même protection XSS vue en Partie 4 : même si ces données viennent du localStorage (donc du navigateur de l'utilisateur lui-même), on applique la règle systématiquement plutôt que de faire une exception.
+    Le graphique circulaire est dessiné à la main avec de la trigonométrie (Math.cos/Math.sin) pour calculer les coordonnées de chaque part, sans Chart.js ni aucune autre bibliothèque de graphiques. C'est la fonction creerCamembert() dans profile.js.
   </div>
   <div class="bleu">
-    <div class="q">🎤 "Pourquoi une page aussi simple pour le profil ?"</div>
-    <div class="r">Une fonctionnalité de modification du profil (changer son nom, son email) avait été développée, puis retirée volontairement pour réduire la surface de code à maintenir et à sécuriser dans le temps imparti à la certification. Le profil actuel est en lecture seule : c'est un choix de périmètre assumé, pas un oubli.</div>
+    <div class="q">🎤 "Pourquoi ne pas avoir gardé une route serveur dédiée aux statistiques ?"</div>
+    <div class="r">Une route serveur (routes/stats.js) avait été développée puis retirée volontairement pour simplifier le périmètre d'examen. La version actuelle recalcule les statistiques côté front à partir de données déjà chargées (/api/tasks, /api/users) : plus simple, sans exposer de nouvelle route serveur, au prix d'un calcul refait à chaque ouverture plutôt qu'agrégé en base.</div>
   </div>
   <div class="bleu">
-    <div class="q">🎤 "Que se passe-t-il sur mobile quand on ouvre le profil ?"</div>
-    <div class="r">Si le menu latéral est ouvert et que la largeur de l'écran est ≤ 900px, showProfile() referme automatiquement le menu avant d'afficher la fenêtre du profil, pour ne pas superposer deux panneaux à l'écran.</div>
+    <div class="q">🎤 "Que se passe-t-il sur mobile quand on ouvre les statistiques ?"</div>
+    <div class="r">Si le menu latéral est ouvert et que la largeur de l'écran est ≤ 900px, showProfile() referme automatiquement le menu avant d'afficher la page, pour ne pas superposer deux panneaux à l'écran.</div>
   </div>
 
   <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
@@ -543,22 +546,20 @@
 
   <h3>2. Statistiques par colonne</h3>
   <div class="gris">
-    Au-dessus du tableau Kanban, des pastilles affichent combien de tâches se trouvent dans chaque colonne, plus le total. Elles se mettent à jour automatiquement à chaque chargement des données.
+    Dans l'en-tête de chaque colonne du tableau Kanban, une pastille affiche le nombre de tâches qu'elle contient. Elle se met à jour automatiquement à chaque chargement des données (fonction renderBoard, pas de fonction séparée).
   </div>
   <div class="code-bloc">
-    <div class="code-titre">📄 renderStats() (kanban.js) — Comptage des tâches</div>
-    <div class="code-ligne"><span class="code-texte">function renderStats(columns, tasks) {</span><span class="code-expl"></span></div>
-    <div class="code-ligne"><span class="code-texte">  statsEl.innerHTML = columns.map(col => {</span><span class="code-expl">← pour chaque colonne</span></div>
-    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">    const count = tasks.filter(</span><span class="code-expl">← on compte les tâches</span></div>
-    <div class="code-ligne"><span class="code-texte">      t => t.id_col === col.id</span><span class="code-expl">← qui appartiennent à cette colonne</span></div>
-    <div class="code-ligne"><span class="code-texte">    ).length;</span><span class="code-expl">← .length = nombre de résultats</span></div>
-    <div class="code-ligne"><span class="code-texte">    return `${col.title} : ${count}`;</span><span class="code-expl">← affichage</span></div>
-    <div class="code-ligne"><span class="code-texte">  });</span><span class="code-expl"></span></div>
-    <div class="code-ligne"><span class="code-texte">}</span><span class="code-expl"></span></div>
+    <div class="code-titre">📄 renderBoard() (kanban.js) — Comptage des tâches par colonne</div>
+    <div class="code-ligne"><span class="code-texte">columns.forEach((col, index) => {</span><span class="code-expl">← pour chaque colonne</span></div>
+    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">  const colTasks = tasks.filter(</span><span class="code-expl">← on compte les tâches</span></div>
+    <div class="code-ligne"><span class="code-texte">    t => t.id_col === col.id</span><span class="code-expl">← qui appartiennent à cette colonne</span></div>
+    <div class="code-ligne"><span class="code-texte">  );</span><span class="code-expl">← colTasks.length = nombre de résultats</span></div>
+    <div class="code-ligne"><span class="code-texte">  // ... &lt;span&gt;${colTasks.length}&lt;/span&gt; dans le &lt;h3&gt; de la colonne</span><span class="code-expl">← affiché dans l'en-tête</span></div>
+    <div class="code-ligne"><span class="code-texte">});</span><span class="code-expl"></span></div>
   </div>
   <div class="bleu">
     <div class="q">🎤 "Comment calculez-vous le nombre de tâches par colonne ?"</div>
-    <div class="r">Pour chaque colonne, je filtre le tableau allTasks avec Array.filter() pour ne garder que les tâches dont id_col correspond à l'identifiant de la colonne. Ensuite, .length donne le nombre de résultats. C'est du calcul côté client sur des données déjà chargées.</div>
+    <div class="r">Pour chaque colonne, je filtre le tableau allTasks avec Array.filter() pour ne garder que les tâches dont id_col correspond à l'identifiant de la colonne. Ensuite, .length donne le nombre de résultats, affiché directement dans l'en-tête de la colonne. C'est du calcul côté client sur des données déjà chargées.</div>
   </div>
 
   <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
@@ -883,11 +884,11 @@
     <tr><td><b>Contexte et besoin</b></td><td>2 min</td><td>"Pourquoi ce projet ? Les outils existants comme Trello ou Jira sont complexes et payants pour des petites équipes. Lumina Pro est une alternative légère, auto-hébergeable, centrée sur l'essentiel : créer des tâches, les organiser visuellement, les assigner aux bons membres."</td></tr>
     <tr><td><b>Stack technique</b></td><td>2 min</td><td>"Côté serveur : Node.js avec Express.js pour l'API REST, MySQL pour les données, bcrypt pour les mots de passe, JWT pour l'authentification. Côté client : HTML5, CSS3 (8 fichiers), JavaScript vanilla sans framework. Documentation API avec Swagger UI."</td></tr>
     <tr><td><b>Base de données</b></td><td>4 min</td><td>"J'ai modélisé la base avec MERISE : d'abord le MCD avec 3 entités principales (UTILISATEUR, TÂCHE, COLONNE) et leurs associations, puis le MLD avec les clés étrangères, puis le MPD en SQL MySQL. La base crée 4 tables au démarrage. La colonne due_date a été ajoutée par migration ALTER TABLE sans toucher aux données existantes."</td></tr>
-    <tr><td><b>Sécurité</b></td><td>4 min</td><td>"Quatre axes de sécurité : injection SQL bloquée par les requêtes préparées (points d'interrogation), XSS bloqué par escapeHTML() sur tout le contenu utilisateur, authentification par JWT (ticket 24h dans le header Authorization), et IDOR bloqué par vérification de propriété côté serveur. Les secrets sont dans un fichier .env non versionné."</td></tr>
+    <tr><td><b>Sécurité</b></td><td>4 min</td><td>"Cinq axes de sécurité : injection SQL bloquée par les requêtes préparées (points d'interrogation), XSS bloqué par escapeHTML() sur tout le contenu utilisateur, authentification par JWT (ticket 24h dans le header Authorization), IDOR bloqué par vérification de propriété côté serveur, et un rate limiting par IP sur la connexion (5 tentatives max, blocage 15 minutes) contre le brute-force. Les secrets sont dans un fichier .env non versionné."</td></tr>
     <tr><td><b>Frontend</b></td><td>4 min</td><td>"Le frontend charge les tâches via fetch() avec async/await, met à jour le DOM sans recharger la page (SPA). La recherche filtre les tâches côté client avec Array.filter() — aucun appel réseau. Le responsive utilise des media queries CSS pures, sans Bootstrap."</td></tr>
     <tr><td><b>Accessibilité</b></td><td>2 min</td><td>"J'ai testé 30 critères WCAG 2.1 manuellement : attributs aria-label sur les boutons icônes, navigation clavier complète, contrastes vérifiés, labels associés à chaque champ. La sémantique HTML5 structure la page pour les lecteurs d'écran."</td></tr>
-    <tr><td><b>Ce qui a été retiré</b></td><td>2 min</td><td>"Plusieurs fonctionnalités ont été développées puis retirées volontairement : journal d'audit, statistiques serveur, drag &amp; drop natif, système de notifications. Ce choix stratégique — préférer un cœur maîtrisé à une accumulation — est documenté dans mes commits et ma roadmap."</td></tr>
-    <tr><td><b>Améliorations</b></td><td>1 min</td><td>"Trois axes prioritaires pour une v2 : tests automatisés Jest+Supertest, rate limiting sur /api/auth contre le brute-force, et déploiement sur VPS avec HTTPS. Ces limites sont documentées dans ma roadmap — assumées, pas cachées."</td></tr>
+    <tr><td><b>Ce qui a été retiré</b></td><td>2 min</td><td>"Plusieurs fonctionnalités ont été développées puis retirées volontairement : la route serveur de statistiques, la consultation API du journal d'audit, drag &amp; drop natif, système de notifications. Ce choix stratégique — préférer un cœur maîtrisé à une accumulation — est documenté dans mes commits et ma roadmap. Attention : la table logs et une page Statistiques existent toujours, mais respectivement en écriture seule (audit à chaque suppression) et calculée côté front — sans route serveur dédiée."</td></tr>
+    <tr><td><b>Améliorations</b></td><td>1 min</td><td>"Trois axes prioritaires pour une v2 : tests automatisés Jest+Supertest, passage du rate limiting de /api/auth sur Redis pour tenir plusieurs instances (il est déjà actif en mémoire), et déploiement sur VPS avec HTTPS. Ces limites sont documentées dans ma roadmap — assumées, pas cachées."</td></tr>
     <tr><td><b>Conclusion</b></td><td>1 min</td><td>"Lumina Pro m'a permis de couvrir toute la chaîne d'une application full-stack en solo. Ce projet n'est pas parfait, mais chaque choix peut être expliqué et justifié. Je reste disponible pour vos questions."</td></tr>
   </table>
 
@@ -1196,14 +1197,14 @@
   </div>
 
   <div class="qcm-bloc">
-    <div class="qcm-q"><span class="qcm-n">26</span>D'où viennent les informations affichées dans "Mon Profil" ?</div>
+    <div class="qcm-q"><span class="qcm-n">26</span>D'où viennent les informations affichées dans la page "Statistiques" ?</div>
     <div class="qcm-choix">
-      <div class="mauvais">A. D'une nouvelle demande GET /api/profile à chaque ouverture</div>
-      <div class="bon">B. Du localStorage du navigateur, sauvegardées depuis la connexion</div>
+      <div class="bon">A. De Promise.all() sur /api/tasks et /api/users, calculées ensuite côté client</div>
+      <div class="mauvais">B. Du localStorage du navigateur, sauvegardées depuis la connexion</div>
       <div class="mauvais">C. D'un fichier JSON local</div>
-      <div class="mauvais">D. De la table "profiles" en base de données</div>
+      <div class="mauvais">D. D'une route /api/stats dédiée côté serveur</div>
     </div>
-    <div class="qcm-exp">showProfile() relit simplement JSON.parse(localStorage.getItem('user')) — pas de nouvelle requête au serveur.</div>
+    <div class="qcm-exp">showProfile() lance Promise.all() sur /api/tasks et /api/users à chaque ouverture, puis calcule les statistiques (urgentes, non assignées, membres) côté client avec Array.filter().</div>
   </div>
 
   <div class="qcm-bloc">
@@ -1278,7 +1279,7 @@
     <tr><td>MERISE — MCD, MLD, MPD</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>DP section 6 (à la main, pas auto-généré)</td></tr>
     <tr><td>Base de données</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>4 tables MySQL, clés étrangères, ON DELETE CASCADE</td></tr>
     <tr><td>Développement Front</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>HTML5 sémantique, CSS 8 modules, JS vanilla</td></tr>
-    <tr><td>Développement Back</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>Node.js/Express, 11 routes REST, middleware JWT</td></tr>
+    <tr><td>Développement Back</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>Node.js/Express, 12 routes REST, middleware JWT</td></tr>
     <tr><td>Tests</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>12 scénarios fonctionnels + 30 critères accessibilité</td></tr>
     <tr><td>Déploiement</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>Local XAMPP + Node (assumé et documenté)</td></tr>
     <tr><td>Support de présentation</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>presentation.html (35 slides)</td></tr>

@@ -68,6 +68,7 @@ db.connect((err) => {
             id_col INT,
             due_date DATE DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (id_assigned) REFERENCES users(id) ON DELETE SET NULL,
             FOREIGN KEY (id_col) REFERENCES columns(id) ON DELETE CASCADE
         )`,
         `CREATE TABLE IF NOT EXISTS logs (

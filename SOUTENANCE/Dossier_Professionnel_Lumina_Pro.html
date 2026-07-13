@@ -154,7 +154,7 @@
     <li>En tant qu'utilisateur, je veux m'inscrire et me connecter afin d'accéder à mon espace de travail.</li>
     <li>En tant qu'utilisateur, je veux créer, modifier et déplacer mes tâches entre les colonnes pour suivre mon avancement.</li>
     <li>En tant qu'utilisateur, je veux voir les membres de l'équipe afin de savoir qui est assigné à quoi.</li>
-    <li>En tant qu'utilisateur, je veux consulter mon profil (nom, email, rôle) pour vérifier mes informations de compte.</li>
+    <li>En tant qu'utilisateur, je veux consulter des statistiques sur l'avancement du projet (tâches par priorité, membres, tâches non assignées) pour avoir une vue d'ensemble rapide.</li>
   </ul>
   <p><strong>Administrateur</strong></p>
   <ul>
@@ -169,13 +169,14 @@
     <li>authentification sécurisée (JWT + bcrypt) ;</li>
     <li>CRUD complet des tâches et des colonnes ;</li>
     <li>gestion des rôles admin / utilisateur ;</li>
-    <li>vue équipe et page de profil personnel ;</li>
+    <li>vue équipe et page Statistiques (répartition des tâches par priorité) ;</li>
     <li>documentation API interactive (Swagger).</li>
   </ul>
-  <p>Des fonctionnalités plus avancées (journal d'audit, statistiques serveur, drag &amp; drop natif) ont été <strong>réellement développées puis volontairement retirées</strong> lors d'un commit de simplification (<code>« Refactoring : Simplification totale pour l'examen DWWM (DRY, découpage JS, retrait stats/logs) »</code>), afin de concentrer l'effort et le code sur un cœur Kanban solide plutôt que sur une accumulation de fonctionnalités annexes — voir <a href="#roadmap">évolutions futures</a>. Un système de notifications avait de même été envisagé puis <strong>retiré volontairement</strong> du périmètre (commit <code>« Suppression complète du système de notifications »</code>).</p>
+  <p>Des fonctionnalités plus avancées (drag &amp; drop natif, système de notifications) ont été <strong>réellement développées puis volontairement retirées</strong> lors d'un commit de simplification (<code>« Refactoring : Simplification totale pour l'examen DWWM (DRY, découpage JS, retrait stats/logs) »</code>), afin de concentrer l'effort et le code sur un cœur Kanban solide plutôt que sur une accumulation de fonctionnalités annexes — voir <a href="#roadmap">évolutions futures</a>. Un système de notifications avait de même été envisagé puis <strong>retiré volontairement</strong> du périmètre (commit <code>« Suppression complète du système de notifications »</code>).</p>
+  <p><strong>Précision sur les statistiques et l'audit :</strong> la première version d'une route serveur dédiée aux statistiques (<code>routes/stats.js</code>, agrégation SQL côté back-end) avait été retirée lors de cette simplification. Une page <strong>Statistiques</strong> plus légère a ensuite été réintroduite côté <strong>front-end uniquement</strong> : elle calcule la répartition des tâches (urgentes / moyennes / normales) directement dans le navigateur à partir des données déjà renvoyées par <code>/api/tasks</code> et <code>/api/users</code> (<code>Promise.all()</code>), et dessine un camembert en SVG pur sans bibliothèque — donc sans exposer de nouvelle route serveur. De même, la table <code>logs</code> (journal d'audit) existe toujours en base et s'alimente automatiquement à chaque suppression de tâche ; seule la route de <em>consultation</em> (<code>GET /api/logs</code>) a été retirée du périmètre d'examen.</p>
 
   <h3>3.5 Cahier des charges</h3>
-  <p><strong>Exigences fonctionnelles</strong> — Un visiteur peut s'inscrire et se connecter. Un utilisateur connecté gère ses tâches (créer / modifier / déplacer / supprimer), consulte l'équipe et son profil. Un administrateur gère en plus les colonnes et les comptes utilisateurs.</p>
+  <p><strong>Exigences fonctionnelles</strong> — Un visiteur peut s'inscrire et se connecter. Un utilisateur connecté gère ses tâches (créer / modifier / déplacer / supprimer), consulte l'équipe et les statistiques du projet. Un administrateur gère en plus les colonnes et les comptes utilisateurs.</p>
   <p><strong>Exigences techniques</strong> — Application consommant une API REST sécurisée par JWT ; mots de passe hachés (bcrypt) et jamais stockés en clair ; requêtes SQL préparées ; interface responsive desktop/mobile.</p>
   <p><strong>Exigences non-fonctionnelles</strong> — Accessibilité (sémantique HTML5, attributs ARIA, contrastes, focus clavier — RGAA 4.1.2 / WCAG 2.1) ; sécurité (CORS, isolation des secrets dans <code>.env</code>) ; documentation (README, Swagger).</p>
 
@@ -316,7 +317,7 @@
     <li><strong>Page de connexion / inscription</strong> (<code>login.html</code>) — point d'entrée public.</li>
     <li><strong>Tableau Kanban</strong> (<code>index.html</code>) — vue principale après authentification : colonnes, cartes de tâches, sidebar de navigation.</li>
     <li><strong>Équipe</strong> — liste des membres et de leurs tâches assignées.</li>
-    <li><strong>Mon Profil</strong> — modale en lecture seule affichant les informations du compte connecté (nom, email, rôle, statut).</li>
+    <li><strong>Statistiques</strong> — page calculée côté front-end (camembert SVG) affichant la répartition des tâches par priorité et le nombre de membres, à partir des données déjà chargées via <code>/api/tasks</code> et <code>/api/users</code>.</li>
   </ul>
   <p>Détail complet des wireframes basse fidélité dans <code>arborescence_wireframes.html</code>.</p>
 
@@ -468,7 +469,7 @@
 
   <h3>6.1c MPD — Modèle Physique de Données (SQL réel)</h3>
   <div class="callout">
-    <strong>Choix de périmètre assumé :</strong> un module de journal d'audit (<code>routes/logs.js</code>) et un module de statistiques serveur (<code>routes/stats.js</code>) avaient été réellement développés, avec les tables <code>logs</code>/<code>notifications</code> correspondantes, puis <strong>entièrement supprimés</strong> lors d'un commit de simplification volontaire (<code>« Refactoring : Simplification totale pour l'examen DWWM »</code>) pour garder un cœur applicatif simple et entièrement maîtrisé (voir roadmap). Un système de notifications avait de même été retiré du périmètre en cours de projet (voir section 3.4) pour la même raison.
+    <strong>Choix de périmètre assumé :</strong> une route de <em>consultation</em> du journal d'audit (<code>routes/logs.js</code>) et une route serveur dédiée aux statistiques (<code>routes/stats.js</code>) avaient été réellement développées, avec une table <code>notifications</code> associée, puis <strong>retirées</strong> lors d'un commit de simplification volontaire (<code>« Refactoring : Simplification totale pour l'examen DWWM »</code>) pour garder un cœur applicatif simple et entièrement maîtrisé (voir roadmap). La table <code>logs</code>, elle, a été conservée : chaque suppression de tâche continue d'y écrire une entrée d'audit (voir <code>routes/tasks.js</code>), seule sa consultation via API a été retirée. Un système de notifications avait de même été retiré du périmètre en cours de projet (voir section 3.4) pour la même raison.
   </div>
 
   <p>Script SQL réel de <code>database/schema.sql</code>, qui reflète exactement les tables créées par <code>server.js</code> :</p>
@@ -626,7 +627,7 @@ function escapeHTML(str) {
   <h3>8.0a API REST et AJAX expliqués</h3>
   <table>
     <tr><th>Concept</th><th>Définition</th><th>Dans Lumina Pro</th></tr>
-    <tr><td><strong>API REST</strong></td><td>Interface de communication entre front et back. Chaque URL = une ressource. Les méthodes HTTP (GET/POST/PUT/DELETE) indiquent l'action.</td><td>11 routes organisées par ressource : /api/auth, /api/tasks, /api/columns, /api/users</td></tr>
+    <tr><td><strong>API REST</strong></td><td>Interface de communication entre front et back. Chaque URL = une ressource. Les méthodes HTTP (GET/POST/PUT/DELETE) indiquent l'action.</td><td>12 routes organisées par ressource : /api/auth, /api/tasks, /api/columns, /api/users</td></tr>
     <tr><td><strong>AJAX</strong></td><td>Technique permettant de faire des requêtes HTTP depuis JavaScript sans recharger la page.</td><td><code>authFetch()</code> envoie des requêtes asynchrones vers l'API. La page ne se recharge pas — seul le board est mis à jour.</td></tr>
     <tr><td><strong>JSON</strong></td><td>Format de données texte pour échanger des objets JavaScript entre front et back.</td><td>Toutes les réponses de l'API sont en JSON : <code>{"id": 3, "title": "Fix bug", "priority": "high"}</code></td></tr>
     <tr><td><strong>async/await</strong></td><td>Syntaxe JS pour attendre la réponse d'une requête réseau sans bloquer la page.</td><td><code>const res = await authFetch('/api/tasks'); const data = await res.json();</code></td></tr>
@@ -684,7 +685,7 @@ req.db.query("SELECT id_assigned FROM tasks WHERE id = ?", [req.params.id], (err
     <tr><td><strong>500 Internal Server Error</strong></td><td>Erreur serveur</td><td>Erreur SQL inattendue</td></tr>
   </table>
 
-  <div class="callout"><strong>Mini-bilan Mission 2 :</strong> API REST complète (11 routes), toutes protégées par JWT sauf /api/auth. Communication 100% JSON. Authentification bcrypt + JWT. Règles IDOR côté serveur. Construction dynamique des requêtes UPDATE. Documentation interactive Swagger. Codes HTTP sémantiques sur toutes les réponses. <span class="badge badge-ok">Mission validée</span></div>
+  <div class="callout"><strong>Mini-bilan Mission 2 :</strong> API REST complète (12 routes), toutes protégées par JWT sauf /api/auth. Communication 100% JSON. Authentification bcrypt + JWT. Règles IDOR côté serveur. Construction dynamique des requêtes UPDATE. Documentation interactive Swagger. Codes HTTP sémantiques sur toutes les réponses. <span class="badge badge-ok">Mission validée</span></div>
 </section>
 
 <section id="routes">
@@ -731,13 +732,14 @@ req.db.query("SELECT id_assigned FROM tasks WHERE id = ?", [req.params.id], (err
     <tr><td>CSRF</td><td>Token JWT transmis en header <code>Authorization</code>, jamais en cookie</td></tr>
     <tr><td>IDOR (suppression de tâche)</td><td>Vérification côté serveur que l'utilisateur est propriétaire de la tâche ou admin avant suppression</td></tr>
     <tr><td>CORS</td><td>Middleware <code>cors()</code> activé (ouvert en développement, à restreindre à l'origine du front en production)</td></tr>
+    <tr><td>Brute-force sur la connexion</td><td>Rate limiting par IP dans <code>routes/auth.js</code> : 5 tentatives échouées max, blocage 15 minutes (429 Too Many Requests)</td></tr>
   </table>
 
   <div class="callout">
     <strong>Correction apportée :</strong> la clé secrète JWT (<code>SECRET_KEY</code>) et les identifiants de connexion à la base de données étaient auparavant codés en dur dans <code>middleware/security.js</code>, <code>routes/auth.js</code> et <code>config/db.js</code>, alors même que <code>dotenv</code> figurait déjà parmi les dépendances installées sans être réellement utilisé. Le chargement de <code>.env</code> via <code>require('dotenv').config()</code> a été ajouté en tête de <code>server.js</code>, et les trois fichiers lisent désormais <code>process.env.SECRET_KEY</code> / <code>process.env.DB_*</code> — plus aucun secret en dur dans le code source.
   </div>
   <div class="callout warn">
-    <strong>Point d'amélioration restant :</strong> aucun <em>rate limiting</em> n'est en place sur <code>/api/auth</code> (protection anti brute-force à ajouter, voir roadmap).
+    <strong>Point d'amélioration restant :</strong> le rate limiting actuel est stocké en mémoire (objet JS), donc réinitialisé à chaque redémarrage du serveur et non partagé entre plusieurs instances ; une solution Redis serait nécessaire pour une mise à l'échelle en production (voir roadmap).
   </div>
 </section>
 
@@ -807,9 +809,9 @@ req.db.query("SELECT id_assigned FROM tasks WHERE id = ?", [req.params.id], (err
 <section id="roadmap">
   <h2>14 — Roadmap et évolutions futures</h2>
   <ul>
-    <li>Réintroduire, si le besoin se confirme, un module de journal d'audit et de statistiques serveur (retirés volontairement pour simplifier le périmètre d'examen).</li>
+    <li>Réintroduire, si le besoin se confirme, une route serveur dédiée aux statistiques et une route de consultation du journal d'audit (retirées volontairement pour simplifier le périmètre d'examen ; une version front-end légère des statistiques existe déjà, voir section 3.4).</li>
     <li>Ajouter une suite de tests automatisés (Jest + Supertest) sur l'authentification et le CRUD des tâches.</li>
-    <li>Ajouter un <em>rate limiting</em> sur <code>/api/auth</code> (anti brute-force).</li>
+    <li>Persister le <em>rate limiting</em> de <code>/api/auth</code> dans Redis plutôt qu'en mémoire, pour tenir la charge sur plusieurs instances du serveur (la protection anti brute-force elle-même est déjà en place, voir section 10.2).</li>
     <li>Introduire une séparation formelle routes / controllers / models pour préparer la montée en complexité de l'application.</li>
     <li>Conteneuriser l'application avec Docker et documenter un déploiement en environnement distant (HTTPS, variables d'environnement de production).</li>
     <li>Drag &amp; drop natif pour le déplacement des tâches (actuellement via boutons directionnels, un choix pris pour simplifier l'UI et le code).</li>
@@ -825,13 +827,13 @@ req.db.query("SELECT id_assigned FROM tasks WHERE id = ?", [req.params.id], (err
     <li>Authentification sécurisée complète (inscription, connexion, JWT 24h + hachage bcrypt) ;</li>
     <li>CRUD complet des tâches avec gestion des priorités (ENUM), dates d'échéance et assignation à un membre ;</li>
     <li>Gestion des colonnes et des droits admin / utilisateur ;</li>
-    <li>Vue équipe et profil utilisateur ;</li>
-    <li>API REST documentée avec Swagger UI (11 routes, codes HTTP sémantiques sur toutes les réponses) ;</li>
+    <li>Vue équipe et page Statistiques (répartition des tâches, calculée côté front) ;</li>
+    <li>API REST documentée avec Swagger UI (12 routes, codes HTTP sémantiques sur toutes les réponses) ;</li>
     <li>Interface responsive (desktop / tablette / mobile) avec accessibilité RGAA 4.1.2 vérifiée sur 30 critères.</li>
   </ul>
-  <p>Plusieurs fonctionnalités plus avancées avaient été développées (journal d'audit, statistiques serveur, drag &amp; drop, système de notifications) puis volontairement retirées lors d'une phase de simplification. Ce choix stratégique — préférer un cœur solide entièrement maîtrisé à une accumulation de fonctionnalités partielles — est assumé et documenté en roadmap.</p>
+  <p>Plusieurs fonctionnalités plus avancées avaient été développées (route serveur de statistiques, consultation du journal d'audit, drag &amp; drop, système de notifications) puis volontairement retirées lors d'une phase de simplification. Ce choix stratégique — préférer un cœur solide entièrement maîtrisé à une accumulation de fonctionnalités partielles — est assumé et documenté en roadmap. Une version plus légère des statistiques, calculée côté front-end sans route serveur dédiée, a depuis été réintroduite (voir section 3.4), et la table <code>logs</code> continue d'enregistrer un audit trail à chaque suppression de tâche.</p>
   <p>Les principales erreurs rencontrées ont été identifiées, corrigées et documentées : bug CSS de scroll dans les colonnes Kanban (<code>min-height: 0</code> sur les flex-children avec <code>overflow-y: auto</code>), secrets JWT codés en dur migrés vers <code>.env</code>, appels <code>console.log()</code> de debug retirés, et une faille IDOR sur la suppression de tâches comblée par une vérification de propriété côté serveur (et non uniquement via masquage du bouton côté front).</p>
-  <div class="callout"><strong>Périmètre honnête :</strong> l'application tourne exclusivement en local (XAMPP + Node.js). Absence de tests automatisés, de rate limiting et de mise en production : ces limites sont documentées en roadmap plutôt que masquées — c'est en soi une démonstration de rigueur professionnelle.</div>
+  <div class="callout"><strong>Périmètre honnête :</strong> l'application tourne exclusivement en local (XAMPP + Node.js). Absence de tests automatisés et de mise en production, rate limiting en mémoire uniquement (non partagé entre instances) : ces limites sont documentées en roadmap plutôt que masquées — c'est en soi une démonstration de rigueur professionnelle.</div>
 
   <h3>15.2 Bilan de la formation</h3>
   <p>Cette formation DWWM à La Plateforme_ représente <strong>[à compléter — décrire ta reconversion : ex. "une reconversion depuis le secteur de [domaine précédent]" ou "une première expérience structurée dans le développement web après une formation autodidacte"]</strong>. En 12 mois, elle m'a permis de passer de <strong>[situation de départ]</strong> à la capacité de concevoir, développer et documenter une application full-stack complète de bout en bout, seule.</p>

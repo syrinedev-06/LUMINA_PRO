@@ -340,7 +340,7 @@ column.appendChild(card);                                   ← insérer dans le
 
   <p style="font-size:10pt; color:#555; margin-bottom:12px;"><em>Ce que le formateur évalue : CRUD (Create Read Update Delete), requêtes préparées, gestion des erreurs, séparation logique métier.</em></p>
 
-  <div class="ok">CRUD complet sur les tâches, colonnes et utilisateurs (11 routes REST)</div>
+  <div class="ok">CRUD complet sur les tâches, colonnes et utilisateurs (12 routes REST)</div>
   <div class="ok">Requêtes préparées avec mysql2 (points d'interrogation ?) sur TOUTES les routes</div>
   <div class="ok">Gestion des erreurs avec codes HTTP sémantiques (400, 401, 404, 500)</div>
   <div class="ok">Logique métier dans les routes (/backend/routes/) séparée du serveur (server.js)</div>
@@ -670,7 +670,7 @@ db.query("SELECT * FROM users WHERE email = ?", [email]);
     <tr>
       <td>CRUD complet</td>
       <td><span class="badge-ok">✅ Oui</span></td>
-      <td>11 routes REST (tasks, columns, users, auth)</td>
+      <td>12 routes REST (tasks, columns, users, auth)</td>
     </tr>
     <tr>
       <td>Requêtes préparées / sécurité</td>

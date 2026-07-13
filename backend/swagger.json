@@ -99,7 +99,8 @@
                   "description": { "type": "string" },
                   "priority": { "type": "string", "enum": ["low", "medium", "high"] },
                   "id_col": { "type": "integer" },
-                  "id_assigned": { "type": "integer" }
+                  "id_assigned": { "type": "integer" },
+                  "due_date": { "type": "string", "format": "date" }
                 }
               }
             }
@@ -133,7 +134,8 @@
                   "description": { "type": "string" },
                   "priority": { "type": "string" },
                   "id_col": { "type": "integer" },
-                  "id_assigned": { "type": "integer" }
+                  "id_assigned": { "type": "integer" },
+                  "due_date": { "type": "string", "format": "date" }
                 }
               }
             }
@@ -243,35 +245,6 @@
       }
     },
     "/users/{id}": {
-      "put": {
-        "summary": "Modifier son profil utilisateur",
-        "tags": ["Membres et Profils"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer" }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": { "type": "string" },
-                  "email": { "type": "string" }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": { "description": "Profil mis à jour" }
-        }
-      },
       "delete": {
         "summary": "Retirer un membre de l'équipe (Réservé Admin)",
         "tags": ["Membres et Profils"],

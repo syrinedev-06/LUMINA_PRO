@@ -220,13 +220,13 @@ h3 { font-size: 14px; font-weight: 800; color: #d63384; margin-bottom: 12px; tex
         </div>
       </div>
 
-      <!-- Modale Mon Profil -->
+      <!-- Page Statistiques -->
       <div style="margin-bottom:14px;">
-        <div class="node-view">👤 Modale Mon Profil</div>
+        <div class="node-view">📊 Page Statistiques</div>
         <div style="margin-left:20px;margin-top:6px;display:flex;flex-direction:column;gap:6px;">
-          <div class="node-action">Clic sur "Mon Profil" ou l'avatar → showProfile()</div>
-          <div class="node-action">Lecture de localStorage('user') → nom, email, rôle, id</div>
-          <div class="node-action">escapeHTML() avant insertion dans le DOM (protection XSS)</div>
+          <div class="node-action">Clic sur "Statistiques" ou l'avatar → showProfile()</div>
+          <div class="node-action">Promise.all() sur /api/tasks et /api/users</div>
+          <div class="node-action">Calcul côté client (Array.filter) + camembert SVG généré à la main</div>
         </div>
       </div>
 
@@ -370,33 +370,43 @@ h3 { font-size: 14px; font-weight: 800; color: #d63384; margin-bottom: 12px; tex
     <p style="font-size:11px;color:#6b7280;margin-top:10px;">Accessible : aria-labelledby, aria-modal, focus piégé dans la modale</p>
   </div>
 
-  <!-- WF 4 : Modale Mon Profil -->
+  <!-- WF 4 : Page Statistiques -->
   <div class="wf-card">
-    <div class="wf-title">Composant — Modale Mon Profil (profile.js)</div>
+    <div class="wf-title">Composant — Page Statistiques (profile.js)</div>
     <div class="screen">
       <div class="screen-bar">
         <div class="dot" style="background:#ef4444;"></div>
         <div class="dot" style="background:#f59e0b;"></div>
         <div class="dot" style="background:#10b981;"></div>
-        <div class="title">Fenêtre modale</div>
+        <div class="title">localhost:3000</div>
       </div>
-      <div class="wf-modal-overlay">
-        <div class="wf-modal-box" style="text-align:center;">
-          <div class="custom-avatar" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#6366f1);margin:0 auto 8px;"></div>
-          <div style="font-size:11px;font-weight:800;">Nom Prénom</div>
-          <div style="font-size:7px;color:#6b7280;margin-bottom:8px;">Membre de Lumina Workspace</div>
-          <table style="width:100%;font-size:7px;border-collapse:collapse;text-align:left;">
-            <tr><th style="color:#6b7280;padding:2px 4px;">Nom</th><td style="padding:2px 4px;">—</td></tr>
-            <tr><th style="color:#6b7280;padding:2px 4px;">Email</th><td style="padding:2px 4px;">—</td></tr>
-            <tr><th style="color:#6b7280;padding:2px 4px;">Rôle</th><td style="padding:2px 4px;">user / admin</td></tr>
-            <tr><th style="color:#6b7280;padding:2px 4px;">ID Compte</th><td style="padding:2px 4px;">#—</td></tr>
-            <tr><th style="color:#6b7280;padding:2px 4px;">Statut</th><td style="padding:2px 4px;color:#10b981;">● En ligne</td></tr>
-          </table>
-          <div class="wf-btn" style="margin-top:8px;padding:5px;background:#6b7280;">Fermer</div>
+      <div style="padding:10px;">
+        <div style="font-size:10px;font-weight:800;margin-bottom:8px;">Tableau de bord</div>
+        <div style="display:flex;gap:6px;margin-bottom:8px;">
+          <div style="flex:1;background:#f8fafc;border-radius:6px;padding:6px;text-align:center;">
+            <div style="font-size:13px;font-weight:800;color:#6c63ff;">4</div>
+            <div style="font-size:6px;color:#6b7280;">Tâches</div>
+          </div>
+          <div style="flex:1;background:#f8fafc;border-radius:6px;padding:6px;text-align:center;">
+            <div style="font-size:13px;font-weight:800;color:#ef4444;">1</div>
+            <div style="font-size:6px;color:#6b7280;">Urgentes</div>
+          </div>
+          <div style="flex:1;background:#f8fafc;border-radius:6px;padding:6px;text-align:center;">
+            <div style="font-size:13px;font-weight:800;color:#10b981;">2</div>
+            <div style="font-size:6px;color:#6b7280;">Membres</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:center;padding:6px;">
+          <svg width="50" height="50" viewBox="0 0 160 160">
+            <circle cx="80" cy="80" r="75" fill="#e2e8f0"/>
+            <path d="M 80 80 L 80 5 A 75 75 0 0 1 145 115 Z" fill="#ef4444"/>
+            <path d="M 80 80 L 145 115 A 75 75 0 0 1 20 145 Z" fill="#f59e0b"/>
+            <path d="M 80 80 L 20 145 A 75 75 0 0 1 80 5 Z" fill="#10b981"/>
+          </svg>
         </div>
       </div>
     </div>
-    <p style="font-size:11px;color:#6b7280;margin-top:10px;">Lecture seule — données lues depuis <code>localStorage</code>, échappées via <code>escapeHTML()</code> avant affichage</p>
+    <p style="font-size:11px;color:#6b7280;margin-top:10px;">Page calculée côté front — Promise.all() sur /api/tasks et /api/users, camembert SVG généré à la main (Math.cos/Math.sin)</p>
   </div>
 
   <!-- WF 5 : Mobile -->

@@ -72,7 +72,6 @@ function showKanban() {
                         style="width:100%; padding:8px 12px 8px 32px; border:1px solid var(--border); border-radius:10px; background:var(--card-bg); color:var(--text); font-size:14px; outline:none;"
                         aria-label="Rechercher une tâche">
                 </div>
-                <div id="kanban-stats" style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;"></div>
             </div>
             <div id="kanban-board" class="kanban-board">
                 <p style="padding:20px;">Chargement du tableau...</p>

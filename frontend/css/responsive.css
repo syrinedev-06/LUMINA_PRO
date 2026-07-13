@@ -107,16 +107,7 @@
         order: -1;
     }
 
-    .drawer { width: 100%; right: -100%; }
-    .drawer.open { right: 0; }
-
     .data-card { margin: 10px; padding: 14px; }
-
-    .stats-card {
-        margin: 20px 15px;
-        padding: 20px;
-        border-radius: 20px;
-    }
 
     .modal-content { padding: 20px; }
 

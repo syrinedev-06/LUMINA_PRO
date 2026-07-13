@@ -52,25 +52,3 @@
 }
 
 .auth-switch { margin-top: 15px; font-size: 14px; color: var(--text-muted); }
-
-/* ===================== PROFILE PAGE ===================== */
-.profile-container {
-    padding: 40px 20px;
-    display: flex;
-    justify-content: center;
-    overflow-y: auto;
-}
-
-.profile-card {
-    background: white;
-    padding: 32px;
-    border-radius: 20px;
-    width: 100%;
-    max-width: 480px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-    text-align: center;
-}
-
-.profile-table { width: 100%; margin-top: 20px; border-collapse: collapse; text-align: left; }
-.profile-table th, .profile-table td { padding: 12px 10px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
-.profile-table th { color: var(--text-muted); font-weight: 600; width: 40%; }

@@ -165,7 +165,7 @@
   </div>
 
   <div class="alerte">
-    Ce que OWASP recommande et que Lumina Pro n'a pas encore : rate limiting sur le login (limiter le nombre de tentatives pour éviter les attaques par force brute), HTTPS en production, cookies httpOnly à la place du localStorage pour le JWT. Ces points sont identifiés comme améliorations prioritaires.
+    Ce que OWASP recommande et que Lumina Pro n'a pas encore : HTTPS en production, cookies httpOnly à la place du localStorage pour le JWT, et un rate limiting persistant sur Redis (la protection anti brute-force existe déjà sur le login — 5 tentatives max, blocage 15 minutes — mais en mémoire, donc non partagée entre plusieurs instances). Ces points sont identifiés comme améliorations prioritaires.
   </div>
 
   <div class="pied">Veille Technologique · Syrine BEN HASSINE · La Plateforme_ Cannes · DWWM 2026</div>

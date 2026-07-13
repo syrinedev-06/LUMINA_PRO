@@ -1,19 +1,5 @@
 /* ===================== KANBAN ===================== */
 
-/* Pastilles de statistiques */
-.stat-chip {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 4px 12px;
-    font-size: 13px;
-    color: var(--text-muted);
-    white-space: nowrap;
-}
-.stat-chip strong { color: var(--text); font-weight: 600; }
-.stat-total { background: var(--primary); color: #fff; border-color: var(--primary); }
-.stat-total strong { color: #fff; }
-
 .badge-due { font-size: 11px; color: var(--text-muted); margin: 3px 0; }
 .badge-overdue { font-size: 11px; color: #ef4444; font-weight: 700; margin: 3px 0; }
 
@@ -101,8 +87,3 @@
 .bg-high   { background: #fee2e2; color: #991b1b; }
 .bg-medium { background: #fef3c7; color: #92400e; }
 .bg-low    { background: #dcfce7; color: #166534; }
-
-.badge-role {
-    background: #f1f5f9;
-    color: #0f172a;
-}

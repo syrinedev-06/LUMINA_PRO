@@ -98,15 +98,6 @@
 }
 .btn-secondary:hover { background: #e2e8f0; color: var(--dark); }
 
-/* Spécial bouton Générer une notification */
-.btn-generer:hover {
-    background: var(--primary) !important;
-    color: white !important;
-}
-.btn-generer:active {
-    transform: scale(0.98);
-}
-
 .btn-delete {
     width: 100%;
     padding: 12px;

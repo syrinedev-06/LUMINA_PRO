@@ -10,13 +10,7 @@ USE lumina_pro;
 -- de tâche) y enregistre une ligne automatiquement via les routes de l'API.
 -- Les tables notifications et les colonnes avatar/deadline/progress d'une version antérieure
 -- ont été retirées lors de la simplification finale du projet.
-
--- ==========================================================
--- Ce script reflète EXACTEMENT les 3 tables créées automatiquement
--- par backend/server.js au démarrage (mêmes noms de colonnes, mêmes
--- contraintes). Il sert de référence lisible pour la BDD, sans rien
--- ajouter que le code ne crée pas réellement.
--- ==========================================================
+-- Ce script sert de référence lisible pour la BDD, sans rien ajouter que le code ne crée pas réellement.
 
 -- ==========================================================
 -- 1. TABLE DES UTILISATEURS (users)
