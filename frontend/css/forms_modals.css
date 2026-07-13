@@ -7,29 +7,27 @@
     background: rgba(15,23,42,0.65);
     backdrop-filter: blur(6px);
     justify-content: center;
-    align-items: flex-start;
-    padding: 40px 20px;
+    align-items: center;
+    padding: 20px;
     overflow-y: auto;
 }
 
 .modal-content {
     background: white;
-    padding: 28px;
+    padding: 22px 24px;
     border-radius: 20px;
     width: 100%;
-    max-width: 380px;
-    max-height: 85dvh;
-    overflow-y: auto;
+    max-width: 400px;
 }
 
 .modal-content h2 {
-    margin-bottom: 18px;
-    font-size: 18px;
+    margin-bottom: 14px;
+    font-size: 17px;
     color: var(--dark);
     text-align: center;
 }
 
-.modal-content .form-group { margin-bottom: 14px; }
+.modal-content .form-group { margin-bottom: 10px; }
 
 .modal-content label {
     display: block;
@@ -51,13 +49,23 @@
     font-family: inherit;
 }
 
-.modal-content textarea { height: 80px; resize: vertical; }
+.modal-content textarea { height: 60px; resize: none; }
 
 .modal-footer {
-    margin-top: 18px;
+    margin-top: 14px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 8px;
+    flex-wrap: wrap;
+}
+
+.modal-footer .btn-primary-modal,
+.modal-footer .btn-secondary,
+.modal-footer .btn-delete {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 8px;
+    font-size: 13px;
 }
 
 /* ===================== BUTTONS ===================== */

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -124,11 +124,13 @@
   }
   .page-body {
     flex: 1;
+    min-height: 0;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 16px;
   }
+  .page-body > * { flex-shrink: 0; }
 
   /* ── ÉLÉMENTS DE CONTENU ── */
   .content-title {
@@ -422,7 +424,10 @@
     bottom: 32px;
     left: 50%;
     transform: translateX(-50%);
-    color: rgba(0,0,0,0.35);
+    background: rgba(0,0,0,0.22);
+    color: #fff;
+    padding: 3px 14px;
+    border-radius: 20px;
     font-size: 13px;
     font-weight: 600;
     letter-spacing: 1px;
@@ -433,6 +438,40 @@
   .mcd-table td { padding: 3px 8px; border-bottom: 1px solid #e0e0e0; }
   .mcd-table tr:first-child td { background: #1e293b; color: #fff; font-weight: 800; }
   .mcd-table .pk-row td { background: #fbe4ec; font-weight: 700; }
+
+  /* ── WIREFRAMES (mockups basse fidélité) ── */
+  .wf-row { display: flex; gap: 24px; }
+  .wf-card { flex: 1; }
+  .wf-title { font-size: 12px; font-weight: 800; color: #1e293b; margin-bottom: 8px; }
+  .screen { border: 2px solid #1e293b; border-radius: 8px; overflow: hidden; background: #f8f8ff; font-family: monospace; }
+  .screen-bar { background: #1e293b; color: #fff; padding: 5px 10px; font-size: 10px; display: flex; align-items: center; gap: 6px; }
+  .screen-bar .dot { width: 7px; height: 7px; border-radius: 50%; }
+  .screen-bar .title { flex: 1; text-align: center; font-size: 10px; }
+  .screen-body { display: flex; }
+  .screen-sidebar { background: #1a1a2e; color: #fff; width: 78px; min-height: 190px; padding: 8px 5px; font-size: 8px; display: flex; flex-direction: column; gap: 5px; }
+  .screen-sidebar .logo-wf { background: #D6336C; border-radius: 50%; width: 24px; height: 24px; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; font-size: 7px; color: #fff; }
+  .screen-sidebar .nav-item { background: rgba(255,255,255,0.1); border-radius: 4px; padding: 3px 5px; font-size: 8px; }
+  .screen-sidebar .nav-item.active { background: #D6336C; }
+  .screen-main { flex: 1; padding: 8px; }
+  .wf-h1 { font-size: 10px; font-weight: 900; color: #1e293b; margin-bottom: 6px; }
+  .wf-kanban { display: flex; gap: 5px; margin-top: 5px; }
+  .wf-col { background: rgba(30,41,59,0.06); border-radius: 4px; padding: 4px; flex: 1; min-height: 85px; }
+  .wf-col-title { font-size: 7px; font-weight: 900; color: #1e293b; text-align: center; margin-bottom: 3px; }
+  .wf-task { background: #fff; border-radius: 3px; padding: 3px 4px; margin-bottom: 3px; font-size: 7px; border-left: 2px solid #D6336C; }
+  .wf-fab { background: #D6336C; color: #fff; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 11px; margin-top: 6px; margin-left: auto; }
+  .screen-login { padding: 14px; display: flex; flex-direction: column; align-items: center; gap: 6px; min-height: 190px; }
+  .wf-logo-big { background: linear-gradient(135deg, #1e293b, #D6336C); border-radius: 50%; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 900; }
+  .wf-form-box { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; width: 100%; }
+  .wf-input { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px; height: 14px; margin-bottom: 5px; width: 100%; }
+  .wf-label { font-size: 7px; color: #1e293b; font-weight: 700; margin-bottom: 2px; }
+  .wf-btn { background: #D6336C; color: #fff; border-radius: 4px; padding: 3px; font-size: 8px; text-align: center; font-weight: 700; }
+
+  /* ── GANTT ── */
+  .gantt-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .gantt-label { width: 170px; font-size: 11.5px; color: #1e293b; flex-shrink: 0; }
+  .gantt-track { flex: 1; background: #f1f1f5; border-radius: 6px; height: 22px; position: relative; }
+  .gantt-bar { position: absolute; top: 0; height: 100%; border-radius: 6px; background: #D6336C; color: #fff; font-size: 10px; display: flex; align-items: center; padding-left: 8px; white-space: nowrap; overflow: hidden; }
+  .gantt-axis { display: flex; margin: 0 0 6px 180px; font-size: 10px; color: #999; justify-content: space-between; }
 
   @media print {
     .nav, .progress { display: none; }
@@ -474,23 +513,24 @@
           <div class="sommaire-item"><span class="num">8</span> Cahier des charges</div>
           <div class="sommaire-item"><span class="num">9</span> Fonctionnalités</div>
           <div class="sommaire-item"><span class="num">10</span> User stories</div>
-          <div class="sommaire-item"><span class="num">11</span> Wireframes &amp; maquettes</div>
-          <div class="sommaire-item"><span class="num">12</span> Intégration front HTML/CSS</div>
-          <div class="sommaire-item"><span class="num">13</span> Choix des technologies</div>
+          <div class="sommaire-item"><span class="num">11</span> UML — Cas d'utilisation</div>
+          <div class="sommaire-item"><span class="num">12</span> Wireframes &amp; maquettes</div>
+          <div class="sommaire-item"><span class="num">13</span> Intégration front HTML/CSS</div>
+          <div class="sommaire-item"><span class="num">14</span> Choix des technologies</div>
         </div>
         <div class="sommaire-col">
           <div class="sommaire-item divider">Front</div>
-          <div class="sommaire-item"><span class="num">14</span> Responsive</div>
-          <div class="sommaire-item"><span class="num">15</span> Accessibilité, SEO, Lighthouse</div>
-          <div class="sommaire-item"><span class="num">16</span> Base de données &amp; SQL</div>
+          <div class="sommaire-item"><span class="num">15</span> Responsive</div>
+          <div class="sommaire-item"><span class="num">16</span> Accessibilité, SEO, Lighthouse</div>
+          <div class="sommaire-item"><span class="num">17</span> Base de données &amp; SQL</div>
           <div class="sommaire-item divider">Back</div>
-          <div class="sommaire-item"><span class="num">17</span> Authentification JWT</div>
-          <div class="sommaire-item"><span class="num">18</span> Sécurité</div>
-          <div class="sommaire-item"><span class="num">19</span> Liste des routes</div>
-          <div class="sommaire-item"><span class="num">20</span> Kanban</div>
-          <div class="sommaire-item"><span class="num">21</span> Swagger</div>
-          <div class="sommaire-item"><span class="num">22</span> Planning, tests, déploiement</div>
-          <div class="sommaire-item"><span class="num">23</span> Conclusion</div>
+          <div class="sommaire-item"><span class="num">18</span> Authentification JWT</div>
+          <div class="sommaire-item"><span class="num">19</span> Sécurité</div>
+          <div class="sommaire-item"><span class="num">20</span> Architecture &amp; routes</div>
+          <div class="sommaire-item"><span class="num">21</span> Kanban &amp; Swagger</div>
+          <div class="sommaire-item"><span class="num">22</span> Planning &amp; commits Git</div>
+          <div class="sommaire-item"><span class="num">23</span> Tests &amp; déploiement</div>
+          <div class="sommaire-item"><span class="num">24</span> Conclusion</div>
         </div>
       </div>
     </div>
@@ -504,14 +544,8 @@
     <h2>Présentation personnelle</h2>
     <div class="page-body">
       <div class="content-title">Qui suis-je ?</div>
-      <div class="placeholder-box">
-        <span class="ph-tag">✏️ À personnaliser</span>
-        <p style="margin:0;">En 3-4 phrases simples, à dire à voix haute (pas besoin d'écrire un roman sur la slide) :</p>
-        <ul style="margin-top:8px;">
-          <li>D'où tu viens (ton métier / ta situation avant la formation)</li>
-          <li>Ton parcours jusqu'à La Plateforme_</li>
-          <li>Une phrase sur ce qui te plaît dans le développement web</li>
-        </ul>
+      <div class="highlight-box">
+        Passionnée de mode depuis toute petite, je suis diplômée en stylisme-modélisme et j'ai obtenu une certification en informatique et bureautique en 2001. J'ai ensuite été gérante d'ateliers de couture, où je réalisais déjà mon stylisme sur ordinateur. J'ai toujours été fascinée par les nouvelles technologies et leurs mystères — de nature très curieuse, j'ai voulu faire du code pour découvrir la face cachée derrière les belles vitrines des sites web : comment elles sont vraiment conçues.
       </div>
       <div class="highlight-box" style="font-size:14px;">
         <strong>Formation :</strong> DWWM — Développeuse Web et Web Mobile · La Plateforme_ · Promotion 2025/2026
@@ -527,16 +561,10 @@
     <h2>Reconversion professionnelle</h2>
     <div class="page-body">
       <div class="content-title">Pourquoi ce changement de voie ?</div>
-      <div class="placeholder-box">
-        <span class="ph-tag">✏️ À personnaliser</span>
-        <p style="margin:0;">Explique en 2-3 phrases simples et sincères :</p>
-        <ul style="margin-top:8px;">
-          <li>Ce que tu faisais avant</li>
-          <li>Ce qui t'a donné envie de changer</li>
-          <li>Pourquoi le code plutôt qu'autre chose</li>
-        </ul>
+      <div class="highlight-box">
+        Avant cette formation, je gérais des ateliers de couture et je réalisais du stylisme assisté par ordinateur. La passion pour la technologie n'a jamais disparu depuis ma première certification en bureautique en 2001 : en découvrant la formation de La Plateforme_, j'ai voulu la poursuivre pour acquérir de nouvelles connaissances et avancer vers ce monde de la technologie qui façonne l'avenir. C'est cette curiosité naturelle pour comprendre ce qui se cache derrière un site web qui m'a menée au code.
       </div>
-      <p style="font-size:13px;color:#888;">Astuce oral : une reconversion est un atout, pas une faiblesse — elle montre de la motivation et de la maturité de choix. Reste factuelle et courte, le jury ne demande pas un roman.</p>
+      <p style="font-size:13px;color:#888;">Une reconversion est un atout, pas une faiblesse — elle montre de la motivation et de la maturité de choix.</p>
     </div>
   </div>
 
@@ -553,9 +581,8 @@
       </div>
       <p style="font-size:14px;">Le nom et la signature du projet résument cette intention :</p>
       <p style="font-style:italic;text-align:center;font-size:18px;color:#D6336C;">« Organisez vos idées avec clarté »</p>
-      <div class="placeholder-box">
-        <span class="ph-tag">✏️ À compléter si tu veux</span>
-        Si tu as une anecdote personnelle (un projet d'équipe mal organisé, une expérience vécue) qui t'a donné envie de faire ce genre d'outil, c'est le bon endroit pour la raconter en une phrase.
+      <div class="highlight-box" style="font-size:13.5px;">
+        <strong>L'anecdote derrière le choix :</strong> pendant le projet de groupe MarsIA, nous avons utilisé Trello pour organiser le travail d'équipe — j'ai beaucoup aimé ses fonctionnalités et la facilité avec laquelle il permettait de suivre l'avancement de chacun. C'est cette expérience concrète qui m'a donné envie de comprendre et de recréer moi-même un outil Kanban, de A à Z.
       </div>
     </div>
   </div>
@@ -568,43 +595,47 @@
     <h2>État du marché du Kanban</h2>
     <div class="page-body">
       <div class="content-title">Des outils puissants, mais souvent lourds</div>
-      <div class="three-col">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
         <div class="card">
           <h4>Trello</h4>
-          <p>Simple et populaire, mais limité en gratuit et pensé pour du grand public généraliste.</p>
+          <p>Simple et populaire. Utilisé pendant ce projet pour le suivi des fonctionnalités à développer.</p>
+        </div>
+        <div class="card">
+          <h4>Monday.com</h4>
+          <p>Outil de gestion de projet tout-en-un, très visuel, mais coûteux et surdimensionné pour une petite équipe.</p>
         </div>
         <div class="card">
           <h4>Jira</h4>
-          <p>Très complet pour les équipes agiles, mais complexe à configurer et coûteux pour une petite équipe.</p>
+          <p>Très complet pour les équipes agiles, mais complexe à configurer et coûteux pour une petite structure.</p>
         </div>
         <div class="card">
           <h4>Asana</h4>
           <p>Riche en fonctionnalités (rapports, automatisations), au prix d'une prise en main plus longue.</p>
         </div>
       </div>
-      <div class="highlight-box">
-        <strong>Positionnement de Lumina Pro :</strong> pas une alternative commerciale à ces outils, mais un Kanban resserré sur l'essentiel — un projet de certification qui prouve la maîtrise de toute la chaîne (BDD → API → sécurité → interface), plutôt qu'une accumulation de fonctionnalités.
+      <div class="highlight-box" style="font-size:13px;">
+        <strong>Positionnement de Lumina Pro :</strong> un Kanban resserré sur l'essentiel, pensé comme outil de certification — pas une alternative commerciale à ces solutions. L'objectif : prouver la maîtrise de toute la chaîne (BDD → API → sécurité → interface).
       </div>
+      <p style="font-size:12.5px;color:#888; margin-top:8px;">⏱️ Durée de réalisation : <strong>3 mois</strong> (mai → juillet 2026).</p>
     </div>
   </div>
 
   <!-- ══════════════════════════════════════════
-       SLIDE 7 — INSPIRATIONS UX/UI
+       SLIDE 7 — MOODBOARD & INSPIRATIONS UX/UI
   ══════════════════════════════════════════ -->
   <div class="slide slide-page">
     <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">06</span></div>
-    <h2>Inspirations UX/UI</h2>
+    <h2>Moodboard &amp; inspirations UX/UI</h2>
     <div class="page-body">
-      <div class="content-title">Références visuelles</div>
+      <div class="content-title">Références visuelles ayant guidé la charte</div>
       <ul>
         <li>Recherche de composants Kanban sur <strong>Dribbble</strong> pour la mise en page des colonnes et cartes de tâches</li>
         <li>Palette de marque en dégradés rose/fuchsia (<code>#A10057</code>), choisie pour rester sobre tout en étant reconnaissable</li>
         <li>Sidebar de navigation sombre + zone de contenu claire : un schéma courant des outils SaaS de gestion, pour une prise en main immédiate</li>
         <li>Priorité donnée à la lisibilité : peu de couleurs, un code couleur unique et cohérent pour les priorités (rouge/ambre/vert)</li>
       </ul>
-      <div class="placeholder-box">
-        <span class="ph-tag">✏️ À personnaliser</span>
-        Si tu as gardé une capture ou un lien Dribbble précis qui t'a inspirée pour la maquette, ajoute-la ici pour illustrer.
+      <div class="highlight-box" style="font-size:13px;">
+        Ces références (Dribbble + codes visuels SaaS) tiennent lieu de moodboard : pas de planche d'inspiration formelle constituée en amont, mais une recherche visuelle ciblée qui a directement nourri la charte graphique (couleurs, typographie, structure sidebar/contenu).
       </div>
     </div>
   </div>
@@ -670,14 +701,28 @@
     <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">10</span></div>
     <h2>Fonctionnalités</h2>
     <div class="page-body">
-      <div class="content-title">Ce que fait l'application</div>
-      <ul>
-        <li>Tableau Kanban avec colonnes personnalisables</li>
-        <li>CRUD complet des tâches (créer, modifier, déplacer, supprimer)</li>
-        <li>Authentification sécurisée (JWT + bcrypt)</li>
-        <li>Gestion de rôles admin / utilisateur</li>
-        <li>Documentation API interactive (Swagger)</li>
-      </ul>
+      <div class="content-title">Fonctionnalités prévues vs retenues (MVP)</div>
+      <div class="two-col">
+        <div class="card">
+          <h4>✅ Retenues (MVP livré)</h4>
+          <ul>
+            <li>Tableau Kanban, colonnes personnalisables</li>
+            <li>CRUD complet des tâches</li>
+            <li>Authentification JWT + bcrypt</li>
+            <li>Rôles admin / utilisateur</li>
+            <li>Documentation API Swagger</li>
+          </ul>
+        </div>
+        <div class="card" style="border-left-color:#1e293b;">
+          <h4 style="color:#1e293b;">🕓 Prévues puis retirées</h4>
+          <ul>
+            <li>Journal d'audit (développé, retiré pour simplifier)</li>
+            <li>Statistiques serveur (développé, retiré)</li>
+            <li>Notifications (envisagé, retiré)</li>
+            <li>Drag &amp; drop natif (remplacé par des boutons)</li>
+          </ul>
+        </div>
+      </div>
       <div class="two-col">
         <div class="card">
           <h4>👑 Admin</h4>
@@ -723,25 +768,104 @@
   </div>
 
   <!-- ══════════════════════════════════════════
-       SLIDE 11 — WIREFRAMES & MAQUETTES
+       SLIDE 11b — UML USE CASE
   ══════════════════════════════════════════ -->
   <div class="slide slide-page">
     <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">12</span></div>
+    <h2>Diagramme de cas d'utilisation</h2>
+    <div class="page-body">
+      <div class="content-title">UML — 2 acteurs, 13 cas d'utilisation</div>
+      <div style="display:flex; gap:18px; align-items:flex-start;">
+
+        <!-- Acteurs -->
+        <div style="display:flex; flex-direction:column; gap:10px; min-width:120px;">
+          <div style="background:#f8fafc; border:2px solid #D6336C; border-radius:10px; padding:10px 14px; text-align:center;">
+            <div style="font-size:22px;">👤</div>
+            <div style="font-weight:800; font-size:12px; color:#D6336C; margin-top:4px;">Utilisateur</div>
+            <div style="font-size:10px; color:#888;">Membre de l'équipe</div>
+          </div>
+          <div style="background:#f8fafc; border:2px solid #1e293b; border-radius:10px; padding:10px 14px; text-align:center;">
+            <div style="font-size:22px;">🛡️</div>
+            <div style="font-weight:800; font-size:12px; color:#1e293b; margin-top:4px;">Admin</div>
+            <div style="font-size:10px; color:#888;">Hérite Utilisateur</div>
+          </div>
+        </div>
+
+        <!-- Use cases -->
+        <div style="flex:1; display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <div style="background:#fdf1f6; border-radius:8px; padding:8px 12px; border-left:3px solid #D6336C; font-size:12px;">
+            <strong style="color:#D6336C;">Authentification</strong><br>
+            Se connecter · S'inscrire · Se déconnecter
+          </div>
+          <div style="background:#fdf1f6; border-radius:8px; padding:8px 12px; border-left:3px solid #D6336C; font-size:12px;">
+            <strong style="color:#D6336C;">Gestion des tâches</strong><br>
+            Voir · Créer · Modifier · Déplacer · Supprimer
+          </div>
+          <div style="background:#f1f5f9; border-radius:8px; padding:8px 12px; border-left:3px solid #1e293b; font-size:12px;">
+            <strong style="color:#1e293b;">Administration 🛡️</strong><br>
+            Gérer les membres · Gérer les colonnes
+          </div>
+          <div style="background:#fdf1f6; border-radius:8px; padding:8px 12px; border-left:3px solid #D6336C; font-size:12px;">
+            <strong style="color:#D6336C;">Recherche</strong><br>
+            Filtrer les tâches par mot-clé (côté client)
+          </div>
+        </div>
+      </div>
+      <div class="highlight-box" style="font-size:12.5px; margin-top:10px;">
+        <strong>«include» :</strong> toute action sur les tâches inclut une vérification du token JWT (middleware verifyToken). <strong>Admin hérite</strong> de tous les droits Utilisateur et y ajoute la gestion d'équipe et des colonnes.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 11 — WIREFRAMES & MAQUETTES
+  ══════════════════════════════════════════ -->
+  <div class="slide slide-page">
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">13</span></div>
     <h2>Wireframes &amp; maquettes</h2>
     <div class="page-body">
-      <div class="content-title">Arborescence des pages</div>
-      <div class="flow-box">
-        <div class="flow-step">🔐 login.html<br><span style="font-weight:400;font-size:11px;">connexion / inscription</span></div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-step">🏠 index.html<br><span style="font-weight:400;font-size:11px;">dashboard protégé JWT</span></div>
+      <div class="content-title">Maquettes basse fidélité</div>
+      <div class="wf-row">
+        <div class="wf-card">
+          <div class="wf-title">login.html — Connexion / Inscription</div>
+          <div class="screen">
+            <div class="screen-bar"><div class="dot" style="background:#ef4444;"></div><div class="dot" style="background:#f59e0b;"></div><div class="dot" style="background:#10b981;"></div><div class="title">localhost:3000/login.html</div></div>
+            <div class="screen-login">
+              <div class="wf-logo-big">L</div>
+              <div class="wf-form-box">
+                <div class="wf-label">Email</div><div class="wf-input"></div>
+                <div class="wf-label">Mot de passe</div><div class="wf-input"></div>
+                <div class="wf-btn">Se connecter</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="wf-card">
+          <div class="wf-title">index.html — Vue Kanban (dashboard protégé JWT)</div>
+          <div class="screen">
+            <div class="screen-bar"><div class="dot" style="background:#ef4444;"></div><div class="dot" style="background:#f59e0b;"></div><div class="dot" style="background:#10b981;"></div><div class="title">localhost:3000</div></div>
+            <div class="screen-body">
+              <div class="screen-sidebar">
+                <div class="logo-wf">L</div>
+                <div class="nav-item active">📊 Dashboard</div>
+                <div class="nav-item">👥 Équipe</div>
+                <div class="nav-item">👤 Profil</div>
+              </div>
+              <div class="screen-main">
+                <div class="wf-h1">Tableau Kanban</div>
+                <div class="wf-kanban">
+                  <div class="wf-col"><div class="wf-col-title">À faire</div><div class="wf-task">Tâche urgente</div></div>
+                  <div class="wf-col"><div class="wf-col-title">En cours</div><div class="wf-task">Tâche moyenne</div></div>
+                  <div class="wf-col"><div class="wf-col-title">Terminé</div><div class="wf-task" style="opacity:0.5;">Tâche</div></div>
+                </div>
+                <div class="wf-fab">+</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="three-col">
-        <div class="card"><h4>📋 Vue Kanban</h4><p>Vue par défaut à la connexion</p></div>
-        <div class="card"><h4>👥 Vue Équipe</h4><p>Réservée à l'admin</p></div>
-        <div class="card"><h4>📊 Statistiques</h4><p>Répartition des tâches</p></div>
-      </div>
-      <div class="highlight-box">
-        Wireframes basse fidélité réalisés en amont pour valider la navigation avant tout travail graphique — détail complet dans <code>arborescence_wireframes.html</code>.
+      <div class="highlight-box" style="margin-top:14px;">
+        Wireframes basse fidélité réalisés en amont pour valider la navigation avant tout travail graphique — détail complet (arborescence, tous les écrans) dans <code>arborescence_wireframes.html</code>.
       </div>
     </div>
   </div>
@@ -750,7 +874,7 @@
        SLIDE 12 — INTÉGRATION FRONT HTML/CSS
   ══════════════════════════════════════════ -->
   <div class="slide slide-page">
-    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">13</span></div>
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">14</span></div>
     <h2>Intégration front HTML/CSS</h2>
     <div class="page-body">
       <div class="content-title">Une base HTML/CSS modulaire</div>
@@ -776,7 +900,7 @@
        SLIDE 13 — CHOIX DES TECHNOLOGIES
   ══════════════════════════════════════════ -->
   <div class="slide slide-page">
-    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">14</span></div>
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">15</span></div>
     <h2>Choix des technologies</h2>
     <div class="page-body">
       <div class="tech-grid">
@@ -790,20 +914,22 @@
         <div class="tech-box">
           <h3>🔧 Back-End</h3>
           <ul>
-            <li>Node.js + Express : léger, JS partout</li>
-            <li>jsonwebtoken + bcrypt pour la sécurité</li>
+            <li>Node.js v24.14.0 + Express 5.2.1</li>
+            <li>jsonwebtoken 9.0.3 + bcrypt 6.0.0 pour la sécurité</li>
+            <li>dotenv 17.4.2 (secrets en <code>.env</code>), cors 2.8.6</li>
           </ul>
         </div>
         <div class="tech-box">
           <h3>🗃️ Base de données</h3>
           <ul>
-            <li>MySQL : relationnel, adapté à des données liées (tâches ↔ utilisateurs ↔ colonnes)</li>
+            <li><strong>MySQL 8.0.45</strong> — relationnel, adapté à des données liées (tâches ↔ utilisateurs ↔ colonnes)</li>
+            <li>mysql2 3.22.2 comme driver Node</li>
           </ul>
         </div>
         <div class="tech-box">
           <h3>🛠️ Outils</h3>
           <ul>
-            <li>Swagger UI, Git/GitHub, XAMPP, VS Code</li>
+            <li>Swagger UI (swagger-ui-express 5.0.1), Git/GitHub, XAMPP, VS Code</li>
           </ul>
         </div>
       </div>
@@ -834,7 +960,7 @@
        SLIDE 15 — RESPONSIVE
   ══════════════════════════════════════════ -->
   <div class="slide slide-page">
-    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">15</span></div>
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">16</span></div>
     <h2>Responsive</h2>
     <div class="page-body">
       <div class="content-title">Adaptation mobile avec CSS</div>
@@ -845,18 +971,27 @@
             <li>Sidebar fixe à gauche</li>
             <li>Colonnes kanban côte à côte</li>
           </ul>
-          <div class="content-subtitle">Mobile (max 900px)</div>
+          <div class="content-subtitle">Tablette (≤ 900px)</div>
           <ul>
-            <li>Sidebar masquée, bouton hamburger ☰</li>
-            <li>Colonnes en scroll horizontal</li>
+            <li>Sidebar en tiroir (masquée par défaut), bouton hamburger ☰</li>
+            <li>Colonnes kanban toujours côte à côte, largeur fixe (270px), scroll horizontal si besoin</li>
+          </ul>
+          <div class="content-subtitle">Mobile (≤ 600px)</div>
+          <ul>
+            <li>Sidebar en tiroir plein écran</li>
+            <li>Colonnes empilées verticalement (scroll vertical, plus horizontal)</li>
           </ul>
         </div>
-        <div class="code-block" style="font-size:12px;">
+        <div class="code-block" style="font-size:11.5px;">
 <span class="cm">/* css/responsive.css */</span>
 <span class="kw">@media</span> (max-width: 900px) {
-  .sidebar { transform: translateX(-<span class="nr">100</span>%); }
-  .sidebar.open { transform: translateX(<span class="nr">0</span>); }
-  .kanban-board { overflow-x: auto; flex-wrap: nowrap; }
+  .sidebar { left: -280px; }
+  .sidebar.open { left: 0; }
+  .kanban-column { min-width: 270px; width: 270px; }
+}
+<span class="kw">@media</span> (max-width: 600px) {
+  .kanban-board { flex-direction: column; overflow-x: hidden; }
+  .kanban-column { width: 100%; min-width: 100%; }
 }</div>
       </div>
     </div>
@@ -866,7 +1001,7 @@
        SLIDE 16 — ACCESSIBILITÉ, SEO & LIGHTHOUSE
   ══════════════════════════════════════════ -->
   <div class="slide slide-page">
-    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">16</span></div>
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">17</span></div>
     <h2>Accessibilité, SEO &amp; Lighthouse</h2>
     <div class="page-body">
       <div class="two-col">
@@ -888,39 +1023,123 @@
       </div>
       <div class="content-subtitle">Audit Lighthouse — page login.html</div>
       <div class="three-col">
-        <div class="card"><h4>Performance</h4><p style="font-size:22px;font-weight:900;">99</p></div>
-        <div class="card"><h4>Accessibilité</h4><p style="font-size:22px;font-weight:900;">93</p></div>
-        <div class="card"><h4>SEO</h4><p style="font-size:22px;font-weight:900;">100</p></div>
+        <div class="card"><h4>Performance</h4><p style="font-size:22px;font-weight:900;">87</p></div>
+        <div class="card"><h4>Accessibilité</h4><p style="font-size:22px;font-weight:900;">79</p></div>
+        <div class="card"><h4>SEO</h4><p style="font-size:22px;font-weight:900;">91</p></div>
       </div>
       <div class="highlight-box" style="font-size:13px;">
-        <strong>Accessibilité à 93 plutôt que 100 :</strong> l'audit signale quelques contrastes et attributs ARIA à affiner — un point honnête à mentionner à l'oral plutôt qu'à cacher.
+        <strong>Accessibilité à 79 :</strong> l'audit signale des contrastes insuffisants et des attributs ARIA manquants sur la page de connexion — des axes d'amélioration concrets pour une v2. Performance à 87 car plusieurs fichiers CSS/JS séparés ne sont pas encore bundlés ni minifiés.
       </div>
     </div>
   </div>
 
   <!-- ══════════════════════════════════════════
-       SLIDE 17 — MERISE, BASE DE DONNÉES & SQL (fusionné)
+       SLIDE 17 — MCD
   ══════════════════════════════════════════ -->
   <div class="slide slide-page">
-    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">17</span></div>
-    <h2>Base de données &amp; SQL</h2>
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">18</span></div>
+    <h2>MCD — Modèle Conceptuel de Données</h2>
     <div class="page-body">
-      <div class="content-title">De la conception MERISE au CRUD SQL</div>
-      <p style="font-size:13px;">Conception selon la méthode MERISE (entités, associations, cardinalités), puis implémentation relationnelle MySQL : 3 tables liées par clés étrangères, manipulées avec les 4 opérations SQL de base.</p>
-      <div class="code-block" style="font-size:11px;">
-<span class="cm">// 1. CREATE — backend/server.js, au démarrage du serveur</span>
-<span class="kw">CREATE TABLE</span> users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100), email VARCHAR(150) UNIQUE, password VARCHAR(255), role ENUM(<span class="str">'admin'</span>,<span class="str">'user'</span>) DEFAULT <span class="str">'user'</span>);
-<span class="kw">CREATE TABLE</span> tasks (id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255), id_assigned INT, id_col INT NOT NULL,
-  <span class="kw">FOREIGN KEY</span> (id_assigned) <span class="kw">REFERENCES</span> users(id) <span class="kw">ON DELETE SET NULL</span>,
-  <span class="kw">FOREIGN KEY</span> (id_col) <span class="kw">REFERENCES</span> columns(id) <span class="kw">ON DELETE CASCADE</span>);
+      <div class="content-title">Entités, associations, cardinalités (méthode MERISE)</div>
+      <div class="three-col">
+        <table class="mcd-table"><tr><td>COLUMNS</td></tr><tr class="pk-row"><td>id</td></tr><tr><td>title</td></tr><tr><td>position</td></tr></table>
+        <table class="mcd-table"><tr><td>TASKS</td></tr><tr class="pk-row"><td>id</td></tr><tr><td>title</td></tr><tr><td>description</td></tr><tr><td>priority</td></tr><tr><td>created_at</td></tr></table>
+        <table class="mcd-table"><tr><td>USERS</td></tr><tr class="pk-row"><td>id</td></tr><tr><td>name</td></tr><tr><td>email</td></tr><tr><td>password</td></tr><tr><td>role</td></tr></table>
+      </div>
+      <div class="flow-box" style="margin-top:14px;">
+        <div class="flow-step">COLUMNS<br><span style="font-weight:400;font-size:11px;">(1,1)</span></div>
+        <div class="flow-arrow">—</div>
+        <div class="flow-step" style="border-color:#1e293b;color:#1e293b;">Contenir</div>
+        <div class="flow-arrow">—</div>
+        <div class="flow-step">TASKS<br><span style="font-weight:400;font-size:11px;">(0,n)</span></div>
+      </div>
+      <div class="flow-box">
+        <div class="flow-step">USERS<br><span style="font-weight:400;font-size:11px;">(0,n)</span></div>
+        <div class="flow-arrow">—</div>
+        <div class="flow-step" style="border-color:#1e293b;color:#1e293b;">Assigner</div>
+        <div class="flow-arrow">—</div>
+        <div class="flow-step">TASKS<br><span style="font-weight:400;font-size:11px;">(0,1)</span></div>
+      </div>
+      <div class="highlight-box" style="font-size:12.5px;">
+        Une colonne contient 0 à n tâches, une tâche appartient toujours à exactement une colonne (1,1). Un utilisateur peut se voir assigner 0 à n tâches ; une tâche est assignée à 0 ou 1 utilisateur (assignation optionnelle). Les deux relations portent un verbe à l'infinitif, conformément à la notation MERISE.
+      </div>
+    </div>
+  </div>
 
-<span class="cm">// 2. INSERT — routes/auth.js, à l'inscription</span>
+  <!-- ══════════════════════════════════════════
+       SLIDE 17bis — MLD
+  ══════════════════════════════════════════ -->
+  <div class="slide slide-page">
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">19</span></div>
+    <h2>MLD — Modèle Logique de Données</h2>
+    <div class="page-body">
+      <div class="content-title">Traduction en tables, indépendante du SGBD</div>
+      <div class="code-block" style="font-size:12px;">
+<span class="fn">USERS</span> (<span class="nr">id</span> PK, name, email, password, role)
+<span class="fn">COLUMNS</span> (<span class="nr">id</span> PK, title, position)
+<span class="fn">TASKS</span> (<span class="nr">id</span> PK, title, description, priority, created_at,
+       id_col <span class="cm">FK → COLUMNS.id</span>,
+       id_assigned <span class="cm">FK → USERS.id</span>)</div>
+      <div class="highlight-box" style="font-size:12.5px;">
+        Le MLD ne porte plus de cardinalités : chaque association 1,n devient une clé étrangère placée du côté "n". <code>TASKS.id_col</code> matérialise la relation Contenir, <code>TASKS.id_assigned</code> matérialise la relation Assigner (nullable, car l'assignation est optionnelle).
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 17ter — MPD
+  ══════════════════════════════════════════ -->
+  <div class="slide slide-page">
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">20</span></div>
+    <h2>MPD — Modèle Physique de Données</h2>
+    <div class="page-body">
+      <div class="content-title">Implémentation MySQL (database/schema.sql)</div>
+      <div class="code-block" style="font-size:11px;">
+<span class="kw">CREATE TABLE</span> users (
+  id INT AUTO_INCREMENT <span class="kw">PRIMARY KEY</span>,
+  name VARCHAR(255) <span class="kw">NOT NULL</span>,
+  email VARCHAR(255) <span class="kw">UNIQUE NOT NULL</span>,
+  password VARCHAR(255) <span class="kw">NOT NULL</span>,
+  role ENUM(<span class="str">'admin'</span>,<span class="str">'user'</span>) <span class="kw">DEFAULT</span> <span class="str">'user'</span>
+);
+<span class="kw">CREATE TABLE</span> columns (
+  id INT AUTO_INCREMENT <span class="kw">PRIMARY KEY</span>,
+  title VARCHAR(255) <span class="kw">NOT NULL</span>,
+  position INT <span class="kw">DEFAULT</span> <span class="nr">0</span>
+);
+<span class="kw">CREATE TABLE</span> tasks (
+  id INT AUTO_INCREMENT <span class="kw">PRIMARY KEY</span>,
+  title VARCHAR(255) <span class="kw">NOT NULL</span>, description TEXT,
+  priority ENUM(<span class="str">'high'</span>,<span class="str">'medium'</span>,<span class="str">'low'</span>) <span class="kw">DEFAULT</span> <span class="str">'medium'</span>,
+  id_assigned INT, id_col INT, created_at TIMESTAMP <span class="kw">DEFAULT</span> CURRENT_TIMESTAMP,
+  <span class="kw">FOREIGN KEY</span> (id_assigned) <span class="kw">REFERENCES</span> users(id) <span class="kw">ON DELETE SET NULL</span>,
+  <span class="kw">FOREIGN KEY</span> (id_col) <span class="kw">REFERENCES</span> columns(id) <span class="kw">ON DELETE CASCADE</span>
+);</div>
+      <p style="font-size:12px;color:#888;">SGBD réel : <strong>MySQL 8.0.45</strong>. Le MPD ne contient pas de cardinalités — uniquement des types de colonnes et des contraintes.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 17quater — SQL CRUD
+  ══════════════════════════════════════════ -->
+  <div class="slide slide-page">
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">21</span></div>
+    <h2>SQL — Exemples CRUD</h2>
+    <div class="page-body">
+      <div class="content-title">Un Create, un Read, un Update, un Delete</div>
+      <div class="code-block" style="font-size:11px;">
+<span class="cm">// 1. CREATE — routes/auth.js, à l'inscription</span>
 <span class="kw">const</span> sql = <span class="str">"INSERT INTO users (name, email, password) VALUES (?, ?, ?)"</span>;
+
+<span class="cm">// 2. READ — routes/tasks.js, liste des tâches</span>
+<span class="kw">const</span> sql = <span class="str">"SELECT * FROM tasks"</span>;
 
 <span class="cm">// 3. UPDATE — routes/tasks.js, construction dynamique selon les champs reçus</span>
 <span class="kw">let</span> sql = <span class="str">"UPDATE tasks SET "</span>; <span class="kw">if</span> (title) sql += <span class="str">"title = ?, "</span>; ... + <span class="str">" WHERE id = ?"</span>;
 
-<span class="cm">// 4. DELETE — la suppression d'une colonne entraîne celle de ses tâches (CASCADE ci-dessus)</span></div>
+<span class="cm">// 4. DELETE — la suppression d'une colonne entraîne celle de ses tâches</span>
+<span class="kw">const</span> sql = <span class="str">"DELETE FROM columns WHERE id = ?"</span>; <span class="cm">// ON DELETE CASCADE supprime ses tâches</span></div>
+      <p style="font-size:12px;color:#888;">Toutes les requêtes utilisent des placeholders <code>?</code> (requêtes préparées) — jamais de concaténation directe de variables dans le SQL.</p>
     </div>
   </div>
 
@@ -945,7 +1164,7 @@
        SLIDE 21 — AUTHENTIFICATION JWT
   ══════════════════════════════════════════ -->
   <div class="slide slide-page">
-    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">18</span></div>
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">22</span></div>
     <h2>Authentification JWT</h2>
     <div class="page-body">
       <div class="content-title">JSON Web Token — flux complet</div>
@@ -956,16 +1175,16 @@
         <div class="flow-step">localStorage</div><div class="flow-arrow">→</div>
         <div class="flow-step">Requêtes<br>protégées</div>
       </div>
-      <div class="code-block"><span class="cm">// backend/middleware/security.js — vérifié sur chaque requête protégée</span>
+      <div class="code-block" style="font-size:12px;"><span class="cm">// middleware/security.js</span>
 <span class="kw">function</span> <span class="fn">verifyToken</span>(req, res, next) {
   <span class="kw">const</span> authHeader = req.headers[<span class="str">'authorization'</span>];
-  <span class="kw">if</span> (!authHeader?.<span class="fn">startsWith</span>(<span class="str">'Bearer '</span>)) <span class="kw">return</span> res.<span class="fn">status</span>(<span class="nr">401</span>).<span class="fn">json</span>({error: <span class="str">'Token manquant'</span>});
+  <span class="kw">if</span> (!authHeader?.<span class="fn">startsWith</span>(<span class="str">'Bearer '</span>))
+    <span class="kw">return</span> res.<span class="fn">status</span>(<span class="nr">401</span>).<span class="fn">json</span>({ error: <span class="str">'Token manquant'</span> });
   <span class="kw">try</span> {
-    req.user = jwt.<span class="fn">verify</span>(authHeader.<span class="fn">split</span>(<span class="str">' '</span>)[<span class="nr">1</span>], SECRET_KEY); <span class="cm">// { id, role }</span>
+    req.user = jwt.<span class="fn">verify</span>(authHeader.<span class="fn">split</span>(<span class="str">' '</span>)[<span class="nr">1</span>], SECRET_KEY);
     <span class="fn">next</span>();
-  } <span class="kw">catch</span> { <span class="kw">return</span> res.<span class="fn">status</span>(<span class="nr">403</span>).<span class="fn">json</span>({error: <span class="str">'Token invalide'</span>}); }
+  } <span class="kw">catch</span> { res.<span class="fn">status</span>(<span class="nr">403</span>).<span class="fn">json</span>({ error: <span class="str">'Token invalide'</span> }); }
 }</div>
-      <p style="font-size:12.5px;color:#888;">Le token expire après 24h et est vérifié à chaque requête — jamais fait confiance au contenu envoyé par le client seul.</p>
     </div>
   </div>
 
@@ -973,7 +1192,7 @@
        SLIDE 22 — SÉCURITÉ
   ══════════════════════════════════════════ -->
   <div class="slide slide-page">
-    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">19</span></div>
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">23</span></div>
     <h2>Sécurité</h2>
     <div class="page-body">
       <div class="security-item">
@@ -1018,7 +1237,7 @@
        SLIDE 23 — LISTE DES ROUTES
   ══════════════════════════════════════════ -->
   <div class="slide slide-page">
-    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">20</span></div>
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">24</span></div>
     <h2>Liste des routes</h2>
     <div class="page-body">
       <div class="content-title">API REST — server.js</div>
@@ -1038,10 +1257,38 @@ app.<span class="fn">use</span>(<span class="str">'/api/users'</span>,   verifyT
   </div>
 
   <!-- ══════════════════════════════════════════
+       SLIDE 23bis — ARCHITECTURE (MVC assumé allégé)
+  ══════════════════════════════════════════ -->
+  <div class="slide slide-page">
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">25</span></div>
+    <h2>Architecture applicative</h2>
+    <div class="page-body">
+      <div class="content-title">Un MVC allégé, choix assumé plutôt qu'oubli</div>
+      <div class="flow-box">
+        <div class="flow-step">Client<br><span style="font-weight:400;font-size:11px;">HTML/CSS/JS</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Vue<br><span style="font-weight:400;font-size:11px;">frontend/*.html + js/</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Contrôleur<br><span style="font-weight:400;font-size:11px;">routes/*.js</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Modèle<br><span style="font-weight:400;font-size:11px;">requêtes SQL directes</span></div>
+      </div>
+      <ul>
+        <li><strong>Vue :</strong> pages HTML statiques (<code>login.html</code>, <code>index.html</code>) + modules JS qui manipulent le DOM</li>
+        <li><strong>Contrôleur :</strong> chaque fichier de <code>backend/routes/</code> reçoit la requête HTTP et orchestre la réponse</li>
+        <li><strong>Modèle :</strong> pas de couche modèle séparée — chaque route exécute directement ses requêtes SQL via <code>req.db.query()</code></li>
+      </ul>
+      <div class="highlight-box" style="font-size:13px;">
+        <strong>Choix assumé :</strong> sur un projet solo de cette taille (4 tables), une séparation controller/model stricte aurait ajouté de l'indirection sans bénéfice réel. Cette simplification est identifiée comme première évolution si l'application devait grandir (voir roadmap).
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
        SLIDE 24 — KANBAN
   ══════════════════════════════════════════ -->
   <div class="slide slide-page">
-    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">21</span></div>
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">26</span></div>
     <h2>Kanban</h2>
     <div class="page-body">
       <div class="content-title">Génération dynamique du tableau</div>
@@ -1062,7 +1309,7 @@ app.<span class="fn">use</span>(<span class="str">'/api/users'</span>,   verifyT
        SLIDE 25 — SWAGGER
   ══════════════════════════════════════════ -->
   <div class="slide slide-page">
-    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">22</span></div>
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">27</span></div>
     <h2>Swagger</h2>
     <div class="page-body">
       <div class="two-col">
@@ -1089,20 +1336,62 @@ app.<span class="fn">use</span>(<span class="str">'/api/users'</span>,   verifyT
        SLIDE 26 — PLANNING (RÉTROSPECTIF)
   ══════════════════════════════════════════ -->
   <div class="slide slide-page">
-    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">23</span></div>
-    <h2>Planning</h2>
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">28</span></div>
+    <h2>Planning — Diagramme de GANTT</h2>
     <div class="page-body">
-      <div class="content-title">Grandes étapes du projet</div>
-      <div class="flow-box">
-        <div class="flow-step">Conception<br><span style="font-weight:400;font-size:11px;">cahier des charges, MERISE</span></div><div class="flow-arrow">→</div>
-        <div class="flow-step">Base de<br>données</div><div class="flow-arrow">→</div>
-        <div class="flow-step">Back-end<br>API + sécurité</div><div class="flow-arrow">→</div>
-        <div class="flow-step">Front-end<br>intégration</div><div class="flow-arrow">→</div>
-        <div class="flow-step">Tests &amp;<br>corrections</div><div class="flow-arrow">→</div>
-        <div class="flow-step">Finitions &amp;<br>documentation</div>
+      <div class="content-title">Reconstitué depuis l'historique Git réel (mai → juillet 2026)</div>
+      <div class="gantt-axis"><span>Mai</span><span>Juin</span><span>Juillet</span></div>
+      <div class="gantt-row"><div class="gantt-label">Initialisation</div><div class="gantt-track"><div class="gantt-bar" style="left:0%;width:5%;">18–19 mai</div></div></div>
+      <div class="gantt-row"><div class="gantt-label">Cœur applicatif</div><div class="gantt-track"><div class="gantt-bar" style="left:8%;width:8%;">24–27 mai</div></div></div>
+      <div class="gantt-row"><div class="gantt-label">Sécurisation &amp; nettoyage</div><div class="gantt-track"><div class="gantt-bar" style="left:17%;width:5%;">28 mai</div></div></div>
+      <div class="gantt-row"><div class="gantt-label">Finalisation</div><div class="gantt-track"><div class="gantt-bar" style="left:31%;width:5%;">10 juin</div></div></div>
+      <div class="gantt-row"><div class="gantt-label">Préparation soutenance</div><div class="gantt-track"><div class="gantt-bar" style="left:37%;width:61%;">Juin → juillet</div></div></div>
+      <div class="highlight-box" style="font-size:12.5px;margin-top:10px;">
+        Suivi du projet via <strong>Trello</strong> (tableau Kanban des fonctionnalités à développer) et <strong>33 commits Git</strong> qui retracent l'historique réel du développement. Planning reconstitué a posteriori à partir de ces commits plutôt que d'un GANTT prévisionnel théorique.
       </div>
-      <div class="highlight-box">
-        Projet mené en solo, par itérations : chaque étape a été testée manuellement avant de passer à la suivante plutôt que de tout développer en parallèle.
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE — COMMITS GIT
+  ══════════════════════════════════════════ -->
+  <div class="slide slide-page">
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">29</span></div>
+    <h2>Historique Git</h2>
+    <div class="page-body">
+      <div class="content-title">33 commits — dépôt github.com/syrinedev-06/LUMINA_PRO</div>
+      <div style="display:flex; flex-direction:column; gap:6px; font-size:12px; font-family:'Cascadia Code','Consolas',monospace;">
+        <div style="display:flex; gap:10px; align-items:center; background:#f8fafc; border-radius:6px; padding:6px 10px; border-left:3px solid #D6336C;">
+          <span style="color:#D6336C; font-weight:700; min-width:70px;">71b26bc</span>
+          <span>Merge: accessibilité, performance, sécurité et préparation exam</span>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center; background:#f8fafc; border-radius:6px; padding:6px 10px; border-left:3px solid #D6336C;">
+          <span style="color:#D6336C; font-weight:700; min-width:70px;">60779cb</span>
+          <span>Fix: config .env, schéma BDD, docs d'exam</span>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center; background:#f8fafc; border-radius:6px; padding:6px 10px; border-left:3px solid #94a3b8;">
+          <span style="color:#64748b; font-weight:700; min-width:70px;">691e364</span>
+          <span>Fix: accessibilité Lighthouse, performance et UX mobile</span>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center; background:#f8fafc; border-radius:6px; padding:6px 10px; border-left:3px solid #94a3b8;">
+          <span style="color:#64748b; font-weight:700; min-width:70px;">7ec3ce2</span>
+          <span>Ajout diagrammes UML, bilan complet, .env.example</span>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center; background:#f8fafc; border-radius:6px; padding:6px 10px; border-left:3px solid #94a3b8;">
+          <span style="color:#64748b; font-weight:700; min-width:70px;">bed705b</span>
+          <span>Découpage modulaire : kanban.js → kanban.js + columns.js + tasks.js</span>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center; background:#f8fafc; border-radius:6px; padding:6px 10px; border-left:3px solid #94a3b8;">
+          <span style="color:#64748b; font-weight:700; min-width:70px;">9096795</span>
+          <span>Suppression de l'édition de profil — minimalisation du cœur MVP</span>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center; background:#f8fafc; border-radius:6px; padding:6px 10px; border-left:3px solid #94a3b8;">
+          <span style="color:#64748b; font-weight:700; min-width:70px;">…</span>
+          <span style="color:#888;">27 autres commits — historique complet sur GitHub</span>
+        </div>
+      </div>
+      <div class="highlight-box" style="font-size:12.5px; margin-top:8px;">
+        Chaque commit correspond à une étape concrète du développement. Utilisé en complément de Trello pour le suivi des fonctionnalités.
       </div>
     </div>
   </div>
@@ -1111,13 +1400,26 @@ app.<span class="fn">use</span>(<span class="str">'/api/users'</span>,   verifyT
        SLIDE — CAHIER DE TESTS
   ══════════════════════════════════════════ -->
   <div class="slide slide-page">
-    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">24</span></div>
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">30</span></div>
     <h2>Cahier de tests</h2>
-    <div class="page-body" style="align-items:center;justify-content:center;">
-      <div class="placeholder-box" style="width:100%;text-align:center;">
-        <span class="ph-tag">✏️ À personnaliser</span>
-        <p style="margin:0;">Insère ici une capture d'écran de <code>Cahier_de_Tests_Lumina_Pro.html</code> (le tableau des 15 tests exécutés).</p>
-      </div>
+    <div class="page-body">
+      <div class="content-title">12 scénarios manuels exécutés contre le serveur réel</div>
+      <table class="schema-table" style="font-size:12px;">
+        <tr><th>Test</th><th>Description</th><th>Résultat</th></tr>
+        <tr><td>TEST001</td><td>Accessibilité du site</td><td style="color:#166534;font-weight:700;">OK</td></tr>
+        <tr><td>TEST002</td><td>Connexion avec un compte valide</td><td style="color:#166534;font-weight:700;">OK</td></tr>
+        <tr><td>TEST003</td><td>Connexion avec un compte inexistant</td><td style="color:#166534;font-weight:700;">OK</td></tr>
+        <tr><td>TEST004</td><td>Accès à une route protégée sans token</td><td style="color:#166534;font-weight:700;">OK</td></tr>
+        <tr><td>TEST005</td><td>Création d'une tâche sans titre</td><td style="color:#166534;font-weight:700;">OK</td></tr>
+        <tr><td>TEST006</td><td>Création d'une tâche valide</td><td style="color:#166534;font-weight:700;">OK</td></tr>
+        <tr><td>TEST007</td><td>Liste des colonnes</td><td style="color:#166534;font-weight:700;">OK</td></tr>
+        <tr><td>TEST008</td><td>Déplacement d'une tâche entre colonnes</td><td style="color:#166534;font-weight:700;">OK</td></tr>
+        <tr><td>TEST009</td><td>Suppression d'une colonne contenant une tâche (cascade)</td><td style="color:#166534;font-weight:700;">OK</td></tr>
+        <tr><td>TEST010</td><td>Liste des utilisateurs sans exposition du mot de passe</td><td style="color:#166534;font-weight:700;">OK</td></tr>
+        <tr><td>TEST011</td><td>Inscription d'un nouveau compte</td><td style="color:#166534;font-weight:700;">OK</td></tr>
+        <tr><td>TEST012</td><td>Connexion avec le compte fraîchement inscrit</td><td style="color:#166534;font-weight:700;">OK</td></tr>
+      </table>
+      <p style="font-size:12px;color:#888;">Détail complet dans <code>revision diplôme/Cahier_de_Tests_Lumina_Pro.html</code>. Aucun test automatisé (Jest/Supertest) n'est encore en place — identifié en amélioration future.</p>
     </div>
   </div>
 
@@ -1125,7 +1427,7 @@ app.<span class="fn">use</span>(<span class="str">'/api/users'</span>,   verifyT
        SLIDE 27 — TESTS
   ══════════════════════════════════════════ -->
   <div class="slide slide-page">
-    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">25</span></div>
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">31</span></div>
     <h2>Tests</h2>
     <div class="page-body">
       <div class="content-title">Vérifier avant de livrer</div>
@@ -1157,18 +1459,18 @@ app.<span class="fn">use</span>(<span class="str">'/api/users'</span>,   verifyT
        SLIDE 28 — DÉPLOIEMENT
   ══════════════════════════════════════════ -->
   <div class="slide slide-page">
-    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">26</span></div>
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">32</span></div>
     <h2>Déploiement</h2>
     <div class="page-body">
       <div class="content-title">Du poste local à la mise en ligne</div>
       <div class="three-col">
         <div class="card">
           <h4>💻 Local</h4>
-          <ul><li>XAMPP (MySQL) + <code>node server.js</code></li><li><code>LANCER_LUMINA.bat</code> : démarrage en un clic</li></ul>
+          <ul><li>MySQL 8.0.45 + <code>node server.js</code></li><li>Démarrage manuel : service MySQL80 puis <code>npm start</code></li></ul>
         </div>
         <div class="card">
           <h4>🧪 Test</h4>
-          <ul><li>Variables dans <code>.env</code></li><li>Jeu de données via <code>seed.js</code></li></ul>
+          <ul><li>Variables dans <code>.env</code></li><li>Comptes de démo créés via <code>/api/auth/register</code></li></ul>
         </div>
         <div class="card" style="border-left-color:#1e293b">
           <h4 style="color:#1e293b">🌐 Production (piste)</h4>
@@ -1185,7 +1487,7 @@ app.<span class="fn">use</span>(<span class="str">'/api/users'</span>,   verifyT
        SLIDE 29 — AMÉLIORATIONS FUTURES
   ══════════════════════════════════════════ -->
   <div class="slide slide-page">
-    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">27</span></div>
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">33</span></div>
     <h2>Améliorations futures</h2>
     <div class="page-body">
       <div class="content-title">Ce que j'améliorerais en production</div>
@@ -1210,22 +1512,37 @@ app.<span class="fn">use</span>(<span class="str">'/api/users'</span>,   verifyT
        SLIDE 30 — CONCLUSION
   ══════════════════════════════════════════ -->
   <div class="slide slide-page">
-    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">28</span></div>
+    <div class="mini-header"><span class="mini-brand"><span class="logo-emoji">🗂️</span>Lumina Pro</span><span class="page-num">34</span></div>
     <h2>Conclusion</h2>
     <div class="page-body" style="justify-content:center;">
-      <div class="content-title">Bilan du projet Lumina Pro</div>
-      <div class="highlight-box" style="font-size:15px;line-height:1.9;">
-        Lumina Pro m'a permis de mettre en pratique l'ensemble des compétences du titre DWWM :<br><br>
+      <div class="highlight-box" style="font-size:14px;line-height:1.8;">
+        Lumina Pro m'a permis de mettre en pratique l'ensemble des compétences du titre DWWM :<br>
         <strong>✅ Front-end :</strong> HTML/CSS responsive, JavaScript modulaire, Fetch API<br>
         <strong>✅ Back-end :</strong> API REST Node.js/Express, authentification JWT, hachage bcrypt<br>
         <strong>✅ Base de données :</strong> conception MCD/MLD/MPD, SQL, relations<br>
         <strong>✅ Sécurité :</strong> injection SQL, XSS, mots de passe, autorisation par propriétaire
       </div>
-      <div style="margin-top:20px;text-align:center;">
-        <div style="font-size:44px;">🙏</div>
-        <div style="font-size:20px;font-weight:900;color:#1e293b;margin-top:8px;">Merci pour votre attention</div>
-        <div style="font-size:14px;color:#888;margin-top:6px;letter-spacing:2px;">— Questions ? —</div>
+      <div style="margin-top:16px;text-align:center;">
+        <div style="font-size:40px;">🙏</div>
+        <div style="font-size:20px;font-weight:900;color:#1e293b;margin-top:6px;">Merci pour votre attention</div>
+        <div style="font-size:14px;color:#888;margin-top:4px;letter-spacing:2px;">— Questions ? —</div>
       </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE SIGNATURE
+  ══════════════════════════════════════════ -->
+  <div class="slide slide-title">
+    <div class="corner-tl">Titre Professionnel DWWM · La Plateforme_ · 2026</div>
+    <div style="position:relative; z-index:1; text-align:center;">
+      <div style="font-size:60px; margin-bottom:16px;">🗂️</div>
+      <div style="font-size:42px; font-weight:900; color:#1e293b; letter-spacing:1px; margin-bottom:6px;">Lumina Pro</div>
+      <div style="font-size:15px; color:#888; letter-spacing:3px; text-transform:uppercase; margin-bottom:32px;">Tableau Kanban · Application web sécurisée</div>
+      <div style="font-size:26px; font-weight:700; color:#D6336C; margin-bottom:6px;">Syrine Ben Hassine</div>
+      <div style="font-size:13px; color:#888; letter-spacing:2px; margin-bottom:32px;">syrine.ben-hassine@laplateforme.io</div>
+      <div style="font-size:18px; font-weight:800; color:#1e293b; margin-bottom:8px;">Merci pour votre attention</div>
+      <div style="font-size:14px; color:#aaa; letter-spacing:2px;">— Questions ? —</div>
     </div>
   </div>
 
@@ -1236,7 +1553,7 @@ app.<span class="fn">use</span>(<span class="str">'/api/users'</span>,   verifyT
   <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled>‹</button>
   <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">›</button>
 </div>
-<div class="progress" id="progress">1 / 31</div>
+<div class="progress" id="progress">1 / 35</div>
 
 <script>
   let current = 0;

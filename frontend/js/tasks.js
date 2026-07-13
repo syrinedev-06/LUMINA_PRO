@@ -17,21 +17,23 @@ function editTask(task) {
     document.getElementById('task-desc').value = task.description || "";
     document.getElementById('task-priority').value = task.priority;
     document.getElementById('task-assign').value = task.id_assigned || "";
+    const dueEl = document.getElementById('task-due');
+    if (dueEl) dueEl.value = task.due_date ? new Date(task.due_date).toISOString().substring(0, 10) : "";
 
-    // On ne montre le bouton supprimer que si l'utilisateur a le droit de supprimer cette tâche :
-    // un admin peut tout supprimer, un utilisateur standard seulement ses propres tâches assignées.
-    const currentUser = JSON.parse(localStorage.getItem('user'));
+    // Le bouton supprimer dans la modale n'est visible que si l'utilisateur
+    // a le droit de supprimer cette tâche (admin ou tâche assignée à soi-même).
+    // La même règle est vérifiée côté serveur — c'est une sécurité UX, pas la vraie protection.
+    const currentUser = JSON.parse(localStorage.getItem('user')) || {};
     const canDelete = currentUser.role === 'admin' || task.id_assigned === currentUser.id;
     document.getElementById('delete-task-btn').style.display = canDelete ? "block" : "none";
-    
+
     modal.style.display = 'flex';
 }
 
 /**
  * @brief Envoie une tâche à créer (POST) ou à modifier (PUT) au serveur.
  */
-async function handleTaskSubmit(e) {
-    e.preventDefault();
+async function saveTask() {
     const id = document.getElementById('task-id').value;
     const titleInput = document.getElementById('task-title');
     const titleError = document.getElementById('task-title-error');
@@ -45,33 +47,34 @@ async function handleTaskSubmit(e) {
     titleError.style.display = 'none';
     titleInput.removeAttribute('aria-invalid');
 
-    const taskData = {
-        title: titleInput.value.trim(),
-        description: document.getElementById('task-desc').value,
-        priority: document.getElementById('task-priority').value,
-        id_assigned: document.getElementById('task-assign').value || null,
-    };
+    const title = titleInput.value.trim();
+    const description = document.getElementById('task-desc').value;
+    const priority = document.getElementById('task-priority').value;
+    const id_assigned = document.getElementById('task-assign').value || null;
+    const dueEl = document.getElementById('task-due');
+    const due_date = dueEl && dueEl.value ? dueEl.value : null;
 
-    // Si on a un ID → modification (PUT), sinon → création (POST)
+    const taskData = { title, description, priority, id_assigned, due_date };
     const method = id ? 'PUT' : 'POST';
     const url = id ? `http://localhost:3000/api/tasks/${id}` : 'http://localhost:3000/api/tasks';
 
     try {
-        const response = await authFetch(url, {
-            method,
-            body: JSON.stringify(taskData)
-        });
+        const response = await authFetch(url, { method, body: JSON.stringify(taskData) });
         const data = await response.json();
-
         if (response.ok) {
-            document.getElementById('task-modal').style.display = 'none'; 
-            fetchTasks(); 
+            document.getElementById('task-modal').style.display = 'none';
+            fetchTasks();
         } else {
             alert("Erreur : " + (data.error || "Impossible de sauvegarder."));
         }
     } catch (error) {
         alert("Erreur de connexion avec le serveur.");
     }
+}
+
+async function handleTaskSubmit(e) {
+    if (e) e.preventDefault();
+    saveTask();
 }
 
 /** Supprime une tâche. */

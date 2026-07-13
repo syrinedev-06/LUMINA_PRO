@@ -6,8 +6,10 @@
  * qu'à un seul endroit. C'est le principe "Don't Repeat Yourself" (DRY).
  */
 module.exports = {
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'lumina_pro'
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME || 'lumina_pro',
+    charset: 'utf8mb4',
+    dateStrings: true
 };

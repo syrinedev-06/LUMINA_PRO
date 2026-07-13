@@ -67,8 +67,6 @@
     .top-bar { height: 60px; min-height: 60px; padding: 0 12px; gap: 10px; }
     
     .top-actions { gap: 15px !important; }
-    .theme-switch { display: none !important; }
-    .theme-toggle-mobile { display: flex !important; }
 
     .page-info h2 { font-size: 15px; }
 

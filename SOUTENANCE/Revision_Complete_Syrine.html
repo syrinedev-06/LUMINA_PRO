@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Révision Lumina Pro — Syrine BEN HASSINE</title>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 11pt; color: #1e293b; background: #ddd; margin: 0; }
+
+    .page {
+      background: white;
+      width: 210mm;
+      min-height: 297mm;
+      margin: 20px auto;
+      padding: 15mm 20mm;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      page-break-after: always;
+    }
+
+    .entete {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 3px solid #D4006E;
+      padding-bottom: 8px;
+      margin-bottom: 14px;
+      font-size: 10pt;
+      color: #555;
+    }
+
+    h1 { font-size: 26pt; color: #D4006E; text-align: center; line-height: 1.3; }
+    h2 { background: #D4006E; color: white; padding: 9px 15px; border-radius: 4px; font-size: 13pt; margin: 0 0 14px 0; }
+    h3 { color: #D4006E; border-left: 4px solid #D4006E; padding-left: 10px; font-size: 11pt; margin: 14px 0 8px 0; }
+
+    .jaune { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; padding: 10px 14px; margin: 10px 0; line-height: 1.6; }
+    .jaune::before { content: "💡 Exemple : "; font-weight: bold; color: #92400e; }
+
+    .bleu { background: #f0f9ff; border: 1px solid #7dd3fc; border-radius: 8px; padding: 10px 14px; margin: 10px 0; }
+    .bleu .q { font-weight: bold; color: #0369a1; margin-bottom: 6px; }
+    .bleu .r { line-height: 1.7; }
+
+    .gris { background: #f8fafc; border-left: 4px solid #D4006E; padding: 10px 14px; margin: 10px 0; border-radius: 0 8px 8px 0; line-height: 1.6; }
+
+    .vert { background: #dcfce7; border: 1px solid #86efac; border-radius: 8px; padding: 8px 12px; margin: 8px 0; color: #166534; }
+    .vert::before { content: "✅ "; }
+
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 10pt; }
+    th { background: #D4006E; color: white; padding: 8px 10px; text-align: left; }
+    td { padding: 7px 10px; border-bottom: 1px solid #e2e8f0; }
+    tr:nth-child(even) td { background: #f8fafc; }
+
+    .schema { background: #1e293b; color: #e2e8f0; font-family: monospace; font-size: 9pt; padding: 12px 16px; border-radius: 8px; margin: 10px 0; line-height: 1.8; white-space: pre; }
+
+    .code-bloc { background: #1e293b; border-radius: 8px; margin: 10px 0; overflow: hidden; }
+    .code-titre { background: #D4006E; color: white; font-size: 9pt; font-weight: bold; padding: 5px 12px; }
+    .code-ligne { display: flex; align-items: flex-start; gap: 0; }
+    .code-texte { font-family: monospace; font-size: 9pt; color: #e2e8f0; padding: 3px 12px; flex: 1; white-space: pre; }
+    .code-expl { font-size: 8.5pt; color: #94a3b8; padding: 3px 10px 3px 0; min-width: 160px; font-style: italic; }
+
+    .qcm-bloc { border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 12px; overflow: hidden; }
+    .qcm-q { background: #f8fafc; padding: 10px 14px; font-weight: bold; font-size: 10.5pt; border-bottom: 1px solid #e2e8f0; }
+    .qcm-n { display: inline-block; background: #D4006E; color: white; font-size: 9pt; font-weight: bold; padding: 2px 8px; border-radius: 10px; margin-right: 6px; }
+    .qcm-choix { padding: 8px 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+    .bon { color: #166534; font-weight: bold; font-size: 10pt; padding: 3px 0; }
+    .bon::before { content: "✅ "; }
+    .mauvais { color: #94a3b8; font-size: 10pt; padding: 3px 0; }
+    .mauvais::before { content: "❌ "; }
+    .qcm-exp { background: #dcfce7; padding: 6px 14px; font-size: 9.5pt; color: #166534; border-top: 1px solid #86efac; }
+
+    .pied { font-size: 8.5pt; color: #888; text-align: center; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 8px; }
+    .centre { text-align: center; }
+
+    @media print {
+      body { background: white; }
+      .page { margin: 0; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PAGE 1 : GARDE -->
+<div class="page">
+  <div style="margin-top: 50px;" class="centre">
+    <div style="font-size:9pt; color:#888; letter-spacing:2px; text-transform:uppercase; margin-bottom:16px;">DWWM — Titre Professionnel Niveau 5</div>
+    <h1>Guide de Révision<br>Lumina Pro</h1>
+    <div style="font-size:13pt; color:#555; margin-bottom:28px;">Tout ce que le jury peut demander — en langage simple</div>
+
+    <div style="border: 2px solid #D4006E; border-radius: 10px; padding: 16px; max-width: 320px; margin: 0 auto 28px; text-align: left; line-height: 2.2;">
+      <div><b style="color:#D4006E;">Candidate :</b> Syrine BEN HASSINE</div>
+      <div><b style="color:#D4006E;">Adresse :</b> 22 Chemin Des Pins, 06390 Contes</div>
+      <div><b style="color:#D4006E;">Projet :</b> Lumina Pro — Tableau Kanban</div>
+      <div><b style="color:#D4006E;">Date :</b> Juin 2026</div>
+    </div>
+
+    <div style="background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:14px; max-width:420px; margin:0 auto; font-size:10.5pt; line-height:1.8; text-align:left;">
+      <b>Comment utiliser ce guide ?</b><br>
+      Lis chaque partie calmement. Les encadrés jaunes donnent des exemples de la vraie vie pour mieux comprendre. Les encadrés bleus te donnent exactement quoi dire si le jury pose la question. Le QCM à la fin permet de tester si tu as bien retenu.
+    </div>
+  </div>
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 2 : SÉCURITÉ -->
+<div class="page">
+  <div class="entete"><span>🔒 Partie 1 — La Sécurité</span><span>Syrine BEN HASSINE · Page 2/11</span></div>
+  <h2>🔒 Partie 1 — La Sécurité</h2>
+
+  <h3>bcrypt — Comment on protège les mots de passe</h3>
+  <div class="gris">
+    Quand tu crées un compte, ton mot de passe n'est jamais sauvegardé tel quel dans la base de données. bcrypt le transforme en une longue suite de lettres et chiffres impossibles à lire. Cette transformation ne peut pas être annulée — même le développeur ne peut pas retrouver le vrai mot de passe.
+  </div>
+  <div class="jaune">
+    Ton mot de passe "chat123" est écrit sur une feuille. bcrypt la passe dans un broyeur. Ce qui ressort ressemble à "$2b$10$Xk8mN...". Impossible de recoller les morceaux. Quand tu te reconnectes, le nouveau "chat123" est broyé et on compare les deux résultats — s'ils sont pareils, c'est le bon mot de passe.
+  </div>
+  <div class="code-bloc">
+    <div class="code-titre">📄 Le code bcrypt (server.js)</div>
+    <div class="code-ligne"><span class="code-texte">const hash = await bcrypt.hash(password, 10);</span><span class="code-expl">← broyer le mot de passe</span></div>
+    <div class="code-ligne"><span class="code-texte">// 10 = niveau de difficulté du broyage</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">const ok = await bcrypt.compare(password, hash);</span><span class="code-expl">← vérifier à la connexion</span></div>
+    <div class="code-ligne"><span class="code-texte">// ok = true si le mot de passe est correct</span><span class="code-expl"></span></div>
+  </div>
+
+  <div class="bleu">
+    <div class="q">🎤 "Pourquoi vous n'avez pas juste sauvegardé le mot de passe ?"</div>
+    <div class="r">Si un pirate accède à la base de données, il ne voit que des suites de caractères incompréhensibles — jamais le vrai mot de passe. Même si la base est volée, les comptes restent protégés. bcrypt ajoute aussi un morceau aléatoire avant de broyer, donc deux personnes avec le même mot de passe auront des résultats différents en base.</div>
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "Pourquoi bcrypt et pas une autre méthode ?"</div>
+    <div class="r">D'autres méthodes (comme MD5) sont trop rapides — un ordinateur puissant peut tester des milliards de combinaisons par seconde pour trouver le mot de passe. bcrypt est fait exprès pour être lent : tellement de calculs pour transformer un seul mot de passe que chercher le bon deviendrait impossible même avec un très bon ordinateur.</div>
+  </div>
+
+  <h3>JWT — Le ticket de connexion</h3>
+  <div class="gris">
+    JWT veut dire "ticket numérique". Après connexion, le serveur crée ce ticket et le donne au navigateur. À chaque fois que l'utilisateur veut faire quelque chose (voir ses tâches, créer une tâche…), il montre ce ticket. Le serveur vérifie que le ticket est valide, et si oui, il répond. Le ticket expire après 24 heures.
+  </div>
+  <div class="jaune">
+    C'est comme un bracelet de festival. À l'entrée (connexion), le staff (serveur) te donne un bracelet. Toute la journée, pour accéder aux scènes (les données), tu montres ton bracelet. Le staff vérifie juste que le bracelet n'est pas faux — il n'a pas besoin de te demander qui tu es à chaque fois.
+  </div>
+  <div class="code-bloc">
+    <div class="code-titre">📄 Le code JWT (server.js)</div>
+    <div class="code-ligne"><span class="code-texte">const token = jwt.sign(</span><span class="code-expl">← créer le ticket</span></div>
+    <div class="code-ligne"><span class="code-texte">  { id: user.id, role: user.role },</span><span class="code-expl">← ce qu'on met dedans</span></div>
+    <div class="code-ligne"><span class="code-texte">  process.env.JWT_SECRET,</span><span class="code-expl">← la clé secrète</span></div>
+    <div class="code-ligne"><span class="code-texte">  { expiresIn: '24h' }</span><span class="code-expl">← expire en 24h</span></div>
+    <div class="code-ligne"><span class="code-texte">);</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">jwt.verify(token, process.env.JWT_SECRET);</span><span class="code-expl">← vérifier le ticket</span></div>
+  </div>
+
+  <div class="bleu">
+    <div class="q">🎤 "Comment fonctionne le JWT dans votre application ?"</div>
+    <div class="r">Quand l'utilisateur se connecte, le serveur vérifie les identifiants. Si c'est correct, il crée un ticket JWT avec l'identifiant et le rôle de l'utilisateur, et l'envoie au navigateur. Le navigateur le sauvegarde dans sa mémoire (localStorage). Ensuite, à chaque action, le ticket est envoyé avec la demande. Le serveur le vérifie grâce à une clé secrète — si quelqu'un a essayé de modifier le ticket, la vérification échoue.</div>
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "Que se passe-t-il si quelqu'un vole le ticket JWT ?"</div>
+    <div class="r">Si quelqu'un vole le ticket, il peut se faire passer pour l'utilisateur jusqu'à ce que le ticket expire (24h chez nous). Pour réduire ce risque, on pourrait raccourcir la durée d'expiration ou stocker le ticket dans un espace que JavaScript ne peut pas lire — mais c'est plus compliqué à mettre en place.</div>
+  </div>
+
+  <h3>Le filtre de sécurité (verifyToken)</h3>
+  <div class="gris">
+    C'est un "videur" placé devant chaque action protégée. Avant que la demande n'arrive, le videur vérifie le ticket. Si le ticket est valide → il laisse passer. Sinon → il renvoie une erreur "non autorisé" tout de suite.
+  </div>
+  <div class="code-bloc">
+    <div class="code-titre">📄 Le filtre de sécurité (server.js)</div>
+    <div class="code-ligne"><span class="code-texte">function verifyToken(req, res, next) {</span><span class="code-expl">← le videur</span></div>
+    <div class="code-ligne"><span class="code-texte">  const token = req.headers.authorization;</span><span class="code-expl">← récupérer le ticket</span></div>
+    <div class="code-ligne"><span class="code-texte">  if (!token) return res.status(401).json(...);</span><span class="code-expl">← pas de ticket = refus</span></div>
+    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">  jwt.verify(token, SECRET);</span><span class="code-expl">← vérifier le ticket</span></div>
+    <div class="code-ligne"><span class="code-texte">  next();</span><span class="code-expl">← ticket OK = laisser passer</span></div>
+    <div class="code-ligne"><span class="code-texte">}</span><span class="code-expl"></span></div>
+  </div>
+
+  <div class="bleu">
+    <div class="q">🎤 "Toutes vos pages sont-elles protégées ?"</div>
+    <div class="r">Non, pas toutes. La page de connexion et la page d'inscription sont libres — on ne peut pas demander un ticket pour se connecter puisqu'on n'en a pas encore. Toutes les autres actions (voir les tâches, créer, modifier, supprimer) passent par le filtre de sécurité et nécessitent un ticket valide.</div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 3 : BASE DE DONNÉES -->
+<div class="page">
+  <div class="entete"><span>🗄️ Partie 2 — La Base de Données</span><span>Syrine BEN HASSINE · Page 3/11</span></div>
+  <h2>🗄️ Partie 2 — La Base de Données</h2>
+
+  <h3>Les 4 tableaux de la base de données</h3>
+  <table>
+    <tr><th>Tableau</th><th>Ce qu'il contient</th><th>Les champs principaux</th></tr>
+    <tr><td><b>users</b></td><td>Les comptes utilisateurs</td><td>id, nom, email, mot de passe, rôle</td></tr>
+    <tr><td><b>columns</b></td><td>Les colonnes du Kanban</td><td>id, titre, position</td></tr>
+    <tr><td><b>tasks</b></td><td>Les tâches</td><td>id, titre, description, priorité, colonne, assigné à, date d'échéance</td></tr>
+    <tr><td><b>logs</b></td><td>Historique des actions</td><td>id, action, détails, date</td></tr>
+  </table>
+  <div class="code-bloc">
+    <div class="code-titre">📄 La structure de la table tasks (MySQL)</div>
+    <div class="code-ligne"><span class="code-texte">tasks (</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte">  id          INT AUTO_INCREMENT,</span><span class="code-expl">← numéro unique</span></div>
+    <div class="code-ligne"><span class="code-texte">  title       VARCHAR(255),</span><span class="code-expl">← titre de la tâche</span></div>
+    <div class="code-ligne"><span class="code-texte">  priority    ENUM('high','medium','low'),</span><span class="code-expl">← seulement ces 3 mots</span></div>
+    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">  id_col      INT REFERENCES columns(id)</span><span class="code-expl">← lien vers la colonne</span></div>
+    <div class="code-ligne"><span class="code-texte">              ON DELETE CASCADE,</span><span class="code-expl">← suppression auto</span></div>
+    <div class="code-ligne"><span class="code-texte">  id_assigned INT REFERENCES users(id),</span><span class="code-expl">← lien vers l'utilisateur</span></div>
+    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">  due_date    DATE DEFAULT NULL</span><span class="code-expl">← date d'échéance (optionnelle)</span></div>
+    <div class="code-ligne"><span class="code-texte">)</span><span class="code-expl"></span></div>
+  </div>
+
+  <div class="bleu">
+    <div class="q">🎤 "Expliquez le lien entre vos tableaux."</div>
+    <div class="r">Une tâche appartient à une colonne (elle note l'identifiant de la colonne) et peut être assignée à un utilisateur (elle note l'identifiant de cet utilisateur). Ces liens s'appellent des clés étrangères. Si une colonne est supprimée, toutes ses tâches sont automatiquement supprimées aussi grâce à la règle ON DELETE CASCADE.</div>
+  </div>
+
+  <h3>LEFT JOIN — Voir toutes les tâches même les non assignées</h3>
+  <div class="jaune">
+    Imagine une liste de classe avec les notes. Sans LEFT JOIN (= INNER JOIN) : la liste ne montre que les élèves qui ont une note. Avec LEFT JOIN : la liste montre TOUS les élèves, et si un élève n'a pas de note, on écrit "aucune" à la place. Dans Lumina Pro, on veut voir TOUTES les tâches, même celles qui ne sont assignées à personne.
+  </div>
+  <div class="code-bloc">
+    <div class="code-titre">📄 La requête LEFT JOIN (server.js)</div>
+    <div class="code-ligne"><span class="code-texte">SELECT tasks.*, users.name</span><span class="code-expl">← prendre les tâches + le nom</span></div>
+    <div class="code-ligne"><span class="code-texte">FROM tasks</span><span class="code-expl">← tableau principal</span></div>
+    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">LEFT JOIN users</span><span class="code-expl">← relier avec les utilisateurs</span></div>
+    <div class="code-ligne"><span class="code-texte">ON tasks.id_assigned = users.id;</span><span class="code-expl">← via l'identifiant</span></div>
+  </div>
+
+  <div class="bleu">
+    <div class="q">🎤 "Pourquoi LEFT JOIN ?"</div>
+    <div class="r">Sans LEFT JOIN, si une tâche n'est assignée à personne, elle disparaît complètement — l'utilisateur ne la verrait plus dans le Kanban. LEFT JOIN retourne toutes les tâches, qu'elles soient assignées ou non. Pour les non-assignées, on affiche "Non assigné" à la place.</div>
+  </div>
+
+  <h3>ON DELETE CASCADE — Suppression automatique</h3>
+  <div class="jaune">
+    C'est comme supprimer un dossier sur l'ordinateur : tous les fichiers à l'intérieur sont supprimés en même temps automatiquement. Supprimer une colonne Kanban → toutes ses tâches disparaissent aussi, sans qu'on ait besoin d'écrire du code pour ça.
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "Que se passe-t-il si vous supprimez une colonne ?"</div>
+    <div class="r">MySQL supprime automatiquement toutes les tâches qui appartiennent à cette colonne. Sans cette règle, les tâches resteraient en base mais liées à une colonne qui n'existe plus — des tâches perdues qui peuvent faire planter l'application.</div>
+  </div>
+
+  <h3>ENUM — Liste de valeurs autorisées</h3>
+  <div class="gris">
+    ENUM est une règle sur un champ qui dit "ce champ n'accepte que ces mots précis". Pour la priorité, on n'accepte que <b>'high'</b>, <b>'medium'</b>, <b>'low'</b>. Si on essaie de mettre autre chose, la base refuse automatiquement.
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "Qu'est-ce qu'un ENUM et pourquoi l'utiliser ?"</div>
+    <div class="r">Un ENUM est une liste de mots autorisés directement dans la base de données. On l'utilise pour éviter les fautes de frappe ou les erreurs : si le code JavaScript envoie "urgent" au lieu de "high", la base refuse et on voit tout de suite qu'il y a un problème. Sans ENUM, la mauvaise valeur serait sauvegardée et la couleur du badge ne s'afficherait pas.</div>
+  </div>
+
+  <h3>Création automatique des tableaux</h3>
+  <div class="bleu">
+    <div class="q">🎤 "Comment votre base de données est-elle préparée ?"</div>
+    <div class="r">Au démarrage du serveur, le code crée automatiquement les tableaux s'ils n'existent pas encore. Il vérifie aussi si des colonnes Kanban existent et crée les 3 colonnes par défaut (À faire, En cours, Terminé) si la base est vide. L'application s'installe donc toute seule sans manipulation manuelle.</div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 4 : API REST -->
+<div class="page">
+  <div class="entete"><span>📡 Partie 3 — L'API</span><span>Syrine BEN HASSINE · Page 4/11</span></div>
+  <h2>📡 Partie 3 — L'API (la boîte aux lettres du serveur)</h2>
+
+  <h3>C'est quoi une API ?</h3>
+  <div class="jaune">
+    Une API, c'est comme un serveur dans un restaurant. Toi (le navigateur), tu es le client à table. La cuisine (la base de données), c'est là où les données sont stockées. Le serveur (l'API) prend ta commande, va en cuisine, et te rapporte le résultat. Tu ne vas jamais directement en cuisine — tu passes toujours par le serveur.
+  </div>
+
+  <h3>Les 4 types d'actions possibles</h3>
+  <table>
+    <tr><th>Action</th><th>Ce qu'elle fait</th><th>Exemple dans Lumina Pro</th></tr>
+    <tr><td><b>GET</b></td><td>Lire / voir des données</td><td>Afficher toutes les tâches du Kanban</td></tr>
+    <tr><td><b>POST</b></td><td>Créer quelque chose de nouveau</td><td>Ajouter une nouvelle tâche</td></tr>
+    <tr><td><b>PUT</b></td><td>Modifier quelque chose qui existe</td><td>Changer le titre ou déplacer une tâche</td></tr>
+    <tr><td><b>DELETE</b></td><td>Supprimer quelque chose</td><td>Supprimer une tâche ou une colonne</td></tr>
+  </table>
+
+  <h3>Les 12 adresses de l'API</h3>
+  <table>
+    <tr><th>Adresse</th><th>Action</th><th>Ce qu'elle fait</th><th>Ticket requis ?</th></tr>
+    <tr><td>/api/auth/register</td><td>POST</td><td>Créer un compte</td><td>Non</td></tr>
+    <tr><td>/api/auth/login</td><td>POST</td><td>Se connecter</td><td>Non</td></tr>
+    <tr><td>/api/tasks</td><td>GET</td><td>Voir toutes les tâches</td><td>Oui</td></tr>
+    <tr><td>/api/tasks</td><td>POST</td><td>Créer une tâche</td><td>Oui</td></tr>
+    <tr><td>/api/tasks/:id</td><td>PUT</td><td>Modifier/déplacer une tâche</td><td>Oui</td></tr>
+    <tr><td>/api/tasks/:id</td><td>DELETE</td><td>Supprimer une tâche</td><td>Oui</td></tr>
+    <tr><td>/api/columns</td><td>GET</td><td>Voir les colonnes</td><td>Oui</td></tr>
+    <tr><td>/api/columns</td><td>POST</td><td>Créer une colonne</td><td>Oui</td></tr>
+    <tr><td>/api/columns/:id</td><td>PUT</td><td>Renommer une colonne</td><td>Oui</td></tr>
+    <tr><td>/api/columns/:id</td><td>DELETE</td><td>Supprimer une colonne</td><td>Oui</td></tr>
+    <tr><td>/api/users</td><td>GET</td><td>Voir les membres</td><td>Oui</td></tr>
+    <tr><td>/api/users/:id</td><td>DELETE</td><td>Supprimer un membre</td><td>Oui</td></tr>
+  </table>
+
+  <h3>Les codes de réponse du serveur</h3>
+  <table>
+    <tr><th>Code</th><th>Ce que ça veut dire</th><th>Quand ça arrive</th></tr>
+    <tr><td><b style="color:#166534;">200</b></td><td>Tout s'est bien passé</td><td>Tâches affichées, modification réussie</td></tr>
+    <tr><td><b style="color:#166534;">201</b></td><td>Créé avec succès</td><td>Nouvelle tâche créée, inscription réussie</td></tr>
+    <tr><td><b style="color:#92400e;">400</b></td><td>Informations manquantes</td><td>Titre de tâche vide, champ obligatoire oublié</td></tr>
+    <tr><td><b style="color:#991b1b;">401</b></td><td>Pas autorisé (pas connecté)</td><td>Ticket manquant ou expiré</td></tr>
+    <tr><td><b style="color:#991b1b;">500</b></td><td>Erreur dans le serveur</td><td>Problème dans le code ou la base</td></tr>
+  </table>
+  <div class="bleu">
+    <div class="q">🎤 "C'est quoi la différence entre 400 et 401 ?"</div>
+    <div class="r">Le 400 veut dire que la demande est mal faite — par exemple, le titre de la tâche est vide. Le 401 veut dire que l'utilisateur n'est pas connecté ou que son ticket est expiré. Ce sont deux problèmes différents : l'un concerne les données envoyées, l'autre concerne les droits d'accès.</div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 5 : FRONTEND -->
+<div class="page">
+  <div class="entete"><span>⚡ Partie 4 — La Partie Visible (Frontend)</span><span>Syrine BEN HASSINE · Page 5/11</span></div>
+  <h2>⚡ Partie 4 — La Partie Visible (Frontend)</h2>
+
+  <h3>Les étapes quand on se connecte</h3>
+  <div class="schema">Étape 1 : L'utilisateur tape email + mot de passe → clique "Se connecter"
+Étape 2 : JavaScript envoie la demande au serveur (POST /api/auth/login)
+Étape 3 : Le serveur vérifie l'email dans la base → compare le mot de passe avec bcrypt
+Étape 4 : Si c'est correct → le serveur crée un ticket JWT et le renvoie
+Étape 5 : JavaScript sauvegarde le ticket dans la mémoire du navigateur
+Étape 6 : La page bascule vers le tableau Kanban (index.html)
+Étape 7 : À chaque action suivante, le ticket est envoyé automatiquement</div>
+
+  <div class="code-bloc">
+    <div class="code-titre">📄 authFetch() — La fonction clé (api.js)</div>
+    <div class="code-ligne"><span class="code-texte">function authFetch(url, options = {}) {</span><span class="code-expl">← notre fonction</span></div>
+    <div class="code-ligne"><span class="code-texte">  const token = localStorage.getItem('token');</span><span class="code-expl">← récupérer le ticket</span></div>
+    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">  options.headers = {</span><span class="code-expl">← ajouter le ticket</span></div>
+    <div class="code-ligne"><span class="code-texte">    Authorization: 'Bearer ' + token</span><span class="code-expl">← dans chaque demande</span></div>
+    <div class="code-ligne"><span class="code-texte">  };</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte">  return fetch(url, options);</span><span class="code-expl">← envoyer la demande</span></div>
+    <div class="code-ligne"><span class="code-texte">}</span><span class="code-expl"></span></div>
+  </div>
+
+  <div class="bleu">
+    <div class="q">🎤 "Où est sauvegardé le ticket JWT dans le navigateur ?"</div>
+    <div class="r">Dans le localStorage — c'est un espace de mémoire du navigateur qui reste même si on ferme l'onglet. On le récupère avec localStorage.getItem('token') et on l'efface avec localStorage.clear() quand l'utilisateur se déconnecte.</div>
+  </div>
+
+  <h3>authFetch() — La fonction qui envoie le ticket automatiquement</h3>
+  <div class="gris">
+    Plutôt que d'écrire le code d'envoi du ticket dans chaque fichier JavaScript, on a créé une seule fonction qui le fait tout le temps automatiquement. Elle prend le ticket dans la mémoire du navigateur et l'ajoute à chaque demande envoyée au serveur.
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "Pourquoi avoir créé authFetch ?"</div>
+    <div class="r">Pour ne pas répéter le même code partout. Sans authFetch, il faudrait écrire la même chose dans chaque fichier (tasks.js, columns.js, team.js…). Si on devait changer quelque chose, il faudrait modifier partout et risquer d'en oublier. Avec authFetch, on modifie un seul endroit et tout le site est mis à jour.</div>
+  </div>
+
+  <h3>Les 8 fichiers JavaScript</h3>
+  <table>
+    <tr><th>Fichier</th><th>Ce qu'il fait</th></tr>
+    <tr><td><b>api.js</b></td><td>Contient authFetch() — toutes les demandes au serveur passent par lui</td></tr>
+    <tr><td><b>auth.js</b></td><td>Gère la connexion et l'inscription (page login.html)</td></tr>
+    <tr><td><b>ui.js</b></td><td>Boutons, fenêtres, menu latéral, navigation</td></tr>
+    <tr><td><b>kanban.js</b></td><td>Affiche le tableau Kanban avec les colonnes et les tâches</td></tr>
+    <tr><td><b>tasks.js</b></td><td>Créer, modifier, supprimer, déplacer des tâches</td></tr>
+    <tr><td><b>columns.js</b></td><td>Créer, renommer, supprimer des colonnes</td></tr>
+    <tr><td><b>team.js</b></td><td>Afficher et gérer les membres de l'équipe</td></tr>
+    <tr><td><b>profile.js</b></td><td>Affiche la fenêtre "Mon Profil" (nom, email, rôle, statut du compte connecté)</td></tr>
+  </table>
+
+  <h3>Vitesse d'affichage — defer et CSS en parallèle</h3>
+  <div class="bleu">
+    <div class="q">🎤 "Qu'est-ce que defer sur les scripts ?"</div>
+    <div class="r">defer dit au navigateur : télécharge ce fichier JavaScript sans bloquer l'affichage de la page, et exécute-le seulement quand la page est prête. Sans defer, le navigateur s'arrêterait d'afficher la page à chaque fichier JavaScript rencontré. Avec defer, la page apparaît plus vite à l'écran.</div>
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "Pourquoi plusieurs fichiers CSS séparés et pas un seul gros fichier ?"</div>
+    <div class="r">Avec des fichiers séparés déclarés dans le HTML, le navigateur les télécharge tous en même temps. Si on utilisait @import dans un seul fichier CSS, le navigateur devrait les télécharger un par un — beaucoup plus lent. Le chargement en parallèle améliore la vitesse d'affichage.</div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 6 : ACCESSIBILITÉ -->
+<div class="page">
+  <div class="entete"><span>♿ Partie 5 — L'Accessibilité</span><span>Syrine BEN HASSINE · Page 6/11</span></div>
+  <h2>♿ Partie 5 — L'Accessibilité</h2>
+
+  <h3>C'est quoi l'accessibilité web ?</h3>
+  <div class="gris">
+    L'accessibilité web, c'est construire un site qui peut être utilisé par tout le monde, y compris les personnes malvoyantes, non-voyantes, ou qui ne peuvent pas utiliser une souris. Ces personnes utilisent des logiciels qui lisent la page à voix haute, ou naviguent uniquement avec le clavier.
+  </div>
+  <div class="jaune">
+    Un bâtiment accessible a une rampe en plus des escaliers. Un site accessible a des descriptions pour les images et des boutons qu'on peut atteindre au clavier en plus de la souris. C'est la même idée appliquée au web.
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "C'est quoi WCAG 2.1 ?"</div>
+    <div class="r">WCAG (prononcer "wuh-cag") est un ensemble de règles internationales pour rendre les sites web accessibles à tous. La version 2.1 niveau AA est la norme la plus courante. Elle dit que le site doit être : visible et audible, utilisable au clavier, compréhensible, et compatible avec les outils d'aide.</div>
+  </div>
+
+  <h3>Les lecteurs d'écran</h3>
+  <div class="gris">
+    Un lecteur d'écran est un logiciel qui lit à voix haute tout ce qui est à l'écran. Les plus connus sont NVDA (gratuit, Windows) et VoiceOver (intégré dans Mac et iPhone). Ces logiciels lisent le HTML dans l'ordre et annoncent le type de chaque élément : "bouton Connexion", "champ Email obligatoire", "titre niveau 2 Tableau de bord"...
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "Comment une personne aveugle utilise votre site ?"</div>
+    <div class="r">Elle utilise NVDA qui lit chaque élément à voix haute. Elle navigue avec la touche Tab pour passer d'un bouton à l'autre, et avec la touche H pour sauter entre les titres. Grâce aux descriptions sur les boutons (aria-label), quand elle arrive sur le bouton de suppression d'une tâche, le logiciel dit "Supprimer la tâche Finaliser le design" au lieu de juste "bouton poubelle". Le lien d'évitement lui permet de sauter directement au Kanban sans repasser par tout le menu.</div>
+  </div>
+
+  <h3>Les attributs d'accessibilité utilisés (ARIA)</h3>
+  <table>
+    <tr><th>Attribut</th><th>Ce qu'il fait</th><th>Exemple dans Lumina Pro</th></tr>
+    <tr><td><b>aria-label</b></td><td>Donne une description à un bouton</td><td>"Supprimer la tâche Finir le MCD"</td></tr>
+    <tr><td><b>aria-hidden="true"</b></td><td>Ignore cet élément (emojis)</td><td>L'emoji 📊 n'est pas lu</td></tr>
+    <tr><td><b>role="dialog"</b></td><td>Indique que c'est une fenêtre pop-up</td><td>La fenêtre d'ajout de tâche</td></tr>
+    <tr><td><b>aria-modal="true"</b></td><td>Ignore tout ce qui est derrière</td><td>Quand la fenêtre est ouverte</td></tr>
+    <tr><td><b>aria-required</b></td><td>Ce champ est obligatoire</td><td>Email et mot de passe</td></tr>
+    <tr><td><b>aria-live="polite"</b></td><td>Annonce quand le contenu change</td><td>Rechargement du Kanban</td></tr>
+    <tr><td><b>aria-current="page"</b></td><td>C'est la page active</td><td>Bouton Dashboard en surbrillance</td></tr>
+    <tr><td><b>aria-expanded</b></td><td>Ce menu est ouvert ou fermé</td><td>Bouton menu sur mobile</td></tr>
+  </table>
+
+  <div class="bleu">
+    <div class="q">🎤 "Pourquoi utiliser des boutons &lt;button&gt; et pas des &lt;span&gt; ?"</div>
+    <div class="r">Un bouton HTML est automatiquement accessible : on peut le cibler avec Tab, l'activer avec la touche Entrée, et le lecteur d'écran l'annonce comme "bouton". Un span est juste un conteneur de texte — invisible pour le clavier et les logiciels d'aide. Il faudrait ajouter beaucoup de code supplémentaire pour lui donner les mêmes fonctions, et ça marche moins bien.</div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 7 : ARCHITECTURE -->
+<div class="page">
+  <div class="entete"><span>🏗️ Comment tout fonctionne ensemble</span><span>Syrine BEN HASSINE · Page 7/11</span></div>
+  <h2>🏗️ Comment tout fonctionne ensemble</h2>
+
+  <div class="schema">┌─────────────────────────────────────────────────────────────┐
+│                  NAVIGATEUR (ce que voit l'utilisateur)     │
+│  login.html          index.html                             │
+│  ┌──────────┐   ┌──────────────────────────────────────┐   │
+│  │ auth.js  │   │ api.js  ui.js  kanban.js  tasks.js   │   │
+│  └────┬─────┘   │ columns.js  team.js  profile.js      │   │
+│       │         └─────────────────┬────────────────────┘   │
+│       │                           │ ticket JWT envoyé       │
+└───────┼───────────────────────────┼─────────────────────────┘
+        │                           │
+┌───────┼───────────────────────────┼─────────────────────────┐
+│       ↓       SERVEUR (Node.js + Express)  ↓                │
+│  Filtre de sécurité → Vérification du ticket → Réponse      │
+│  /auth    /tasks    /columns    /users                       │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+┌──────────────────────────┼──────────────────────────────────┐
+│           BASE DE DONNÉES (MySQL)                           │
+│  ┌──────────┐  ┌───────────┐  ┌─────────────────────────┐  │
+│  │  users   │  │  columns  │  │         tasks           │  │
+│  └──────────┘  └───────────┘  └─────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘</div>
+
+  <div class="bleu">
+    <div class="q">🎤 "Expliquez comment fonctionne votre application du début à la fin."</div>
+    <div class="r">L'utilisateur ouvre login.html. Il entre ses identifiants. JavaScript envoie la demande au serveur Node.js. Le serveur vérifie dans MySQL, crée un ticket JWT et le renvoie. JavaScript sauvegarde le ticket et redirige vers index.html. Là, les fichiers JavaScript chargent les colonnes et les tâches en envoyant le ticket avec chaque demande. Le serveur vérifie le ticket à chaque fois, interroge MySQL, et renvoie les données. JavaScript affiche tout sans recharger la page.</div>
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "Pourquoi avoir séparé la partie visible et le serveur ?"</div>
+    <div class="r">Séparer ce que l'utilisateur voit (HTML, CSS, JavaScript) du serveur (Node.js, MySQL) permet de modifier l'un sans casser l'autre. On pourrait aussi créer une application mobile qui utilise le même serveur — elle enverrait les mêmes demandes et recevrait les mêmes réponses.</div>
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "Qu'est-ce que Swagger dans votre projet ?"</div>
+    <div class="r">Swagger génère automatiquement une page accessible à l'adresse /api-docs. Elle liste toutes les adresses de l'API, montre ce qu'elles attendent, et permet de les tester directement depuis le navigateur. C'est très utile pour vérifier que tout fonctionne pendant le développement, sans outil supplémentaire.</div>
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "C'est quoi CORS ?"</div>
+    <div class="r">CORS est une règle de sécurité des navigateurs qui bloque par défaut les demandes vers un autre serveur. Sans activer CORS dans Express, toutes les demandes du navigateur vers l'API seraient bloquées automatiquement. On l'active avec une ligne de code qui autorise les navigateurs à communiquer avec notre serveur.</div>
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "C'est quoi Lighthouse ?"</div>
+    <div class="r">Lighthouse est un outil gratuit intégré dans Chrome qui analyse une page web et donne des notes sur 100 : performance, accessibilité, bonnes pratiques, et référencement. Sur la page de connexion de Lumina Pro : 87 en Performance, 79 en Accessibilité, 91 en SEO. Le score d'accessibilité s'explique par des contrastes insuffisants et des attributs ARIA manquants — des pistes d'amélioration concrètes pour une v2. La performance à 87 est due aux fichiers CSS/JS multiples non bundlés.</div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 8 : PAGE MON PROFIL -->
+<div class="page">
+  <div class="entete"><span>👤 Partie 6 — Mon Profil</span><span>Syrine BEN HASSINE · Page 8/11</span></div>
+  <h2>👤 Partie 6 — Mon Profil (profile.js)</h2>
+
+  <h3>C'est quoi cette page ?</h3>
+  <div class="gris">
+    "Mon Profil" est une fenêtre modale simple qui affiche les informations du compte connecté : nom, email, rôle et un statut "En ligne". Une fonctionnalité de modification du profil existait à une étape du projet puis a été volontairement retirée (commit <em>« Suppression complète de la fonctionnalité d'édition de profil »</em>) pour garder un code minimal — le profil est aujourd'hui en lecture seule.
+  </div>
+
+  <h3>localStorage — Récupérer l'utilisateur connecté</h3>
+  <div class="jaune">
+    Après la connexion, les informations de l'utilisateur (nom, email, rôle, id) sont sauvegardées dans le navigateur via localStorage. La page Profil n'a pas besoin de redemander ces informations au serveur : elle les relit directement depuis la mémoire du navigateur.
+  </div>
+  <div class="code-bloc">
+    <div class="code-titre">📄 showProfile() (profile.js)</div>
+    <div class="code-ligne"><span class="code-texte">function showProfile() {</span><span class="code-expl">← affiche la fenêtre profil</span></div>
+    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">  const user = JSON.parse(localStorage.getItem('user'));</span><span class="code-expl">← relit l'utilisateur sauvegardé</span></div>
+    <div class="code-ligne"><span class="code-texte">  // ... affichage de user.name, user.email, user.role, user.id</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte">}</span><span class="code-expl"></span></div>
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "D'où viennent les informations affichées dans le profil ?"</div>
+    <div class="r">Elles ne viennent pas d'une nouvelle demande au serveur : elles sont déjà sauvegardées dans le localStorage du navigateur depuis la connexion (login.html). showProfile() les relit simplement avec JSON.parse(localStorage.getItem('user')) et les affiche dans une fenêtre modale.</div>
+  </div>
+
+  <h3>escapeHTML() — Même principe de sécurité que partout ailleurs</h3>
+  <div class="gris">
+    Le nom, l'email et le rôle affichés dans le profil passent par la même fonction escapeHTML() que le reste de l'application, avant d'être insérés dans le HTML. C'est la même protection XSS vue en Partie 4 : même si ces données viennent du localStorage (donc du navigateur de l'utilisateur lui-même), on applique la règle systématiquement plutôt que de faire une exception.
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "Pourquoi une page aussi simple pour le profil ?"</div>
+    <div class="r">Une fonctionnalité de modification du profil (changer son nom, son email) avait été développée, puis retirée volontairement pour réduire la surface de code à maintenir et à sécuriser dans le temps imparti à la certification. Le profil actuel est en lecture seule : c'est un choix de périmètre assumé, pas un oubli.</div>
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "Que se passe-t-il sur mobile quand on ouvre le profil ?"</div>
+    <div class="r">Si le menu latéral est ouvert et que la largeur de l'écran est ≤ 900px, showProfile() referme automatiquement le menu avant d'afficher la fenêtre du profil, pour ne pas superposer deux panneaux à l'écran.</div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 9 : NOUVELLES FONCTIONNALITÉS -->
+<div class="page">
+  <div class="entete"><span>✨ Partie 7 — Nouvelles fonctionnalités</span><span>Syrine BEN HASSINE · Page 9/13</span></div>
+  <h2>✨ Partie 7 — Les 3 fonctionnalités ajoutées</h2>
+
+  <h3>1. Barre de recherche — filtrer les tâches</h3>
+  <div class="gris">
+    Une barre de recherche au-dessus du tableau permet de filtrer les tâches en temps réel en tapant un mot. Elle cherche dans le titre et la description de chaque tâche. Les cartes qui ne correspondent pas disparaissent instantanément, sans recharger la page.
+  </div>
+  <div class="jaune">
+    C'est comme la barre de recherche sur un tableau Excel : tu tapes "réunion" et seules les lignes contenant ce mot restent visibles. Aucun appel à internet — tout se passe dans la mémoire du navigateur.
+  </div>
+  <div class="code-bloc">
+    <div class="code-titre">📄 filterTasks() (kanban.js) — Recherche côté client</div>
+    <div class="code-ligne"><span class="code-texte">function filterTasks() {</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte">  const query = searchInput.value.toLowerCase();</span><span class="code-expl">← ce que l'utilisateur tape</span></div>
+    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">  const filtered = allTasks.filter(t =></span><span class="code-expl">← Array.filter()</span></div>
+    <div class="code-ligne"><span class="code-texte">    t.title.toLowerCase().includes(query) ||</span><span class="code-expl">← cherche dans le titre</span></div>
+    <div class="code-ligne"><span class="code-texte">    t.description.toLowerCase().includes(query)</span><span class="code-expl">← et la description</span></div>
+    <div class="code-ligne"><span class="code-texte">  );</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte">  renderBoard(allColumns, filtered);</span><span class="code-expl">← redessine le board</span></div>
+    <div class="code-ligne"><span class="code-texte">}</span><span class="code-expl"></span></div>
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "Votre recherche appelle-t-elle le serveur à chaque frappe ?"</div>
+    <div class="r">Non. Les tâches sont chargées une seule fois au démarrage et stockées dans une variable JavaScript (allTasks). La recherche utilise Array.filter() sur ce tableau déjà en mémoire — aucune requête réseau, donc aucun délai. C'est ce qu'on appelle un filtrage côté client (client-side filtering).</div>
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "C'est quoi Array.filter() ?"</div>
+    <div class="r">C'est une méthode JavaScript qui parcourt un tableau et ne garde que les éléments pour lesquels la condition est vraie. Ici, on garde une tâche si son titre ou sa description contient le texte recherché. Le tableau d'origine (allTasks) n'est pas modifié.</div>
+  </div>
+
+  <h3>2. Statistiques par colonne</h3>
+  <div class="gris">
+    Au-dessus du tableau Kanban, des pastilles affichent combien de tâches se trouvent dans chaque colonne, plus le total. Elles se mettent à jour automatiquement à chaque chargement des données.
+  </div>
+  <div class="code-bloc">
+    <div class="code-titre">📄 renderStats() (kanban.js) — Comptage des tâches</div>
+    <div class="code-ligne"><span class="code-texte">function renderStats(columns, tasks) {</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte">  statsEl.innerHTML = columns.map(col => {</span><span class="code-expl">← pour chaque colonne</span></div>
+    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">    const count = tasks.filter(</span><span class="code-expl">← on compte les tâches</span></div>
+    <div class="code-ligne"><span class="code-texte">      t => t.id_col === col.id</span><span class="code-expl">← qui appartiennent à cette colonne</span></div>
+    <div class="code-ligne"><span class="code-texte">    ).length;</span><span class="code-expl">← .length = nombre de résultats</span></div>
+    <div class="code-ligne"><span class="code-texte">    return `${col.title} : ${count}`;</span><span class="code-expl">← affichage</span></div>
+    <div class="code-ligne"><span class="code-texte">  });</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte">}</span><span class="code-expl"></span></div>
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "Comment calculez-vous le nombre de tâches par colonne ?"</div>
+    <div class="r">Pour chaque colonne, je filtre le tableau allTasks avec Array.filter() pour ne garder que les tâches dont id_col correspond à l'identifiant de la colonne. Ensuite, .length donne le nombre de résultats. C'est du calcul côté client sur des données déjà chargées.</div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 9b : DATE D'ÉCHÉANCE -->
+<div class="page">
+  <div class="entete"><span>✨ Partie 7 (suite) — Date d'échéance</span><span>Syrine BEN HASSINE · Page 10/13</span></div>
+  <h2>✨ Partie 7 (suite) — Date d'échéance et badge rouge</h2>
+
+  <h3>3. Date d'échéance — Deadline sur chaque tâche</h3>
+  <div class="gris">
+    Chaque tâche peut avoir une date d'échéance (deadline). Elle s'affiche sur la carte sous forme d'un badge 📅. Si la date est dépassée, le badge devient rouge ⚠️ et la carte reçoit une bordure rouge sur le côté gauche pour attirer l'attention immédiatement.
+  </div>
+  <div class="jaune">
+    C'est comme un rendez-vous dans un agenda : si la date est passée et que tu n'as pas encore coché la tâche comme "terminée", elle passe en rouge pour signaler le retard.
+  </div>
+
+  <h3>Côté base de données — Le champ DATE</h3>
+  <div class="code-bloc">
+    <div class="code-titre">📄 La colonne due_date dans MySQL</div>
+    <div class="code-ligne"><span class="code-texte">due_date DATE DEFAULT NULL</span><span class="code-expl">← type DATE = année-mois-jour</span></div>
+    <div class="code-ligne"><span class="code-texte">-- Exemple de valeur : '2026-07-15'</span><span class="code-expl">← format ISO 8601</span></div>
+    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">-- Migration automatique au redémarrage :</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte">ALTER TABLE tasks</span><span class="code-expl">← modifier la table existante</span></div>
+    <div class="code-ligne"><span class="code-texte">ADD COLUMN due_date DATE DEFAULT NULL;</span><span class="code-expl">← ajouter la colonne</span></div>
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "Comment avez-vous ajouté ce champ sans casser les données existantes ?"</div>
+    <div class="r">J'ai utilisé ALTER TABLE avec ADD COLUMN et DEFAULT NULL. Cela ajoute la colonne à la table déjà existante sans toucher aux tâches déjà créées — elles auront juste la valeur NULL pour due_date, ce qui veut dire "pas de date fixée". La migration s'exécute automatiquement au démarrage du serveur.</div>
+  </div>
+
+  <h3>Côté JavaScript — Comparer deux dates</h3>
+  <div class="code-bloc">
+    <div class="code-titre">📄 Détection de retard et calcul du nombre de jours (kanban.js)</div>
+    <div class="code-ligne"><span class="code-texte">// Convertir en chaîne ISO "YYYY-MM-DD" pour éviter les décalages de fuseau horaire</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte">const dueDateStr = new Date(task.due_date).toISOString().substring(0, 10);</span><span class="code-expl">← ex: "2026-07-01"</span></div>
+    <div class="code-ligne"><span class="code-texte">const todayStr = new Date().toISOString().substring(0, 10);</span><span class="code-expl">← ex: "2026-07-09"</span></div>
+    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">if (dueDateStr &lt; todayStr) {</span><span class="code-expl">← comparaison de chaînes ISO</span></div>
+    <div class="code-ligne"><span class="code-texte">  const diffDays = Math.round(</span><span class="code-expl">← calculer les jours de retard</span></div>
+    <div class="code-ligne"><span class="code-texte">    (new Date(todayStr) - new Date(dueDateStr)) / 86400000</span><span class="code-expl">← 86400000ms = 1 jour</span></div>
+    <div class="code-ligne"><span class="code-texte">  );</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte">  dueBadge = `⚠️ En retard de ${diffDays} jour(s)`;</span><span class="code-expl">← badge dynamique</span></div>
+    <div class="code-ligne"><span class="code-texte">  cardBorder = 'border-left: 3px solid #ef4444;';</span><span class="code-expl">← bordure rouge</span></div>
+    <div class="code-ligne"><span class="code-texte">}</span><span class="code-expl"></span></div>
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "Comment détectez-vous qu'une tâche est en retard ?"</div>
+    <div class="r">Je convertis les deux dates en chaînes au format "YYYY-MM-DD" avec .toISOString().substring(0,10). La date de la tâche et la date du jour deviennent deux chaînes comparables alphabétiquement — "2026-07-01" est inférieur à "2026-07-09". Si la date limite est strictement avant aujourd'hui, la tâche est en retard. Je calcule alors le nombre de jours de retard en divisant la différence en millisecondes par 86 400 000 (= 1 jour). Le badge affiche "⚠️ En retard de 8 jours" et la carte reçoit une bordure rouge.</div>
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "Pourquoi utiliser .toISOString() plutôt que new Date() directement ?"</div>
+    <div class="r">new Date(task.due_date) crée un objet Date en heure locale, ce qui peut décaler la date d'un jour selon le fuseau horaire (UTC+2 en France). En convertissant les deux dates en chaînes ISO identiques "YYYY-MM-DD", on compare des textes de même format sans problème de fuseau. C'est plus fiable qu'une comparaison d'objets Date dont l'heure varie.</div>
+  </div>
+
+  <h3>Côté CSS — Le style de la carte en retard</h3>
+  <div class="code-bloc">
+    <div class="code-titre">📄 kanban.css — Classe .task-overdue</div>
+    <div class="code-ligne"><span class="code-texte">.task-overdue {</span><span class="code-expl">← carte en retard</span></div>
+    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">  border-left: 3px solid #ef4444;</span><span class="code-expl">← bord rouge à gauche</span></div>
+    <div class="code-ligne"><span class="code-texte">}</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte">.badge-overdue {</span><span class="code-expl">← texte du badge</span></div>
+    <div class="code-ligne"><span class="code-texte">  color: #ef4444;</span><span class="code-expl">← texte rouge</span></div>
+    <div class="code-ligne"><span class="code-texte">  font-weight: bold;</span><span class="code-expl">← en gras</span></div>
+    <div class="code-ligne"><span class="code-texte">}</span><span class="code-expl"></span></div>
+  </div>
+  <div class="bleu">
+    <div class="q">🎤 "Cette fonctionnalité touche combien de couches de l'application ?"</div>
+    <div class="r">Les 3 couches complètes : la base de données (nouvelle colonne due_date de type DATE), le serveur (API mise à jour pour lire et écrire ce champ dans INSERT et UPDATE), et le front-end (formulaire avec &lt;input type="date"&gt;, logique de comparaison JavaScript, style CSS conditionnel). C'est une bonne illustration du modèle full-stack.</div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 10 : QUESTIONS DIFFICILES -->
+<div class="page">
+  <div class="entete"><span>🎤 Questions pièges du jury</span><span>Syrine BEN HASSINE · Page 11/13</span></div>
+  <h2>🎤 Questions pièges — Ce que le jury peut vraiment demander</h2>
+
+  <div class="bleu">
+    <div class="q">🎤 "Vous parlez de logs d'audit dans votre dossier — y a-t-il une interface pour les consulter ?"</div>
+    <div class="r">Non. Un module de journal d'audit a réellement été développé (table logs, route dédiée), mais je l'ai volontairement retiré lors d'un nettoyage du code pour recentrer le projet sur un cœur Kanban simple et entièrement maîtrisé. Il n'existe donc aujourd'hui aucune interface de consultation des logs — c'est un choix de périmètre assumé, pas un oubli, et il est noté dans mes évolutions futures si le besoin s'en fait sentir.</div>
+  </div>
+
+  <div class="bleu">
+    <div class="q">🎤 "Si vous deviez refaire ce projet, que changeriez-vous ?"</div>
+    <div class="r">Honnêtement, je pense que je m'organiserais mieux au début — j'ai un peu foncé dans le code avant d'avoir bien fini toute la conception, du coup j'ai dû revenir en arrière plusieurs fois. Je ferais sûrement aussi des tests au fur et à mesure au lieu de tout tester à la fin, ça m'aurait fait gagner du temps. Et niveau code, je sais que je devrais apprendre à écrire des tests automatiques (Jest), là je n'ai testé qu'à la main faute de temps.</div>
+  </div>
+
+  <div class="bleu">
+    <div class="q">🎤 "Votre application est-elle protégée contre les attaques dans les champs de texte ?"</div>
+    <div class="r">Oui. Toutes les demandes à la base de données utilisent des espaces réservés (points d'interrogation) que la bibliothèque mysql2 remplace de façon sécurisée. Si quelqu'un essaie d'écrire du code dans un champ, il sera traité comme du texte normal et non comme une instruction — la base ne sera pas touchée.</div>
+  </div>
+
+  <div class="bleu">
+    <div class="q">🎤 "Pourquoi JavaScript simple et pas React ou Vue ?"</div>
+    <div class="r">Pour ce projet, JavaScript simple est suffisant et plus facile à comprendre et expliquer. React et Vue ajoutent des outils supplémentaires qui ne sont pas nécessaires pour une application Kanban de cette taille. Le code peut être lu directement dans le navigateur sans étape supplémentaire.</div>
+  </div>
+
+  <div class="bleu">
+    <div class="q">🎤 "Comment gérez-vous les rôles admin et utilisateur normal ?"</div>
+    <div class="r">Le rôle est sauvegardé dans la table users (admin ou user). Il est inclus dans le ticket JWT à la connexion. Côté navigateur, si le rôle est admin, le menu "Équipe" apparaît et permet de gérer les membres. Les utilisateurs normaux ne voient pas ce menu.</div>
+  </div>
+
+  <div class="bleu">
+    <div class="q">🎤 "Votre site fonctionne-t-il sur mobile ?"</div>
+    <div class="r">Oui. En dessous de 900px de largeur (tablettes et mobiles), le menu latéral se cache et un bouton burger ☰ apparaît pour l'ouvrir. Un fond sombre s'affiche derrière le menu ouvert, et un bouton ✕ permet de le fermer. On peut aussi fermer le menu en tapant sur le fond sombre. Les colonnes Kanban défilent horizontalement sur les petits écrans.</div>
+  </div>
+
+  <div class="bleu">
+    <div class="q">🎤 "Comment fonctionne le déplacement d'une tâche entre colonnes ?"</div>
+    <div class="r">Chaque tâche note dans quel colonne elle se trouve (un numéro de colonne). Les boutons ⬅️ et ➡️ sur chaque carte changent ce numéro en envoyant une demande de modification au serveur. Express met à jour le numéro en base. Ensuite, toutes les tâches sont rechargées et réaffichées à leurs nouvelles positions.</div>
+  </div>
+
+  <div class="bleu">
+    <div class="q">🎤 "C'est quoi un ticket JWT concrètement, qu'est-ce qu'il contient ?"</div>
+    <div class="r">Un ticket JWT est une longue suite de caractères composée de 3 parties séparées par des points. La première partie dit quel type de ticket c'est. La deuxième contient les informations : l'identifiant de l'utilisateur, son rôle, et quand le ticket expire. La troisième est une vérification calculée avec une clé secrète — si quelqu'un modifie le ticket, la vérification échoue et le serveur refuse.</div>
+  </div>
+
+  <div class="bleu">
+    <div class="q">🎤 "Quelle est la hiérarchie des titres dans votre site ?"</div>
+    <div class="r">h2 pour le titre de la page (dans la barre du haut), h3 pour chaque colonne du Kanban, h4 pour le titre de chaque tâche. C'est important de ne pas sauter de niveau — un lecteur d'écran utilise ces titres comme un plan pour naviguer dans la page.</div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE : SI ON ENLÈVE / REMPLACEMENT -->
+<div class="page">
+  <div class="entete"><span>🔄 Si on enlève / Si on remplace</span><span>Syrine BEN HASSINE · DWWM 2026</span></div>
+  <h2>🔄 Pour chaque technologie : ce qui se passe si on l'enlève</h2>
+  <p style="font-size:10pt; color:#555; margin-bottom:12px;">Le jury peut demander "pourquoi ce choix ?" ou "qu'est-ce qui se passerait sans ça ?". Voici les réponses.</p>
+
+  <table>
+    <tr><th>Technologie</th><th>Si on l'enlève — conséquence</th><th>Ce qu'on pourrait mettre à la place</th></tr>
+    <tr>
+      <td><b>JWT</b></td>
+      <td>Tout le monde peut accéder aux données sans se connecter. Les routes /api/tasks, /api/columns retourneraient les données à n'importe qui.</td>
+      <td>Sessions côté serveur (express-session + cookie), OAuth2 (connexion Google/Facebook)</td>
+    </tr>
+    <tr>
+      <td><b>bcrypt</b></td>
+      <td>Les mots de passe seraient stockés en clair en base. Si la base est volée, tous les comptes sont compromis immédiatement.</td>
+      <td>argon2 (encore plus sécurisé que bcrypt), scrypt. SHA-256 seul est INSUFFISANT pour les mots de passe.</td>
+    </tr>
+    <tr>
+      <td><b>Requêtes préparées (?)</b></td>
+      <td>Injection SQL possible : un hacker peut écrire du SQL dans un champ et lire, modifier ou supprimer toute la base de données.</td>
+      <td>ORM comme Sequelize ou Prisma (ils protègent automatiquement), validation stricte des entrées</td>
+    </tr>
+    <tr>
+      <td><b>escapeHTML()</b></td>
+      <td>XSS possible : si un utilisateur écrit du JavaScript dans le titre d'une tâche, ce code s'exécute dans le navigateur de tous les autres utilisateurs.</td>
+      <td>Bibliothèque DOMPurify, sanitize-html, utiliser textContent au lieu de innerHTML</td>
+    </tr>
+    <tr>
+      <td><b>CORS (app.use(cors()))</b></td>
+      <td>Le navigateur bloquerait toutes les demandes vers l'API. La page s'ouvrirait mais aucune donnée ne s'afficherait — erreur dans la console.</td>
+      <td>Servir le front et le back sur le même domaine/port, ou configurer CORS manuellement en-tête par en-tête</td>
+    </tr>
+    <tr>
+      <td><b>dotenv / fichier .env</b></td>
+      <td>Les secrets (clé JWT, mot de passe base de données) seraient écrits directement dans le code. Dès qu'on pousse sur GitHub, n'importe qui peut les lire.</td>
+      <td>Variables d'environnement du système d'exploitation, HashiCorp Vault, AWS Secrets Manager</td>
+    </tr>
+    <tr>
+      <td><b>Swagger UI</b></td>
+      <td>Impossible de tester ou documenter l'API depuis le navigateur. Il faudrait tout tester à la main avec curl ou un outil externe.</td>
+      <td>Postman (outil externe), Insomnia, README avec exemples d'appels curl, Redoc</td>
+    </tr>
+    <tr>
+      <td><b>MySQL</b></td>
+      <td>Pas de base de données = aucune persistance des données. Tout disparaît à l'arrêt du serveur.</td>
+      <td>PostgreSQL (similaire, plus puissant), SQLite (plus simple, sans serveur séparé), MongoDB (NoSQL, très différent)</td>
+    </tr>
+    <tr>
+      <td><b>Express.js</b></td>
+      <td>Il faudrait tout recoder à la main en Node.js pur — des centaines de lignes pour gérer les routes, les en-têtes, les middlewares.</td>
+      <td>Fastify (plus rapide), Koa (plus léger), NestJS (plus structuré, TypeScript)</td>
+    </tr>
+    <tr>
+      <td><b>Node.js (le serveur)</b></td>
+      <td>L'API n'existerait pas. Sans serveur, il n'y a pas de connexion à la base de données possible.</td>
+      <td>PHP/Laravel, Python/Django, Python/Flask, Java/Spring Boot, Ruby on Rails</td>
+    </tr>
+    <tr>
+      <td><b>Media queries (responsive)</b></td>
+      <td>Le site s'affiche exactement pareil sur un téléphone que sur un grand écran — illisible, colonnes qui débordent, texte minuscule.</td>
+      <td>Bootstrap (framework CSS avec responsive intégré), Tailwind CSS, CSS Grid seul</td>
+    </tr>
+    <tr>
+      <td><b>Flexbox</b></td>
+      <td>Très difficile d'aligner les éléments côte à côte. Le menu latéral et les cartes Kanban seraient mal positionnés.</td>
+      <td>CSS Grid (pour les mises en page 2D), float (vieux, déconseillé), positionnement absolu</td>
+    </tr>
+    <tr>
+      <td><b>localStorage</b></td>
+      <td>Le ticket JWT serait perdu à chaque rechargement de page. L'utilisateur devrait se reconnecter à chaque fois.</td>
+      <td>sessionStorage (perdu à la fermeture de l'onglet), cookie httpOnly (plus sécurisé contre le vol de token)</td>
+    </tr>
+    <tr>
+      <td><b>Array.filter()</b></td>
+      <td>Il faudrait écrire une boucle manuelle pour chercher dans les tâches — plus de code, plus de risque d'erreur.</td>
+      <td>Boucle for...of avec if, bibliothèque Lodash (_.filter), recherche côté serveur (GET /api/tasks?q=mot)</td>
+    </tr>
+    <tr>
+      <td><b>async/await</b></td>
+      <td>Il faudrait chaîner des .then().catch() (Promises) ou des callbacks imbriqués — code difficile à lire et à déboguer.</td>
+      <td>Promises .then().catch(), callbacks (ancien style), bibliothèques de flow control</td>
+    </tr>
+    <tr>
+      <td><b>ON DELETE CASCADE</b></td>
+      <td>Supprimer une colonne laisserait des tâches "orphelines" en base, liées à une colonne inexistante. L'application planterait au prochain chargement.</td>
+      <td>Supprimer manuellement les tâches avant la colonne (dans le code applicatif), ou trigger MySQL</td>
+    </tr>
+    <tr>
+      <td><b>ENUM (priorité)</b></td>
+      <td>N'importe quelle valeur serait acceptée ("URGENT", "très urgent"...). Les badges de couleur ne s'afficheraient pas correctement côté JavaScript.</td>
+      <td>Contrainte CHECK de MySQL, validation dans le code Express avant l'INSERT</td>
+    </tr>
+    <tr>
+      <td><b>Git (versioning)</b></td>
+      <td>Impossible de revenir en arrière si une modification casse quelque chose. Pas d'historique du projet. Impossible de collaborer à plusieurs.</td>
+      <td>SVN (Subversion), Mercurial — mais Git est le standard universel en 2026</td>
+    </tr>
+  </table>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE : CONCEPTS SUPPLÉMENTAIRES -->
+<div class="page">
+  <div class="entete"><span>📚 Concepts clés à maîtriser</span><span>Syrine BEN HASSINE · DWWM 2026</span></div>
+  <h2>📚 Concepts clés — Explications simples</h2>
+
+  <h3>Node.js — Le moteur du serveur</h3>
+  <div class="gris">Node.js permet d'exécuter JavaScript en dehors du navigateur, directement sur l'ordinateur serveur. Sans Node.js, JavaScript ne pouvait fonctionner que dans un navigateur. Grâce à Node.js, on peut créer un serveur web entier en JavaScript.</div>
+  <div class="jaune">Avant Node.js, si tu savais JavaScript, tu ne pouvais coder que la partie visible d'un site. Node.js, c'est comme donner à un cuisinier (JavaScript) l'accès à toute la cuisine (le serveur), pas seulement à la salle.</div>
+
+  <h3>Express.js — La simplification de Node.js</h3>
+  <div class="gris">Express.js est une bibliothèque qui s'installe par-dessus Node.js et qui simplifie énormément la création d'API. Sans Express, créer une seule route demanderait 30 lignes de code. Avec Express, c'est 3 lignes.</div>
+  <div class="code-bloc">
+    <div class="code-titre">📄 Sans Express vs Avec Express</div>
+    <div class="code-ligne"><span class="code-texte">// SANS Express (Node.js pur) :</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte">http.createServer((req, res) => {</span><span class="code-expl">← 30 lignes pour une route</span></div>
+    <div class="code-ligne"><span class="code-texte">  if (req.url === '/api/tasks' && req.method === 'GET') { ... }</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">// AVEC Express :</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte">app.get('/api/tasks', (req, res) => { ... });</span><span class="code-expl">← 1 ligne</span></div>
+  </div>
+
+  <h3>npm — Le gestionnaire de bibliothèques</h3>
+  <div class="gris">npm (Node Package Manager) est un outil qui permet d'installer des bibliothèques en une seule commande. Au lieu de télécharger chaque bibliothèque à la main, on écrit <b>npm install express</b> et npm télécharge Express avec toutes ses dépendances automatiquement.</div>
+  <div class="jaune">C'est comme une liste de courses automatique. Au lieu d'aller chercher chaque ingrédient dans des magasins différents, tu donnes la liste à npm et il ramène tout à la maison.</div>
+
+  <h3>Git — La machine à remonter le temps du code</h3>
+  <div class="gris">Git sauvegarde chaque version du code avec un message expliquant ce qui a changé (un "commit"). Si une modification casse quelque chose, on peut revenir exactement à la version précédente. GitHub est le service en ligne qui stocke ces versions accessibles depuis n'importe où.</div>
+  <div class="jaune">C'est comme Ctrl+Z illimité, mais pour tout le projet et avec des notes explicatives. Chaque Ctrl+Z (commit) a un message : "Ajout de la date d'échéance" — on sait exactement ce qu'on annule.</div>
+  <div class="bleu">
+    <div class="q">🎤 "Combien de commits a votre projet ?"</div>
+    <div class="r">Le projet Lumina Pro compte 33+ commits. Chaque commit a un message explicite qui décrit ce qui a été ajouté ou modifié. Certains commits ont volontairement supprimé des fonctionnalités (audit trail, notifications, drag &amp; drop) pour recentrer le projet sur un cœur solide avant la soutenance.</div>
+  </div>
+
+  <h3>MERISE — MCD → MLD → MPD</h3>
+  <table>
+    <tr><th>Étape</th><th>Nom complet</th><th>Ce que c'est</th><th>Exemple</th></tr>
+    <tr><td><b>MCD</b></td><td>Modèle Conceptuel de Données</td><td>Un schéma dessiné qui montre les entités et leurs relations. Aucun code, aucune table — juste la logique.</td><td>TÂCHE appartient à COLONNE. UTILISATEUR est assigné à TÂCHE.</td></tr>
+    <tr><td><b>MLD</b></td><td>Modèle Logique de Données</td><td>Traduction du MCD en tables avec clés primaires (PK) et clés étrangères (FK). On commence à voir les tables.</td><td>tasks(id PK, id_col FK→columns, id_assigned FK→users)</td></tr>
+    <tr><td><b>MPD</b></td><td>Modèle Physique de Données</td><td>Le vrai code SQL MySQL prêt à être exécuté. Types de données précis, contraintes, valeurs par défaut.</td><td>CREATE TABLE tasks (id INT AUTO_INCREMENT PRIMARY KEY, ...)</td></tr>
+  </table>
+  <div class="bleu">
+    <div class="q">🎤 "Pourquoi faire MCD d'abord si on arrive au même résultat ?"</div>
+    <div class="r">Le MCD force à réfléchir à la logique des données AVANT de coder. Si on commence directement par le SQL, on risque d'oublier des relations importantes ou d'avoir à tout refaire. C'est comme faire un plan avant de construire une maison — le plan ne contient pas de briques, mais il évite de construire au mauvais endroit.</div>
+  </div>
+
+  <h3>Flexbox — Aligner les éléments en CSS</h3>
+  <div class="gris">Flexbox est un système CSS pour aligner des éléments sur une ligne ou une colonne. Dans Lumina Pro, il est utilisé partout : le menu latéral + le contenu principal côte à côte, les cartes Kanban dans les colonnes, les boutons dans la barre du haut.</div>
+  <div class="code-bloc">
+    <div class="code-titre">📄 Flexbox dans layout.css</div>
+    <div class="code-ligne"><span class="code-texte">.app-layout {</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">  display: flex;</span><span class="code-expl">← activer Flexbox</span></div>
+    <div class="code-ligne"><span class="code-texte">  height: 100vh;</span><span class="code-expl">← pleine hauteur d'écran</span></div>
+    <div class="code-ligne"><span class="code-texte">}</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte">.sidebar { width: 240px; flex-shrink: 0; }</span><span class="code-expl">← menu fixe à gauche</span></div>
+    <div class="code-ligne"><span class="code-texte">.main-content { flex: 1; }</span><span class="code-expl">← prend tout l'espace restant</span></div>
+  </div>
+
+  <h3>CSS Variables — Une couleur pour tout le site</h3>
+  <div class="gris">Les variables CSS permettent de définir une valeur une seule fois et de l'utiliser partout. Si la couleur principale change, on la modifie à un seul endroit et tout le site est mis à jour automatiquement.</div>
+  <div class="code-bloc">
+    <div class="code-titre">📄 variables.css</div>
+    <div class="code-ligne"><span class="code-texte">:root {</span><span class="code-expl">← applicable à toute la page</span></div>
+    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">  --color-primary: #D6336C;</span><span class="code-expl">← la couleur rose principale</span></div>
+    <div class="code-ligne"><span class="code-texte">  --sidebar-width: 240px;</span><span class="code-expl">← largeur du menu</span></div>
+    <div class="code-ligne"><span class="code-texte">}</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte">/* Utilisation : */</span><span class="code-expl"></span></div>
+    <div class="code-ligne"><span class="code-texte">.btn { background: var(--color-primary); }</span><span class="code-expl">← réutilise la variable</span></div>
+  </div>
+
+  <h3>Responsive — Le site qui s'adapte à toutes les tailles</h3>
+  <div class="gris">Un media query est une règle CSS qui dit "applique ce style seulement si l'écran fait moins de X pixels". C'est la technique de base pour rendre un site utilisable sur téléphone sans framework lourd.</div>
+  <div class="code-bloc">
+    <div class="code-titre">📄 responsive.css</div>
+    <div class="code-ligne"><span class="code-texte">@media (max-width: 900px) {</span><span class="code-expl">← si écran ≤ 900px (tablette/mobile)</span></div>
+    <div class="code-ligne"><span class="code-texte" style="color:#86efac;">  .sidebar { display: none; }</span><span class="code-expl">← cacher le menu</span></div>
+    <div class="code-ligne"><span class="code-texte">  .burger-btn { display: flex; }</span><span class="code-expl">← montrer le bouton ☰</span></div>
+    <div class="code-ligne"><span class="code-texte">  .kanban-board { overflow-x: auto; }</span><span class="code-expl">← colonnes défilent</span></div>
+    <div class="code-ligne"><span class="code-texte">}</span><span class="code-expl"></span></div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE : SCRIPT ORAL RÉSUMÉ -->
+<div class="page">
+  <div class="entete"><span>🎤 Script oral — Présentation 35 min</span><span>Syrine BEN HASSINE · DWWM 2026</span></div>
+  <h2>🎤 Script oral — Ce que tu dis à chaque étape</h2>
+  <p style="font-size:10pt; color:#555; margin-bottom:12px;">Tu as 35 minutes. Entraîne-toi à lire ces phrases à voix haute, seule, plusieurs fois avant la soutenance.</p>
+
+  <table>
+    <tr><th style="width:20%">Moment</th><th style="width:15%">Durée</th><th>Ce que tu dis (en langage simple)</th></tr>
+    <tr><td><b>Présentation personnelle</b></td><td>1 min</td><td>"Je m'appelle Syrine Ben Hassine. Je présente Lumina Pro, une application web de gestion de tâches en tableau Kanban, développée dans le cadre de mon titre DWWM à La Plateforme_ Cannes. L'idée : permettre à une petite équipe de suivre ses tâches, avec deux niveaux d'accès — administrateur et utilisateur."</td></tr>
+    <tr><td><b>Contexte et besoin</b></td><td>2 min</td><td>"Pourquoi ce projet ? Les outils existants comme Trello ou Jira sont complexes et payants pour des petites équipes. Lumina Pro est une alternative légère, auto-hébergeable, centrée sur l'essentiel : créer des tâches, les organiser visuellement, les assigner aux bons membres."</td></tr>
+    <tr><td><b>Stack technique</b></td><td>2 min</td><td>"Côté serveur : Node.js avec Express.js pour l'API REST, MySQL pour les données, bcrypt pour les mots de passe, JWT pour l'authentification. Côté client : HTML5, CSS3 (8 fichiers), JavaScript vanilla sans framework. Documentation API avec Swagger UI."</td></tr>
+    <tr><td><b>Base de données</b></td><td>4 min</td><td>"J'ai modélisé la base avec MERISE : d'abord le MCD avec 3 entités principales (UTILISATEUR, TÂCHE, COLONNE) et leurs associations, puis le MLD avec les clés étrangères, puis le MPD en SQL MySQL. La base crée 4 tables au démarrage. La colonne due_date a été ajoutée par migration ALTER TABLE sans toucher aux données existantes."</td></tr>
+    <tr><td><b>Sécurité</b></td><td>4 min</td><td>"Quatre axes de sécurité : injection SQL bloquée par les requêtes préparées (points d'interrogation), XSS bloqué par escapeHTML() sur tout le contenu utilisateur, authentification par JWT (ticket 24h dans le header Authorization), et IDOR bloqué par vérification de propriété côté serveur. Les secrets sont dans un fichier .env non versionné."</td></tr>
+    <tr><td><b>Frontend</b></td><td>4 min</td><td>"Le frontend charge les tâches via fetch() avec async/await, met à jour le DOM sans recharger la page (SPA). La recherche filtre les tâches côté client avec Array.filter() — aucun appel réseau. Le responsive utilise des media queries CSS pures, sans Bootstrap."</td></tr>
+    <tr><td><b>Accessibilité</b></td><td>2 min</td><td>"J'ai testé 30 critères WCAG 2.1 manuellement : attributs aria-label sur les boutons icônes, navigation clavier complète, contrastes vérifiés, labels associés à chaque champ. La sémantique HTML5 structure la page pour les lecteurs d'écran."</td></tr>
+    <tr><td><b>Ce qui a été retiré</b></td><td>2 min</td><td>"Plusieurs fonctionnalités ont été développées puis retirées volontairement : journal d'audit, statistiques serveur, drag &amp; drop natif, système de notifications. Ce choix stratégique — préférer un cœur maîtrisé à une accumulation — est documenté dans mes commits et ma roadmap."</td></tr>
+    <tr><td><b>Améliorations</b></td><td>1 min</td><td>"Trois axes prioritaires pour une v2 : tests automatisés Jest+Supertest, rate limiting sur /api/auth contre le brute-force, et déploiement sur VPS avec HTTPS. Ces limites sont documentées dans ma roadmap — assumées, pas cachées."</td></tr>
+    <tr><td><b>Conclusion</b></td><td>1 min</td><td>"Lumina Pro m'a permis de couvrir toute la chaîne d'une application full-stack en solo. Ce projet n'est pas parfait, mais chaque choix peut être expliqué et justifié. Je reste disponible pour vos questions."</td></tr>
+  </table>
+
+  <div style="background:#fee2e2; border:2px solid #fca5a5; border-radius:8px; padding:12px 16px; margin-top:12px;">
+    <b style="color:#991b1b;">⚠️ À ne jamais dire à l'oral :</b><br>
+    <span style="font-size:10pt;">
+      ❌ "Je n'ai pas fait ça moi-même" — Tu dois expliquer chaque partie du projet.<br>
+      ❌ "Je ne sais pas" sans ajouter une piste — Dis toujours ce que tu <em>sais</em> autour du sujet.<br>
+      ❌ Des buzzwords que tu ne peux pas expliquer (blockchain, IA générative...) — Ne mentionne que ce que tu as utilisé.
+    </span>
+  </div>
+
+  <div style="background:#dcfce7; border:2px solid #86efac; border-radius:8px; padding:12px 16px; margin-top:10px; text-align:center;">
+    <b style="color:#166534;">✅ Formule magique si tu bloques :</b><br>
+    <span style="font-size:10.5pt; color:#166534;">"Je n'ai pas approfondi ce point spécifiquement, mais dans Lumina Pro, la notion la plus proche est [X], et elle fonctionne de cette façon : [explication simple]."</span>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 12 : QCM 1-13 -->
+<div class="page">
+  <div class="entete"><span>❓ QCM — Questions 1 à 13</span><span>Syrine BEN HASSINE · Page 12/13</span></div>
+  <h2>❓ QCM — Teste tes connaissances (réponses incluses)</h2>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">1</span>À quoi sert bcrypt ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. Chiffrer les messages entre client et serveur</div>
+      <div class="bon">B. Transformer le mot de passe en suite illisible avant de le sauvegarder</div>
+      <div class="mauvais">C. Créer les tickets JWT</div>
+      <div class="mauvais">D. Compresser les fichiers CSS</div>
+    </div>
+    <div class="qcm-exp">bcrypt broie le mot de passe — même le développeur ne peut pas retrouver l'original.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">2</span>C'est quoi un ticket JWT ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. Un mot de passe chiffré</div>
+      <div class="mauvais">B. Un fichier de configuration</div>
+      <div class="bon">C. Un ticket numérique qui prouve que l'utilisateur est connecté</div>
+      <div class="mauvais">D. Un cookie de session</div>
+    </div>
+    <div class="qcm-exp">Le ticket est donné après connexion et présenté à chaque action pour prouver l'identité.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">3</span>Que fait le filtre de sécurité (verifyToken) ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. Il crée un nouveau ticket à chaque demande</div>
+      <div class="bon">B. Il vérifie que le ticket est valide avant de laisser passer la demande</div>
+      <div class="mauvais">C. Il supprime le ticket à la déconnexion</div>
+      <div class="mauvais">D. Il enregistre les actions de l'utilisateur</div>
+    </div>
+    <div class="qcm-exp">Sans ticket valide, le filtre renvoie une erreur 401 (non autorisé) immédiatement.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">4</span>Pourquoi LEFT JOIN et pas INNER JOIN ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. LEFT JOIN est plus rapide</div>
+      <div class="mauvais">B. INNER JOIN ne marche pas avec MySQL</div>
+      <div class="bon">C. Pour afficher aussi les tâches non assignées à personne</div>
+      <div class="mauvais">D. Pour trier les tâches par priorité</div>
+    </div>
+    <div class="qcm-exp">INNER JOIN cacherait les tâches sans assignation. LEFT JOIN les retourne toutes.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">5</span>Que signifie le code 401 ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. La page n'existe pas</div>
+      <div class="mauvais">B. Le serveur a planté</div>
+      <div class="mauvais">C. Les données envoyées sont incomplètes</div>
+      <div class="bon">D. L'utilisateur n'est pas connecté (ticket absent ou expiré)</div>
+    </div>
+    <div class="qcm-exp">401 = pas de ticket valide. L'utilisateur doit se reconnecter.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">6</span>Où est sauvegardé le ticket JWT dans le navigateur ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. Dans un cookie</div>
+      <div class="bon">B. Dans la mémoire du navigateur (localStorage)</div>
+      <div class="mauvais">C. Dans un fichier sur l'ordinateur</div>
+      <div class="mauvais">D. Dans la base de données</div>
+    </div>
+    <div class="qcm-exp">localStorage garde le ticket même après fermeture de l'onglet jusqu'à la déconnexion.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">7</span>Quelle action HTTP on utilise pour créer une nouvelle tâche ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. GET</div>
+      <div class="bon">B. POST</div>
+      <div class="mauvais">C. PUT</div>
+      <div class="mauvais">D. DELETE</div>
+    </div>
+    <div class="qcm-exp">POST = créer. GET = lire. PUT = modifier. DELETE = supprimer.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">8</span>Que fait ON DELETE CASCADE ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. Supprime l'utilisateur quand une tâche est supprimée</div>
+      <div class="mauvais">B. Empêche la suppression d'une colonne</div>
+      <div class="bon">C. Supprime automatiquement les tâches quand leur colonne est supprimée</div>
+      <div class="mauvais">D. Sauvegarde les données supprimées</div>
+    </div>
+    <div class="qcm-exp">Comme supprimer un dossier : tous les fichiers à l'intérieur partent avec lui.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">9</span>À quoi sert CORS ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. À chiffrer les données</div>
+      <div class="bon">B. À autoriser le navigateur à envoyer des demandes au serveur</div>
+      <div class="mauvais">C. À compresser les réponses</div>
+      <div class="mauvais">D. À gérer les connexions</div>
+    </div>
+    <div class="qcm-exp">Sans CORS activé, le navigateur bloquerait toutes les demandes vers l'API.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">10</span>Pourquoi defer sur les scripts JavaScript ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. Pour exécuter les scripts avant le chargement de la page</div>
+      <div class="mauvais">B. Pour désactiver le cache</div>
+      <div class="bon">C. Pour télécharger les scripts sans bloquer l'affichage de la page</div>
+      <div class="mauvais">D. Pour réduire la taille des fichiers</div>
+    </div>
+    <div class="qcm-exp">defer = la page s'affiche pendant que les scripts se téléchargent. Plus rapide.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">11</span>C'est quoi WCAG 2.1 ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. Un langage de programmation</div>
+      <div class="bon">B. Des règles internationales pour rendre les sites accessibles à tous</div>
+      <div class="mauvais">C. Un outil de test automatique</div>
+      <div class="mauvais">D. Une bibliothèque JavaScript</div>
+    </div>
+    <div class="qcm-exp">Des règles du W3C pour que les sites soient utilisables par les personnes handicapées.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">12</span>Pourquoi utiliser &lt;button&gt; au lieu de &lt;span&gt; pour les actions ?</div>
+    <div class="qcm-choix">
+      <div class="bon">A. Un bouton est naturellement accessible au clavier et aux lecteurs d'écran</div>
+      <div class="mauvais">B. Un bouton charge plus vite</div>
+      <div class="mauvais">C. Un span ne peut pas avoir de clic</div>
+      <div class="mauvais">D. Pour respecter les règles CSS</div>
+    </div>
+    <div class="qcm-exp">Les boutons HTML sont accessibles par défaut : Tab, Entrée, lecture vocale. Les spans non.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">13</span>À quoi sert aria-label sur un bouton ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. À afficher une info-bulle</div>
+      <div class="mauvais">B. À changer la couleur du bouton</div>
+      <div class="bon">C. À donner une description que le lecteur d'écran peut lire à voix haute</div>
+      <div class="mauvais">D. À empêcher les clics accidentels</div>
+    </div>
+    <div class="qcm-exp">Sans aria-label, le lecteur dit "bouton". Avec, il dit "Supprimer la tâche Finir le MCD".</div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 13 : QCM 14-30 -->
+<div class="page">
+  <div class="entete"><span>❓ QCM — Questions 14 à 30</span><span>Syrine BEN HASSINE · Page 13/13</span></div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">14</span>Que fait authFetch() ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. Elle gère la connexion</div>
+      <div class="bon">B. Elle ajoute automatiquement le ticket JWT dans chaque demande au serveur</div>
+      <div class="mauvais">C. Elle renouvelle le ticket expiré</div>
+      <div class="mauvais">D. Elle met en cache les réponses</div>
+    </div>
+    <div class="qcm-exp">authFetch() ajoute le ticket dans chaque demande — on n'a pas à le faire partout dans le code.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">15</span>Combien de tableaux contient la base de données ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. 2 tableaux</div>
+      <div class="mauvais">B. 3 tableaux</div>
+      <div class="bon">C. 4 tableaux : users, columns, tasks, logs</div>
+      <div class="mauvais">D. 5 tableaux</div>
+    </div>
+    <div class="qcm-exp">users = comptes, columns = colonnes Kanban, tasks = tâches (avec due_date), logs = historique des actions.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">16</span>C'est quoi le lien d'évitement (skip link) ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. Un lien vers une page externe</div>
+      <div class="mauvais">B. Un lien caché dans le code</div>
+      <div class="bon">C. Un lien pour sauter directement au contenu principal sans repasser par le menu</div>
+      <div class="mauvais">D. Un bouton pour revenir en haut</div>
+    </div>
+    <div class="qcm-exp">Visible au premier Tab, il évite de traverser tout le menu pour atteindre le Kanban.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">17</span>Quelle est la bonne hiérarchie de titres ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. h1 → h2 → h3</div>
+      <div class="mauvais">B. h1 → h4 → h5</div>
+      <div class="bon">C. h2 (page) → h3 (colonne) → h4 (tâche)</div>
+      <div class="mauvais">D. h3 → h4 → h5</div>
+    </div>
+    <div class="qcm-exp">Pas de saut de niveau. h2 dans la barre du haut, h3 colonnes, h4 titres de tâches.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">18</span>Pourquoi des fichiers CSS séparés et pas @import ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. @import ne marche pas dans Chrome</div>
+      <div class="bon">B. Les fichiers séparés se téléchargent tous en même temps, @import les charge un par un</div>
+      <div class="mauvais">C. @import crée des erreurs de syntaxe</div>
+      <div class="mauvais">D. Pour éviter les conflits de styles</div>
+    </div>
+    <div class="qcm-exp">Téléchargement en même temps = plus rapide. Un par un = plus lent.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">19</span>Que fait role="dialog" sur une fenêtre pop-up ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. Il affiche une animation</div>
+      <div class="mauvais">B. Il empêche la fermeture accidentelle</div>
+      <div class="bon">C. Il dit au lecteur d'écran que c'est une fenêtre pop-up</div>
+      <div class="mauvais">D. Il centre la fenêtre à l'écran</div>
+    </div>
+    <div class="qcm-exp">Sans role="dialog", le lecteur d'écran ne sait pas qu'une fenêtre vient de s'ouvrir.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">20</span>À quoi sert Swagger ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. À compiler le code JavaScript</div>
+      <div class="bon">B. À générer une page pour voir et tester toutes les adresses de l'API</div>
+      <div class="mauvais">C. À gérer les mises à jour de la base</div>
+      <div class="mauvais">D. À réduire la taille des fichiers</div>
+    </div>
+    <div class="qcm-exp">Swagger crée automatiquement la page /api-docs pour tester l'API depuis le navigateur.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">21</span>Que se passe-t-il si on retire bcrypt du projet ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. Les utilisateurs ne peuvent plus se connecter</div>
+      <div class="bon">B. Les mots de passe seraient visibles en clair dans la base de données</div>
+      <div class="mauvais">C. Le serveur ne démarre plus</div>
+      <div class="mauvais">D. Les tickets JWT expirent immédiatement</div>
+    </div>
+    <div class="qcm-exp">Sans bcrypt, les mots de passe sont lisibles dans MySQL. Si la base est piratée, tous les comptes sont en danger.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">22</span>Quel est le rôle du fond sombre sur mobile ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. Économiser la batterie</div>
+      <div class="mauvais">B. Afficher un chargement</div>
+      <div class="bon">C. Permettre de fermer le menu en tapant en dehors</div>
+      <div class="mauvais">D. Protéger les données</div>
+    </div>
+    <div class="qcm-exp">Le fond couvre toute la page derrière le menu. Taper dessus referme le menu.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">23</span>C'est quoi un ENUM dans MySQL ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. Un type de jointure entre deux tableaux</div>
+      <div class="mauvais">B. Un index pour accélérer les recherches</div>
+      <div class="bon">C. Une liste de mots autorisés pour un champ</div>
+      <div class="mauvais">D. Une procédure automatique</div>
+    </div>
+    <div class="qcm-exp">ENUM('high','medium','low') = seules ces 3 valeurs sont acceptées pour la priorité.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">24</span>Quel code renvoie le serveur après une création réussie ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. 200</div>
+      <div class="bon">B. 201</div>
+      <div class="mauvais">C. 204</div>
+      <div class="mauvais">D. 400</div>
+    </div>
+    <div class="qcm-exp">201 = "Créé avec succès". 200 = "OK" pour les lectures et modifications.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">25</span>Quel logiciel une personne aveugle utilise pour naviguer ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. Un navigateur spécial</div>
+      <div class="mauvais">B. Une version simplifiée du site</div>
+      <div class="bon">C. Un lecteur d'écran comme NVDA ou VoiceOver qui lit la page à voix haute</div>
+      <div class="mauvais">D. Une extension qui grossit le texte</div>
+    </div>
+    <div class="qcm-exp">NVDA (Windows, gratuit) et VoiceOver (Mac/iPhone) lisent le contenu HTML à voix haute.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">26</span>D'où viennent les informations affichées dans "Mon Profil" ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. D'une nouvelle demande GET /api/profile à chaque ouverture</div>
+      <div class="bon">B. Du localStorage du navigateur, sauvegardées depuis la connexion</div>
+      <div class="mauvais">C. D'un fichier JSON local</div>
+      <div class="mauvais">D. De la table "profiles" en base de données</div>
+    </div>
+    <div class="qcm-exp">showProfile() relit simplement JSON.parse(localStorage.getItem('user')) — pas de nouvelle requête au serveur.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">27</span>Où est stockée la clé secrète JWT (SECRET_KEY) dans le projet ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. Codée en dur dans middleware/security.js</div>
+      <div class="mauvais">B. Dans la base de données</div>
+      <div class="bon">C. Dans le fichier .env, chargé par dotenv au démarrage de server.js</div>
+      <div class="mauvais">D. Dans le localStorage du navigateur</div>
+    </div>
+    <div class="qcm-exp">require('dotenv').config() charge .env en tête de server.js ; middleware/security.js et routes/auth.js lisent process.env.SECRET_KEY. Le fichier .env n'est jamais versionné (.gitignore).</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">28</span>La barre de recherche de tâches appelle-t-elle le serveur ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. Oui, à chaque touche tapée</div>
+      <div class="mauvais">B. Oui, après un délai de 500ms</div>
+      <div class="bon">C. Non, elle filtre le tableau JavaScript déjà chargé en mémoire</div>
+      <div class="mauvais">D. Non, elle utilise le cache du navigateur</div>
+    </div>
+    <div class="qcm-exp">Array.filter() sur allTasks — 0 requête réseau. Le filtrage côté client est instantané.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">29</span>Pourquoi utiliser .toISOString().substring(0,10) pour comparer les dates ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. Pour afficher la date en français</div>
+      <div class="mauvais">B. Pour convertir la date en nombre</div>
+      <div class="bon">C. Pour comparer deux chaînes "YYYY-MM-DD" sans décalage de fuseau horaire</div>
+      <div class="mauvais">D. Pour récupérer uniquement l'heure</div>
+    </div>
+    <div class="qcm-exp">Les chaînes ISO "2026-07-01" &lt; "2026-07-09" sont comparables alphabétiquement, sans risque de décalage UTC+2.</div>
+  </div>
+
+  <div class="qcm-bloc">
+    <div class="qcm-q"><span class="qcm-n">30</span>La date d'échéance touche combien de couches de l'application ?</div>
+    <div class="qcm-choix">
+      <div class="mauvais">A. 1 — seulement le front-end (CSS)</div>
+      <div class="mauvais">B. 2 — JavaScript + CSS</div>
+      <div class="bon">C. 3 — base de données, serveur et front-end</div>
+      <div class="mauvais">D. Aucune — c'est calculé côté navigateur</div>
+    </div>
+    <div class="qcm-exp">due_date en MySQL (BDD) + routes tasks.js mises à jour (serveur) + formulaire &lt;input type="date"&gt; et comparaison JS (front-end).</div>
+  </div>
+
+  <div style="background:#dcfce7; border:2px solid #86efac; border-radius:8px; padding:12px 16px; margin-top:14px; text-align:center;">
+    <b style="color:#166534; font-size:11pt;">Ton score</b><br>
+    <span style="font-size:10pt; color:#166534;">
+      30/30 ✅ Tu es prête !&nbsp;&nbsp;|&nbsp;&nbsp;
+      24-29 🟡 Relis les parties faibles&nbsp;&nbsp;|&nbsp;&nbsp;
+      Moins de 24 🔴 Relis depuis le début
+    </span>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- PAGE : RECOMMANDATIONS JURY DWWM PACA + ESSAI ORAL           -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="entete"><span>Lumina Pro · Syrine BEN HASSINE</span><span>DWWM 2026 · La Plateforme_ · Cannes</span></div>
+  <h1 style="font-size:18pt; margin-bottom:4px;">Jury DWWM PACA</h1>
+  <p style="text-align:center; color:#555; margin-bottom:16px; font-size:10pt;">Ce qu'ils attendent · Ce que tu as déjà · Ce qu'il faut savoir dire</p>
+
+  <h2>Checklist feuille de route — ton état avant soutenance</h2>
+  <table>
+    <tr><th>Étape requise</th><th>Statut</th><th>Où dans Lumina Pro</th></tr>
+    <tr><td>UML — Diagramme de cas d'usage</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>use_case_uml.html</td></tr>
+    <tr><td>UML — User stories</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>DP section 3.3</td></tr>
+    <tr><td>MERISE — MCD, MLD, MPD</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>DP section 6 (à la main, pas auto-généré)</td></tr>
+    <tr><td>Base de données</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>4 tables MySQL, clés étrangères, ON DELETE CASCADE</td></tr>
+    <tr><td>Développement Front</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>HTML5 sémantique, CSS 8 modules, JS vanilla</td></tr>
+    <tr><td>Développement Back</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>Node.js/Express, 11 routes REST, middleware JWT</td></tr>
+    <tr><td>Tests</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>12 scénarios fonctionnels + 30 critères accessibilité</td></tr>
+    <tr><td>Déploiement</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>Local XAMPP + Node (assumé et documenté)</td></tr>
+    <tr><td>Support de présentation</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>presentation.html (35 slides)</td></tr>
+    <tr><td>Dossier professionnel (DP)</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>Dossier_Professionnel_Lumina_Pro.html</td></tr>
+    <tr><td>Dossier de projet</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>Même fichier (projet + DP fusionnés)</td></tr>
+    <tr><td>Améliorer fonctionnalités</td><td style="color:#166534; font-weight:bold;">✅ Fait</td><td>Roadmap section 14 documentée + réponse orale prête</td></tr>
+  </table>
+
+  <h2>Ce que je dirais à l'oral : "Améliorations prévues"</h2>
+  <div class="gris" style="font-size:11pt; line-height:2;">
+    <em>"Mon MVP est complet et fonctionnel. Si j'avais plus de temps, j'identifie trois axes prioritaires :</em><br>
+    <strong>1. Tests automatisés</strong> — une suite Jest + Supertest sur l'authentification et le CRUD des tâches. Aujourd'hui les tests sont manuels, ce qui prend du temps et peut laisser passer des régressions.<br>
+    <strong>2. Rate limiting</strong> — limiter le nombre de tentatives de connexion sur /api/auth pour bloquer les attaques brute-force. C'est une ligne avec express-rate-limit.<br>
+    <strong>3. Mise en production</strong> — déployer sur un VPS avec HTTPS et variables d'environnement de production. Aujourd'hui ça tourne en local uniquement. Ce n'est pas un oubli, c'est un choix assumé et documenté dans ma roadmap."
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE : RECOMMANDATIONS JURY - VOCABULAIRE ET PIÈGES -->
+<div class="page">
+  <div class="entete"><span>Lumina Pro · Syrine BEN HASSINE</span><span>DWWM 2026 · La Plateforme_ · Cannes</span></div>
+  <h1 style="font-size:18pt; margin-bottom:4px;">Vocabulaire métier — Recommandations jury PACA</h1>
+  <p style="text-align:center; color:#555; margin-bottom:16px; font-size:10pt;">Le jury a demandé ces notions aux candidats précédents</p>
+
+  <h2>Types d'entreprises où tu peux travailler</h2>
+  <table>
+    <tr><th>Type</th><th>Ce que c'est</th><th>Exemple</th></tr>
+    <tr><td><strong>ESN</strong> (ex-SSII)</td><td>Société de Services du Numérique. Elle embauche des devs et les envoie travailler chez ses clients (on appelle ça "détachement").</td><td>Capgemini, Sopra, ATOS</td></tr>
+    <tr><td><strong>Agence web</strong></td><td>Crée des sites/applis pour des clients. On travaille dans les locaux de l'agence, sur plusieurs projets.</td><td>Agence locale à Cannes/Nice</td></tr>
+    <tr><td><strong>Annonceur / Client final</strong></td><td>Grande entreprise qui a ses propres développeurs en interne (DSI). Le dev est salarié direct.</td><td>SNCF, Hôtels, Banques</td></tr>
+    <tr><td><strong>Freelance</strong></td><td>Dev indépendant. Trouve ses propres clients, gère sa compta. Plus de liberté, plus de risque.</td><td>Auto-entrepreneur</td></tr>
+  </table>
+
+  <h2>Notions CI/CD et environnements</h2>
+  <div class="bleu">
+    <div class="q">C'est quoi CI/CD ?</div>
+    <div class="r"><strong>CI = Intégration Continue</strong> : à chaque fois qu'on pousse du code sur Git, des tests se lancent automatiquement pour vérifier que rien n'est cassé.<br>
+    <strong>CD = Déploiement Continu</strong> : si les tests passent, le code est déployé automatiquement en production.<br>
+    <em>Dans Lumina Pro : je n'ai pas de CI/CD car c'est un projet solo local. L'axe d'amélioration serait d'utiliser GitHub Actions.</em></div>
+  </div>
+  <div class="bleu">
+    <div class="q">Les environnements DEV / INT / PRÉ-PROD / PROD</div>
+    <div class="r">
+      <strong>DEV</strong> : là où le développeur code et teste. C'est mon XAMPP local.<br>
+      <strong>INT (intégration)</strong> : serveur partagé pour tester que tout marche ensemble.<br>
+      <strong>PRÉ-PROD</strong> : copie exacte de la prod, pour le test final avant mise en ligne.<br>
+      <strong>PROD</strong> : le vrai site, accessible aux vrais utilisateurs. Les bugs ici coûtent cher.
+    </div>
+  </div>
+
+  <h2>Notions à connaître (le jury vérifie)</h2>
+  <table>
+    <tr><th>Notion</th><th>En une phrase simple</th></tr>
+    <tr><td><strong>DSI</strong></td><td>Direction des Systèmes d'Information — le département IT d'une grande entreprise</td></tr>
+    <tr><td><strong>Stand-up meeting</strong></td><td>Réunion de 15 min debout chaque matin : "ce que j'ai fait hier, ce que je fais aujourd'hui, mes blocages"</td></tr>
+    <tr><td><strong>MVP</strong></td><td>Minimum Viable Product — la version minimale qui fonctionne et apporte de la valeur. Lumina Pro = MVP complet.</td></tr>
+    <tr><td><strong>Chiffrement ≠ Hachage</strong></td><td>Chiffrement = réversible (AES, on peut déchiffrer). Hachage = irréversible (bcrypt). Les mots de passe se hachent, jamais ne se chiffrent.</td></tr>
+    <tr><td><strong>OWASP</strong></td><td>Liste des 10 failles web les plus courantes. Lumina Pro couvre : injection SQL, XSS, IDOR, secrets dans .env</td></tr>
+    <tr><td><strong>Green IT</strong></td><td>Coder de façon à consommer moins de ressources. Ex : Lumina Pro a un dark mode, des requêtes SQL optimisées, CSS sans framework lourd</td></tr>
+    <tr><td><strong>Règle 3-2-1 (sauvegardes)</strong></td><td>3 copies des données, sur 2 supports différents, dont 1 hors site (ex : cloud)</td></tr>
+    <tr><td><strong>Responsive sans framework</strong></td><td>Lumina Pro = CSS pur, media queries, mobile-first — pas de Bootstrap ni Tailwind</td></tr>
+  </table>
+
+  <h2>Pièges à éviter à l'oral</h2>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+    <div style="background:#fee2e2; border-radius:8px; padding:10px 14px; border-left:4px solid #ef4444;">
+      <strong style="color:#991b1b;">❌ Ne pas dire</strong><br>
+      <span style="font-size:10pt;">"C'est sécurisé" sans expliquer pourquoi</span>
+    </div>
+    <div style="background:#dcfce7; border-radius:8px; padding:10px 14px; border-left:4px solid #10b981;">
+      <strong style="color:#166534;">✅ Dire à la place</strong><br>
+      <span style="font-size:10pt;">"C'est sécurisé contre l'injection SQL via les requêtes préparées, contre le XSS via escapeHTML()..."</span>
+    </div>
+    <div style="background:#fee2e2; border-radius:8px; padding:10px 14px; border-left:4px solid #ef4444;">
+      <strong style="color:#991b1b;">❌ Ne pas dire</strong><br>
+      <span style="font-size:10pt;">Inventer une réponse quand on ne sait pas</span>
+    </div>
+    <div style="background:#dcfce7; border-radius:8px; padding:10px 14px; border-left:4px solid #10b981;">
+      <strong style="color:#166534;">✅ Dire à la place</strong><br>
+      <span style="font-size:10pt;">"Je n'ai pas approfondi ce point, mais j'en connais le principe général..."</span>
+    </div>
+    <div style="background:#fee2e2; border-radius:8px; padding:10px 14px; border-left:4px solid #ef4444;">
+      <strong style="color:#991b1b;">❌ Ne pas dire</strong><br>
+      <span style="font-size:10pt;">Des buzzwords mal maîtrisés (blockchain, IA, cloud...)</span>
+    </div>
+    <div style="background:#dcfce7; border-radius:8px; padding:10px 14px; border-left:4px solid #10b981;">
+      <strong style="color:#166534;">✅ Dire à la place</strong><br>
+      <span style="font-size:10pt;">Seulement ce que tu as vraiment utilisé et que tu peux expliquer</span>
+    </div>
+    <div style="background:#fee2e2; border-radius:8px; padding:10px 14px; border-left:4px solid #ef4444;">
+      <strong style="color:#991b1b;">❌ Ne pas dire</strong><br>
+      <span style="font-size:10pt;">"Mon MCD a été généré automatiquement"</span>
+    </div>
+    <div style="background:#dcfce7; border-radius:8px; padding:10px 14px; border-left:4px solid #10b981;">
+      <strong style="color:#166534;">✅ Dire à la place</strong><br>
+      <span style="font-size:10pt;">"J'ai modélisé à la main : 3 entités principales, les associations, puis j'ai traduit en MLD avec les clés étrangères"</span>
+    </div>
+  </div>
+
+  <h2 style="margin-top:16px;">Questions surprise possibles — tes réponses</h2>
+
+  <div class="bleu">
+    <div class="q">❓ "Quelle est la différence entre une ESN et une agence web ?"</div>
+    <div class="r">Une ESN te détache chez des clients différents selon les projets. Une agence travaille sur ses propres projets pour ses propres clients, en interne. Dans une ESN je pourrais changer de contexte souvent ; dans une agence je serais plus investie dans les projets de bout en bout.</div>
+  </div>
+
+  <div class="bleu">
+    <div class="q">❓ "C'est quoi un stand-up meeting ?"</div>
+    <div class="r">Une réunion de 15 minutes debout, chaque matin, où chaque développeur dit : ce qu'il a fait la veille, ce qu'il fait aujourd'hui, et ce qui le bloque. C'est une pratique agile (Scrum) pour synchroniser l'équipe rapidement sans réunion longue.</div>
+  </div>
+
+  <div class="bleu">
+    <div class="q">❓ "Qu'auriez-vous fait différemment avec plus de temps ?"</div>
+    <div class="r">J'aurais ajouté des tests automatisés dès le début (Jest + Supertest), séparé les routes en couches Model/Controller pour mieux organiser le code à l'avenir, et déployé sur un VPS avec HTTPS. Ces améliorations sont documentées dans ma roadmap — elles sont identifiées, pas oubliées.</div>
+  </div>
+
+  <div class="bleu">
+    <div class="q">❓ "Pourquoi avoir choisi Kanban comme méthode de gestion de projet ?"</div>
+    <div class="r">Kanban est adapté à un projet solo car il visualise l'avancement sans les rituels complexes de Scrum (sprint planning, sprint review...). Les colonnes "À faire / En cours / Terminé" permettent de voir immédiatement les goulots d'étranglement. Et ironiquement, j'ai utilisé Kanban pour gérer le développement de mon outil Kanban.</div>
+  </div>
+
+  <div class="bleu">
+    <div class="q">❓ "Votre application est-elle accessible ?"</div>
+    <div class="r">Oui, j'ai vérifié 30 critères WCAG 2.1 / RGAA 4.1.2 manuellement : attributs aria-label sur les boutons icônes, navigation clavier complète, contrastes vérifiés, labels associés à chaque champ de formulaire. Le détail est dans le cahier de tests d'accessibilité.</div>
+  </div>
+
+  <div class="bleu">
+    <div class="q">❓ "C'est quoi le Green IT ?"</div>
+    <div class="r">Coder de façon à réduire l'impact environnemental. Dans Lumina Pro : dark mode (économise l'énergie sur les écrans OLED), pas de framework lourd (moins de fichiers téléchargés), pas de requêtes inutiles (les filtres se font côté client en mémoire), police système Segoe UI (0 téléchargement de font).</div>
+  </div>
+
+  <div style="background:#dcfce7; border:2px solid #86efac; border-radius:8px; padding:12px 16px; margin-top:14px; text-align:center;">
+    <b style="color:#166534; font-size:11pt;">Rappel clé du jury PACA</b><br>
+    <span style="font-size:10pt; color:#166534;">
+      "Un <em>je ne sais pas</em> est préférable à une explication approximative."<br>
+      Mais si tu ne sais pas tout, dis ce que tu <strong>sais</strong> autour du sujet.
+    </span>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE : CORRECTIONS DE SÉCURITÉ APPORTÉES AU PROJET          -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="entete"><span>🔒 Corrections de sécurité apportées</span><span>Syrine BEN HASSINE</span></div>
+  <h2>🔒 Corrections de sécurité — Ce que j'ai amélioré et pourquoi</h2>
+
+  <p style="font-size:10pt;color:#555;margin-bottom:12px;"><em>Ces corrections ont été apportées après une relecture complète du code. Tu dois pouvoir expliquer chaque changement au jury — il prouve que tu comprends la sécurité, pas juste que le code "marche".</em></p>
+
+  <!-- CORRECTION 1 : IDOR -->
+  <h3>Correction 1 — Faille IDOR dans DELETE /api/tasks/:id</h3>
+  <div class="rouge">
+    <b>Problème avant la correction :</b> n'importe quel utilisateur connecté pouvait supprimer la tâche de quelqu'un d'autre en envoyant DELETE /api/tasks/42 — même si cette tâche ne lui appartient pas. Il suffit de deviner ou de connaître un ID. C'est la faille IDOR (Insecure Direct Object Reference) — la n°1 du classement OWASP Top 10.
+  </div>
+  <div class="vert">
+    <b>Correction :</b> Le code vérifie maintenant QUI fait la demande (req.user, injecté par verifyToken) et À QUI appartient la tâche (id_assigned en base). Seul un admin OU la personne à qui la tâche est assignée peut la supprimer. Les autres reçoivent un 403 Forbidden.
+  </div>
+
+  <div class="dis">
+    <div class="q">❓ "C'est quoi IDOR ?"</div>
+    <div class="r">IDOR = Insecure Direct Object Reference. C'est quand une API permet d'accéder à ou de modifier une ressource d'un autre utilisateur en changeant juste l'ID dans l'URL, sans vérifier si l'utilisateur en a le droit. Exemple : DELETE /api/tasks/42 — si le serveur ne vérifie pas que la tâche 42 appartient bien à l'utilisateur qui fait la demande, c'est une faille IDOR. La correction : toujours vérifier la propriété OU le rôle avant d'agir.</div>
+  </div>
+
+  <!-- CORRECTION 2 : IDOR users -->
+  <h3>Correction 2 — Faille IDOR dans DELETE /api/users/:id</h3>
+  <div class="rouge">
+    <b>Problème avant :</b> un utilisateur avec le rôle "user" pouvait envoyer DELETE /api/users/3 et supprimer le compte d'un autre membre de l'équipe — même un admin. Aucune vérification de rôle n'existait.
+  </div>
+  <div class="vert">
+    <b>Correction :</b> La route vérifie maintenant que req.user.role === 'admin'. Un utilisateur standard reçoit immédiatement un 403 Forbidden sans que la requête SQL ne soit même exécutée.
+  </div>
+
+  <div class="dis">
+    <div class="q">❓ "Quelle est la différence entre 401 et 403 ?"</div>
+    <div class="r">401 Unauthorized = tu n'es pas connecté (token manquant ou expiré). 403 Forbidden = tu es connecté mais tu n'as pas le droit de faire cette action. Dans Lumina Pro : si le token JWT manque → 401. Si le token est valide mais que tu n'es pas admin et que tu essaies de supprimer un utilisateur → 403.</div>
+  </div>
+
+  <!-- CORRECTION 3 : Register 409 -->
+  <h3>Correction 3 — Inscription : 500 → 409 pour email déjà pris</h3>
+  <div class="rouge">
+    <b>Problème avant :</b> quand quelqu'un essayait de créer un compte avec un email déjà existant, le serveur répondait HTTP 500 (Internal Server Error = "le serveur a planté"). C'était faux — le serveur n'avait pas planté, c'est juste que l'email était déjà pris.
+  </div>
+  <div class="vert">
+    <b>Correction :</b> On capture spécifiquement l'erreur MySQL ER_DUP_ENTRY (violation de contrainte d'unicité) et on renvoie HTTP 409 Conflict — qui signifie exactement "la ressource existe déjà". Le message d'erreur précise que l'email est déjà utilisé.
+  </div>
+
+  <div class="dis">
+    <div class="q">❓ "C'est quoi ER_DUP_ENTRY ?"</div>
+    <div class="r">C'est le code d'erreur MySQL qui indique qu'on essaie d'insérer une valeur en doublon dans une colonne UNIQUE. La table users a email UNIQUE NOT NULL — MySQL refuse deux lignes avec le même email et lève une erreur ER_DUP_ENTRY. En JavaScript, on attrape cette erreur avec if (err.code === 'ER_DUP_ENTRY') pour envoyer la bonne réponse HTTP au lieu de laisser remonter une erreur 500.</div>
+  </div>
+
+  <!-- CORRECTION 4 : Validation register -->
+  <h3>Correction 4 — Validation d'entrée sur l'inscription</h3>
+  <div class="rouge">
+    <b>Problème avant :</b> un appel à POST /api/auth/register avec un body vide {} créait un utilisateur sans nom, sans email, et avec un hash de chaîne vide comme mot de passe. Pas de vérification côté serveur.
+  </div>
+  <div class="vert">
+    <b>Correction :</b> Trois vérifications ajoutées : nom/email/password obligatoires (400 Bad Request si manquant), format email vérifié par une regex simple, et mot de passe d'au moins 6 caractères. Ces vérifications doublonnent le formulaire HTML côté client — mais c'est indispensable car un attaquant peut appeler l'API directement sans passer par le formulaire.
+  </div>
+
+  <div class="dis">
+    <div class="q">❓ "Pourquoi valider côté serveur si vous validez déjà côté client (HTML required) ?"</div>
+    <div class="r">La validation HTML (required, type="email"...) protège l'utilisateur normal. Mais un attaquant n'utilise pas le formulaire — il envoie des requêtes directement à l'API avec des outils comme Postman, curl, ou un script. Si le serveur ne revalide pas les données, il accepte n'importe quoi. La règle est : ne jamais faire confiance aux données qui arrivent du réseau, quelle que soit leur source apparente.</div>
+  </div>
+
+  <!-- CORRECTION 5 : schema.sql -->
+  <h3>Correction 5 — schema.sql : incohérence corrigée (3 → 4 tables)</h3>
+  <div class="rouge">
+    <b>Problème avant :</b> le commentaire dans database/schema.sql disait "3 tables" et ne contenait pas la table logs, alors que server.js crée bien 4 tables dont logs, et que les routes y écrivent à chaque CRUD. Contradiction directe entre deux fichiers du projet.
+  </div>
+  <div class="vert">
+    <b>Correction :</b> Le commentaire dit maintenant "4 tables". La table logs a été ajoutée dans schema.sql avec ses colonnes et commentaires pédagogiques. Les deux fichiers (schema.sql et server.js) sont maintenant cohérents.
+  </div>
+
+  <h3>Résumé des corrections — Ce que tu peux montrer au jury</h3>
+  <table>
+    <tr><th>Fichier</th><th>Correction</th><th>Concept clé</th></tr>
+    <tr><td>routes/tasks.js</td><td>Vérification propriétaire/admin avant DELETE</td><td>IDOR, 403 vs 401</td></tr>
+    <tr><td>routes/users.js</td><td>Vérification role admin avant DELETE</td><td>IDOR, autorisation par rôle</td></tr>
+    <tr><td>routes/auth.js</td><td>409 au lieu de 500 pour email doublon + validation entrées</td><td>Codes HTTP sémantiques, ER_DUP_ENTRY, validation serveur</td></tr>
+    <tr><td>database/schema.sql</td><td>Ajout table logs + correction commentaire 3→4 tables</td><td>Cohérence documentation/code</td></tr>
+  </table>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE : MIDDLEWARE, CORS, EVENT LOOP — Ce que le jury demande -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="entete"><span>🧱 Concepts avancés Node.js/Express</span><span>Syrine BEN HASSINE</span></div>
+  <h2>🧱 Concepts que le jury peut creuser — Node.js et Express</h2>
+
+  <div class="dis">
+    <div class="q">❓ "C'est quoi un middleware exactement ? Quels sont ses paramètres ?"</div>
+    <div class="r">Un middleware est une fonction qui s'exécute entre la réception d'une requête et l'envoi de la réponse. Express les enchaîne dans l'ordre où ils sont déclarés. Chaque middleware reçoit 3 paramètres : req (la requête entrante — contient les données, les headers, le body), res (la réponse à envoyer — permet de répondre avec res.json(), res.status()...), et next (une fonction à appeler pour passer au middleware suivant). Si on n'appelle pas next(), la requête reste bloquée. Dans Lumina Pro, verifyToken est un middleware : il vérifie le JWT, injecte req.user, et appelle next() si tout va bien — sinon il répond 401 ou 403 sans appeler next().</div>
+  </div>
+
+  <div class="dis">
+    <div class="q">❓ "C'est quoi CORS et pourquoi en avez-vous besoin ?"</div>
+    <div class="r">CORS (Cross-Origin Resource Sharing) est un mécanisme de sécurité des navigateurs qui bloque par défaut les requêtes JavaScript d'un domaine vers un autre domaine. Sans CORS configuré, si le frontend tourne sur localhost:5500 et le backend sur localhost:3000, le navigateur bloquerait les appels fetch(). app.use(cors()) dans server.js ajoute les bons headers HTTP (Access-Control-Allow-Origin) pour autoriser ces appels. CORS protège les utilisateurs — il empêche un site malveillant de faire des appels à votre API en se faisant passer pour votre frontend.</div>
+  </div>
+
+  <div class="dis">
+    <div class="q">❓ "C'est quoi l'event loop de Node.js ?"</div>
+    <div class="r">Node.js fonctionne avec un seul thread (un seul fil d'exécution) mais il peut gérer des milliers de connexions simultanées grâce à l'event loop. Quand Node.js doit faire une opération lente (lire une base de données, lire un fichier), il ne reste pas bloqué à attendre — il confie l'opération au système d'exploitation et continue à traiter d'autres requêtes. Quand l'opération est terminée, le système signale Node.js qui exécute la fonction callback. C'est pourquoi le code Node.js utilise des callbacks, des Promises et async/await — pour gérer ces opérations asynchrones. PHP en revanche crée un nouveau thread pour chaque requête — plus simple à comprendre mais plus lourd en ressources.</div>
+  </div>
+
+  <div class="dis">
+    <div class="q">❓ "Pourquoi JWT dans localStorage plutôt que dans un cookie httpOnly ?"</div>
+    <div class="r">localStorage est plus simple à implémenter (une ligne pour lire, une pour écrire) et ne nécessite pas de configuration CORS spéciale. Son risque : si un script malveillant s'exécute dans la page (faille XSS), il peut lire le token. Les cookies httpOnly ne sont pas accessibles par JavaScript, ce qui les rend plus sûrs contre le XSS — mais ils nécessitent HTTPS et une configuration CORS plus stricte (credentials: 'include'). Pour Lumina Pro, localStorage est un choix adapté au contexte de formation, protégé par escapeHTML() qui empêche l'injection de scripts. En production avec des données vraiment sensibles, je choisirais les cookies httpOnly + HTTPS.</div>
+  </div>
+
+  <div class="dis">
+    <div class="q">❓ "C'est quoi express.json() et pourquoi c'est nécessaire ?"</div>
+    <div class="r">Quand un client envoie des données en JSON dans le corps d'une requête POST ou PUT, ces données arrivent sous forme de texte brut. express.json() est un middleware qui lit ce texte, le parse en objet JavaScript, et le met dans req.body. Sans express.json(), req.body serait undefined et on ne pourrait pas lire les données envoyées par le client. C'est une ligne essentielle dans server.js : app.use(express.json()).</div>
+  </div>
+
+  <div class="dis">
+    <div class="q">❓ "Pourquoi votre DELETE /api/tasks/:id fait d'abord un SELECT avant de supprimer ?"</div>
+    <div class="r">Parce qu'on a besoin de savoir à qui la tâche est assignée pour décider si l'utilisateur a le droit de la supprimer. On ne peut pas vérifier la propriété d'une tâche sans d'abord la lire. C'est le pattern "check before act" (vérifier avant d'agir) — indispensable pour éviter les failles IDOR. Oui, ça fait deux requêtes SQL au lieu d'une. C'est un compromis de sécurité acceptable : la performance est légèrement réduite mais la protection est réelle.</div>
+  </div>
+
+  <div class="dis">
+    <div class="q">❓ "Pourquoi les flèches plutôt que le drag and drop pour déplacer les tâches ?"</div>
+    <div class="r">C'est un choix d'accessibilité délibéré. Le drag & drop natif HTML5 n'est pas utilisable au clavier et n'est pas correctement annoncé par les lecteurs d'écran — ce qui exclut les utilisateurs qui naviguent sans souris. Les boutons fléchés sont accessibles au clavier (Tab + Entrée), ont un aria-label qui les décrit ("Déplacer vers la colonne suivante"), et fonctionnent pour tous. C'est exactement ce que recommande WCAG 2.1 — toute fonctionnalité doit être utilisable au clavier. Ce choix vient directement de ma veille sur l'accessibilité.</div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+</body>
+</html>

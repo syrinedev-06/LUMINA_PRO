@@ -4,6 +4,13 @@ CREATE DATABASE IF NOT EXISTS lumina_pro;
 -- On dit au système d'utiliser cette base pour les commandes qui suivent
 USE lumina_pro;
 
+-- NOTE : ce script reflète exactement les 4 tables créées automatiquement par backend/server.js
+-- au démarrage (auto-réparation) : users, columns, tasks, logs.
+-- La table logs est un journal d'audit : chaque opération CRUD (création, modification, suppression
+-- de tâche) y enregistre une ligne automatiquement via les routes de l'API.
+-- Les tables notifications et les colonnes avatar/deadline/progress d'une version antérieure
+-- ont été retirées lors de la simplification finale du projet.
+
 -- ==========================================================
 -- Ce script reflète EXACTEMENT les 3 tables créées automatiquement
 -- par backend/server.js au démarrage (mêmes noms de colonnes, mêmes
@@ -21,7 +28,7 @@ CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(255) NOT NULL,
     -- 'email' est unique : on ne peut pas avoir deux comptes avec le même email
     email VARCHAR(255) NOT NULL UNIQUE,
-    -- 'password' stocke le mot de passe (haché avec bcrypt avant insertion)
+    -- 'password' stocke le mot de passe haché avec bcrypt (jamais en clair)
     password VARCHAR(255) NOT NULL,
     -- 'role' définit si la personne est 'admin' ou 'user'
     role ENUM('admin', 'user') DEFAULT 'user'
@@ -60,10 +67,22 @@ CREATE TABLE IF NOT EXISTS tasks (
     FOREIGN KEY (id_col) REFERENCES columns(id) ON DELETE CASCADE
 );
 
+-- 4. TABLE DU JOURNAL D'AUDIT (logs)
+-- ==========================================================
+CREATE TABLE IF NOT EXISTS logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    -- 'action' décrit le type d'opération : 'Création', 'Modification', 'Suppression'
+    action VARCHAR(100) NOT NULL,
+    -- 'details' contient le message humainement lisible (ex: 'Tâche "Fix bug" créée')
+    details TEXT,
+    -- 'created_at' enregistre automatiquement la date/heure de l'opération
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- ==========================================================
 -- INSERTION DES DONNÉES PAR DÉFAUT
 -- ==========================================================
--- server.js crée automatiquement 3 colonnes si la table est vide au démarrage
+-- On crée les 3 colonnes de base par défaut (voir server.js, créées si la table est vide)
 INSERT INTO columns (title, position) VALUES
 ('À faire', 1),
 ('En cours', 2),

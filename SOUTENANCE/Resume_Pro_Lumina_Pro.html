@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Résumé du projet (version pro) — Lumina Pro</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #ede9e3;
+    color: #1a1a1a;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 60px 20px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    width: 100%;
+    background: #f7f4ef;
+    padding: 80px 72px;
+    box-shadow: 0 2px 32px rgba(0,0,0,0.10);
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: #1a1a1a;
+    font-weight: 400;
+    margin-bottom: 44px;
+  }
+
+  .emblem {
+    display: block;
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 52px;
+    opacity: 0.7;
+    filter: grayscale(1) sepia(0.3);
+  }
+
+  p {
+    font-size: 15.5px;
+    line-height: 2;
+    color: #1a1a1a;
+    margin-bottom: 28px;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  p:last-child { margin-bottom: 0; }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <h1>R é s u m é &nbsp; d u &nbsp; p r o j e t</h1>
+  <span class="emblem">⬡</span>
+
+  <p>
+    Lumina Pro est un tableau Kanban de gestion de tâches pensé pour remplacer les supports dispersés — messages, tableurs, post-its — par un espace de travail unique, clair et sécurisé. L'expérience privilégie la lisibilité immédiate : une sidebar de navigation sombre, des colonnes personnalisables, des tâches classées par priorité, un accès distinct pour l'administrateur et pour l'utilisateur. Rien d'ornemental — chaque écran répond à un besoin concret d'organisation d'équipe.
+  </p>
+
+  <p>
+    Conçu et réalisé en solo, le projet couvre toute la chaîne d'une application web sécurisée : conception MERISE de la base de données (MCD, MLD, MPD), API REST en Node.js/Express, authentification par jeton JWT et mots de passe hachés bcrypt, intégration front en HTML5/CSS3/JavaScript vanilla sans framework. Ce choix du vanilla est délibéré : comprendre et savoir expliquer chaque mécanisme — la requête réseau, la manipulation du DOM, la vérification du jeton — plutôt que de s'appuyer sur une abstraction qui ferait le travail à sa place.
+  </p>
+
+  <p>
+    Le périmètre a été volontairement resserré autour d'un MVP solide plutôt que d'un ensemble ambitieux mais inachevé. Plusieurs fonctionnalités — journal d'audit, statistiques serveur, notifications — ont été réellement développées puis retirées en cours de projet, pour concentrer l'effort sur un cœur Kanban simple, sécurisé et entièrement maîtrisé : une démarche de simplification assumée plutôt qu'un manque de temps subi.
+  </p>
+
+  <p>
+    En somme, Lumina Pro n'est pas une tentative de concurrencer Trello ou Jira : c'est un projet de certification qui démontre, du modèle de données à l'interface, la maîtrise complète d'une chaîne de développement web sécurisée — porté par une exigence simple : que chaque choix technique puisse être expliqué et justifié.
+  </p>
+</div>
+
+</body>
+</html>

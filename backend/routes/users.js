@@ -32,22 +32,30 @@ router.get('/', (req, res) => {
 
 /**
  * @brief Route DELETE pour supprimer un utilisateur (/api/users/:id).
- * 
+ *
  * CONCEPT EXAMEN :
  * - **Suppression physique** : Supprime définitivement la ligne de l'utilisateur en base de données.
- * - **Contrainte de clé étrangère** : Si des tâches sont assignées à cet utilisateur,
- *   l'attribut `id_assigned` de la table tasks deviendra orphelin ou lèvera une contrainte.
- *   En production, on privilégie souvent une suppression logique (soft delete via un champ `is_deleted`) 
- *   ou on remplace la clé par NULL.
- * 
- * @param {Object} req - Contient req.params.id (l'identifiant utilisateur à détruire).
+ * - **Protection IDOR + autorisation rôle** : Seul un administrateur peut supprimer un compte.
+ *   Un utilisateur standard qui enverrait DELETE /api/users/2 recevrait un 403 Forbidden.
+ *   Sans cette vérification, n'importe quel compte connecté pourrait supprimer n'importe quel
+ *   autre compte en connaissant l'ID — c'est la faille IDOR.
+ * - **Contrainte de clé étrangère** : id_assigned dans tasks est défini ON DELETE SET NULL :
+ *   la suppression de l'utilisateur désassigne automatiquement ses tâches sans les supprimer.
+ *
+ * @param {Object} req - Contient req.params.id et req.user.role (décodé par verifyToken).
  * @param {Object} res - Réponse HTTP de validation.
  * @returns {void}
  */
 router.delete('/:id', (req, res) => {
+    // Protection : réservé aux administrateurs uniquement
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: "Action réservée aux administrateurs." });
+    }
+
     const sql = "DELETE FROM users WHERE id = ?";
     req.db.query(sql, [req.params.id], (err, result) => {
         if (err) return res.status(500).json({ error: err.message });
+        if (result.affectedRows === 0) return res.status(404).json({ error: "Utilisateur introuvable." });
         res.json({ message: "Utilisateur supprimé." });
     });
 });

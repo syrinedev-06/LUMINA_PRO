@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Lexique Technique — Lumina Pro</title>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 11pt; color: #1e293b; background: #ddd; margin: 0; }
+
+    .page {
+      background: white;
+      width: 210mm;
+      min-height: 297mm;
+      margin: 20px auto;
+      padding: 15mm 20mm;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      page-break-after: always;
+    }
+
+    .entete {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 3px solid #D4006E;
+      padding-bottom: 8px;
+      margin-bottom: 14px;
+      font-size: 10pt;
+      color: #555;
+    }
+
+    h1 { font-size: 24pt; color: #D4006E; text-align: center; line-height: 1.3; }
+    h2 { background: #D4006E; color: white; padding: 9px 15px; border-radius: 4px; font-size: 13pt; margin: 0 0 14px 0; }
+
+    .mot {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .mot-titre {
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 8px 14px;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .mot-nom { font-weight: 900; font-size: 11.5pt; color: #D4006E; }
+    .mot-cat { font-size: 9pt; color: #888; background: #f1f5f9; border-radius: 10px; padding: 2px 8px; }
+    .mot-corps { padding: 10px 14px; line-height: 1.7; }
+    .mot-def { margin-bottom: 6px; }
+    .mot-exemple { font-style: italic; color: #475569; font-size: 10pt; border-left: 3px solid #D4006E; padding-left: 8px; margin-top: 5px; }
+
+    .sep {
+      background: #D4006E;
+      color: white;
+      padding: 5px 14px;
+      font-weight: bold;
+      font-size: 10.5pt;
+      border-radius: 4px;
+      margin: 14px 0 8px 0;
+    }
+
+    .pied { font-size: 8.5pt; color: #888; text-align: center; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 8px; }
+
+    @media print {
+      body { background: white; }
+      .page { margin: 0; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PAGE 1 : GARDE -->
+<div class="page">
+  <div style="margin-top: 60px; text-align:center;">
+    <div style="font-size:9pt; color:#888; letter-spacing:2px; text-transform:uppercase; margin-bottom:16px;">DWWM — Titre Professionnel Niveau 5</div>
+    <h1>Lexique Technique<br>Lumina Pro</h1>
+    <div style="font-size:12pt; color:#555; margin-bottom:30px;">Tous les mots techniques expliqués simplement</div>
+
+    <div style="border: 2px solid #D4006E; border-radius: 10px; padding: 16px; max-width: 340px; margin: 0 auto 28px; text-align: left; line-height: 2.2;">
+      <div><b style="color:#D4006E;">Candidate :</b> Syrine BEN HASSINE</div>
+      <div><b style="color:#D4006E;">Projet :</b> Lumina Pro — Tableau Kanban</div>
+      <div><b style="color:#D4006E;">Date :</b> Juin 2026</div>
+    </div>
+
+    <div style="background:#fff7ed; border:1px solid #fed7aa; border-radius:8px; padding:14px; max-width:420px; margin:0 auto; font-size:10.5pt; line-height:1.9; text-align:left;">
+      <b>Comment utiliser ce lexique ?</b><br>
+      Chaque mot est expliqué en langage simple, avec un exemple concret tiré de Lumina Pro. Les mots sont organisés par catégorie. Ce lexique est conçu pour que tu puisses répondre à la question "C'est quoi X ?" en une ou deux phrases claires.
+    </div>
+  </div>
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 2 : BACKEND -->
+<div class="page">
+  <div class="entete"><span>🖥️ Backend — Le côté serveur</span><span>Syrine BEN HASSINE · Page 2/6</span></div>
+  <h2>🖥️ Mots du Backend (côté serveur)</h2>
+
+  <div class="sep">Langages et frameworks</div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Node.js</span><span class="mot-cat">Environnement d'exécution</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Logiciel qui permet d'exécuter du JavaScript en dehors du navigateur, directement sur un ordinateur/serveur. Sans Node.js, JavaScript ne peut tourner que dans Chrome ou Firefox.</div>
+      <div class="mot-exemple">Dans Lumina Pro : Node.js fait tourner le fichier server.js qui gère toute la logique côté serveur.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Express.js</span><span class="mot-cat">Framework Node.js</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Boîte à outils qui simplifie la création d'un serveur web avec Node.js. Il gère la réception des requêtes HTTP et l'envoi des réponses.</div>
+      <div class="mot-exemple">Dans Lumina Pro : Express définit les routes /api/tasks, /api/columns etc. en quelques lignes.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">MySQL</span><span class="mot-cat">Base de données relationnelle</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Système de gestion de base de données qui organise les données en tableaux avec des lignes et des colonnes, reliés entre eux. Les données sont persistantes — elles restent même si le serveur redémarre.</div>
+      <div class="mot-exemple">Dans Lumina Pro : stocke les 4 tables users, columns, tasks, logs.</div>
+    </div>
+  </div>
+
+  <div class="sep">Sécurité</div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">bcrypt</span><span class="mot-cat">Bibliothèque de hachage</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Outil qui transforme un mot de passe en une suite de caractères illisible et irréversible. Cette transformation s'appelle le hachage. On ne peut pas retrouver le mot de passe original à partir du haché.</div>
+      <div class="mot-exemple">Dans Lumina Pro : bcrypt.hash("monmdp", 10) → "$2b$10$Xk8m..." sauvegardé en base. À la connexion, bcrypt.compare() vérifie si les hachés correspondent.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">JWT (JSON Web Token)</span><span class="mot-cat">Système d'authentification</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Ticket numérique chiffré donné après connexion. Il contient l'identifiant et le rôle de l'utilisateur. Le serveur le vérifie à chaque requête pour confirmer que l'utilisateur est bien connecté.</div>
+      <div class="mot-exemple">Dans Lumina Pro : après le login, le navigateur reçoit un token JWT et l'envoie dans chaque requête (Authorization: Bearer ...).</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Middleware</span><span class="mot-cat">Filtre de requêtes</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Fonction qui s'exécute entre la réception d'une requête et l'envoi de la réponse. Elle peut vérifier, modifier ou bloquer la requête.</div>
+      <div class="mot-exemple">Dans Lumina Pro : verifyToken est un middleware — il vérifie le JWT avant chaque route protégée. S'il n'est pas valide → erreur 401, la route n'est jamais atteinte.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">CORS</span><span class="mot-cat">Sécurité navigateur</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Cross-Origin Resource Sharing. Règle de sécurité des navigateurs qui bloque les requêtes vers un domaine différent de celui de la page. Il faut l'activer côté serveur pour l'autoriser.</div>
+      <div class="mot-exemple">Dans Lumina Pro : app.use(cors()) dans server.js autorise le navigateur à appeler l'API sur localhost:3000.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">dotenv / .env</span><span class="mot-cat">Gestion des secrets</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Fichier .env qui stocke les informations sensibles (mots de passe de base, clé secrète) hors du code. dotenv charge ce fichier au démarrage du serveur. Le fichier .env n'est jamais mis en ligne (gitignore).</div>
+      <div class="mot-exemple">Dans Lumina Pro : SECRET_KEY, DB_PASSWORD, DB_NAME sont dans .env et lus via process.env.SECRET_KEY.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Injection SQL</span><span class="mot-cat">Faille de sécurité</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Attaque où un utilisateur malveillant écrit du code SQL dans un champ de formulaire pour manipuler la base de données. On s'en protège en utilisant des requêtes paramétrées (points d'interrogation) au lieu de concaténer des chaînes.</div>
+      <div class="mot-exemple">Dans Lumina Pro : db.query("SELECT * FROM tasks WHERE id = ?", [id]) — le ? est remplacé de manière sécurisée par mysql2.</div>
+    </div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 3 : BASE DE DONNÉES -->
+<div class="page">
+  <div class="entete"><span>🗄️ Base de données</span><span>Syrine BEN HASSINE · Page 3/6</span></div>
+  <h2>🗄️ Mots de la Base de Données</h2>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">API REST</span><span class="mot-cat">Architecture</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Interface de communication entre le frontend et le backend. REST signifie que chaque adresse (URL) représente une ressource, et les actions GET/POST/PUT/DELETE indiquent ce qu'on veut faire avec elle.</div>
+      <div class="mot-exemple">Dans Lumina Pro : GET /api/tasks → lire les tâches. POST /api/tasks → créer une tâche. PUT /api/tasks/3 → modifier la tâche n°3.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">SQL</span><span class="mot-cat">Langage de requêtes</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Structured Query Language. Langage pour interroger et manipuler une base de données relationnelle. Les 4 opérations principales : SELECT (lire), INSERT (créer), UPDATE (modifier), DELETE (supprimer).</div>
+      <div class="mot-exemple">Dans Lumina Pro : SELECT tasks.*, users.name FROM tasks LEFT JOIN users ON tasks.id_assigned = users.id</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">LEFT JOIN</span><span class="mot-cat">SQL — Jointure</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Instruction SQL qui relie deux tableaux et garde TOUTES les lignes du tableau de gauche, même si elles n'ont pas de correspondance dans le tableau de droite. La valeur est alors NULL.</div>
+      <div class="mot-exemple">Dans Lumina Pro : on joint tasks et users. Les tâches non assignées (id_assigned = NULL) sont quand même retournées — INNER JOIN les aurait cachées.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">ON DELETE CASCADE</span><span class="mot-cat">SQL — Contrainte</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Règle sur une clé étrangère qui dit : "si l'enregistrement parent est supprimé, supprime automatiquement tous ses enfants". Évite les données orphelines.</div>
+      <div class="mot-exemple">Dans Lumina Pro : supprimer une colonne Kanban supprime automatiquement toutes ses tâches grâce à ON DELETE CASCADE sur id_col.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">ENUM</span><span class="mot-cat">SQL — Type de champ</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Liste fixe de valeurs autorisées pour un champ. La base de données refuse toute valeur qui n'est pas dans la liste.</div>
+      <div class="mot-exemple">Dans Lumina Pro : priority ENUM('high', 'medium', 'low') — seules ces 3 valeurs sont acceptées.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Clé étrangère (Foreign Key)</span><span class="mot-cat">SQL — Relation</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Champ dans un tableau qui référence l'identifiant d'un enregistrement dans un autre tableau. Crée un lien entre deux tables et garantit la cohérence des données.</div>
+      <div class="mot-exemple">Dans Lumina Pro : id_col dans tasks référence id dans columns. Une tâche ne peut pas appartenir à une colonne qui n'existe pas.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">AUTO_INCREMENT</span><span class="mot-cat">SQL — Type de champ</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Option sur un champ numérique (id) qui le fait s'incrémenter automatiquement à chaque nouvelle ligne insérée. Le développeur n'a pas à gérer les identifiants manuellement.</div>
+      <div class="mot-exemple">Dans Lumina Pro : id INT AUTO_INCREMENT PRIMARY KEY — chaque nouvelle tâche reçoit automatiquement un id unique (1, 2, 3…).</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Migration</span><span class="mot-cat">Base de données</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Script qui modifie la structure d'une base de données existante (ajouter une colonne, modifier un type) sans perdre les données déjà présentes.</div>
+      <div class="mot-exemple">Dans Lumina Pro : ALTER TABLE tasks ADD COLUMN due_date DATE DEFAULT NULL — exécuté au démarrage du serveur pour ajouter la date d'échéance sans toucher aux tâches existantes.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">dateStrings</span><span class="mot-cat">mysql2 — Configuration</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Option de la bibliothèque mysql2 qui retourne les champs DATE sous forme de chaîne "YYYY-MM-DD" au lieu d'un objet JavaScript Date. Évite les décalages de fuseau horaire lors de la sérialisation JSON.</div>
+      <div class="mot-exemple">Dans Lumina Pro : { dateStrings: true } dans config/db.js — task.due_date vaut "2026-07-01" (string) et non un objet Date décalé d'un jour à cause du fuseau UTC+2.</div>
+    </div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 4 : FRONTEND -->
+<div class="page">
+  <div class="entete"><span>⚡ Frontend — Le côté navigateur</span><span>Syrine BEN HASSINE · Page 4/6</span></div>
+  <h2>⚡ Mots du Frontend (côté navigateur)</h2>
+
+  <div class="sep">JavaScript</div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">async / await</span><span class="mot-cat">JavaScript — Asynchronisme</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Mots-clés pour écrire du code qui attend une réponse (réseau, base de données) sans bloquer le reste de la page. async déclare qu'une fonction peut attendre, await attend le résultat.</div>
+      <div class="mot-exemple">Dans Lumina Pro : async function fetchTasks() { const res = await authFetch('/api/tasks'); } — la page reste interactive pendant que les tâches se chargent.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Array.filter()</span><span class="mot-cat">JavaScript — Méthode tableau</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Méthode qui parcourt un tableau et retourne un nouveau tableau contenant uniquement les éléments pour lesquels la condition est vraie. Le tableau original n'est pas modifié.</div>
+      <div class="mot-exemple">Dans Lumina Pro : allTasks.filter(t => t.title.includes(query)) — filtre les tâches selon la recherche, sans appel au serveur.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Array.map()</span><span class="mot-cat">JavaScript — Méthode tableau</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Méthode qui transforme chaque élément d'un tableau et retourne un nouveau tableau du même nombre d'éléments avec les valeurs transformées.</div>
+      <div class="mot-exemple">Dans Lumina Pro : columns.map(col => `&lt;div class="kanban-column"&gt;...&lt;/div&gt;`) — chaque colonne de données devient un bloc HTML.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Template literals (backticks)</span><span class="mot-cat">JavaScript — Syntaxe</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Syntaxe JavaScript (avec les accents graves `) qui permet d'écrire des chaînes de texte multi-lignes et d'y insérer des variables avec ${...}.</div>
+      <div class="mot-exemple">Dans Lumina Pro : `&lt;h4&gt;${task.title}&lt;/h4&gt;` génère du HTML dynamique en insérant le titre de la tâche.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">localStorage</span><span class="mot-cat">JavaScript — Stockage navigateur</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Zone de mémoire du navigateur qui persiste même après fermeture de l'onglet. Stocke des paires clé/valeur en texte. Accessible uniquement par JavaScript sur le même domaine.</div>
+      <div class="mot-exemple">Dans Lumina Pro : le token JWT et les infos utilisateur sont stockés dans localStorage après la connexion, et effacés à la déconnexion.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">XSS (Cross-Site Scripting)</span><span class="mot-cat">Faille de sécurité frontend</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Attaque où un utilisateur malveillant insère du code JavaScript dans un champ (ex: titre de tâche) pour le faire exécuter par le navigateur des autres utilisateurs. On s'en protège en échappant les caractères spéciaux HTML avant affichage.</div>
+      <div class="mot-exemple">Dans Lumina Pro : escapeHTML() remplace &lt; par &amp;lt; et &gt; par &amp;gt; — le code inséré est affiché comme texte, jamais exécuté.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">defer</span><span class="mot-cat">HTML — Attribut de script</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Attribut sur la balise &lt;script&gt; qui dit au navigateur : télécharge ce fichier JS en arrière-plan sans bloquer l'affichage de la page, et exécute-le uniquement quand tout le HTML est chargé.</div>
+      <div class="mot-exemple">Dans Lumina Pro : &lt;script src="kanban.js" defer&gt;&lt;/script&gt; — la page s'affiche sans attendre que kanban.js soit téléchargé.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">fetch() / authFetch()</span><span class="mot-cat">JavaScript — Requête HTTP</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">fetch() est la fonction native du navigateur pour envoyer des requêtes HTTP vers une API. authFetch() est notre version personnalisée qui ajoute automatiquement le token JWT dans chaque requête.</div>
+      <div class="mot-exemple">Dans Lumina Pro : authFetch('/api/tasks') envoie une requête GET avec le header "Authorization: Bearer TOKEN" sans avoir à l'écrire à chaque fois.</div>
+    </div>
+  </div>
+
+  <div class="sep">Accessibilité</div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">ARIA</span><span class="mot-cat">Accessibilité — Attributs HTML</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Accessible Rich Internet Applications. Ensemble d'attributs HTML (aria-label, aria-hidden, role…) qui donnent des informations supplémentaires aux lecteurs d'écran pour décrire des éléments interactifs.</div>
+      <div class="mot-exemple">Dans Lumina Pro : aria-label="Supprimer la tâche Finir le rapport" — le lecteur d'écran lit cette description à la place de l'icône 🗑️.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">WCAG 2.1</span><span class="mot-cat">Accessibilité — Standard</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Web Content Accessibility Guidelines. Ensemble de règles internationales du W3C pour rendre les sites web utilisables par les personnes handicapées. Le niveau AA est la norme requise en France.</div>
+      <div class="mot-exemple">Dans Lumina Pro : navigation au clavier, contrastes suffisants, attributs ARIA, lien d'évitement — autant de règles WCAG 2.1 appliquées.</div>
+    </div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 5 : TERMES GÉNÉRAUX -->
+<div class="page">
+  <div class="entete"><span>📚 Termes généraux et architecture</span><span>Syrine BEN HASSINE · Page 5/6</span></div>
+  <h2>📚 Termes Généraux et Architecture</h2>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Frontend</span><span class="mot-cat">Architecture</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">La partie d'une application web que l'utilisateur voit et avec laquelle il interagit directement. Il tourne dans le navigateur. Composé de HTML (structure), CSS (apparence) et JavaScript (comportement).</div>
+      <div class="mot-exemple">Dans Lumina Pro : le dossier /frontend contient index.html, login.html, et les dossiers /css et /js.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Backend</span><span class="mot-cat">Architecture</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">La partie serveur d'une application web. Invisible pour l'utilisateur, il gère la logique métier, les règles de sécurité et les accès à la base de données.</div>
+      <div class="mot-exemple">Dans Lumina Pro : le dossier /backend contient server.js, les routes et la config de base de données.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Kanban</span><span class="mot-cat">Méthode de gestion</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Méthode visuelle de gestion de tâches inventée au Japon. Les tâches sont représentées par des cartes déplacées entre des colonnes (ex: "À faire", "En cours", "Terminé") selon leur avancement.</div>
+      <div class="mot-exemple">Lumina Pro est entièrement construit autour du principe Kanban : colonnes personnalisables, cartes déplaçables, priorités visuelles.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Full-stack</span><span class="mot-cat">Architecture</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Qualifie un développeur ou une application qui couvre à la fois le frontend (navigateur) et le backend (serveur + base de données). Une fonctionnalité full-stack touche les 3 couches.</div>
+      <div class="mot-exemple">Dans Lumina Pro : la date d'échéance est full-stack — colonne MySQL (BDD) + route Node.js (backend) + formulaire HTML et badge JS (frontend).</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Swagger</span><span class="mot-cat">Documentation API</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Outil qui génère automatiquement une page web interactive listant toutes les routes d'une API, leurs paramètres attendus et leurs réponses. Permet de tester l'API depuis le navigateur sans autre outil.</div>
+      <div class="mot-exemple">Dans Lumina Pro : accessible à http://localhost:3000/api-docs — liste et permet de tester toutes les routes de l'API.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Lighthouse</span><span class="mot-cat">Outil d'audit</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Outil intégré dans Chrome DevTools qui analyse une page web et donne des scores sur 100 pour : Performance, Accessibilité, Bonnes pratiques et SEO. Génère des recommandations concrètes.</div>
+      <div class="mot-exemple">Dans Lumina Pro : scores sur login.html — Performance 87, Accessibilité 79, SEO 91. Les axes d'amélioration : bundler les CSS/JS et améliorer les contrastes ARIA.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Responsive design</span><span class="mot-cat">CSS — Design adaptatif</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Technique CSS qui adapte l'affichage d'une page à la taille de l'écran. On utilise des media queries (@media) pour définir des règles différentes selon la largeur de l'écran.</div>
+      <div class="mot-exemple">Dans Lumina Pro : @media (max-width: 900px) masque le menu latéral et affiche un bouton ☰ à la place. Les colonnes Kanban défilent horizontalement sur mobile.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">ISO 8601</span><span class="mot-cat">Standard — Format de date</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Norme internationale de représentation des dates : YYYY-MM-DD (Année-Mois-Jour). Ce format est universellement reconnu et comparaison alphabétiquement correcte ("2026-07-01" &lt; "2026-07-09").</div>
+      <div class="mot-exemple">Dans Lumina Pro : new Date(task.due_date).toISOString().substring(0,10) convertit la date de MySQL en "2026-07-01" pour une comparaison fiable sans risque de décalage de fuseau horaire.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Client-side filtering</span><span class="mot-cat">Performance frontend</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Filtrage des données directement dans le navigateur, sur des données déjà chargées en mémoire, sans faire de nouvelle requête au serveur. Plus rapide et moins coûteux qu'un appel réseau.</div>
+      <div class="mot-exemple">Dans Lumina Pro : la barre de recherche utilise Array.filter() sur allTasks (déjà en mémoire) — 0 requête réseau, résultats instantanés.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Audit trail / Logs</span><span class="mot-cat">Traçabilité</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Historique chronologique de toutes les actions importantes effectuées dans l'application (création, modification, suppression). Permet de savoir qui a fait quoi et quand.</div>
+      <div class="mot-exemple">Dans Lumina Pro : la table logs enregistre chaque action (ex: 'Création', 'Tâche "Finir le rapport" créée'). Chaque route POST/PUT/DELETE écrit automatiquement une ligne de log après l'opération principale.</div>
+    </div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+<!-- PAGE 6 : OUTILS, MÉTHODES ET RÉFÉRENCES -->
+<div class="page">
+  <div class="entete"><span>🛠️ Outils, méthodes et références</span><span>Syrine BEN HASSINE · Page 6/6</span></div>
+  <h2>🛠️ Outils, Méthodes et Références</h2>
+
+  <div class="sep">Outils de gestion et de suivi</div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Trello</span><span class="mot-cat">Outil de gestion de projet</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Application web qui permet d'organiser un projet avec des tableaux Kanban visuels. On crée des listes (colonnes) et des cartes (tâches) que l'on déplace selon leur avancement. Gratuit pour un usage simple, il convient parfaitement à un projet solo.</div>
+      <div class="mot-exemple">Dans Lumina Pro : Trello a été utilisé pendant le développement pour suivre les fonctionnalités à faire, en cours et terminées — en parallèle de l'historique Git.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Monday.com</span><span class="mot-cat">Outil de gestion de projet</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Plateforme de gestion de projet tout-en-un (tableaux, GANTT, rapports, automatisations). Très visuelle et puissante, mais payante et surdimensionnée pour les petites équipes. Concurrente directe de Trello et Asana.</div>
+      <div class="mot-exemple">Dans Lumina Pro : mentionné dans l'étude de marché comme exemple d'outil existant que Lumina Pro ne prétend pas remplacer.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Git</span><span class="mot-cat">Outil de versionnement</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Logiciel qui enregistre l'historique de toutes les modifications d'un projet. Chaque "commit" est une sauvegarde datée avec un message décrivant ce qui a changé. Permet de revenir en arrière, de collaborer sans se marcher dessus, et de tracer l'évolution du code.</div>
+      <div class="mot-exemple">Dans Lumina Pro : 33 commits Git qui retracent toute l'histoire du projet, de l'initialisation (18 mai) jusqu'à la préparation de la soutenance (juillet 2026).</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">GitHub</span><span class="mot-cat">Plateforme de dépôt Git</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Site web qui héberge les dépôts Git en ligne. Permet de sauvegarder son code sur internet, de le partager, et de le montrer à un jury ou à un recruteur. Le dépôt public est accessible par URL.</div>
+      <div class="mot-exemple">Dans Lumina Pro : dépôt disponible sur github.com/syrinedev-06/LUMINA_PRO — le jury peut y consulter l'historique complet des commits.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Diagramme de GANTT</span><span class="mot-cat">Outil de planification</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Représentation visuelle d'un planning de projet sous forme de barres horizontales sur une ligne du temps. Chaque barre représente une tâche avec sa date de début et de fin. Permet de visualiser d'un coup d'œil l'enchaînement des phases.</div>
+      <div class="mot-exemple">Dans Lumina Pro : GANTT reconstitué à partir des commits Git réels (pas un planning prévisionnel) — montre les phases Initialisation, Cœur applicatif, Sécurisation, Finalisation et Préparation soutenance.</div>
+    </div>
+  </div>
+
+  <div class="sep">UML et modélisation</div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">UML</span><span class="mot-cat">Langage de modélisation</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Unified Modeling Language. Ensemble de diagrammes standardisés pour représenter visuellement la structure et le comportement d'une application. Pas un langage de programmation — c'est un outil de communication entre développeurs et parties prenantes.</div>
+      <div class="mot-exemple">Dans Lumina Pro : deux diagrammes UML utilisés — le diagramme de cas d'utilisation (qui peut faire quoi ?) et le diagramme de séquence (comment se passe la connexion JWT ?).</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Diagramme de cas d'utilisation</span><span class="mot-cat">UML</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Diagramme UML qui montre les interactions entre des utilisateurs (appelés "acteurs") et les fonctionnalités d'une application. Il répond à la question : "qui peut faire quoi ?" Les acteurs sont représentés par des bonhommes, les fonctionnalités par des ellipses.</div>
+      <div class="mot-exemple">Dans Lumina Pro : 2 acteurs (Utilisateur et Admin) reliés à 13 cas d'utilisation (se connecter, créer une tâche, gérer les colonnes…). L'Admin "hérite" de l'Utilisateur et a des droits supplémentaires.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Acteur (UML)</span><span class="mot-cat">UML</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Personne ou système externe qui interagit avec l'application. Dans un diagramme de cas d'utilisation, les acteurs sont représentés à l'extérieur du système. Un acteur peut hériter d'un autre (ex: Admin hérite de Utilisateur = il a tous ses droits + les siens).</div>
+      <div class="mot-exemple">Dans Lumina Pro : Utilisateur (membre de l'équipe) et Admin (hérite Utilisateur + droits de gestion d'équipe et colonnes).</div>
+    </div>
+  </div>
+
+  <div class="sep">Inspirations et références</div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">Dribbble</span><span class="mot-cat">Site d'inspiration design</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Plateforme communautaire où les designers partagent leurs créations (interfaces, illustrations, icônes). Utilisée comme source d'inspiration visuelle pour trouver des idées de mise en page, de palette de couleurs ou de composants d'interface.</div>
+      <div class="mot-exemple">Dans Lumina Pro : Dribbble a été consulté pour s'inspirer de la mise en page des colonnes et cartes Kanban, et pour trouver une direction visuelle pour la charte graphique.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">MVP</span><span class="mot-cat">Méthode produit</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Minimum Viable Product (Produit Minimum Viable). Version d'une application qui contient uniquement les fonctionnalités essentielles pour qu'elle soit utilisable. L'idée est de livrer quelque chose de fonctionnel rapidement, plutôt qu'un produit parfait mais jamais terminé.</div>
+      <div class="mot-exemple">Dans Lumina Pro : le MVP = connexion sécurisée + tableau Kanban CRUD + déplacement de tâches. Tout le reste (notifications, dashboard stats…) est écarté pour garder un cœur solide et maîtrisé.</div>
+    </div>
+  </div>
+
+  <div class="mot">
+    <div class="mot-titre"><span class="mot-nom">SaaS</span><span class="mot-cat">Modèle applicatif</span></div>
+    <div class="mot-corps">
+      <div class="mot-def">Software as a Service. Application hébergée sur internet et accessible via un navigateur, sans installation. L'utilisateur paie un abonnement mensuel ou annuel. Trello, Monday.com, Jira sont des SaaS.</div>
+      <div class="mot-exemple">Dans Lumina Pro : la sidebar sombre + zone de contenu claire est un schéma visuel courant des SaaS de gestion (Notion, Linear, Monday…), choisi pour une prise en main immédiate.</div>
+    </div>
+  </div>
+
+  <div class="pied">Lumina Pro · Syrine BEN HASSINE · DWWM 2026</div>
+</div>
+
+</body>
+</html>

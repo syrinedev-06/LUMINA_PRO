@@ -74,8 +74,8 @@
 
 <div class="meta-bar">
   <span><strong>Date d'exécution :</strong> 07/07/2026</span>
-  <span><strong>Environnement :</strong> Local (XAMPP MySQL + <code style="color:#fff;background:rgba(255,255,255,0.15);">node server.js</code>)</span>
-  <span><strong>Méthode :</strong> Requêtes HTTP directes (curl) sur l'API, données remises à zéro via <code style="color:#fff;background:rgba(255,255,255,0.15);">seed.js</code></span>
+  <span><strong>Environnement :</strong> Local (MySQL 8.0.45 + <code style="color:#fff;background:rgba(255,255,255,0.15);">node server.js</code>)</span>
+  <span><strong>Méthode :</strong> Requêtes HTTP directes (curl) sur l'API</span>
 </div>
 
 <div class="summary-bar">
@@ -87,7 +87,7 @@
 <main>
 
   <div class="callout">
-    <strong>Méthodologie :</strong> ces 12 tests ont été exécutés réellement contre le serveur Lumina Pro lancé en local (MySQL via XAMPP + <code>node server.js</code>), en appelant directement les routes de l'API REST. La base a ensuite été remise dans son état de démonstration via <code>node seed.js</code>. Les identifiants de démo utilisés (<code>admin@lumina.com</code> / <code>Lumina1!</code>) correspondent à ceux documentés dans le README, désormais alignés avec ce que <code>seed.js</code> insère réellement (voir correctif appliqué au script).
+    <strong>Méthodologie :</strong> ces 15 tests ont été exécutés réellement contre le serveur Lumina Pro lancé en local (MySQL 8.0.45 + <code>node server.js</code>), en appelant directement les routes de l'API REST. Les identifiants de démo utilisés (<code>admin@lumina.com</code> / <code>Lumina1!</code>, <code>user@lumina.com</code> / <code>Lumina1!</code>) correspondent à ceux documentés dans le README, créés via le flux d'inscription normal de l'application (pas de script de seed maintenu à ce jour).
   </div>
 
   <table>
@@ -242,7 +242,7 @@
   </table>
 
   <div class="callout" style="margin-top:20px;">
-    <strong>Note :</strong> après exécution, la base de données a été remise dans son état de démonstration initial via <code>node seed.js</code> (les données créées ou modifiées pour TEST006, TEST009, TEST011/012 et TEST013-015 ont été effacées). Les tests couvrent l'authentification, le CRUD des tâches et des colonnes, la cascade de suppression, la non-exposition des mots de passe et la restriction de suppression par propriétaire (anti-IDOR) — soit les parcours critiques identifiés dans le dossier professionnel (section 12).
+    <strong>Note :</strong> les données créées ou modifiées pour TEST006, TEST009, TEST011/012 et TEST013-015 ont été nettoyées manuellement après exécution (pas de script de seed maintenu à ce jour pour automatiser cette remise à zéro — piste d'amélioration identifiée en roadmap). Les tests couvrent l'authentification, le CRUD des tâches et des colonnes, la cascade de suppression, la non-exposition des mots de passe et la restriction de suppression par propriétaire (anti-IDOR) — soit les parcours critiques identifiés dans le dossier professionnel (section 12).
   </div>
 
 </main>
