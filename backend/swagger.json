@@ -113,7 +113,7 @@
     },
     "/tasks/{id}": {
       "put": {
-        "summary": "Modifier une tâche (ex: changer de colonne)",
+        "summary": "Modifier une tâche. Déplacer (id_col seul) est ouvert à tout membre ; modifier le contenu (titre/description/priorité/assignation/échéance) est réservé à l'admin, à la personne assignée ou au créateur de la tâche",
         "tags": ["Tâches Kanban"],
         "parameters": [
           {
@@ -142,7 +142,9 @@
           }
         },
         "responses": {
-          "200": { "description": "Tâche mise à jour" }
+          "200": { "description": "Tâche mise à jour" },
+          "403": { "description": "Modification de contenu refusée : ni admin, ni assigné, ni créateur de la tâche" },
+          "404": { "description": "Tâche introuvable" }
         }
       },
       "delete": {
@@ -237,7 +239,7 @@
     },
     "/users": {
       "get": {
-        "summary": "Récupérer la liste de tous les utilisateurs (Réservé Admin)",
+        "summary": "Récupérer la liste de tous les membres de l'équipe",
         "tags": ["Membres et Profils"],
         "responses": {
           "200": { "description": "Liste des utilisateurs" }
@@ -258,6 +260,106 @@
         ],
         "responses": {
           "200": { "description": "Membre supprimé" }
+        }
+      }
+    },
+    "/users/{id}/role": {
+      "put": {
+        "summary": "Promouvoir un membre administrateur, ou le rétrograder (Réservé Admin)",
+        "tags": ["Membres et Profils"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "role": { "type": "string", "enum": ["admin", "user"] }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Rôle mis à jour" },
+          "400": { "description": "Impossible de rétrograder le dernier administrateur" },
+          "403": { "description": "Réservé aux administrateurs" }
+        }
+      }
+    },
+    "/team/status": {
+      "get": {
+        "summary": "Statut d'équipe de l'utilisateur connecté (pending / requested / member)",
+        "tags": ["Équipe"],
+        "responses": {
+          "200": { "description": "Statut renvoyé" }
+        }
+      }
+    },
+    "/team/join": {
+      "post": {
+        "summary": "Demander à rejoindre l'équipe (passe de 'pending' à 'requested')",
+        "tags": ["Équipe"],
+        "responses": {
+          "200": { "description": "Demande envoyée" }
+        }
+      }
+    },
+    "/team/requests": {
+      "get": {
+        "summary": "Liste des demandes d'adhésion en attente (réservé aux membres de l'équipe, admin ou non)",
+        "tags": ["Équipe"],
+        "responses": {
+          "200": { "description": "Liste des demandes" },
+          "403": { "description": "Réservé aux membres de l'équipe" }
+        }
+      }
+    },
+    "/team/requests/{id}": {
+      "put": {
+        "summary": "Accepter ou refuser une demande d'adhésion (réservé aux membres de l'équipe, admin ou non)",
+        "tags": ["Équipe"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "action": { "type": "string", "enum": ["accept", "reject"] }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Demande traitée" },
+          "403": { "description": "Réservé aux membres de l'équipe" }
+        }
+      }
+    },
+    "/logs/stats": {
+      "get": {
+        "summary": "Compteurs statistiques : tâches supprimées et membres retirés de l'équipe",
+        "tags": ["Statistiques"],
+        "responses": {
+          "200": { "description": "Compteurs renvoyés" }
         }
       }
     }

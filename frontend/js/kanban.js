@@ -24,11 +24,11 @@ let allColumns = [];
  *    sinon on le cache.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('token');
-    if (!token) { 
-        window.location.href = 'login.html'; 
-        return; 
+    if (!token) {
+        window.location.href = 'login.html';
+        return;
     }
 
     // On récupère le nom de l'utilisateur connecté pour l'afficher en haut
@@ -42,20 +42,48 @@ document.addEventListener('DOMContentLoaded', () => {
         avatarEl.onclick = showProfile;
     }
 
-    // Cacher ou afficher le menu "Équipe" selon le rôle
-    const teamNav = document.getElementById('nav-team');
-    if (teamNav) {
-        if (user.role === 'admin') {
-            teamNav.style.display = 'block'; 
-        } else {
-            teamNav.style.display = 'none';  
-        }
+    // La déconnexion doit toujours fonctionner, quel que soit le statut d'équipe —
+    // on la branche donc avant toute vérification qui pourrait interrompre le reste.
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.onclick = () => {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        };
     }
 
+    // Un nouveau compte démarre avec team_status = 'pending' (dashboard vide tant qu'il n'a
+    // pas rejoint l'équipe). On vérifie ce statut en direct auprès du serveur avant d'afficher
+    // le tableau Kanban — voir backend/routes/team.js.
+    const statusRes = await authFetch('http://localhost:3000/api/team/status');
+    const { team_status } = await statusRes.json();
+
+    if (team_status !== 'member') {
+        // Seul l'onglet "Équipe" (pour voir/rejoindre) reste utile ; dashboard et stats
+        // sont cachés tant que l'utilisateur n'a pas rejoint l'équipe.
+        document.getElementById('nav-dashboard').style.display = 'none';
+        document.getElementById('nav-team').style.display = 'none';
+        document.getElementById('nav-profile').style.display = 'none';
+        document.getElementById('open-modal-btn').style.display = 'none';
+        showJoinTeam(team_status);
+        return;
+    }
+
+    // Le menu "Équipe" est visible pour tout le monde (lecture seule pour un utilisateur standard,
+    // suppression réservée à l'admin — voir team.js et backend/routes/users.js)
+    const teamNav = document.getElementById('nav-team');
+    if (teamNav) {
+        teamNav.style.display = 'block';
+    }
+
+    // Tout membre (admin ou non) peut valider les nouveaux arrivants : on vérifie donc pour tout le monde
+    // s'il y a des demandes d'adhésion en attente (badge de notification sur l'onglet Équipe)
+    checkPendingTeamRequests();
+
     // On charge les données du tableau
-    fetchTasks();          
-    loadUsers();           
-    setupEventListeners(); 
+    fetchTasks();
+    loadUsers();
+    setupEventListeners();
 });
 
 // =========================================================================
@@ -161,10 +189,15 @@ function renderBoard(columns, tasks) {
                         }
                     }
 
-                    // Un utilisateur peut supprimer seulement sa propre tâche assignée.
-                    // L'admin peut tout supprimer.
+                    // Un utilisateur peut supprimer/modifier sa propre tâche assignée, OU une tâche
+                    // qu'il a lui-même créée même si elle est assignée à quelqu'un d'autre (utile en
+                    // cas d'erreur d'assignation). L'admin peut tout supprimer/modifier.
+                    // Un utilisateur qui n'est ni l'un ni l'autre peut seulement déplacer la tâche
+                    // (boutons ⬅️➡️, toujours visibles), pas modifier son contenu (titre, description...).
                     // La même règle est vérifiée côté serveur dans routes/tasks.js (protection IDOR).
-                    const canDelete = isAdmin || task.id_assigned === currentUser.id;
+                    const isOwner = task.id_assigned === currentUser.id || task.created_by === currentUser.id;
+                    const canDelete = isAdmin || isOwner;
+                    const canEdit = isAdmin || isOwner;
 
                     return `
                     <div class="task-card" style="${cardBorder}">
@@ -181,7 +214,7 @@ function renderBoard(columns, tasks) {
                                 ${nextCol ? `<button type="button" class="icon-btn" aria-label="Déplacer la tâche vers ${escapeHTML(nextCol.title)}" onclick="moveTask(${task.id}, ${nextCol.id})">➡️</button>` : `<span style="width:24px; display:inline-block;"></span>`}
                             </div>
                             <div class="task-actions" style="margin-top: 0; padding-top: 0; border: none;">
-                                <button type="button" class="icon-btn" aria-label="Modifier la tâche ${escapeHTML(task.title)}" onclick="editTask(${JSON.stringify(task).replace(/"/g, '&quot;')})">✏️</button>
+                                ${canEdit ? `<button type="button" class="icon-btn" aria-label="Modifier la tâche ${escapeHTML(task.title)}" onclick="editTask(${JSON.stringify(task).replace(/"/g, '&quot;')})">✏️</button>` : ''}
                                 ${canDelete ? `<button type="button" class="icon-btn" aria-label="Supprimer la tâche ${escapeHTML(task.title)}" onclick="directDeleteTask(${task.id})">🗑️</button>` : ''}
                             </div>
                         </div>

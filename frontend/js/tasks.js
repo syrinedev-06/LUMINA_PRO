@@ -21,10 +21,11 @@ function editTask(task) {
     if (dueEl) dueEl.value = task.due_date ? new Date(task.due_date).toISOString().substring(0, 10) : "";
 
     // Le bouton supprimer dans la modale n'est visible que si l'utilisateur
-    // a le droit de supprimer cette tâche (admin ou tâche assignée à soi-même).
+    // a le droit de supprimer cette tâche (admin, tâche assignée à soi-même,
+    // ou tâche que l'on a soi-même créée même si assignée à quelqu'un d'autre).
     // La même règle est vérifiée côté serveur — c'est une sécurité UX, pas la vraie protection.
     const currentUser = JSON.parse(localStorage.getItem('user')) || {};
-    const canDelete = currentUser.role === 'admin' || task.id_assigned === currentUser.id;
+    const canDelete = currentUser.role === 'admin' || task.id_assigned === currentUser.id || task.created_by === currentUser.id;
     document.getElementById('delete-task-btn').style.display = canDelete ? "block" : "none";
 
     modal.style.display = 'flex';

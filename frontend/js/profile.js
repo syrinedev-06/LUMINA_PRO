@@ -8,12 +8,14 @@ async function showProfile() {
     zone.innerHTML = '<p style="padding:40px; color:var(--text-muted);">Chargement...</p>';
 
     try {
-        const [resTasks, resUsers] = await Promise.all([
+        const [resTasks, resUsers, resLogStats] = await Promise.all([
             authFetch('http://localhost:3000/api/tasks'),
-            authFetch('http://localhost:3000/api/users')
+            authFetch('http://localhost:3000/api/users'),
+            authFetch('http://localhost:3000/api/logs/stats')
         ]);
         const tasks = await resTasks.json();
         const users = await resUsers.json();
+        const logStats = await resLogStats.json();
 
         const total        = tasks.length;
         const urgentes     = tasks.filter(t => t.priority === 'high').length;
@@ -21,6 +23,8 @@ async function showProfile() {
         const normales     = tasks.filter(t => t.priority === 'low').length;
         const nonAssignees = tasks.filter(t => !t.id_assigned).length;
         const membres      = users.length;
+        const tachesSupprimees = logStats.tasksDeleted || 0;
+        const membresRetires   = logStats.membersRemoved || 0;
 
         const pU = total > 0 ? Math.round(urgentes / total * 100) : 0;
         const pM = total > 0 ? Math.round(moyennes  / total * 100) : 0;
@@ -29,71 +33,59 @@ async function showProfile() {
         // Construit le camembert SVG avant d'injecter le HTML
         const svgPie = creerCamembert(urgentes, moyennes, normales, total);
 
+        // Petite fabrique pour éviter de répéter 6 fois le même gros bloc HTML
+        const statCard = (icon, bg, color, value, label) => `
+      <div class="stat-card" style="background:var(--card-bg);border-radius:16px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.06);display:flex;align-items:center;gap:14px;border-top:3px solid ${color};transition:transform .15s ease, box-shadow .15s ease;">
+        <div style="width:46px;height:46px;flex-shrink:0;background:${bg};border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:21px;" aria-hidden="true">${icon}</div>
+        <div style="min-width:0;">
+          <div style="font-size:26px;font-weight:800;color:${color};line-height:1.1;">${value}</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">${label}</div>
+        </div>
+      </div>`;
+
         zone.innerHTML = `
-<div style="padding:32px;max-width:900px;margin:0 auto;">
+<div style="padding:32px;max-width:1000px;margin:0 auto;">
 
-  <h2 style="font-size:22px;margin-bottom:4px;">Tableau de bord</h2>
-  <p style="color:var(--text-muted);font-size:13px;margin-bottom:24px;">Vue d'ensemble du projet Lumina Pro</p>
-
-  <div style="display:flex;gap:20px;align-items:flex-start;">
-
-    <div style="display:flex;flex-direction:column;gap:16px;flex:1;">
-
-      <div style="background:var(--card-bg);border-radius:14px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,0.07);display:flex;align-items:center;gap:14px;">
-        <div style="width:44px;height:44px;background:#ede9fe;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;" aria-hidden="true">📋</div>
-        <div>
-          <div style="font-size:28px;font-weight:800;color:#6c63ff;">${total}</div>
-          <div style="font-size:12px;color:var(--text-muted);">Tâches au total</div>
-        </div>
-      </div>
-
-      <div style="background:var(--card-bg);border-radius:14px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,0.07);display:flex;align-items:center;gap:14px;">
-        <div style="width:44px;height:44px;background:#fee2e2;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;" aria-hidden="true">🔥</div>
-        <div>
-          <div style="font-size:28px;font-weight:800;color:#ef4444;">${urgentes}</div>
-          <div style="font-size:12px;color:var(--text-muted);">Tâches urgentes</div>
-        </div>
-      </div>
-
-      <div style="background:var(--card-bg);border-radius:14px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,0.07);display:flex;align-items:center;gap:14px;">
-        <div style="width:44px;height:44px;background:#fef3c7;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;" aria-hidden="true">⏳</div>
-        <div>
-          <div style="font-size:28px;font-weight:800;color:#f59e0b;">${nonAssignees}</div>
-          <div style="font-size:12px;color:var(--text-muted);">Sans assignation</div>
-        </div>
-      </div>
-
-      <div style="background:var(--card-bg);border-radius:14px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,0.07);display:flex;align-items:center;gap:14px;">
-        <div style="width:44px;height:44px;background:#dcfce7;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;" aria-hidden="true">👥</div>
-        <div>
-          <div style="font-size:28px;font-weight:800;color:#10b981;">${membres}</div>
-          <div style="font-size:12px;color:var(--text-muted);">Membres</div>
-        </div>
-      </div>
-
-    </div>
-
-    <div style="background:var(--card-bg);border-radius:14px;padding:28px;box-shadow:0 2px 10px rgba(0,0,0,0.07);flex:1;display:flex;flex-direction:column;align-items:center;gap:20px;">
-      <div style="font-size:14px;font-weight:600;">Répartition par priorité</div>
-      ${svgPie}
-      <div style="display:flex;flex-direction:column;gap:10px;width:100%;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:12px;height:12px;border-radius:3px;background:#ef4444;"></div>
-          <span style="font-size:13px;">Urgent — <b>${urgentes}</b> (${pU}%)</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:12px;height:12px;border-radius:3px;background:#f59e0b;"></div>
-          <span style="font-size:13px;">Moyen — <b>${moyennes}</b> (${pM}%)</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:12px;height:12px;border-radius:3px;background:#10b981;"></div>
-          <span style="font-size:13px;">Normal — <b>${normales}</b> (${pN}%)</span>
-        </div>
-      </div>
-    </div>
-
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+    <span style="font-size:22px;" aria-hidden="true">📊</span>
+    <h2 style="font-size:22px;">Tableau de bord</h2>
   </div>
-</div>`;
+  <p style="color:var(--text-muted);font-size:13px;margin-bottom:26px;">Vue d'ensemble du projet Lumina Pro</p>
+
+  <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:16px;margin-bottom:20px;">
+    ${statCard('📋', '#ede9fe', '#6c63ff', total, 'Tâches au total')}
+    ${statCard('🔥', '#fee2e2', '#ef4444', urgentes, 'Tâches urgentes')}
+    ${statCard('⏳', '#fef3c7', '#f59e0b', nonAssignees, 'Sans assignation')}
+    ${statCard('👥', '#dcfce7', '#10b981', membres, 'Membres')}
+    ${statCard('🗑️', '#f1f5f9', '#64748b', tachesSupprimees, 'Tâches supprimées')}
+    ${statCard('👤', '#f1f5f9', '#64748b', membresRetires, 'Membres retirés')}
+  </div>
+
+  <div style="background:var(--card-bg);border-radius:16px;padding:28px 32px;box-shadow:0 2px 12px rgba(0,0,0,0.06);display:flex;align-items:center;gap:36px;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:14px;">
+      <div style="font-size:14px;font-weight:700;color:var(--text);">Répartition par priorité</div>
+      ${svgPie}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;flex:1;min-width:180px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;background:#fef2f2;border-radius:10px;">
+        <span style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;"><span style="width:10px;height:10px;border-radius:50%;background:#ef4444;display:inline-block;"></span> Urgent</span>
+        <span style="font-size:13px;color:#7f1d1d;font-weight:700;">${urgentes} <span style="opacity:.7;font-weight:500;">(${pU}%)</span></span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;background:#fffbeb;border-radius:10px;">
+        <span style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;"><span style="width:10px;height:10px;border-radius:50%;background:#f59e0b;display:inline-block;"></span> Moyen</span>
+        <span style="font-size:13px;color:#78350f;font-weight:700;">${moyennes} <span style="opacity:.7;font-weight:500;">(${pM}%)</span></span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;background:#f0fdf4;border-radius:10px;">
+        <span style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;"><span style="width:10px;height:10px;border-radius:50%;background:#10b981;display:inline-block;"></span> Normal</span>
+        <span style="font-size:13px;color:#14532d;font-weight:700;">${normales} <span style="opacity:.7;font-weight:500;">(${pN}%)</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .stat-card:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,0.1); }
+  @media (max-width:700px) { #content-area div[style*="grid-template-columns:repeat(3"] { grid-template-columns:repeat(2,1fr) !important; } }
+</style>`;
 
     } catch (e) {
         zone.innerHTML = '<p style="padding:40px;color:red;">Erreur : ' + e.message + '</p>';

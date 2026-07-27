@@ -4,6 +4,7 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const path = require('path');
 const verifyToken = require('./middleware/security'); // Importation de notre middleware de sécurité JWT
+const requireMember = require('./middleware/requireMember'); // Bloque l'accès tant que team_status !== 'member'
 
 // Importation pour la documentation Swagger
 const swaggerUi = require('swagger-ui-express');
@@ -52,7 +53,8 @@ db.connect((err) => {
             name VARCHAR(255) NOT NULL,
             email VARCHAR(255) UNIQUE NOT NULL,
             password VARCHAR(255) NOT NULL,
-            role ENUM('admin', 'user') DEFAULT 'user'
+            role ENUM('admin', 'user') DEFAULT 'user',
+            team_status ENUM('pending', 'requested', 'member') DEFAULT 'pending'
         )`,
         `CREATE TABLE IF NOT EXISTS columns (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -68,8 +70,10 @@ db.connect((err) => {
             id_col INT,
             due_date DATE DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            created_by INT,
             FOREIGN KEY (id_assigned) REFERENCES users(id) ON DELETE SET NULL,
-            FOREIGN KEY (id_col) REFERENCES columns(id) ON DELETE CASCADE
+            FOREIGN KEY (id_col) REFERENCES columns(id) ON DELETE CASCADE,
+            FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
         )`,
         `CREATE TABLE IF NOT EXISTS logs (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -96,6 +100,40 @@ db.connect((err) => {
             }
         } else {
             console.log("✅ Colonne due_date ajoutée avec succès !");
+        }
+    });
+
+    // Migration : ajoute team_status sur les bases existantes.
+    // Important : les comptes déjà existants (créés avant cette fonctionnalité) sont automatiquement
+    // considérés comme 'member' pour ne rien casser (ils gardent l'accès complet au tableau).
+    // Seuls les NOUVEAUX comptes créés après cette migration démarrent à 'pending' (dashboard vide).
+    db.query("ALTER TABLE users ADD COLUMN team_status ENUM('pending', 'requested', 'member') DEFAULT 'pending'", (err) => {
+        if (err) {
+            if (err.code === 'ER_DUP_FIELDNAME') {
+                console.log("✅ team_status déjà présente en base");
+            } else {
+                console.error("❌ Migration team_status ÉCHOUÉE:", err.message);
+            }
+        } else {
+            db.query("UPDATE users SET team_status = 'member'", (err2) => {
+                if (err2) console.error("❌ Passage des comptes existants en 'member' ÉCHOUÉ:", err2.message);
+                else console.log("✅ Colonne team_status ajoutée, comptes existants passés en 'member' !");
+            });
+        }
+    });
+
+    // Migration : ajoute created_by sur les bases existantes.
+    // Permet à la personne qui a CRÉÉ une tâche de la supprimer même si elle l'a assignée
+    // à quelqu'un d'autre (utile en cas d'erreur d'assignation) — voir routes/tasks.js.
+    db.query("ALTER TABLE tasks ADD COLUMN created_by INT, ADD FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL", (err) => {
+        if (err) {
+            if (err.code === 'ER_DUP_FIELDNAME') {
+                console.log("✅ created_by déjà présente en base");
+            } else {
+                console.error("❌ Migration created_by ÉCHOUÉE:", err.message);
+            }
+        } else {
+            console.log("✅ Colonne created_by ajoutée avec succès !");
         }
     });
 
@@ -133,9 +171,10 @@ app.use('/api/auth', require('./routes/auth'));
 
 // Routes sécurisées (nécessitent un token JWT valide passé dans l'en-tête Authorization)
 app.use('/api/users', verifyToken, require('./routes/users'));
-app.use('/api/tasks', verifyToken, require('./routes/tasks'));
-app.use('/api/columns', verifyToken, require('./routes/columns'));
-// Les routes logs et stats ont été retirées pour la soutenance (simplification)
+app.use('/api/tasks', verifyToken, requireMember, require('./routes/tasks'));
+app.use('/api/columns', verifyToken, requireMember, require('./routes/columns'));
+app.use('/api/team', verifyToken, require('./routes/team'));
+app.use('/api/logs', verifyToken, require('./routes/logs'));
 
 // Démarrage du serveur web d'écoute
 const PORT = process.env.PORT || 3000;

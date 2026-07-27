@@ -58,7 +58,7 @@
                 </div>
                 <div class="form-group">
                     <label for="reg-email">Email</label>
-                    <input type="email" id="reg-email" name="email" autocomplete="off" placeholder="votre@email.com" required aria-required="true">
+                    <input type="email" id="reg-email" name="email" autocomplete="email" placeholder="votre@email.com" required aria-required="true">
                 </div>
                 <div class="form-group" style="position: relative;">
                     <label for="reg-password">Mot de passe</label>
@@ -67,6 +67,7 @@
                         <span aria-hidden="true">👁️</span>
                     </button>
                 </div>
+                <p style="font-size: 11px; color: #64748b; margin: -4px 0 10px;">En créant un compte, vos données (nom, email, mot de passe haché) sont utilisées uniquement pour la gestion de votre compte sur Lumina Pro et ne sont jamais transmises à des tiers.</p>
                 <button type="submit" class="btn-primary-modal">Créer mon compte</button>
             </form>
             <p class="auth-switch">Déjà inscrit ? <button type="button" onclick="toggleAuth()" class="link-btn" aria-label="Aller au formulaire de connexion">Se connecter</button></p>

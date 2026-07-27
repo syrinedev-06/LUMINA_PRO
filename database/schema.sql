@@ -25,7 +25,10 @@ CREATE TABLE IF NOT EXISTS users (
     -- 'password' stocke le mot de passe haché avec bcrypt (jamais en clair)
     password VARCHAR(255) NOT NULL,
     -- 'role' définit si la personne est 'admin' ou 'user'
-    role ENUM('admin', 'user') DEFAULT 'user'
+    role ENUM('admin', 'user') DEFAULT 'user',
+    -- 'team_status' : un nouveau compte démarre à 'pending' (dashboard vide), passe à 'requested'
+    -- après avoir demandé à rejoindre l'équipe, puis à 'member' une fois validé par un admin
+    team_status ENUM('pending', 'requested', 'member') DEFAULT 'pending'
 );
 
 -- ==========================================================
@@ -56,9 +59,13 @@ CREATE TABLE IF NOT EXISTS tasks (
     id_col INT,
     -- Date de création
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    -- 'created_by' garde la trace de qui a créé la tâche : permet à son créateur de la
+    -- supprimer même s'il l'a assignée à quelqu'un d'autre (utile en cas d'erreur d'assignation)
+    created_by INT,
     -- On crée des "Foreign Keys" (Clés Étrangères) pour lier les tables entre elles
     FOREIGN KEY (id_assigned) REFERENCES users(id) ON DELETE SET NULL,
-    FOREIGN KEY (id_col) REFERENCES columns(id) ON DELETE CASCADE
+    FOREIGN KEY (id_col) REFERENCES columns(id) ON DELETE CASCADE,
+    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
 );
 
 -- 4. TABLE DU JOURNAL D'AUDIT (logs)

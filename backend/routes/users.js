@@ -56,8 +56,58 @@ router.delete('/:id', (req, res) => {
     req.db.query(sql, [req.params.id], (err, result) => {
         if (err) return res.status(500).json({ error: err.message });
         if (result.affectedRows === 0) return res.status(404).json({ error: "Utilisateur introuvable." });
+
+        // Journalisation pour les statistiques (compteur "membres retirés" sur la page Statistiques)
+        req.db.query("INSERT INTO logs (action, details) VALUES (?, ?)", ['Suppression membre', 'Un membre de l\'équipe a été retiré']);
+
         res.json({ message: "Utilisateur supprimé." });
     });
+});
+
+/**
+ * @brief Route PUT pour changer le rôle d'un membre (/api/users/:id/role).
+ *
+ * CONCEPT EXAMEN :
+ * - Permet à un admin de promouvoir un membre standard en administrateur (ou de le rétrograder).
+ *   Utile en entreprise : le premier compte créé n'est pas forcément la seule personne
+ *   qui doit avoir des droits d'administration au fil du temps (ex : un associé, un remplaçant).
+ * - **Protection** : réservé aux administrateurs, comme la suppression d'un membre.
+ * - **Garde-fou** : un admin ne peut pas se rétrograder lui-même s'il est le seul admin restant,
+ *   pour éviter de se retrouver sans aucun administrateur dans l'équipe.
+ *
+ * @param {Object} req - Contient req.params.id, req.body.role ('admin' | 'user') et req.user.
+ * @param {Object} res - Réponse HTTP de validation.
+ * @returns {void}
+ */
+router.put('/:id/role', (req, res) => {
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: "Action réservée aux administrateurs." });
+    }
+    const { role } = req.body;
+    if (role !== 'admin' && role !== 'user') {
+        return res.status(400).json({ error: "role doit être 'admin' ou 'user'." });
+    }
+
+    const applyChange = () => {
+        req.db.query("UPDATE users SET role = ? WHERE id = ?", [role, req.params.id], (err, result) => {
+            if (err) return res.status(500).json({ error: err.message });
+            if (result.affectedRows === 0) return res.status(404).json({ error: "Utilisateur introuvable." });
+            res.json({ message: role === 'admin' ? "Membre promu administrateur." : "Membre repassé en utilisateur standard." });
+        });
+    };
+
+    if (role === 'user') {
+        // Empêche de rétrograder le dernier admin restant (l'équipe ne doit jamais se retrouver sans admin)
+        req.db.query("SELECT COUNT(*) AS total FROM users WHERE role = 'admin'", (err, results) => {
+            if (err) return res.status(500).json({ error: err.message });
+            if (results[0].total <= 1) {
+                return res.status(400).json({ error: "Impossible : il doit toujours rester au moins un administrateur." });
+            }
+            applyChange();
+        });
+    } else {
+        applyChange();
+    }
 });
 
 module.exports = router;
