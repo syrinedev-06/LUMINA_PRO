@@ -39,8 +39,11 @@ router.get('/', (req, res) => {
  *   Un utilisateur standard qui enverrait DELETE /api/users/2 recevrait un 403 Forbidden.
  *   Sans cette vérification, n'importe quel compte connecté pourrait supprimer n'importe quel
  *   autre compte en connaissant l'ID — c'est la faille IDOR.
- * - **Contrainte de clé étrangère** : id_assigned dans tasks est défini ON DELETE SET NULL :
- *   la suppression de l'utilisateur désassigne automatiquement ses tâches sans les supprimer.
+ * - **Garde-fou** : impossible de supprimer le dernier administrateur restant, pour ne jamais
+ *   se retrouver avec une équipe sans personne pour gérer les colonnes, les membres ou promouvoir
+ *   un nouvel admin (même garde-fou que sur PUT /:id/role).
+ * - **Contrainte de clé étrangère** : id_assigned et created_by dans tasks sont définis
+ *   ON DELETE SET NULL : la suppression de l'utilisateur désassigne ses tâches sans les supprimer.
  *
  * @param {Object} req - Contient req.params.id et req.user.role (décodé par verifyToken).
  * @param {Object} res - Réponse HTTP de validation.
@@ -52,15 +55,35 @@ router.delete('/:id', (req, res) => {
         return res.status(403).json({ error: "Action réservée aux administrateurs." });
     }
 
-    const sql = "DELETE FROM users WHERE id = ?";
-    req.db.query(sql, [req.params.id], (err, result) => {
+    const performDelete = () => {
+        const sql = "DELETE FROM users WHERE id = ?";
+        req.db.query(sql, [req.params.id], (err, result) => {
+            if (err) return res.status(500).json({ error: err.message });
+            if (result.affectedRows === 0) return res.status(404).json({ error: "Utilisateur introuvable." });
+
+            // Journalisation pour les statistiques (compteur "membres retirés" sur la page Statistiques)
+            req.db.query("INSERT INTO logs (action, details) VALUES (?, ?)", ['Suppression membre', 'Un membre de l\'équipe a été retiré']);
+
+            res.json({ message: "Utilisateur supprimé." });
+        });
+    };
+
+    // Empêche de supprimer le dernier admin restant (l'équipe ne doit jamais se retrouver sans admin)
+    req.db.query("SELECT role FROM users WHERE id = ?", [req.params.id], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
-        if (result.affectedRows === 0) return res.status(404).json({ error: "Utilisateur introuvable." });
+        if (results.length === 0) return res.status(404).json({ error: "Utilisateur introuvable." });
 
-        // Journalisation pour les statistiques (compteur "membres retirés" sur la page Statistiques)
-        req.db.query("INSERT INTO logs (action, details) VALUES (?, ?)", ['Suppression membre', 'Un membre de l\'équipe a été retiré']);
-
-        res.json({ message: "Utilisateur supprimé." });
+        if (results[0].role === 'admin') {
+            req.db.query("SELECT COUNT(*) AS total FROM users WHERE role = 'admin'", (err, countResults) => {
+                if (err) return res.status(500).json({ error: err.message });
+                if (countResults[0].total <= 1) {
+                    return res.status(400).json({ error: "Impossible : il doit toujours rester au moins un administrateur." });
+                }
+                performDelete();
+            });
+        } else {
+            performDelete();
+        }
     });
 });
 

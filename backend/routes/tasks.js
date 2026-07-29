@@ -76,6 +76,10 @@ router.put('/:id', (req, res) => {
         if (id_assigned !== undefined) { sql += "id_assigned = ?, "; params.push(id_assigned); }
         if (due_date !== undefined) { sql += "due_date = ?, "; params.push(due_date || null); }
 
+        if (params.length === 0) {
+            return res.status(400).json({ error: "Aucune donnée à modifier." });
+        }
+
         sql = sql.slice(0, -2) + " WHERE id = ?";
         params.push(taskId);
 
